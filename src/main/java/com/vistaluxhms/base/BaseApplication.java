@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BaseApplication {
 
 	public static void main(String[] args) {
+		System.out.println("this is first commit");
 		SpringApplication.run(BaseApplication.class, args);
+
+
+
+
 	}
-abc
+
 }
