@@ -12,13 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 
 @Controller
@@ -81,6 +81,7 @@ public class LoginController {
     public ModelAndView loginPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelView = new ModelAndView();
         modelView.setViewName("/login");
+        System.out.println("Login controller is invoked. ");
         return modelView;
 
 
@@ -95,6 +96,18 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping("/view_workloadhome")
+    public String home(Model model, Principal principal) {
+        System.out.println("User Role is to find out"  );
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        String roleMessage = isAdmin ? "Admin logged in" : "User logged in";
+
+        model.addAttribute("message", roleMessage);
+        return "home"; // Home JSP
+    }
 
 
 

@@ -1,4 +1,6 @@
 package com.vistaluxhms.config;
+
+
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -37,7 +37,8 @@ public class AshokaTeam {
 
 	/*@Column(nullable = false,name="roles", unique = false)
 	private String roles;
-	*/
+
+	 */
 
 	@Column(nullable = false,name="active", unique = false)
 	protected boolean active;
@@ -90,7 +91,7 @@ public class AshokaTeam {
 	protected boolean deleted;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "udnteam_role", 
+	@JoinTable(name = "ashokateam_role",
 		joinColumns = @JoinColumn(name = "userId"), 
 		inverseJoinColumns = @JoinColumn(name = "roleId"))
 	protected Set<RoleEntity> roles = new HashSet<RoleEntity>();

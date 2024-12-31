@@ -206,7 +206,7 @@
       box-shadow:  0px 2px 6px -1px rgba(0,0,0,.12);
     }
     .left {
-      width:  220px;
+      width:  40px;
       height:  auto;
       min-height:  100%;
       position:  relative;
@@ -224,8 +224,8 @@
     }
 
     .logo{
-    width:100px;
-    height:100px;
+    width:300px;
+    height:300px;
     margin-top:-30px;
     }
 .passSvg{
@@ -246,7 +246,7 @@ border:2px solid white;
           </div>
           <form id = "loginForm" name="f" th:action="@{/login}" method="post" class="log-in" autocomplete="off">
           <div class="logo">
-           <img src="${pageContext.request.contextPath}/resources/images/Udanchoo.jpg" alt="" width="100%" height="100%">
+           <img src="<c:url value='/images/ashoka_logo.jpg'/>" alt="Ashoka Image" width="100%" height="100%" />
           </div>
 
             <p class="floating-label">Log in to your account:</p>
