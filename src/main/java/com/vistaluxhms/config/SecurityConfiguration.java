@@ -1,5 +1,5 @@
 package com.vistaluxhms.config;
-
+import com.vistaluxhms.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private UserDetailsServiceImpl myUserDetailsService;
 
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailsService);
+    }
 
-	
+
 	/*@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
@@ -38,7 +44,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-    System.out.println("Spring security is disabled for login");
+		/*
+		httpSecurity.csrf().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.addFilterBefore(jwtRequestFilter, JwtUserAuthenticationFilter.class)
+		.authorizeRequests()
+		.antMatchers("/login").permitAll()
+		.antMatchers("/authenticate").permitAll()
+		.anyRequest().authenticated();
+		*/
         httpSecurity.csrf().disable();
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
