@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -46,23 +45,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-		/*
-		httpSecurity.csrf().disable()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and()
-		.addFilterBefore(jwtRequestFilter, JwtUserAuthenticationFilter.class)
-		.authorizeRequests()
-		.antMatchers("/login").permitAll()
-		.antMatchers("/authenticate").permitAll()
-		.anyRequest().authenticated();
-		*/
-        httpSecurity.csrf().disable();
-        httpSecurity.authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/**").permitAll()
-                .and().formLogin().loginPage("/login")
-                .permitAll().successForwardUrl("/view_workloadhome");
-        //.and().formLogin().successForwardUrl("/welcome");
+        httpSecurity.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/login", "/resources/**", "/static/**").permitAll() // Allow public access to login and resources
+                .antMatchers("/admin").hasRole("ADMIN") // Only admins can access /admin
+                .antMatchers("/user").hasAnyRole("ADMIN", "USER") // Admins and users can access /user
+                .anyRequest().authenticated() // All other requests need authentication
+                .and()
+                .formLogin()
+                .loginPage("/login") // Custom login page
+                .permitAll() // Allow everyone to access the login page
+                .defaultSuccessUrl("/view_workloadhome", true) // Redirect after successful login
+                .and()
+                .logout()
+                .permitAll(); // Allow logout for everyone
     }
 }
