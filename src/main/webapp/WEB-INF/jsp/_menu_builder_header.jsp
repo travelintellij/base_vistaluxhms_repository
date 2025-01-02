@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 <%
 // Example roles and username
 String role = (String) session.getAttribute("role");
@@ -47,6 +53,20 @@ username = "Guest";
                 </ul>
             </li>
         </c:if>
+        <c:if test="${role == 'admin' || role == 'guest'}">
+                    <li>
+                        <a href="#">Others</a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="#">City</a>
+                                <ul class="second-level">
+                                    <li><a href="view_add_city_form">Add City</a></li>
+                                    <li><a href="view_search_city_form">Manage Cities</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </c:if>
         <c:if test="${role == 'admin' || role == 'guest'}">
             <li>
                 <a href="#">Quotation</a>
