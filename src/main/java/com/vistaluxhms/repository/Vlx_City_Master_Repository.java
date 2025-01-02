@@ -41,4 +41,7 @@ public interface Vlx_City_Master_Repository extends JpaRepository<City_Entity,In
 	//public String findDistinctByCountryCode(String countryCode);
 	
 	boolean existsByCityNameAndCountryCodeIgnoreCase(String cityName, String countryCode);
+
+	@Query("FROM City_Entity a WHERE a.destinationId=?1")
+	City_Entity findDestinationById(int destinationId);
 }

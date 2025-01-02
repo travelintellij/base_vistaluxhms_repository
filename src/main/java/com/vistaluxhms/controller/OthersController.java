@@ -53,19 +53,18 @@ public class OthersController {
 	//@Autowired
 	//EmailServiceImpl emailService;
 
-	
-	
-    private UserDetailsObj getLoggedInUser() {
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	String username;
-    	if (principal instanceof UserDetails) {
-    	   username = ((UserDetails)principal).getUsername();
-    	} else {
-    	   username = principal.toString();
-    	}
-     	UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
-     	
-     	return userObj;
+
+	private UserDetailsObj getLoggedInUser() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username;
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails)principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+		UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
+
+		return userObj;
     }
 
 	@RequestMapping("view_add_city_form")
@@ -124,61 +123,68 @@ public class OthersController {
 		}
 		return cityVoList;
 	}
+
+
+	@PostMapping(value="create_create_city")
+	public ModelAndView create_create_city(@ModelAttribute("CITY_OBJ") City_Obj cityObj, BindingResult result,final RedirectAttributes redirectAttrib) {
+		System.out.println("Create city is finally invoked. debug man");
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView();
+
+		cityMgmtValidator.validate(cityObj, result);
+
+		if(result.hasErrors()) {
+			modelView = view_add_city_form(cityObj,result );
+		} else {
+			City_Entity cityEntity = new City_Entity(cityObj);
+			commonService.saveCity(cityEntity);
+			redirectAttrib.addFlashAttribute("Success", "City Record is updated Successfully..");
+			modelView.setViewName("redirect:view_search_city_form?destinationId="+cityEntity.getDestinationId()+"&countryCode="+cityEntity.getCountryCode());
+		}
+		return modelView;
+	}
+
+	@PostMapping("view_edit_city_form")
+	public ModelAndView view_edit_city_form(@ModelAttribute("CITY_OBJ") City_Obj cityObj, BindingResult result ) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("others/Admin_Edit_City");
+
+		List<City_Entity> activeDistinctDestinationList= commonService.findDistinctActiveDestinationList();
+		modelView.addObject("ACTIVE_CTRYCODE_CTRYNAME_LIST", activeDistinctDestinationList);
+
+		City_Entity cityEntity = commonService.findDestinationById(cityObj.getDestinationId());
+		cityObj.updateCityVOFromEntity(cityEntity);
+
+		return modelView;
+	}
+
+	@PostMapping(value="edit_edit_city")
+	public ModelAndView edit_edit_city(@ModelAttribute("CITY_OBJ") City_Obj cityObj, BindingResult result,final RedirectAttributes redirectAttrib) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView();
+		//cityMgmtValidator.validate(cityObj, result);
+		if(result.hasErrors()) {
+			modelView = view_edit_city_form(cityObj,result );
+		}
+		else {
+			City_Entity cityEntity = new City_Entity(cityObj);
+			cityEntity.setDestinationId(cityObj.getDestinationId());
+			commonService.saveCity(cityEntity);
+			redirectAttrib.addFlashAttribute("Success", "City Record is updated Successfully..");
+			modelView.setViewName("redirect:view_search_city_form?destinationId="+cityEntity.getDestinationId()+"&countryCode="+cityEntity.getCountryCode());
+		}
+		return modelView;
+	}
+
+
    /*
-    @PostMapping(value="create_create_city")
-    public ModelAndView create_create_city(@ModelAttribute("CITY_OBJ") Udn_Destinations_Master_Obj cityObj, BindingResult result,final RedirectAttributes redirectAttrib) {
-    	UserDetailsObj userObj = getLoggedInUser();
-    	ModelAndView modelView = new ModelAndView();
-    	
-    	cityMgmtValidator.validate(cityObj, result);
-    	
-    	if(result.hasErrors()) {
-    		modelView = view_add_city_form(cityObj,result );
-    	}
-    	else {
-    		Udn_Destinations_Entity cityEntity = new Udn_Destinations_Entity(cityObj);
-    		commonService.saveCity(cityEntity);
-    		redirectAttrib.addFlashAttribute("Success", "City Record is updated Successfully..");
-    		modelView.setViewName("redirect:view_search_city_form?destinationId="+cityEntity.getDestinationId());
-    	}
-		return modelView;
-    }
-    
+
 
     
 
 
-    @RequestMapping("view_edit_city_form")
-   	public ModelAndView view_edit_city_form(@ModelAttribute("CITY_OBJ") Udn_Destinations_Master_Obj cityObj, BindingResult result ) {
-    	UserDetailsObj userObj = getLoggedInUser();
-    	ModelAndView modelView = new ModelAndView("admin/others/Admin_Edit_City");
-    	
-    	List<Udn_Destinations_Entity> activeDistinctDestinationList= commonService.findDistinctActiveDestinationList();
-    	modelView.addObject("ACTIVE_CTRYCODE_CTRYNAME_LIST", activeDistinctDestinationList);
 
-    	Udn_Destinations_Entity cityEntity = commonService.findDestinationById(cityObj.getDestinationId());
-    	cityObj.updateCityVOFromEntity(cityEntity);
-    	
-    	return modelView;
-    }
 
-    @PostMapping(value="edit_edit_city")
-    public ModelAndView edit_edit_city(@ModelAttribute("CITY_OBJ") Udn_Destinations_Master_Obj cityObj, BindingResult result,final RedirectAttributes redirectAttrib) {
-    	UserDetailsObj userObj = getLoggedInUser();
-    	ModelAndView modelView = new ModelAndView();
-    	//cityMgmtValidator.validate(cityObj, result);
-    	if(result.hasErrors()) {
-    		modelView = view_edit_city_form(cityObj,result );
-    	}
-    	else {
-    		Udn_Destinations_Entity cityEntity = new Udn_Destinations_Entity(cityObj);
-    		cityEntity.setDestinationId(cityObj.getDestinationId());
-    		commonService.saveCity(cityEntity);
-    		redirectAttrib.addFlashAttribute("Success", "City Record is updated Successfully..");
-    		modelView.setViewName("redirect:view_search_city_form?destinationId="+cityEntity.getDestinationId()+"&countryCode="+cityEntity.getCountryCode());
-    	}
-		return modelView;
-    }
 
     
     

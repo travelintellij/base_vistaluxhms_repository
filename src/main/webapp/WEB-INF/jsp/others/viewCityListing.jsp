@@ -41,7 +41,10 @@
               </div>
           </form:form>
       </div>
-
+<div align="center" style="margin:10px 0"><b>
+    <font color="green">${Success} </font>
+    <font color="red">${Error}</font>
+</b></div>
       <!-- City List Table Section (Second Container) -->
       <div class="form-container city-list-container">
       <c:set value="${CITY_LIST}" var="cityList" />
@@ -71,7 +74,12 @@
                         </c:if>
                        </td>
                       <td>
-                        <a href="view_edit_city_form?destinationId=${cityRec.destinationId }"><button class="edit-btn">Edit</button></a>
+                          <form action="view_edit_city_form" method="POST" style="display:inline;">
+                              <!-- Hidden field to store destinationId -->
+                              <input type="hidden" name="destinationId" value="${cityRec.destinationId}" />
+                              <button type="submit" class="edit-btn"  style="height: 25px;  padding: 5px 10px; ">Edit</button>
+                          </form>
+
                       </td>
                   </tr>
                   </c:forEach>

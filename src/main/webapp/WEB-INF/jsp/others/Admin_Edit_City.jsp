@@ -7,9 +7,10 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <div class="form-container-wrapper">
-    <div class="form-container">
-        <h2>Add City</h2> <!-- Bold Header -->
-        <form:form method="post" action="create_create_city" modelAttribute="CITY_OBJ">
+    <div class="form-container" style="width: 100%; max-width: 900px;">
+        <h2>Edit City</h2> <!-- Bold Header -->
+        <form:form method="post" action="edit_edit_city" modelAttribute="CITY_OBJ">
+            <form:hidden path="destinationId" />
             <form:hidden path="countryName" />
             <!-- First Row -->
             <div class="form-row">
@@ -35,11 +36,16 @@
                 <font color="red">
                     <form:errors path="countryCode" cssClass="error" />
                 </font>
+               &nbsp;&nbsp; <label for="active">Active:</label>
+                <form:select path="active" required="required" style="width:100%">
+                    <option class="service-small" value="true"<c:if test="${CITY_OBJ.active eq true}">selected</c:if>>Active</option>
+                    <option class="service-small" value="false"<c:if test="${CITY_OBJ.active eq false}">selected</c:if>>In-Active</option>
+                </form:select>
             </div>
 
             <!-- Second Row -->
             <div class="button-container">
-                <input type="submit" value="Add City">
+                <input type="submit" value="Update City">
                <a href="view_search_city_form"><input type="button" class="clear-filter-btn" value="View City List"></input></a>
             </div>
         </form:form>

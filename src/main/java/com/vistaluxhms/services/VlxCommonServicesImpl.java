@@ -92,5 +92,13 @@ public class VlxCommonServicesImpl {
 
 		return filteredCityList;
 	}
-	
+	public City_Entity saveCity(City_Entity cityEntity) {
+		cityRepository.save(cityEntity);
+		return cityEntity;
+	}
+
+	public City_Entity findDestinationById(int destinationId) {
+		return cityRepository.findDestinationById(destinationId);
+	}
+
 }
