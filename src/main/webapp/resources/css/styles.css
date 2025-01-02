@@ -1,0 +1,133 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #4a90e2; /* Soothing blue color */
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center; /* Centered logo and title */
+    align-items: center;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 60px; /* Increased logo size */
+    margin-right: 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+header .welcome {
+    font-size: 1rem;
+    margin-left: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #357abd; /* Menu background color */
+}
+
+nav ul li {
+    position: relative;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #28527a;
+}
+
+nav ul li .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #28527a; /* Submenu background color */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    z-index: 10;
+    min-width: 150px;
+}
+
+nav ul li:hover .submenu {
+    display: block;
+}
+
+nav ul li .submenu li a {
+    padding: 10px 20px;
+    display: block;
+    white-space: nowrap;
+}
+
+nav ul li .submenu .second-level {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: #28527a;
+}
+
+nav ul li .submenu li:hover .second-level {
+    display: block;
+}
+
+.logout {
+    background-color: #ff6b6b; /* Highlighted logout color */
+}
+
+.logout:hover {
+    background-color: #e63946;
+}
+
+/* Styling for form controls */
+input[type="text"], input[type="password"], input[type="radio"], input[type="checkbox"], select, textarea {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 22px); /* Adjust for padding and border */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #357abd;
+    color: white;
+}

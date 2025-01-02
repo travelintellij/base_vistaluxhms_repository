@@ -106,7 +106,7 @@ public class LoginController {
         String roleMessage = isAdmin ? "Admin logged in" : "User logged in";
 
         model.addAttribute("message", roleMessage);
-        return "home"; // Home JSP
+        return "resortHomePage"; // Home JSP
     }
 
 
