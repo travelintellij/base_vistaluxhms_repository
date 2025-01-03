@@ -36,16 +36,8 @@
             <div class="form-row">
                     <label for="city-id">City:</label>
                 <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
-                      <form:hidden path="cityId" />
-                <%--
-                <form:select path="cityId">
-                    <form:option value="" label="-- Select City --" />
-                    <form:options items="${cityList}" itemValue="destinationId" itemLabel="cityName"/>
-                </form:select>
-                --%>
-                <font color="red">
-                    <%--<form:errors path="cityId" cssClass="error" />--%>
-                </font>
+                <form:hidden path="cityId" />
+
             </div>
             <div class="form-row">
                 <label for="active-status">Active:</label>

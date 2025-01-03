@@ -108,4 +108,8 @@ public class VlxCommonServicesImpl {
 		return listDestinations;
 	}
 
+	public boolean existsByDestinationIdAndCityName(int destinationId, String cityName) {
+		return cityRepository.existsByDestinationIdAndCityName(destinationId, cityName);
+	}
+
 }

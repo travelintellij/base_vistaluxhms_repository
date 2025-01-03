@@ -10,6 +10,8 @@ import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
+import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.validator.CityManagementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +40,9 @@ public class SalesServiceController {
 
     @Autowired
     Vlx_City_Master_Repository cityRepository;
+
+    @Autowired
+    VlxCommonServicesImpl commonService;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -136,6 +141,9 @@ public class SalesServiceController {
     public ModelAndView createEditSalesPartner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
+        if(!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), salesPartnerDto.getCityName())) {
+            result.rejectValue("cityName", "city.error");
+        }
         if (result.hasErrors()) {
             // If there are validation errors, return the form view with errors
             modelView = view_add_sales_partner_form(salesPartnerDto, result);

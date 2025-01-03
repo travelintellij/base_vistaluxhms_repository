@@ -19,7 +19,7 @@ public class SalesPartnerEntity {
     @Column(name = "salesPartnerName", nullable = false, length = 100)
     protected String salesPartnerName; // Full Name of Sales Partner
 
-    protected Long cityId; // Foreign Key to Cities Table
+    protected int cityId; // Foreign Key to Cities Table
 
     @Column(name = "active", nullable = false)
     protected Boolean active = true; // Active Status
@@ -79,11 +79,11 @@ public class SalesPartnerEntity {
         this.salesPartnerName = salesPartnerName;
     }
 
-    public Long getCityId() {
+    public int getCityId() {
         return cityId;
     }
 
-    public void setCityId(Long cityId) {
+    public void setCityId(int cityId) {
         this.cityId = cityId;
     }
 
