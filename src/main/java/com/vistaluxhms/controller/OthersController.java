@@ -25,11 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -175,6 +171,23 @@ public class OthersController {
 		}
 		return modelView;
 	}
+
+	@RequestMapping(value = "/getCityList", method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody
+	List<City_Obj> getTags(@RequestParam String cityName) {
+		List<City_Obj> result = new ArrayList<City_Obj>();
+		List <City_Entity> entityList = commonService.listAllActiveDestinations();
+		// iterate a list and filter by tagName
+		for (City_Entity entity : entityList) {
+			if (entity.getCityName().toLowerCase().contains(cityName.toLowerCase())) {
+				City_Obj destinationObj = new City_Obj(entity);
+				result.add(destinationObj);
+			}
+		}
+
+		return result;
+	}
+
 
 
    /*

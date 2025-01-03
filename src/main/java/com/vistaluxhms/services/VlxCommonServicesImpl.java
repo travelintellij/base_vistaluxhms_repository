@@ -42,8 +42,10 @@ public class VlxCommonServicesImpl {
 	
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
-	
 
+	public List<String> findCities(String query) {
+		return cityRepository.findCitiesByQuery("%" + query + "%");
+	}
 
 	public boolean existsByCityNameAndCountryCode(String cityName, String countryCode) {
 		return cityRepository.existsByCityNameAndCountryCodeIgnoreCase(cityName, countryCode);
@@ -99,6 +101,11 @@ public class VlxCommonServicesImpl {
 
 	public City_Entity findDestinationById(int destinationId) {
 		return cityRepository.findDestinationById(destinationId);
+	}
+
+	public List<City_Entity> listAllActiveDestinations()   {
+		List<City_Entity> listDestinations= cityRepository.findAllActiveUdnDestinations();
+		return listDestinations;
 	}
 
 }

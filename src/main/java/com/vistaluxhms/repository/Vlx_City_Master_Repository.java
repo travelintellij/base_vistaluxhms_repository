@@ -44,4 +44,7 @@ public interface Vlx_City_Master_Repository extends JpaRepository<City_Entity,In
 
 	@Query("FROM City_Entity a WHERE a.destinationId=?1")
 	City_Entity findDestinationById(int destinationId);
+
+	@Query("SELECT CONCAT(c.cityName, ' (', c.countryName, ')') FROM City_Entity c WHERE LOWER(c.cityName) LIKE LOWER(:query)")
+	List<String> findCitiesByQuery(String query);
 }

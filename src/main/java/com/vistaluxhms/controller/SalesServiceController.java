@@ -7,6 +7,7 @@ import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.RateType_Obj;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
 import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class SalesServiceController {
 
     @Autowired
     SalesRelatesServicesImpl salesService;
+
+    @Autowired
+    Vlx_City_Master_Repository cityRepository;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -136,13 +140,9 @@ public class SalesServiceController {
             // If there are validation errors, return the form view with errors
             modelView = view_add_sales_partner_form(salesPartnerDto, result);
         } else {
-            // Convert DTO to Entity
             SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
-            // Save or update the SalesPartner record
             salesService.saveSalesPartner(salesPartnerEntity);
-            // Add success message for redirection
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
-            // Redirect to the Sales Partner list view
             modelView.setViewName("redirect:view_sales_partner_list");
         }
 

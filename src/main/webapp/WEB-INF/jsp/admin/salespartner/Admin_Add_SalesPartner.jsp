@@ -6,6 +6,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
+
+<script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+<script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+
 <div class="form-container-wrapper">
     <div class="form-container">
         <h2>Add Sales Partner</h2> <!-- Bold Header -->
@@ -30,9 +34,11 @@
                 </font>
             </div>
             <div class="form-row">
-                <label for="city-id">City:</label>
+                    <label for="city-id">City:</label>
+                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
+                      <form:hidden path="cityId" />
                 <%--
-                <form:select path="destinationId">
+                <form:select path="cityId">
                     <form:option value="" label="-- Select City --" />
                     <form:options items="${cityList}" itemValue="destinationId" itemLabel="cityName"/>
                 </form:select>
@@ -43,7 +49,10 @@
             </div>
             <div class="form-row">
                 <label for="active-status">Active:</label>
-                <form:checkbox path="active" name="active"/>
+                <form:select path="active" required="required" style="width:100%">
+                    <option class="service-small" value="true"<c:if test="${SALES_PARTNER_OBJ.active eq true}">selected</c:if>>Active</option>
+                    <option class="service-small" value="false"<c:if test="${SALES_PARTNER_OBJ.active eq false}">selected</c:if>>In-Active</option>
+                </form:select>
             </div>
             <div class="form-row">
                 <label for="address">Address:</label>
@@ -75,5 +84,28 @@
         </form:form>
     </div>
 </div>
+<script>
+    $('#cityName').autocomplete({
+        serviceUrl: '${pageContext.request.contextPath}/getCityList',
+        paramName: "cityName",
+        delimiter: ",",
+        onSelect: function (suggestion) {
+            cityID = suggestion.data;
+            id = cityID;
+            jQuery("#destinationId").val(cityID);
+            $('input[name=cityId]').val(id);
+            return false;
+        },
+        transformResult: function (response) {
+            return {
+                suggestions: $.map($.parseJSON(response), function (item) {
+                    return { value: item.cityName, data: item.destinationId };
+                })
 
+            };
+        }
+    });
+
+
+    </script>
 <jsp:include page="../../footer.jsp" />

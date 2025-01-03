@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sales_partner_entity")
+@Table(name = "salespartner")
 public class SalesPartnerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,7 @@ public class SalesPartnerEntity {
     @Column(name = "salesPartnerName", nullable = false, length = 100)
     protected String salesPartnerName; // Full Name of Sales Partner
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cityId", referencedColumnName = "destinationId", foreignKey = @ForeignKey(name = "fk_city"))
-    protected City_Entity city; // Foreign Key to Cities Table
+    protected Long cityId; // Foreign Key to Cities Table
 
     @Column(name = "active", nullable = false)
     protected Boolean active = true; // Active Status
@@ -45,7 +43,7 @@ public class SalesPartnerEntity {
         this.salesPartnerId = salesPartnerDto.getSalesPartnerId();
         this.salesPartnerShortName = salesPartnerDto.getSalesPartnerShortName();
         this.salesPartnerName = salesPartnerDto.getSalesPartnerName();
-        this.city = salesPartnerDto.getCity(); // Assuming city is an object and will be mapped separately
+        this.cityId = salesPartnerDto.getCityId(); // Assuming city is an object and will be mapped separately
         this.active = salesPartnerDto.getActive();
         this.address = salesPartnerDto.getAddress();
         this.reference = salesPartnerDto.getReference();
@@ -81,12 +79,12 @@ public class SalesPartnerEntity {
         this.salesPartnerName = salesPartnerName;
     }
 
-    public City_Entity getCity() {
-        return city;
+    public Long getCityId() {
+        return cityId;
     }
 
-    public void setCity(City_Entity city) {
-        this.city = city;
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 
     public Boolean getActive() {
