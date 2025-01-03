@@ -173,6 +173,20 @@ h2 {
     box-sizing: border-box;
 }
 
+.form-row textarea {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+    outline: none; /* Remove outline on focus */
+    width: 100%; /* Full width inside the container */
+    max-width: 100%; /* Avoid overflow */
+    box-sizing: border-box; /* Include padding and border in width/height calculations */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+
 /* Buttons */
 .button-container {
     display: flex;

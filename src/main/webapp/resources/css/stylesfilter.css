@@ -80,15 +80,18 @@ body {
 
 /* Style for Clear Filter Button (input type button) */
 .clear-filter-btn {
-    background-color: #f0ad4e; /* A color to match the 'Clear' action */
-    color: white;
-    font-size: 16px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+       background-color: #f0ad4e; /* A color to match the 'Clear' action */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .clear-filter-btn:hover {

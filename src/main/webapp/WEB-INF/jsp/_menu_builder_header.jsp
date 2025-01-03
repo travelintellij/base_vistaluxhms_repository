@@ -70,14 +70,25 @@ username = "Guest";
                 </c:if>
         <c:if test="${role == 'admin' || role == 'guest'}">
             <li>
-                <a href="#">Quotation</a>
+                <a href="#">Sales Management</a>
                 <ul class="submenu">
-                    <li><a href="#">Generate Quotation</a></li>
-                    <li><a href="#">View Quotations</a></li>
+                      <li>
+                        <a href="#">Rate Type</a>
+                        <ul class="second-level">
+                            <li><a href="view_add_rate_type_form">Add Rate Type</a></li>
+                            <li><a href="view_rate_type_list">Manage Rate Type</a></li>
+                        </ul>
+                    </li>
+                      <li>
+                        <a href="#">Sales Partner</a>
+                        <ul class="second-level">
+                        <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
+                        <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
+                    </ul>
                 </ul>
             </li>
         </c:if>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#" class="logout">Logout</a></li>
+
+        <li><a href="logout" class="logout">Logout</a></li>
     </ul>
 </nav>
