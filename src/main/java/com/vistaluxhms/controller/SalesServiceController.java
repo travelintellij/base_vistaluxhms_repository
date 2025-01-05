@@ -163,4 +163,19 @@ public class SalesServiceController {
         ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_Add_SalesPartner");
         return modelView;
     }
+
+    @RequestMapping("view_search_sales_partner_form")
+    public ModelAndView filterSalesPartners(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/salespartner/viewSalesPartnerListing");
+        // Adding user details to the model
+        modelView.addObject("userName", userObj.getUsername());
+        modelView.addObject("Id", userObj.getUserId());
+        // Filtering sales partners based on the search criteria
+        List<SalesPartnerEntity> salesPartnerFilteredList = salesService.filterSalesPartners(searchSalesPartnerObj);
+        modelView.addObject("SALES_PARTNER_FILTERED_LIST", salesPartnerFilteredList);
+
+        return modelView;
+    }
+
 }
