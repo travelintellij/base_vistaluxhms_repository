@@ -10,7 +10,7 @@
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
 
-<div class="form-container filter-container" style="width: 50%; min-width: 50%; max-width: 50%;">
+<div class="form-container filter-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -27,6 +27,14 @@
                 <form:input path="cityName" name="cityName" style="width:200px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
+                <label for="salespartner">Sales Partner:</label>
+                <form:select path="active" name="active">
+                    <option value="">--Select--</option>
+                    <option value="true" ${CLIENT_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
+                    <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
+                </form:select>
+            </div>
+            <div class="form-group" style="flex: 1; min-width: 200px;">
                   <label for="active">Active:</label>
                   <form:select path="active" name="active">
                       <option value="">--Select--</option>
@@ -34,6 +42,7 @@
                       <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
                   </form:select>
             </div>
+
 
         <div class="form-actions" style="flex: 1; min-width: 200px;">
             <button type="submit" class="apply-filter-btn">Apply Filter</button>
@@ -59,6 +68,8 @@
                 <th>Client ID</th>
                 <th>Client Name</th>
                 <th>City</th>
+                <th>Email</th>
+                <th>Mobile</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -77,6 +88,8 @@
                             <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
                         </c:if>
                     </td>
+                    <td>${clientRec.emailId}</td>
+                    <td>${clientRec.mobile}</td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="clientId" value="${clientRec.clientId}" />

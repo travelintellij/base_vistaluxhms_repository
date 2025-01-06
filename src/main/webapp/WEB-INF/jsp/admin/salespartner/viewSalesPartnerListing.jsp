@@ -10,7 +10,7 @@
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
 
-<div class="form-container filter-container" style="width: 50%; min-width: 50%; max-width: 50%;">
+<div class="form-container filter-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <h2>View Sales Partners</h2>
     <form:form modelAttribute="SALES_PARTNER_OBJ" action="view_sales_partner_list">
     <form:hidden path="cityId" />
