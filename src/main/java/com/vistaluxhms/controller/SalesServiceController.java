@@ -137,7 +137,7 @@ public class SalesServiceController {
     }
 
      */
-    @PostMapping(value="create_edit_sales_partner")
+    @PostMapping(value="create_create_sales_partner")
     public ModelAndView createEditSalesPartner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
@@ -164,8 +164,8 @@ public class SalesServiceController {
         return modelView;
     }
 
-    @RequestMapping("view_search_sales_partner_form")
-    public ModelAndView filterSalesPartners(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
+    @RequestMapping("view_sales_partner_list")
+    public ModelAndView view_sales_partner_list(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/salespartner/viewSalesPartnerListing");
         // Adding user details to the model
@@ -173,7 +173,71 @@ public class SalesServiceController {
         modelView.addObject("Id", userObj.getUserId());
         // Filtering sales partners based on the search criteria
         List<SalesPartnerEntity> salesPartnerFilteredList = salesService.filterSalesPartners(searchSalesPartnerObj);
-        modelView.addObject("SALES_PARTNER_FILTERED_LIST", salesPartnerFilteredList);
+        List<SalesPartnerEntityDto> salesPartnerDTOFilteredList = generateSalesPartnerObj(salesPartnerFilteredList);
+        modelView.addObject("SALES_PARTNER_FILTERED_LIST", salesPartnerDTOFilteredList);
+        return modelView;
+    }
+
+    private List<SalesPartnerEntityDto> generateSalesPartnerObj(List<SalesPartnerEntity> listSalesPartner) {
+        List<SalesPartnerEntityDto> salesPartnerVoList = new ArrayList<SalesPartnerEntityDto>();
+        Iterator<SalesPartnerEntity> itrSalesPartnerEntity = listSalesPartner.iterator();
+        while(itrSalesPartnerEntity.hasNext()) {
+            SalesPartnerEntity salesPartnerEntity = (SalesPartnerEntity) itrSalesPartnerEntity.next();
+            SalesPartnerEntityDto salesPartnerEntityDto;
+            try {
+                salesPartnerEntityDto= new SalesPartnerEntityDto();
+                salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
+                salesPartnerEntityDto.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+                salesPartnerVoList.add(salesPartnerEntityDto);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return salesPartnerVoList;
+    }
+
+    @PostMapping("view_sales_partner_details")
+    public ModelAndView view_sales_partner_details(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_View_SalesPartner");
+        // Adding user details to the model
+        modelView.addObject("userName", userObj.getUsername());
+        modelView.addObject("Id", userObj.getUserId());
+        // Filtering sales partners based on the search criteria
+        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(searchSalesPartnerObj.getSalesPartnerId());
+        searchSalesPartnerObj.updateSalesPartnerVoFromEntity(salesPartnerEntity);
+        searchSalesPartnerObj.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+        return modelView;
+    }
+
+    @RequestMapping("view_edit_sales_partner_form")
+    public ModelAndView view_edit_sales_partner_form(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_Edit_SalesPartner");
+        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
+        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
+        salesPartnerEntityDto.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+        return modelView;
+    }
+
+    @PostMapping(value="edit_edit_sales_partner")
+    public ModelAndView edit_edit_sales_partner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+        ModelAndView modelView = new ModelAndView();
+        if(!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), salesPartnerDto.getCityName())) {
+            result.rejectValue("cityName", "city.error");
+        }
+        if (result.hasErrors()) {
+            // If there are validation errors, return the form view with errors
+            modelView = view_edit_sales_partner_form(salesPartnerDto, result);
+        } else {
+            SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
+            salesPartnerEntity.setSalesPartnerId(salesPartnerDto.getSalesPartnerId());
+            salesService.saveSalesPartner(salesPartnerEntity);
+            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+            modelView.setViewName("redirect:view_sales_partner_list");
+        }
 
         return modelView;
     }

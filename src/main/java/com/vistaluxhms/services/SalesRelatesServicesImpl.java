@@ -96,6 +96,8 @@ public class SalesRelatesServicesImpl {
 
 		return filteredSalesPartnerList;
 	}
-
+	public SalesPartnerEntity findSalesPartnerById(Long salesPartnerId){
+		return salesPartnerRepository.findById(salesPartnerId).get();
+	}
 
 }

@@ -39,6 +39,11 @@ public class SalesPartnerEntity {
     @Column(name = "updated_at")
     protected LocalDateTime updatedAt; // Updated At
 
+    protected long mobile;
+
+    @Column(name = "emailId", length = 250)
+    protected String emailId;
+
     public SalesPartnerEntity(SalesPartnerEntityDto salesPartnerDto) {
         this.salesPartnerId = salesPartnerDto.getSalesPartnerId();
         this.salesPartnerShortName = salesPartnerDto.getSalesPartnerShortName();
@@ -48,6 +53,8 @@ public class SalesPartnerEntity {
         this.address = salesPartnerDto.getAddress();
         this.reference = salesPartnerDto.getReference();
         this.description = salesPartnerDto.getDescription();
+        this.mobile=salesPartnerDto.getMobile();
+        this.emailId=salesPartnerDto.getEmailId();
     }
 
     public SalesPartnerEntity() {
@@ -144,5 +151,37 @@ public class SalesPartnerEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "SalesPartnerEntity{" +
+                "salesPartnerId=" + salesPartnerId +
+                ", salesPartnerShortName='" + salesPartnerShortName + '\'' +
+                ", salesPartnerName='" + salesPartnerName + '\'' +
+                ", cityId=" + cityId +
+                ", active=" + active +
+                ", address='" + address + '\'' +
+                ", reference='" + reference + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
+    public long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(long mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

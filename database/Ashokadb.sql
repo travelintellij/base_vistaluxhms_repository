@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.37
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,8 +115,42 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Delhi','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Noida','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Gurgaon','IND','India',1),(12,'Unknown','IND','India',0);
+INSERT INTO `cities` VALUES (1,'Delhi','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Noida','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Gurgaon','IND','India',1),(12,'Unknown','IND','India',1);
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `client` (
+  `clientId` int NOT NULL AUTO_INCREMENT,
+  `clientName` varchar(255) NOT NULL,
+  `cityId` bigint DEFAULT NULL,
+  `mobile` bigint DEFAULT NULL,
+  `emailId` varchar(250) DEFAULT NULL,
+  `reference` varchar(255) DEFAULT NULL,
+  `salesPartnerId` bigint DEFAULT NULL,
+  `remarks` text,
+  `active` tinyint DEFAULT NULL,
+  PRIMARY KEY (`clientId`),
+  KEY `cityId` (`cityId`),
+  KEY `salesPartnerId` (`salesPartnerId`),
+  CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
+  CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `client`
+--
+
+LOCK TABLES `client` WRITE;
+/*!40000 ALTER TABLE `client` DISABLE KEYS */;
+/*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -205,17 +239,19 @@ CREATE TABLE `salespartner` (
   `salesPartnerId` bigint NOT NULL AUTO_INCREMENT,
   `salesPartnerShortName` varchar(50) NOT NULL,
   `salesPartnerName` varchar(100) NOT NULL,
+  `mobile` bigint DEFAULT NULL,
+  `emailId` varchar(250) DEFAULT NULL,
   `cityId` bigint DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
   `address` varchar(255) DEFAULT NULL,
   `reference` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`salesPartnerId`),
   KEY `fk_city` (`cityId`),
   CONSTRAINT `fk_city` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +260,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
-INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',NULL,1,'vikas puri','direct','perfect company','2025-01-03 17:52:07',NULL),(3,'udanchoo back','udanchoo tourism',NULL,1,'hello','hljlsk','nklnkl','2025-01-03 17:56:23',NULL),(4,'udanchoo3','udanchoo t3',1,1,'vikas puri','final hai','perfectu hai','2025-01-03 18:00:19',NULL),(5,'ashoka self','vistalux',4,1,'nainital','self made','hum hi hum hai. ','2025-01-03 18:01:28',NULL);
+INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-06 15:01:57'),(3,'udanchoo back','udanchoo tourism',0,NULL,1,'hello','hljlsk','nklnkl',1,'2025-01-03 17:56:23','2025-01-06 12:54:01'),(4,'udanchoo3','udanchoo t3',0,NULL,1,'vikas puri','final hai','perfectu hai',1,'2025-01-03 18:00:19','2025-01-06 12:54:01'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',0,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28',NULL),(7,'udanchoo','udanchoo tourism',0,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:11:08',NULL),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:12:21',NULL),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:12:58',NULL),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:28:19',NULL);
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -237,4 +273,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-03 23:39:22
+-- Dump completed on 2025-01-06 21:40:42

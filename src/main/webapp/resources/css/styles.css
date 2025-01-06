@@ -160,7 +160,7 @@ h2 {
 }
 
 /* Inputs and select boxes */
-.form-row input[type="text"],
+.form-row input[type="text"],.form-row input[type="email"],.form-row input[type="tel"],
 .form-row select {
     flex: 2;
     padding: 10px;

@@ -12,12 +12,13 @@
 
 <div class="form-container-wrapper">
     <div class="form-container">
-        <h2>Add Sales Partner</h2> <!-- Bold Header -->
-        <form:form method="post" action="create_create_sales_partner" modelAttribute="SALES_PARTNER_OBJ">
+        <h2>Edit Sales Partner</h2> <!-- Bold Header -->
+        <form:form method="post" action="edit_edit_sales_partner" modelAttribute="SALES_PARTNER_OBJ">
+        <form:hidden path="salesPartnerId" />
             <!-- First Row -->
             <div class="form-row">
                 <label for="salesPartner-id">Sales Partner Id:</label>
-                <label for="auto-generated"><font color="blue">Auto Generated</font></label>
+                <label for="auto-generated"><font color="blue">${SALES_PARTNER_OBJ.salesPartnerId}</font></label>
             </div>
             <div class="form-row">
                 <label for="salesPartner-short-name">Short Name:</label>
@@ -80,7 +81,7 @@
 
             <!-- Second Row -->
             <div class="button-container">
-                <input type="submit" value="Add Sales Partner">
+                <input type="submit" value="Update Sales Partner">
                 <a href="view_sales_partner_list"><input type="button" class="clear-filter-btn" value="View Sales Partners List"></input></a>
             </div>
         </form:form>

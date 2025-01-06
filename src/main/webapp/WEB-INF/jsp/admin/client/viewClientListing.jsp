@@ -11,38 +11,33 @@
 
 
 <div class="form-container filter-container" style="width: 50%; min-width: 50%; max-width: 50%;">
-    <h2>View Sales Partners</h2>
-    <form:form modelAttribute="SALES_PARTNER_OBJ" action="view_sales_partner_list">
-    <form:hidden path="cityId" />
+    <h2>View Clients </h2>
+    <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="salesPartnerId">Sales Partner ID:</label>
-                <form:input path="salesPartnerId" name="salesPartnerId" style="width:130px;" />
+                <label for="clientId">Client ID:</label>
+                <form:input path="clientId" name="clientId" style="width:130px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="salesPartnerShortName">Short Name:</label>
-                <form:input path="salesPartnerShortName" name="salesPartnerShortName" style="width:180px;" />
-            </div>
-            <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="salesPartnerName">Full Name:</label>
-                <form:input path="salesPartnerName" name="salesPartnerName" style="width:250px;" />
+                <label for="clientName">Client Name:</label>
+                <form:input path="clientName" name="clientName" style="width:180px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="city">City:</label>
                 <form:input path="cityName" name="cityName" style="width:200px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                          <label for="active">Active:</label>
-                          <form:select path="active" name="active">
-                              <option value="">--Select--</option>
-                              <option value="true" ${SALES_PARTNER_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
-                              <option value="false" ${SALES_PARTNER_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
-                          </form:select>
+                  <label for="active">Active:</label>
+                  <form:select path="active" name="active">
+                      <option value="">--Select--</option>
+                      <option value="true" ${CLIENT_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
+                      <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
+                  </form:select>
             </div>
 
         <div class="form-actions" style="flex: 1; min-width: 200px;">
             <button type="submit" class="apply-filter-btn">Apply Filter</button>
-            <a href="view_sales_partner_list"><input type="button" class="clear-filter-btn" value="Clear Filter"></input></a>
+            <a href="view_clients_list"><input type="button" class="clear-filter-btn" value="Clear Filter"></input></a>
         </div>
         </div>
     </form:form>
@@ -55,42 +50,40 @@
     </b>
 </div>
 
-<!-- Sales Partner List Table Section -->
-<div class="form-container sales-partner-list-container">
-    <c:set value="${SALES_PARTNER_FILTERED_LIST}" var="salesPartnerList" />
+<!-- Client List Table Section -->
+<div class="form-container client-list-container">
+    <c:set value="${CLIENT_FILTERED_LIST}" var="clientList" />
     <table>
         <thead>
             <tr>
-                <th>Sales Partner ID</th>
-                <th>Short Name</th>
-                <th>Full Name</th>
+                <th>Client ID</th>
+                <th>Client Name</th>
                 <th>City</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${salesPartnerList}" var="salesPartnerRec">
+            <c:forEach items="${clientList}" var="clientRec">
                 <tr>
-                    <td>${salesPartnerRec.salesPartnerId}</td>
-                    <td>${salesPartnerRec.salesPartnerShortName}</td>
-                    <td>${salesPartnerRec.salesPartnerName}</td>
-                    <td>${salesPartnerRec.cityName}</td>
+                    <td>${clientRec.clientId}</td>
+                    <td>${clientRec.clientName}</td>
+                    <td>${clientRec.cityName}</td>
                     <td>
-                        <c:if test="${salesPartnerRec.active eq true}">
+                        <c:if test="${clientRec.active eq true}">
                             <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
                         </c:if>
-                        <c:if test="${salesPartnerRec.active eq false}">
+                        <c:if test="${clientRec.active eq false}">
                             <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
                         </c:if>
                     </td>
                     <td>
-                        <form action="view_sales_partner_details" method="POST" style="display:inline;">
-                                <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
+                        <form action="view_client_details" method="POST" style="display:inline;">
+                                <input type="hidden" name="clientId" value="${clientRec.clientId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                         </form>
-                        <form action="view_edit_sales_partner_form" method="POST" style="display:inline;">
-                            <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
+                        <form action="view_edit_client_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="clientId" value="${clientRec.clientId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>
 

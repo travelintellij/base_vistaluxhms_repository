@@ -32,7 +32,7 @@ username = "Guest";
 <header>
     <div class="logo">
         <img src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo">
-        <h1>Ashoka Resort Management System</h1>
+        <h1>Ashoka Resort - Sales Management System</h1>
     </div>
     <div class="welcome">
         Welcome, <%= username %>!
@@ -42,15 +42,11 @@ username = "Guest";
     <ul>
         <c:if test="${role == 'admin' || role == 'guest'}">
             <li>
-                <a href="#">Lead Management</a>
+                <a href="#">Client Management</a>
                 <ul class="submenu">
-                    <li><a href="#">Create Lead</a></li>
+                    <li><a href="#">Add Client</a></li>
                     <li>
-                        <a href="#">Lead Management</a>
-                        <ul class="second-level">
-                            <li><a href="#">Edit Lead</a></li>
-                            <li><a href="#">Delete Lead</a></li>
-                        </ul>
+                        <a href="view_clients_list">Management Clients</a>
                     </li>
                 </ul>
             </li>
@@ -68,7 +64,8 @@ username = "Guest";
                             </li>
                         </ul>
                     </li>
-                </c:if>
+         </c:if>
+
         <c:if test="${role == 'admin' || role == 'guest'}">
             <li>
                 <a href="#">Sales Management</a>
