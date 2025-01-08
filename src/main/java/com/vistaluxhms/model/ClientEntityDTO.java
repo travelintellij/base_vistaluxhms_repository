@@ -21,6 +21,7 @@ public class ClientEntityDTO extends ClientEntity {
         this.remarks=clientEntity.getRemarks();
         this.salesPartner=clientEntity.getSalesPartner();
         this.active=clientEntity.getActive();
+        this.b2b = clientEntity.getB2b();
     }
 
     public String getCityName() {

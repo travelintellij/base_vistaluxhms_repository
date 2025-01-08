@@ -130,6 +130,7 @@ CREATE TABLE `client` (
   `clientId` int NOT NULL AUTO_INCREMENT,
   `clientName` varchar(255) NOT NULL,
   `cityId` bigint DEFAULT NULL,
+  `b2b` tinyint DEFAULT NULL,
   `mobile` bigint DEFAULT NULL,
   `emailId` varchar(250) DEFAULT NULL,
   `reference` varchar(255) DEFAULT NULL,
@@ -273,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-06 21:40:42
+-- Dump completed on 2025-01-08 21:11:06

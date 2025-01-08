@@ -28,11 +28,7 @@
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="salespartner">Sales Partner:</label>
-                <form:select path="active" name="active">
-                    <option value="">--Select--</option>
-                    <option value="true" ${CLIENT_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
-                    <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
-                </form:select>
+                <form:select path="salesPartner.salesPartnerId" items="${SALES_PARTNER_MAP}" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                   <label for="active">Active:</label>

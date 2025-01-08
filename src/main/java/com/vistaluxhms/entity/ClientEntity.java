@@ -45,6 +45,10 @@ public class ClientEntity {
     @Column(name = "active", nullable = false)
     protected Boolean active = true; // Active Status
 
+    @Column(name = "b2b", nullable = false)
+    protected Boolean b2b = true; // Active Status
+
+
     public ClientEntity(){}
     public ClientEntity(ClientEntityDTO clientEntityDto) {
         this.city= clientEntityDto.getCity();
@@ -56,6 +60,7 @@ public class ClientEntity {
         this.remarks=clientEntityDto.getRemarks();
         this.salesPartner=clientEntityDto.getSalesPartner();
         this.active=clientEntityDto.getActive();
+        this.b2b=clientEntityDto.getB2b();
     }
 
     // Getters and Setters
@@ -148,5 +153,13 @@ public class ClientEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getB2b() {
+        return b2b;
+    }
+
+    public void setB2b(Boolean b2b) {
+        this.b2b = b2b;
     }
 }

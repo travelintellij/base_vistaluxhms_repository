@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ClientController {
@@ -41,6 +42,9 @@ public class ClientController {
 
     @Autowired
     VlxCommonServicesImpl commonService;
+
+    @Autowired
+    SalesRelatesServicesImpl salesService;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,6 +95,8 @@ public class ClientController {
         List<ClientEntity> clientFilteredList = clientService.filterClients(clientEntityDto);
         List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredList);
         modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
+        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
         return modelView;
     }
 

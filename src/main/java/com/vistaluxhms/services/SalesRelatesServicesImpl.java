@@ -23,6 +23,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SalesRelatesServicesImpl {
@@ -100,4 +102,13 @@ public class SalesRelatesServicesImpl {
 		return salesPartnerRepository.findById(salesPartnerId).get();
 	}
 
+	public List<SalesPartnerEntity> findSalesPartnerByActive(boolean activeFlag){
+		return salesPartnerRepository.findByActive(activeFlag);
+	}
+
+	public Map<Long, String> getActiveSalesPartnerMap(boolean activeFlag) {
+		return salesPartnerRepository.findByActive(activeFlag)
+				.stream()
+				.collect(Collectors.toMap(SalesPartnerEntity::getSalesPartnerId, SalesPartnerEntity::getSalesPartnerShortName));
+	}
 }

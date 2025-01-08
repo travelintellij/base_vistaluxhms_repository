@@ -171,3 +171,55 @@ body {
 .table-container table .action-btns .delete-btn:hover {
     background-color: #c82333;
 }
+
+.radio-style {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.radio-style:checked {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+.radio-style:hover {
+    border-color: #0056b3;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+}
+
+.radio-container label {
+    font-size: 14px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.radio-style {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.radio-style:checked {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+.radio-style:hover {
+    border-color: #0056b3;
+}

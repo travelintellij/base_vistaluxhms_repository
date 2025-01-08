@@ -44,7 +44,7 @@ username = "Guest";
             <li>
                 <a href="#">Client Management</a>
                 <ul class="submenu">
-                    <li><a href="#">Add Client</a></li>
+                    <li><a href="view_add_client_form">Add Client</a></li>
                     <li>
                         <a href="view_clients_list">Management Clients</a>
                     </li>
