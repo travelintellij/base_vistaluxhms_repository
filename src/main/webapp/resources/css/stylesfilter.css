@@ -32,6 +32,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px; /* Reduced margin between rows */
+    gap: 10px;
 }
 
 /* Adjusting the height of form fields and labels */
@@ -192,17 +193,7 @@ body {
     border-color: #0056b3;
 }
 
-.radio-container {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between buttons */
-}
 
-.radio-container label {
-    font-size: 14px;
-    margin-left: 5px;
-    cursor: pointer;
-}
 
 .radio-style {
     appearance: none;

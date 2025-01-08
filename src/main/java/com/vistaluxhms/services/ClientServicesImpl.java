@@ -68,10 +68,10 @@ public class ClientServicesImpl {
 				List<Predicate> predicates = new ArrayList<>();
 
 				// Join with CityEntity
-				Join<ClientEntity, City_Entity> cityJoin = clientRootEntity.join("cityEntity", JoinType.LEFT);
+				Join<ClientEntity, City_Entity> cityJoin = clientRootEntity.join("city", JoinType.LEFT);
 
 				// Join with SalesPartnerEntity
-				Join<ClientEntity, SalesPartnerEntity> salesPartnerJoin = clientRootEntity.join("salesPartnerEntity", JoinType.LEFT);
+				Join<ClientEntity, SalesPartnerEntity> salesPartnerJoin = clientRootEntity.join("salesPartner", JoinType.LEFT);
 
 				// Filter by Client ID
 				if (searchClientObj.getClientId() != null && searchClientObj.getClientId() != 0) {
@@ -87,12 +87,12 @@ public class ClientServicesImpl {
 				}
 
 				// Filter by Destination ID in CityEntity
-				if (searchClientObj.getCity().getDestinationId() != 0) {
+				if (searchClientObj.getCity()!=null && searchClientObj.getCity().getDestinationId() != 0) {
 					predicates.add(criteriaBuilder.equal(cityJoin.get("destinationId"), searchClientObj.getCity().getDestinationId()));
 				}
 
 				// Filter by Sales Partner ID in SalesPartnerEntity
-				if (searchClientObj.getSalesPartner().getSalesPartnerId() != null && searchClientObj.getSalesPartner().getSalesPartnerId() != 0) {
+				if (searchClientObj.getSalesPartner()!=null && searchClientObj.getSalesPartner().getSalesPartnerId() != null && searchClientObj.getSalesPartner().getSalesPartnerId() != 0) {
 					predicates.add(criteriaBuilder.equal(salesPartnerJoin.get("salesPartnerId"), searchClientObj.getSalesPartner().getSalesPartnerId()));
 				}
 

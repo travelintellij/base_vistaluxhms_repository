@@ -63,6 +63,8 @@ public class ClientController {
     public ModelAndView view_add_client_form(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/client/Admin_Add_Client");
+        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
         return modelView;
     }
     @PostMapping(value="create_create_client")

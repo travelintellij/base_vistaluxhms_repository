@@ -19,7 +19,7 @@
                 <label for="client-id">Client Id:</label>
                 <label for="auto-generated"><font color="blue">Auto Generated</font></label>
             </div>
-            <div class="form-group" style="flex: 1; min-width: 200px;">
+            <div class="form-row" style="flex: 1; min-width: 200px;">
                 <label for="clientSource">Client Source (Sales Partner):</label>
                 <form:select path="salesPartner.salesPartnerId" items="${SALES_PARTNER_MAP}" />
             </div>
@@ -31,7 +31,8 @@
                     <form:errors path="clientName" cssClass="error" />
                 </font>
             </div>
-           <div class="radio-container">
+           <div class="form-row">
+                <label for="b2b">B2B Client:</label>
                <form:radiobutton path="b2b" value="true" cssClass="radio-style" /> <label for="b2b-true">Yes</label>
                <form:radiobutton path="b2b" value="false" cssClass="radio-style" /> <label for="b2b-false">No</label>
            </div>
