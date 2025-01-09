@@ -1,5 +1,6 @@
 package com.vistaluxhms.controller;
 
+import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.RateTypeEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
@@ -71,11 +72,18 @@ public class ClientController {
     public ModelAndView create_create_client(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
+        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
+            result.rejectValue("cityName", "city.error");
+        }
         if (result.hasErrors()) {
             // If there are validation errors, return the form view with errors
             modelView = view_add_client_form(clientEntityDto, result);
         } else {
+            City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
+            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(clientEntityDto.getSalesPartner().getSalesPartnerId());
             ClientEntity clientEntity = new ClientEntity(clientEntityDto);
+            clientEntity.setCity(cityEntity);
+            clientEntity.setSalesPartner(salesPartnerEntity);
             clientService.saveClient(clientEntity);
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
@@ -94,11 +102,21 @@ public class ClientController {
         modelView.addObject("userName", userObj.getUsername());
         modelView.addObject("Id", userObj.getUserId());
         // Filtering sales partners based on the search criteria
-        List<ClientEntity> clientFilteredList = clientService.filterClients(clientEntityDto);
-        List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredList);
-        modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
-        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
-        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        if(clientEntityDto.getCity()!=null && clientEntityDto.getCity().getDestinationId()!=0) {
+            if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
+                result.rejectValue("cityName", "city.error");
+            }
+        }
+        if (result.hasErrors()) {
+            // If there are validation errors, return the form view with errors
+            return modelView;
+        }else {
+            List<ClientEntity> clientFilteredList = clientService.filterClients(clientEntityDto);
+            List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredList);
+            modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
+            Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+            modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        }
         return modelView;
     }
 

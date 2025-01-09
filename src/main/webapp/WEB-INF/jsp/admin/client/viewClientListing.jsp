@@ -10,7 +10,7 @@
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
 
-<div class="form-container filter-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+<div class="form-container filter-container" style="width: 70%; min-width: 70%; max-width: 70%;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -25,10 +25,17 @@
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="city">City:</label>
                 <form:input path="cityName" name="cityName" style="width:200px;" />
+                 <input type="hidden" id="destinationId" name="city.destinationId" />
+                <font color="red">
+                    <form:errors path="cityName" cssClass="error" />
+                </font>
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="salespartner">Sales Partner:</label>
-                <form:select path="salesPartner.salesPartnerId" items="${SALES_PARTNER_MAP}" />
+                  <form:select id="salesPartnerSelect" path="salesPartner.salesPartnerId">
+                    <option value="0" selected>-- Please Select --</option>
+                    <form:options items="${SALES_PARTNER_MAP}" />
+                   </form:select>
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                   <label for="active">Active:</label>
@@ -56,7 +63,7 @@
 </div>
 
 <!-- Client List Table Section -->
-<div class="form-container client-list-container">
+<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <c:set value="${CLIENT_FILTERED_LIST}" var="clientList" />
     <table>
         <thead>
@@ -76,6 +83,8 @@
                     <td>${clientRec.clientId}</td>
                     <td>${clientRec.clientName}</td>
                     <td>${clientRec.cityName}</td>
+                    <td>${clientRec.emailId}</td>
+                    <td>${clientRec.mobile}</td>
                     <td>
                         <c:if test="${clientRec.active eq true}">
                             <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
@@ -84,8 +93,6 @@
                             <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
                         </c:if>
                     </td>
-                    <td>${clientRec.emailId}</td>
-                    <td>${clientRec.mobile}</td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="clientId" value="${clientRec.clientId}" />

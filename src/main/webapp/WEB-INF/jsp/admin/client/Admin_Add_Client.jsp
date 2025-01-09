@@ -21,7 +21,11 @@
             </div>
             <div class="form-row" style="flex: 1; min-width: 200px;">
                 <label for="clientSource">Client Source (Sales Partner):</label>
-                <form:select path="salesPartner.salesPartnerId" items="${SALES_PARTNER_MAP}" />
+                <form:select id="salesPartnerSelect" path="salesPartner.salesPartnerId" required="required">
+                       <!-- Default placeholder option -->
+                       <option value="" selected>-- Please Select --</option>
+                       <form:options items="${SALES_PARTNER_MAP}" />
+                   </form:select>
             </div>
 
             <div class="form-row">
@@ -44,14 +48,16 @@
             </div>
             <div class="form-row">
                 <label for="mobile">Mobile:</label>
-                 <form:input path="mobile" id="mobile" type="tel" placeholder="Enter your mobile number" required="required" pattern="[0-9]{10}" />
+                 <form:input path="mobile" id="mobile" type="tel" placeholder="Enter mobile number" required="required" pattern="[0-9]{10}" />
                 <form:errors path="mobile" cssClass="error" />
             </div>
             <div class="form-row">
-                    <label for="city-id">City:</label>
+                 <label for="city-id">City:</label>
                 <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
-                <form:hidden path="city.destinationId" />
-
+                <input type="hidden" id="destinationId" name="city.destinationId" />
+                <font color="red">
+                    <form:errors path="cityName" cssClass="error" />
+                </font>
             </div>
             <div class="form-row">
                 <label for="active-status">Active:</label>
