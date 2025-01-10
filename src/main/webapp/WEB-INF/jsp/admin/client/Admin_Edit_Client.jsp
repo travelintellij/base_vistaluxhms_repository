@@ -55,7 +55,8 @@
             <div class="form-row">
                  <label for="city-id">City:</label>
                 <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
-                <input type="hidden" id="destinationId" name="city.destinationId" />
+                <input type="hidden" id="destinationId" name="city.destinationId" value="${CLIENT_OBJ.city.destinationId}" />
+
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
                 </font>
@@ -63,8 +64,8 @@
             <div class="form-row">
                 <label for="active-status">Active:</label>
                 <form:select path="active" required="required" style="width:100%">
-                    <option class="service-small" value="true"<c:if test="${SALES_PARTNER_OBJ.active eq true}">selected</c:if>>Active</option>
-                    <option class="service-small" value="false"<c:if test="${SALES_PARTNER_OBJ.active eq false}">selected</c:if>>In-Active</option>
+                    <option class="service-small" value="true"<c:if test="${CLIENT_OBJ.active eq true}">selected</c:if>>Active</option>
+                    <option class="service-small" value="false"<c:if test="${CLIENT_OBJ.active eq false}">selected</c:if>>In-Active</option>
                 </form:select>
             </div>
 

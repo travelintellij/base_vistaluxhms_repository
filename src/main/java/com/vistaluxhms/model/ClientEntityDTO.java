@@ -10,6 +10,7 @@ public class ClientEntityDTO extends ClientEntity {
 
 
     public String cityName;
+    public String salesPartnerName;
 
     public void updateClientVoFromEntity(ClientEntity clientEntity) {
         this.city= clientEntity.getCity();
@@ -47,5 +48,13 @@ public class ClientEntityDTO extends ClientEntity {
                 ", b2b=" + b2b +
                 ", cityName='" + cityName + '\'' +
                 '}';
+    }
+
+    public String getSalesPartnerName() {
+        return salesPartnerName;
+    }
+
+    public void setSalesPartnerName(String salesPartnerName) {
+        this.salesPartnerName = salesPartnerName;
     }
 }

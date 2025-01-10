@@ -78,13 +78,11 @@ public class ClientServicesImpl {
 					predicates.add(criteriaBuilder.equal(clientRootEntity.get("clientId"), searchClientObj.getClientId()));
 				}
 
-				System.out.println("Client active status is " + searchClientObj.getActive());
-
 				// Filter by Active Status
 				if (searchClientObj.getActive() != null) {
 					predicates.add(criteriaBuilder.equal(clientRootEntity.get("active"), searchClientObj.getActive()));
 				}
-				System.out.println("Lets see error now");
+
 				// Filter by Client Name
 				if (searchClientObj.getClientName() != null && !searchClientObj.getClientName().trim().isEmpty()) {
 					predicates.add(criteriaBuilder.like(
@@ -94,7 +92,7 @@ public class ClientServicesImpl {
 				}
 
 				// Filter by Destination ID in CityEntity
-				if (searchClientObj.getCity()!=null && searchClientObj.getCity().getDestinationId() != 0) {
+				if (searchClientObj.getCity()!=null && String.valueOf(searchClientObj.getCity().getDestinationId()).trim().length()!=0 && searchClientObj.getCity().getDestinationId() != 0) {
 					predicates.add(criteriaBuilder.equal(cityJoin.get("destinationId"), searchClientObj.getCity().getDestinationId()));
 				}
 

@@ -18,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +87,7 @@ public class ClientController {
             clientEntity.setCity(cityEntity);
             clientEntity.setSalesPartner(salesPartnerEntity);
             clientService.saveClient(clientEntity);
-            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+            redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
         }
 
@@ -96,19 +98,26 @@ public class ClientController {
 
     @RequestMapping("view_clients_list")
     public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
-        System.out.println("Client DTO is " + clientEntityDto);
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
         // Adding user details to the model
         modelView.addObject("userName", userObj.getUsername());
         modelView.addObject("Id", userObj.getUserId());
         // Filtering sales partners based on the search criteria
-        if(clientEntityDto.getCity()!=null && clientEntityDto.getCity().getDestinationId()!=0) {
+
+        if(clientEntityDto.getCity()!=null && String.valueOf(clientEntityDto.getCity().getDestinationId()).trim().length()!=0 && clientEntityDto.getCity().getDestinationId()!=0) {
             if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
                 result.rejectValue("cityName", "city.error");
             }
         }
         if (result.hasErrors()) {
+            for (FieldError fieldError : result.getFieldErrors()) {
+                System.out.println("Field Error: " + fieldError.getField() + " - " + fieldError.getDefaultMessage());
+            }
+            // Log all global errors (not tied to specific fields)
+            for (ObjectError globalError : result.getGlobalErrors()) {
+                System.out.println("Global Error: " + globalError.getDefaultMessage());
+            }
             // If there are validation errors, return the form view with errors
             return modelView;
         }else {
@@ -170,28 +179,29 @@ public class ClientController {
             clientEntity.setCity(cityEntity);
             clientEntity.setSalesPartner(salesPartnerEntity);
             clientService.saveClient(clientEntity);
-            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+            redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
         }
 
         return modelView;
     }
-    /*
-    @PostMapping("view_sales_partner_details")
-    public ModelAndView view_sales_partner_details(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
+
+    @PostMapping("view_client_details")
+    public ModelAndView view_client_details(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_View_SalesPartner");
+        ModelAndView modelView = new ModelAndView("admin/client/Admin_View_Client");
         // Adding user details to the model
         modelView.addObject("userName", userObj.getUsername());
         modelView.addObject("Id", userObj.getUserId());
         // Filtering sales partners based on the search criteria
-        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(searchSalesPartnerObj.getSalesPartnerId());
-        searchSalesPartnerObj.updateSalesPartnerVoFromEntity(salesPartnerEntity);
-        searchSalesPartnerObj.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+        ClientEntity clientEntity = clientService.findClientById(clientEntityDto.getClientId());
+        clientEntityDto.updateClientVoFromEntity(clientEntity);
+        clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
+        clientEntityDto.setSalesPartnerName(salesService.findSalesPartnerById(clientEntity.getSalesPartner().getSalesPartnerId()).getSalesPartnerShortName());
         return modelView;
     }
 
 
 
-    */
+
 }

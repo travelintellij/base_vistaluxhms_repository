@@ -9,7 +9,6 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
-
 <div class="form-container filter-container" style="width: 70%; min-width: 70%; max-width: 70%;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
@@ -25,7 +24,7 @@
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="city">City:</label>
                 <form:input path="cityName" name="cityName" style="width:200px;" />
-                 <input type="hidden" id="destinationId" name="city.destinationId" />
+                 <input type="hidden" id="destinationId" name="city.destinationId" value="${CLIENT_OBJ.city.destinationId}" />
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
                 </font>
@@ -110,28 +109,36 @@
     </table>
 </div>
 <script>
-    $('#cityName').autocomplete({
-        serviceUrl: '${pageContext.request.contextPath}/getCityList',
-        paramName: "cityName",
-        delimiter: ",",
-        onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
-            jQuery("#destinationId").val(cityID);
-            $('input[name=cityId]').val(id);
-            return false;
-        },
-        transformResult: function (response) {
-            return {
-                suggestions: $.map($.parseJSON(response), function (item) {
-                    return { value: item.cityName, data: item.destinationId };
-                })
-
-            };
-        }
+    $(document).ready(function () {
+        $('#cityName').autocomplete({
+            serviceUrl: '${pageContext.request.contextPath}/getCityList',
+            paramName: "cityName",
+            delimiter: ",",
+            onSelect: function (suggestion) {
+                const cityID = suggestion.data;
+                $("#destinationId").val(cityID); // Set value in hidden field
+                return false; // Prevent default behavior if needed
+            },
+            transformResult: function (response) {
+                // Ensure response is parsed and transformed correctly
+                return {
+                    suggestions: $.map($.parseJSON(response), function (item) {
+                        return {
+                            value: item.cityName, // Display city name
+                            data: item.destinationId // Use destinationId as data
+                        };
+                    })
+                };
+            }
+        });
     });
 
-
-    </script>
+     document.addEventListener("DOMContentLoaded", function () {
+            var destinationInput = document.getElementById("destinationId");
+            if (destinationInput && destinationInput.value.trim() === "") {
+                destinationInput.value = "0";
+            }
+        });
+</script>
 
 <jsp:include page="../../footer.jsp" />

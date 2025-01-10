@@ -17,7 +17,7 @@ import com.vistaluxhms.util.VistaluxConstants;
 public class City_Entity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected int destinationId;
+	protected int destinationId=0;
 
 	protected String cityName;
 	protected String countryCode= VistaluxConstants.DEFAULT_DESTINATION_INDIA_CTRY_CODE;

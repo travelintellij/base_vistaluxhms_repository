@@ -61,10 +61,10 @@
             </div>
             <div class="form-row">
                 <label for="active-status">Active:</label>
-                <form:select path="active" required="required" style="width:100%">
-                    <option class="service-small" value="true"<c:if test="${SALES_PARTNER_OBJ.active eq true}">selected</c:if>>Active</option>
-                    <option class="service-small" value="false"<c:if test="${SALES_PARTNER_OBJ.active eq false}">selected</c:if>>In-Active</option>
-                </form:select>
+               <form:select path="active" required="required" style="width:100%">
+                   <form:option value="true">Active</form:option>
+                   <form:option value="false">In-Active</form:option>
+               </form:select>
             </div>
 
             <div class="form-row">
