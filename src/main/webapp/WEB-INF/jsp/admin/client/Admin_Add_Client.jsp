@@ -85,7 +85,7 @@
             <!-- Second Row -->
             <div class="button-container">
                 <input type="submit" value="Add Client">
-                <a href="view_client_list"><input type="button" class="clear-filter-btn" value="View Client List"></input></a>
+                <a href="view_clients_list"><input type="button" class="clear-filter-btn" value="View Client List"></input></a>
             </div>
         </form:form>
     </div>

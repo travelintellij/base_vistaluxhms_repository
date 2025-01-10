@@ -78,6 +78,13 @@ public class ClientServicesImpl {
 					predicates.add(criteriaBuilder.equal(clientRootEntity.get("clientId"), searchClientObj.getClientId()));
 				}
 
+				System.out.println("Client active status is " + searchClientObj.getActive());
+
+				// Filter by Active Status
+				if (searchClientObj.getActive() != null) {
+					predicates.add(criteriaBuilder.equal(clientRootEntity.get("active"), searchClientObj.getActive()));
+				}
+				System.out.println("Lets see error now");
 				// Filter by Client Name
 				if (searchClientObj.getClientName() != null && !searchClientObj.getClientName().trim().isEmpty()) {
 					predicates.add(criteriaBuilder.like(
@@ -96,9 +103,14 @@ public class ClientServicesImpl {
 					predicates.add(criteriaBuilder.equal(salesPartnerJoin.get("salesPartnerId"), searchClientObj.getSalesPartner().getSalesPartnerId()));
 				}
 
+
+
 				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 			}
 		});
 	}
 
+	public ClientEntity findClientById(Long clientId){
+		return clientRepository.findById(clientId).get();
+	}
 }

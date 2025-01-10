@@ -31,4 +31,21 @@ public class ClientEntityDTO extends ClientEntity {
     public void setCityName(String cityName) {
         this.cityName = cityName;
     }
+
+    @Override
+    public String toString() {
+        return "ClientEntityDTO{" +
+                "clientId=" + clientId +
+                ", clientName='" + clientName + '\'' +
+                ", city=" + city +
+                ", mobile=" + mobile +
+                ", emailId='" + emailId + '\'' +
+                ", reference='" + reference + '\'' +
+                ", salesPartner=" + salesPartner +
+                ", remarks='" + remarks + '\'' +
+                ", active=" + active +
+                ", b2b=" + b2b +
+                ", cityName='" + cityName + '\'' +
+                '}';
+    }
 }

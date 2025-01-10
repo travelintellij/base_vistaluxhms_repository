@@ -96,6 +96,7 @@ public class ClientController {
 
     @RequestMapping("view_clients_list")
     public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
+        System.out.println("Client DTO is " + clientEntityDto);
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
         // Adding user details to the model
@@ -139,6 +140,42 @@ public class ClientController {
         return salesPartnerVoList;
     }
 
+    @RequestMapping("view_edit_client_form")
+    public ModelAndView view_edit_client_form(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ClientEntity clientEntity = clientService.findClientById(clientEntityDto.getClientId());
+        clientEntityDto.updateClientVoFromEntity(clientEntity);
+        clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
+        ModelAndView modelView = new ModelAndView("admin/client/Admin_Edit_Client");
+        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        return modelView;
+    }
+
+    @PostMapping(value="edit_edit_client")
+    public ModelAndView edit_edit_client(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+        ModelAndView modelView = new ModelAndView();
+        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
+            result.rejectValue("cityName", "city.error");
+        }
+        if (result.hasErrors()) {
+            // If there are validation errors, return the form view with errors
+            modelView = view_edit_client_form(clientEntityDto, result);
+        } else {
+            City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
+            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(clientEntityDto.getSalesPartner().getSalesPartnerId());
+            ClientEntity clientEntity = new ClientEntity(clientEntityDto);
+            clientEntity.setClientId(clientEntityDto.getClientId());
+            clientEntity.setCity(cityEntity);
+            clientEntity.setSalesPartner(salesPartnerEntity);
+            clientService.saveClient(clientEntity);
+            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+            modelView.setViewName("redirect:view_clients_list");
+        }
+
+        return modelView;
+    }
     /*
     @PostMapping("view_sales_partner_details")
     public ModelAndView view_sales_partner_details(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto searchSalesPartnerObj, BindingResult result) {
@@ -154,35 +191,7 @@ public class ClientController {
         return modelView;
     }
 
-    @RequestMapping("view_edit_sales_partner_form")
-    public ModelAndView view_edit_sales_partner_form(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result) {
-        UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_Edit_SalesPartner");
-        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
-        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
-        salesPartnerEntityDto.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
-        return modelView;
-    }
 
-    @PostMapping(value="edit_edit_sales_partner")
-    public ModelAndView edit_edit_sales_partner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView();
-        if(!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), salesPartnerDto.getCityName())) {
-            result.rejectValue("cityName", "city.error");
-        }
-        if (result.hasErrors()) {
-            // If there are validation errors, return the form view with errors
-            modelView = view_edit_sales_partner_form(salesPartnerDto, result);
-        } else {
-            SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
-            salesPartnerEntity.setSalesPartnerId(salesPartnerDto.getSalesPartnerId());
-            salesService.saveSalesPartner(salesPartnerEntity);
-            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
-            modelView.setViewName("redirect:view_sales_partner_list");
-        }
 
-        return modelView;
-    }
     */
 }
