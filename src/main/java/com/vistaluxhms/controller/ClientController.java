@@ -135,9 +135,7 @@ public class ClientController {
     }
 */
 @RequestMapping("view_clients_list")
-public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,
-                                      BindingResult result,
-                                      @RequestParam(value = "page", defaultValue = "1") int page,
+public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,@RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "size", defaultValue = "2") int pageSize) {
     UserDetailsObj userObj = getLoggedInUser();
     ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
