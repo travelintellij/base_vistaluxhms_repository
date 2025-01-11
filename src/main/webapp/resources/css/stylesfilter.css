@@ -173,44 +173,83 @@ body {
     background-color: #c82333;
 }
 
-.radio-style {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #007bff;
-    border-radius: 50%;
-    outline: none;
+/* Ensure the form rows are aligned properly */
+
+/* Radio group container for proper alignment within the form */
+.radio-group-container {
+    display: flex;
+    flex: 2; /* Matches width of input fields in .form-row */
+    gap: 10px; /* Space between radio button options */
+    align-items: center;
+     border: 2px solid #007BFF;
+        border-radius: 8px;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+         width: auto;
+}
+
+/* Style individual radio button options */
+.radio-group label {
+    display: inline-flex; /* Inline with other labels */
+    align-items: left;
+    margin-right: 10px; /* Spacing between Yes/No buttons */
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    font-size: 14px;
 }
 
-.radio-style:checked {
+/* Hide the default radio buttons */
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+/* Custom radio button appearance */
+.radio-group input[type="radio"] + span {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* Selected radio button appearance */
+.radio-group input[type="radio"]:checked + span {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+}
+
+/* Focus effect for radio buttons */
+.radio-group input[type="radio"]:focus + span {
+    outline: 2px solid #007BFF;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 0 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.pagination-btn.active {
     background-color: #007bff;
-    border-color: #0056b3;
+    color: white;
 }
 
-.radio-style:hover {
-    border-color: #0056b3;
+.pagination-btn:hover {
+    background-color: #ddd;
 }
 
-
-
-.radio-style {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #007bff;
-    border-radius: 50%;
+.pagination-btn:focus {
     outline: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.radio-style:checked {
-    background-color: #007bff;
-    border-color: #0056b3;
-}
-
-.radio-style:hover {
-    border-color: #0056b3;
 }

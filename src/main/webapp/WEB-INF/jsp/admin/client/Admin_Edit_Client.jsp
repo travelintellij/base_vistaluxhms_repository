@@ -36,11 +36,21 @@
                     <form:errors path="clientName" cssClass="error" />
                 </font>
             </div>
-           <div class="form-row">
-                <label for="b2b">B2B Client:</label>
-               <form:radiobutton path="b2b" value="true" cssClass="radio-style" /> <label for="b2b-true">Yes</label>
-               <form:radiobutton path="b2b" value="false" cssClass="radio-style" /> <label for="b2b-false">No</label>
-           </div>
+            <div class="form-row">
+              <label for="b2b-client">B2B Client:</label>
+              <div class="radio-group-container">
+                  <div class="radio-group">
+                      <label>
+                          <form:radiobutton path="b2b" value="true" />
+                          <span>Yes</span>
+                      </label>
+                      <label>
+                          <form:radiobutton path="b2b" value="false" />
+                          <span>No</span>
+                      </label>
+                  </div>
+              </div>
+          </div>
 
             <div class="form-row">
                 <label for="email-id">Email Id:</label>

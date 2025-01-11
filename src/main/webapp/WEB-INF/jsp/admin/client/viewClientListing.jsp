@@ -9,7 +9,7 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
-<div class="form-container filter-container" style="width: 70%; min-width: 70%; max-width: 70%;">
+<div class="form-container filter-container" style="width: 85%; min-width: 85%; max-width: 90%;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -36,6 +36,26 @@
                     <form:options items="${SALES_PARTNER_MAP}" />
                    </form:select>
             </div>
+            <div class="form-group" style="flex: 1; min-width: 250px;">
+               <label for="b2b-client">Client Type: </label>
+               <div class="radio-group-container">
+                   <div class="radio-group">
+                       <label>
+                           <form:radiobutton path="b2b" value="true" />
+                           <span>B2B</span>
+                       </label>
+                       <label>
+                           <form:radiobutton path="b2b" value="false" />
+                           <span>B2C</span>
+                       </label>
+                       <label>
+                          <form:radiobutton path="b2b" value="" />
+                          <span>Both</span>
+                      </label>
+                   </div>
+               </div>
+           </div>
+
             <div class="form-group" style="flex: 1; min-width: 200px;">
                   <label for="active">Active:</label>
                   <form:select path="active" name="active">
@@ -72,6 +92,7 @@
                 <th>City</th>
                 <th>Email</th>
                 <th>Mobile</th>
+                <th>Type</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -84,6 +105,8 @@
                     <td>${clientRec.cityName}</td>
                     <td>${clientRec.emailId}</td>
                     <td>${clientRec.mobile}</td>
+                    <td>${clientRec.b2b ? "B2B" : "B2C"}</td>
+
                     <td>
                         <c:if test="${clientRec.active eq true}">
                             <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
@@ -108,6 +131,38 @@
         </tbody>
     </table>
 </div>
+<!-- Pagination Section -->
+<div class="pagination-container">
+    <c:if test="${not empty CLIENT_FILTERED_LIST}">
+        ( current page ${currentPage} : totalPage ${totalPages}  )
+        <c:set var="totalRecords" value="${CLIENT_FILTERED_LIST.size()}" />
+        <c:set var="recordsPerPage" value="${pageSize}" /> <!-- You can adjust this value -->
+        <c:set var="totalPages" value="${(totalRecords / recordsPerPage) + (totalRecords % recordsPerPage > 0 ? 1 : 0)}" />
+
+        <c:set var="currentPage" value="${param.page != null ? param.page : 0}" />
+
+        <!-- Display pagination links -->
+        <c:if test="${currentPage >= 1}">
+            <a href="view_clients_list?page=${currentPage - 1}&&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">&lt; Previous</a>
+        </c:if>
+
+        <c:forEach begin="0" end="${totalPages}" var="page">
+            <c:choose>
+                <c:when test="${page == currentPage}">
+                    <span>${page}</span> <!-- Current page is highlighted -->
+                </c:when>
+                <c:otherwise>
+                    <a href="view_clients_list?page=${page}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">${page}</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <c:if test="${currentPage < totalPages}">
+            <a href="view_clients_list?page=${currentPage + 1}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Next &gt;</a>
+        </c:if>
+    </c:if>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#cityName').autocomplete({

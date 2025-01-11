@@ -14,6 +14,9 @@ import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -95,7 +99,7 @@ public class ClientController {
     }
 
 
-
+/*
     @RequestMapping("view_clients_list")
     public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
@@ -129,6 +133,60 @@ public class ClientController {
         }
         return modelView;
     }
+*/
+@RequestMapping("view_clients_list")
+public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,
+                                      BindingResult result,
+                                      @RequestParam(value = "page", defaultValue = "1") int page,
+                                      @RequestParam(value = "size", defaultValue = "2") int pageSize) {
+    UserDetailsObj userObj = getLoggedInUser();
+    ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
+
+    // Adding user details to the model
+    modelView.addObject("userName", userObj.getUsername());
+    modelView.addObject("Id", userObj.getUserId());
+
+    // Validating if the city exists
+    if(clientEntityDto.getCity() != null && String.valueOf(clientEntityDto.getCity().getDestinationId()).trim().length() != 0
+            && clientEntityDto.getCity().getDestinationId() != 0) {
+        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
+            result.rejectValue("cityName", "city.error");
+        }
+    }
+
+    if (result.hasErrors()) {
+        // Logging the errors
+        for (FieldError fieldError : result.getFieldErrors()) {
+            System.out.println("Field Error: " + fieldError.getField() + " - " + fieldError.getDefaultMessage());
+        }
+        // Return the form view with errors
+        return modelView;
+    } else {
+        // Create PageRequest with pagination
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        // Get the paginated list of filtered clients
+        Page<ClientEntity> clientFilteredPage = clientService.filterClients(clientEntityDto, pageable);
+
+        // Convert the filtered list to DTOs
+        List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredPage.getContent());
+        System.out.println("Total pages are " + clientFilteredPage.getTotalPages());
+        System.out.println("Total records are " + clientFilteredPage.getTotalElements());
+        // Adding filtered clients and pagination details to the model
+        modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
+        modelView.addObject("currentPage", page);
+        modelView.addObject("totalPages", clientFilteredPage.getTotalPages());
+        modelView.addObject("totalClients", clientFilteredPage.getTotalElements());
+        modelView.addObject("pageSize", pageSize);
+
+        // Sales Partner Map for the filter
+        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        modelView.addObject("CLIENT_OBJ", clientEntityDto);
+    }
+
+    return modelView;
+}
 
     private List<ClientEntityDTO> generateClientObj(List<ClientEntity> listSalesPartner) {
         List<ClientEntityDTO> salesPartnerVoList = new ArrayList<ClientEntityDTO>();
@@ -192,7 +250,8 @@ public class ClientController {
         ModelAndView modelView = new ModelAndView("admin/client/Admin_View_Client");
         // Adding user details to the model
         modelView.addObject("userName", userObj.getUsername());
-        modelView.addObject("Id", userObj.getUserId());
+        modelView.addObject(
+                "Id", userObj.getUserId());
         // Filtering sales partners based on the search criteria
         ClientEntity clientEntity = clientService.findClientById(clientEntityDto.getClientId());
         clientEntityDto.updateClientVoFromEntity(clientEntity);

@@ -46,7 +46,7 @@ public class ClientEntity {
     protected Boolean active = true; // Active Status
 
     @Column(name = "b2b", nullable = false)
-    protected Boolean b2b = true; // Active Status
+    protected Boolean b2b; // Active Status
 
 
     public ClientEntity(){}

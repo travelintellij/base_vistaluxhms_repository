@@ -36,10 +36,22 @@
                 </font>
             </div>
            <div class="form-row">
-                <label for="b2b">B2B Client:</label>
-               <form:radiobutton path="b2b" value="true" cssClass="radio-style" /> <label for="b2b-true">Yes</label>
-               <form:radiobutton path="b2b" value="false" cssClass="radio-style" /> <label for="b2b-false">No</label>
+               <label for="b2b-client">Client Type:</label>
+               <div class="radio-group-container">
+                   <div class="radio-group">
+                       <label>
+                           <form:radiobutton path="b2b" name="b2b" value="true" required="required" />
+                           <span>B2B</span>
+                       </label>
+                       <label>
+                           <form:radiobutton path="b2b" name="b2b"  value="false" required="required" />
+                           <span>B2C</span>
+                       </label>
+                   </div>
+               </div>
            </div>
+
+
 
             <div class="form-row">
                 <label for="email-id">Email Id:</label>
