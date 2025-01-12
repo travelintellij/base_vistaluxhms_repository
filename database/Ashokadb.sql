@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Delhi','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Noida','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Gurgaon','IND','India',1),(12,'Unknown','IND','India',1);
+INSERT INTO `cities` VALUES (1,'Corbett2','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Murabadab','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Corbett3','IND','India',1),(12,'Unknown','IND','India',1);
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,7 +142,7 @@ CREATE TABLE `client` (
   KEY `salesPartnerId` (`salesPartnerId`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
   CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,6 +151,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@vistaluxhotel.com','direct ',5,'amazing growth. ',1),(3,'Tourism DMC,Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,1,9898989898,'mohit@bi.com','direct',5,'lets see',1);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +262,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
-INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-06 15:01:57'),(3,'udanchoo back','udanchoo tourism',0,NULL,1,'hello','hljlsk','nklnkl',1,'2025-01-03 17:56:23','2025-01-06 12:54:01'),(4,'udanchoo3','udanchoo t3',0,NULL,1,'vikas puri','final hai','perfectu hai',1,'2025-01-03 18:00:19','2025-01-06 12:54:01'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',0,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28',NULL),(7,'udanchoo','udanchoo tourism',0,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:11:08',NULL),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:12:21',NULL),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:12:58',NULL),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',1,'2025-01-06 14:28:19',NULL);
+INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-10 03:22:40'),(3,'udanchoo back','udanchoo tourism',9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',0,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28',NULL),(7,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38');
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -274,4 +275,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-08 21:11:06
+-- Dump completed on 2025-01-12 14:35:24
