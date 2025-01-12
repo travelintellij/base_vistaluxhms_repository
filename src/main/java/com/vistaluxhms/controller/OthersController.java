@@ -16,6 +16,7 @@ import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.CityManagementValidator;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,7 +74,7 @@ public class OthersController {
 	}
 
 	@RequestMapping("view_search_city_form")
-	public ModelAndView view_search_city_form(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "200") int pageSize, @RequestParam(defaultValue = "cityName") String sortBy,@ModelAttribute("SEARCH_CITY") City_Obj searchCityObj, BindingResult result ) {
+	public ModelAndView view_search_city_form(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize, @RequestParam(defaultValue = "cityName") String sortBy, @ModelAttribute("SEARCH_CITY") City_Obj searchCityObj, BindingResult result ) {
 		//pageSize = UdanChooConstants.DEFAULT_PAGE_SIZE;
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView("others/viewCityListing");
@@ -91,12 +92,16 @@ public class OthersController {
 		List<City_Obj> cityObjList = generateCityObj(pageCitiesList);
 		modelView.addObject("CITY_LIST", cityObjList);
 		modelView.addObject("maxPages", pageCitiesList.getTotalPages());
-		modelView.addObject("page", page);
+		modelView.addObject("currentPage", page);
+		//modelView.addObject("page", page);
 		modelView.addObject("sortBy", sortBy);
 		modelView.addObject("countryName", searchCityObj.getCountryName());
 		modelView.addObject("countryCode", searchCityObj.getCountryCode());
 		modelView.addObject("destinationId", searchCityObj.getDestinationId());
 		modelView.addObject("cityName", searchCityObj.getCityName());
+		modelView.addObject("totalPages", pageCitiesList.getTotalPages());
+		modelView.addObject("pageSize", pageSize);
+
 
 		return modelView;
 	}
@@ -123,7 +128,6 @@ public class OthersController {
 
 	@PostMapping(value="create_create_city")
 	public ModelAndView create_create_city(@ModelAttribute("CITY_OBJ") City_Obj cityObj, BindingResult result,final RedirectAttributes redirectAttrib) {
-		System.out.println("Create city is finally invoked. debug man");
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView();
 

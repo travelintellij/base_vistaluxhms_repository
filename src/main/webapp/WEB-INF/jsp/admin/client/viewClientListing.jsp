@@ -131,34 +131,42 @@
         </tbody>
     </table>
 </div>
+
+
+
 <!-- Pagination Section -->
 <div class="pagination-container">
+    <c:choose>
+        <c:when test="${CLIENT_OBJ.city.destinationId == null || CLIENT_OBJ.city.destinationId == 0}">
+            <c:set var="destinationId" value="0" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="destinationId" value="${CLIENT_OBJ.city.destinationId}" />
+        </c:otherwise>
+    </c:choose>
+
     <c:if test="${not empty CLIENT_FILTERED_LIST}">
-        ( current page ${currentPage} : totalPage ${totalPages}  )
         <c:set var="totalRecords" value="${CLIENT_FILTERED_LIST.size()}" />
         <c:set var="recordsPerPage" value="${pageSize}" /> <!-- You can adjust this value -->
-        <c:set var="totalPages" value="${(totalRecords / recordsPerPage) + (totalRecords % recordsPerPage > 0 ? 1 : 0)}" />
-
-        <c:set var="currentPage" value="${param.page != null ? param.page : 0}" />
 
         <!-- Display pagination links -->
-        <c:if test="${currentPage >= 1}">
-            <a href="view_clients_list?page=${currentPage - 1}&&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">&lt; Previous</a>
+        <c:if test="${currentPage > 0}">
+            <a class="pagination-btn" href="view_clients_list?page=${currentPage-1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Previous</a>
         </c:if>
 
-        <c:forEach begin="0" end="${totalPages}" var="page">
+        <c:forEach begin="0" end="${totalPages-1}" var="page">
             <c:choose>
                 <c:when test="${page == currentPage}">
-                    <span>${page}</span> <!-- Current page is highlighted -->
+                    <span class="pagination-btn active">${page+1}</span> <!-- Current page is highlighted -->
                 </c:when>
                 <c:otherwise>
-                    <a href="view_clients_list?page=${page}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">${page}</a>
+                    <a class="pagination-btn" href="view_clients_list?page=${page}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">${page+1} </a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
 
-        <c:if test="${currentPage < totalPages}">
-            <a href="view_clients_list?page=${currentPage + 1}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Next &gt;</a>
+        <c:if test="${currentPage+1 < totalPages}">
+               <a class="pagination-btn" href="view_clients_list?page=${currentPage+1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Next</a>
         </c:if>
     </c:if>
 </div>

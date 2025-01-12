@@ -13,6 +13,7 @@ import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -135,8 +136,9 @@ public class ClientController {
     }
 */
 @RequestMapping("view_clients_list")
-public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,@RequestParam(value = "page", defaultValue = "1") int page,
-                                      @RequestParam(value = "size", defaultValue = "2") int pageSize) {
+public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,@RequestParam(value = "page", defaultValue = "0") int page,
+                                      @RequestParam(value = "size", defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize) {
+
     UserDetailsObj userObj = getLoggedInUser();
     ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
 
@@ -168,14 +170,20 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
 
         // Convert the filtered list to DTOs
         List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredPage.getContent());
-        System.out.println("Total pages are " + clientFilteredPage.getTotalPages());
-        System.out.println("Total records are " + clientFilteredPage.getTotalElements());
+
         // Adding filtered clients and pagination details to the model
         modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
         modelView.addObject("currentPage", page);
         modelView.addObject("totalPages", clientFilteredPage.getTotalPages());
         modelView.addObject("totalClients", clientFilteredPage.getTotalElements());
         modelView.addObject("pageSize", pageSize);
+
+        modelView.addObject("maxPages", clientFilteredPage.getTotalPages());
+        modelView.addObject("page", page);
+        //modelView.addObject("sortBy", sortBy);
+
+       // modelView.addObject("cityId", searchClientObj.getCityId());
+        //modelView.addObject("active", searchClientObj.isActive());
 
         // Sales Partner Map for the filter
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);

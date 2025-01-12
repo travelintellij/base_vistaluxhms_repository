@@ -33,11 +33,15 @@ public interface Vlx_City_Master_Repository extends JpaRepository<City_Entity,In
 	boolean existsByDestinationIdAndCityName(int destinationId, String cityNabyme);
 	
 	boolean existsByDestinationIdAndCountryName(int destinationId, String countryName);
-	
-	@Query("FROM City_Entity a WHERE a.active=true GROUP BY countryCode order by countryName")
+
+	//@Query("FROM City_Entity a WHERE a.active=true GROUP BY countryCode order by countryName")
 	//public List<Udn_Destinations_Entity> findDistinctActiveDestinations();
-	public List<City_Entity> findDistinctRecordsByCountryCode();
-	
+	//public List<City_Entity> findDistinctRecordsByCountryCode();
+
+	@Query("SELECT DISTINCT c FROM City_Entity c WHERE c.active = true AND c.countryCode IS NOT NULL")
+	List<City_Entity> findDistinctRecordsByCountryCode();
+
+
 	//public String findDistinctByCountryCode(String countryCode);
 	
 	boolean existsByCityNameAndCountryCodeIgnoreCase(String cityName, String countryCode);

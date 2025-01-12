@@ -87,4 +87,30 @@
               </tbody>
           </table>
       </div>
+     <div class="pagination-container">
+      <c:if test="${not empty CITY_LIST}">
+              <c:set var="totalRecords" value="${CITY_LIST.size()}" />
+              <c:set var="recordsPerPage" value="${pageSize}" /> <!-- You can adjust this value -->
+
+              <!-- Display pagination links -->
+              <c:if test="${currentPage > 0}">
+                  <a class="pagination-btn" href="view_search_city_form?page=${currentPage-1}&countryCode=${SEARCH_CITY.countryCode}&cityName=${SEARCH_CITY.cityName}">Previous</a>
+              </c:if>
+
+              <c:forEach begin="0" end="${totalPages-1}" var="page">
+                  <c:choose>
+                      <c:when test="${page == currentPage}">
+                          <span class="pagination-btn active">${page+1}</span> <!-- Current page is highlighted -->
+                      </c:when>
+                      <c:otherwise>
+                          <a class="pagination-btn" href="view_search_city_form?page=${page}&countryCode=${SEARCH_CITY.countryCode}&cityName=${SEARCH_CITY.cityName}">${page+1} </a>
+                      </c:otherwise>
+                  </c:choose>
+              </c:forEach>
+
+              <c:if test="${currentPage+1 < totalPages}">
+                     <a class="pagination-btn" href="view_search_city_form?page=${currentPage+1}&countryCode=${SEARCH_CITY.countryCode}&cityName=${SEARCH_CITY.cityName}">Next</a>
+              </c:if>
+          </c:if>
+      </div>
 <jsp:include page="../footer.jsp" />
