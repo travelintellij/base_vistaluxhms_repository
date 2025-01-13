@@ -107,6 +107,7 @@ nav ul li .submenu li:hover .second-level {
     background-color: #e63946;
 }
 /* Form container wrapper to center it on the screen */
+
 .form-container-wrapper {
     display: flex;
     justify-content: center; /* Horizontally center */
@@ -147,7 +148,8 @@ h2 {
     flex-wrap: wrap; /* Adjust layout for smaller screens */
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px; /* Space between rows */
+    margin-bottom: 15px; /* Space between rows */]
+
 }
 
 /* Labels */
@@ -161,14 +163,14 @@ h2 {
 
 /* Inputs and select boxes */
 .form-row input[type="text"],.form-row input[type="email"],.form-row input[type="tel"],
-.form-row select {
+.form-row select,.form-row input[type="number"]  {
     flex: 2;
     padding: 10px;
     border: 1px solid #ccc; /* Light border */
     border-radius: 5px; /* Rounded corners */
     font-size: 1rem; /* Font size */
     outline: none; /* Remove outline on focus */
-    width: 100%; /* Full width inside the container */
+    width: 250px; /* Full width inside the container */
     max-width: 100%; /* Avoid overflow */
     box-sizing: border-box;
 }

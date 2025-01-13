@@ -253,3 +253,59 @@ body {
 .pagination-btn:focus {
     outline: none;
 }
+
+/* Grid container styling */
+.form-table {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 20px; /* Spacing between cells */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cell styling */
+.form-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+.form-cell label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Input styling */
+.form-cell input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+/* Force an item to span the entire row */
+.start-new-row {
+    grid-column: 1 / -1; /* Start at column 1 and span all columns */
+    margin-top: 10px; /* Optional: Add vertical spacing */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .form-table {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    }
+}
+
+@media (max-width: 480px) {
+    .form-table {
+        grid-template-columns: 1fr; /* 1 column */
+    }
+}
