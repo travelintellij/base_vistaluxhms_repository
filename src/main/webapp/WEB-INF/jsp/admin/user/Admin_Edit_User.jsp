@@ -9,16 +9,14 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
-    <h2>Add User</h2> <!-- Bold Header -->
+    <h2>Edit User</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
-        <form:form method="post" action="create_create_user" modelAttribute="USER_OBJ">
+        <form:form method="post" action="edit_edit_user" modelAttribute="USER_OBJ">
+        <form:hidden path="userId" />
             <div class="form-table">
                 <div class="form-cell">
-                    <label for="field1">Login Id</label>
-                    <form:input path="username" maxlength="100" required="required" />
-                    <font color="red">
-                        <form:errors path="username" cssClass="error" />
-                    </font>
+                    <label for="field1">User Name</label>
+                     ${USER_OBJ.username}
                 </div>
                 <div class="form-cell">
                     <label for="field2" style="font-weight:600">Password</label>

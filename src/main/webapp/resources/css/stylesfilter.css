@@ -309,3 +309,18 @@ body {
         grid-template-columns: 1fr; /* 1 column */
     }
 }
+
+.eye-button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #555;
+    }
+    .eye-button:hover {
+        color: #000;
+    }

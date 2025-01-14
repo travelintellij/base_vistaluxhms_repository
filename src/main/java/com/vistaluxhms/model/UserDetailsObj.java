@@ -171,6 +171,41 @@ public class UserDetailsObj extends AshokaTeam implements UserDetails{
 		
 	}
 
-
-	
+	@Override
+	public String toString() {
+		return "UserDetailsObj{" +
+				"currentPassword='" + currentPassword + '\'' +
+				", changedPassword='" + changedPassword + '\'' +
+				", passwordConfirm='" + passwordConfirm + '\'' +
+				", roleName='" + roleName + '\'' +
+				", roleId=" + roleId +
+				", userId=" + userId +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", active=" + active +
+				", name='" + name + '\'' +
+				", address='" + address + '\'' +
+				", mobile=" + mobile +
+				", type='" + type + '\'' +
+				", shift='" + shift + '\'' +
+				", fixedIncentive=" + fixedIncentive +
+				", dob=" + dob +
+				", doj=" + doj +
+				", designation='" + designation + '\'' +
+				", email='" + email + '\'' +
+				", lastWorkingDay=" + lastWorkingDay +
+				", personalEmail='" + personalEmail + '\'' +
+				", personalMobile=" + personalMobile +
+				", panCard='" + panCard + '\'' +
+				", aadharCard='" + aadharCard + '\'' +
+				", gender='" + gender + '\'' +
+				", maritalStatus='" + maritalStatus + '\'' +
+				", remarks='" + remarks + '\'' +
+				", accountExpired=" + accountExpired +
+				", accountLocked=" + accountLocked +
+				", credentialsExpired=" + credentialsExpired +
+				", deleted=" + deleted +
+				", roles=" + roles +
+				'}';
+	}
 }
