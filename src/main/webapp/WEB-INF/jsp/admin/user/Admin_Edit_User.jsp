@@ -133,7 +133,7 @@
 
            </div>
            <div class="button-container">
-                <input type="submit" value="Add User">
+                <input type="submit" value="Update User">
                 <a href="view_users_list"><input type="button" class="clear-filter-btn" value="View User List"></input></a>
             </div>
         </form:form>

@@ -21,13 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.beans.PropertyEditorSupport;
 import java.util.*;
 
 @Controller
@@ -131,14 +130,34 @@ public class UserController {
         return modelView;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(java.sql.Date.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.trim().isEmpty()) {
+                    setValue(null); // Convert empty strings to null
+                } else {
+                    try {
+                        setValue(java.sql.Date.valueOf(text)); // Convert valid input to java.sql.Date
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalArgumentException("Invalid date format. Expected format: yyyy-MM-dd");
+                    }
+                }
+            }
+        });
+    }
+
     @PostMapping(value="edit_edit_user")
     public ModelAndView edit_edit_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
         //implement the validation rule here.
 
+        System.out.println("Last Working Day is "  +userDTO.getLastWorkingDay());
+
         userValidator.validate(userDTO,result);
-        System.out.println("User Details are " + userDTO);
+        //System.out.println("User Details are " + userDTO);
 
         if (result.hasErrors()) {
             System.out.println(result);
@@ -159,6 +178,12 @@ public class UserController {
                 RoleEntity existingPrivRole = existingPrivRoleOpt.get();
                 System.out.println(existingPrivRole.getRoleId() + "-- " + userDTO.getRoleId());
                 if(existingPrivRole.getRoleId()!=userDTO.getRoleId()) {
+                    if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)){
+                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
+                    }
+                    else if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)){
+                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
+                    }
                     RoleEntity newPrivRole = userDetailsService.findRoleById(userDTO.getRoleId());
                     System.out.println("New Role Entity is "  + newPrivRole);
                     orgUserEntity.getRoles().remove(existingPrivRole);
@@ -170,7 +195,7 @@ public class UserController {
                 userDTO.setUserId(ashokaTeamEntity.getUserId());
                 modelView.addObject("userobj",userDTO);
                 modelView.addObject("message","Success");
-                modelView.setViewName("redirect:view_view_Admin_User?userId="+userDTO.getUserId());
+                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
                 redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
             } catch (Exception e) {
                 modelView.addObject("Error", "Error: Adding New User. Please contact Administrator !!! " );

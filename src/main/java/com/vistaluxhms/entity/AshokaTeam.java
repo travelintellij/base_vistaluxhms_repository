@@ -74,7 +74,7 @@ public class AshokaTeam {
 	@Column(nullable = true,name="Email", unique = false)
 	protected String email;
 	
-	@Column(nullable = false,name="lastWorkingDay", unique = false)
+	@Column(nullable = true,name="lastWorkingDay", unique = false)
 	protected Date lastWorkingDay;
 	
 	protected String personalEmail;
