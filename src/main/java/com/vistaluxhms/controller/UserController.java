@@ -2,6 +2,7 @@ package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.ClientEntityDTO;
+import com.vistaluxhms.model.RateType_Obj;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -119,9 +120,9 @@ public class UserController {
             try {
                 userDetailsService.createOrUpdateUser(ashokaTeamEntity);
                 userDTO.setUserId(ashokaTeamEntity.getUserId());
-                modelView.addObject("userobj",userDTO);
+                //modelView.addObject("userobj",userDTO);
                 modelView.addObject("message","Success");
-                modelView.setViewName("redirect:view_view_Admin_User?userId="+userDTO.getUserId());
+                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
                 redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
             } catch (Exception e) {
                 modelView.addObject("Error", "Error: Adding New User. Please contact Administrator !!! " );
@@ -207,6 +208,16 @@ public class UserController {
             }
         }
 
+        return modelView;
+    }
+
+    @RequestMapping("view_users_list")
+    public ModelAndView view_users_list(@ModelAttribute("USER_FILTERED_LIST") UserDetailsObj userDTO, BindingResult result ) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/user/viewUserListing");
+        UserDetailsObj user = getLoggedInUser();
+        List<UserDetailsObj> listUserDTO= userDetailsService.findAllUsers();
+        modelView.addObject("USER_FILTERED_LIST", listUserDTO);
         return modelView;
     }
 

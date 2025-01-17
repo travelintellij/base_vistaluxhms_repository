@@ -19,7 +19,7 @@
                     ${USER_OBJ.userId}
                 </div>
                 <div class="form-cell">
-                    <label for="field1">Login Id</label>
+                    <label for="field1">User Name</label>
                     ${USER_OBJ.username}
                 </div>
                  <div class="form-cell" >

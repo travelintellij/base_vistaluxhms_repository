@@ -13,6 +13,7 @@
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="edit_edit_user" modelAttribute="USER_OBJ">
         <form:hidden path="userId" />
+        <form:hidden path="username" />
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">User Name</label>

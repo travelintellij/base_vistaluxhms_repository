@@ -154,17 +154,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 					predicates.add(criteriaBuilder.equal(userEntity.get("userId"), filterUserList.getUserId()));
 				}
 				 
-				
-				if((filterUserList.getJoiningFromDate()!=null) && (filterUserList.getJoiningFromDate().trim().length()>0) && (filterUserList.getJoiningToDate()!=null) && (filterUserList.getJoiningToDate().trim().length()>0)) {
-					try {
-						Date dateTo=new SimpleDateFormat("yyyy-MM-dd").parse(filterUserList.getJoiningToDate());
-						Date dateFrom=new SimpleDateFormat("yyyy-MM-dd").parse(filterUserList.getJoiningFromDate());
-						predicates.add(criteriaBuilder.between(userEntity.get("doj"),dateFrom,dateTo));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 				if ((filterUserList.getUsername() != null) && (filterUserList.getUsername().trim().length()>0)) {
 					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(userEntity.get("username")),"%" + filterUserList.getUsername().toLowerCase() + "%"));
 				}
@@ -172,6 +161,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 				if ((filterUserList.getName() != null) && (filterUserList.getName().trim().length()>0)) {
 					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(userEntity.get("name")),"%" + filterUserList.getName().toLowerCase() + "%"));
 				}
+
 				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 			}
 		});

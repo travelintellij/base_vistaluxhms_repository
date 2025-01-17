@@ -14,7 +14,7 @@
         <form:form method="post" action="create_create_user" modelAttribute="USER_OBJ">
             <div class="form-table">
                 <div class="form-cell">
-                    <label for="field1">Login Id</label>
+                    <label for="field1">User Name</label>
                     <form:input path="username" maxlength="100" required="required" />
                     <font color="red">
                         <form:errors path="username" cssClass="error" />

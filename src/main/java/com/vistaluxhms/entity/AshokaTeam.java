@@ -224,6 +224,7 @@ public class AshokaTeam {
 		this.accountLocked=userDetailsObj.isAccountLocked() ;
 		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
 		this.deleted=userDetailsObj.isDeleted();
+		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
 		//this.roles = userDetailsObj.getRoles();
 
 	}
@@ -257,6 +258,7 @@ public class AshokaTeam {
 		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
 		this.roles = userDetailsObj.getRoles();
 		this.deleted=userDetailsObj.isDeleted();
+		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
 	}
 	
 	
@@ -283,7 +285,7 @@ public class AshokaTeam {
 		this.maritalStatus= userDetailsObj.getMaritalStatus();
 		this.remarks= userDetailsObj.getRemarks();
 		this.active=userDetailsObj.isActive();
-		
+		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
 		this.accountExpired=userDetailsObj.isAccountExpired();
 		this.accountLocked=userDetailsObj.isAccountLocked() ;
 		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
