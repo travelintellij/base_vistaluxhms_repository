@@ -56,11 +56,14 @@ public class UserController {
 
 
     @RequestMapping("view_view_user")
-    public ModelAndView view_view_User(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsDTO, BindingResult result) {
+    public ModelAndView view_view_User(@RequestParam("userId") int userId) {
         ModelAndView mapview = new ModelAndView();
         //mapview.addObject("userRole", userObj.getRoles());
-        AshokaTeam userEntity = userDetailsService.findUserByID(userDetailsDTO.getUserId());
+        UserDetailsObj userDetailsDTO = new UserDetailsObj();
+
+        AshokaTeam userEntity = userDetailsService.findUserByID(userId);
         userDetailsDTO.updateUserVoFromEntity(userEntity);
+        mapview.addObject("USER_OBJ", userDetailsDTO);
         //System.out.println("Entity REtreived is " + userEntity);
         //UserDetailsObj userDetailsObj = new UserDetailsObj(userEntity);
         //mapview.addObject("userobj",userDetailsObj);
@@ -193,8 +196,8 @@ public class UserController {
             try {
                 userDetailsService.createOrUpdateUser(ashokaTeamEntity);
                 userDTO.setUserId(ashokaTeamEntity.getUserId());
-                modelView.addObject("userobj",userDTO);
-                modelView.addObject("message","Success");
+                //modelView.addObject("userobj",userDTO);
+                //modelView.addObject("message","Success");
                 modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
                 redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
             } catch (Exception e) {

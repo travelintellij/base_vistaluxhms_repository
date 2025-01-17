@@ -13,6 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsObj extends AshokaTeam implements UserDetails{
+
+
     private String currentPassword; // this is the password entered by user to match his current password.
 	private String changedPassword; // this is the new password.
 	private String passwordConfirm;//this is the new confirm password.
