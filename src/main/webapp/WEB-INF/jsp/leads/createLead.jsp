@@ -11,7 +11,7 @@
 
     <h2>Add User</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
-        <form:form method="post" action="create_create_user" modelAttribute="USER_OBJ" autocomplete="off">
+        <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">User Name</label>

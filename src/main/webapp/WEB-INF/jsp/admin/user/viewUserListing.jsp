@@ -58,7 +58,7 @@
                                                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                                                        </form>
                                                        <form action="view_edit_user_form" method="POST" style="display:inline;">
-                                                           <input type="hidden" name="clientId" value="${userRec.userId}" />
+                                                           <input type="hidden" name="userId" value="${userRec.userId}" />
                                                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                                                        </form>
 
