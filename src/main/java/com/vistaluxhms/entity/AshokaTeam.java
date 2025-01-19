@@ -41,7 +41,7 @@ public class AshokaTeam {
 	 */
 
 	@Column(nullable = false,name="active", unique = false)
-	protected boolean active;
+	protected boolean active=true;
 	
 	@Column(nullable = false,name="name", unique = false)
 	protected String name;

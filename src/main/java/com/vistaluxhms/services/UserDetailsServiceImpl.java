@@ -28,6 +28,7 @@ import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.repository.RoleRepository;
 import com.vistaluxhms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,7 +93,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	}
 	
 	public List<UserDetailsObj> findAllUsers(){
-		List<AshokaTeam> listUdnTeam= userRepository.findAll();
+		List<AshokaTeam> listUdnTeam= userRepository.findAll(Sort.by(Sort.Order.desc("active")));
 		List<UserDetailsObj> listUdnObj = new ArrayList<UserDetailsObj>();
 		Iterator<AshokaTeam>  itr = listUdnTeam.iterator();
 		while(itr.hasNext()) {
