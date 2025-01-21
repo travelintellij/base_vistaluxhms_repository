@@ -6,10 +6,12 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "lead_master")
-public class LeadEntity {
+public class LeadEntity extends  AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,12 @@ public class LeadEntity {
     @ManyToOne
     @JoinColumn(name = "leadSource", nullable = false)
     private SalesPartnerEntity leadSource;
+
+    @ManyToMany(targetEntity = AshokaTeam.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "leads_team_map",
+            joinColumns = {@JoinColumn(name="leadId")},
+            inverseJoinColumns = {@JoinColumn(name="userId")})
+    protected Set<AshokaTeam> team = new HashSet<AshokaTeam>();
 
     @Column(name = "adults", nullable = false)
     private int adults;
@@ -77,17 +85,16 @@ public class LeadEntity {
     @Column(name = "Marriage")
     private boolean marriage;
 
-    @Column(name = "CorporateEvent")
-    private boolean corporateEvent;
-
-    @Column(name = "Birthday")
-    private boolean birthday;
 
     @Column(name = "Others")
     private boolean others;
 
     @Column(name = "leadCreationClientInformed")
-    private boolean leadCreationClientInformed;
+    private boolean leadCreationClientInformed=true;
+
+
+    @Column(name = "leadOwner", nullable = false)
+    private int leadOwner;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -256,21 +263,7 @@ public class LeadEntity {
         this.marriage = marriage;
     }
 
-    public boolean isCorporateEvent() {
-        return corporateEvent;
-    }
 
-    public void setCorporateEvent(boolean corporateEvent) {
-        this.corporateEvent = corporateEvent;
-    }
-
-    public boolean isBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(boolean birthday) {
-        this.birthday = birthday;
-    }
 
     public boolean isOthers() {
         return others;
@@ -288,19 +281,24 @@ public class LeadEntity {
         this.leadCreationClientInformed = leadCreationClientInformed;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+   public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public Set<AshokaTeam> getTeam() {
+        return team;
+    }
+
+    public void setTeam(Set<AshokaTeam> team) {
+        this.team = team;
+    }
+
+    public int getLeadOwner() {
+        return leadOwner;
+    }
+
+    public void setLeadOwner(int leadOwner) {
+        this.leadOwner = leadOwner;
     }
 }

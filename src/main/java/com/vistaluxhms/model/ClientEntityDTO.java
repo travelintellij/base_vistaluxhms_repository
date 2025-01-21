@@ -12,6 +12,23 @@ public class ClientEntityDTO extends ClientEntity {
     public String cityName;
     public String salesPartnerName;
 
+    public ClientEntityDTO(ClientEntity clientEntity) {
+        this.clientId=clientEntity.getClientId();
+        this.city= clientEntity.getCity();
+        this.clientId=clientEntity.getClientId();
+        this.mobile=clientEntity.getMobile();
+        this.clientName=clientEntity.getClientName();
+        this.reference=clientEntity.getReference();
+        this.emailId=clientEntity.getEmailId();
+        this.remarks=clientEntity.getRemarks();
+        this.salesPartner=clientEntity.getSalesPartner();
+        this.active=clientEntity.getActive();
+        this.b2b = clientEntity.getB2b();
+    }
+
+    public ClientEntityDTO(){
+
+    }
     public void updateClientVoFromEntity(ClientEntity clientEntity) {
         this.city= clientEntity.getCity();
         this.clientId=clientEntity.getClientId();

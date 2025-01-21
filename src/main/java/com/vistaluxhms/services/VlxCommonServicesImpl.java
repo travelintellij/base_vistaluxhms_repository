@@ -20,7 +20,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.vistaluxhms.entity.City_Entity;
+import com.vistaluxhms.entity.Workload_Status_Entity;
 import com.vistaluxhms.model.City_Obj;
+import com.vistaluxhms.model.WorkLoadStatusVO;
+import com.vistaluxhms.repository.LeadEntityRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +46,8 @@ public class VlxCommonServicesImpl {
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 
+	@Autowired
+	LeadEntityRepository leadRepository;
 	public List<String> findCities(String query) {
 		return cityRepository.findCitiesByQuery("%" + query + "%");
 	}
@@ -110,6 +115,21 @@ public class VlxCommonServicesImpl {
 
 	public boolean existsByDestinationIdAndCityName(int destinationId, String cityName) {
 		return cityRepository.existsByDestinationIdAndCityName(destinationId, cityName);
+	}
+
+	public List<WorkLoadStatusVO> find_All_Active_Status_Workload_Obj(String workloadObj){
+		List<Workload_Status_Entity> workloadStatusEntityList = leadRepository.find_All_Status_Workload_Obj(workloadObj);
+		List<WorkLoadStatusVO> workloadStatusVOList = new ArrayList();
+		Iterator itrWorkloadStatusEntity = workloadStatusEntityList.iterator();
+
+		while(itrWorkloadStatusEntity.hasNext()) {
+			Workload_Status_Entity workloadStatusEntity = (Workload_Status_Entity)itrWorkloadStatusEntity.next();
+			if(workloadStatusEntity.isActive()) {
+				WorkLoadStatusVO workloadDealStatusVO = new WorkLoadStatusVO(workloadStatusEntity);
+				workloadStatusVOList.add(workloadDealStatusVO);
+			}
+		}
+		return workloadStatusVOList;
 	}
 
 }

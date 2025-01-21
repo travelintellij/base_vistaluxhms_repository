@@ -139,4 +139,10 @@ public class ClientServicesImpl {
 	public ClientEntity findClientById(Long clientId){
 		return clientRepository.findById(clientId).get();
 	}
+
+	public List<ClientEntity> listAllActiveClients()   {
+		List<ClientEntity> listClients= clientRepository.findAllActiveClients();
+		return listClients;
+	}
+
 }

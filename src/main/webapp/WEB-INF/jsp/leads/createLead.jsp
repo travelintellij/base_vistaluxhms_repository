@@ -12,6 +12,7 @@
     <h2>New Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
+            <input type="hidden" id="clientId" name="clientId" />
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">Lead Id</label>
@@ -25,15 +26,32 @@
                     </font>
                 </div>
                 <div class="form-cell">
-                          <div class="radio-group-container">
-                            <label for="field4">Lead Owner:</label>
-                            Lead Owner
+                    <div class="form-row">
+                        <label for="field4">Lead Owner:</label>
+                        <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
+                                    <form:select path="leadOwner" required="required" style="width:90%">
+                                        <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
+                                            <c:if test="${userMap.key eq userId }">
+                                                <option class="service-small" value="${userMap.key}" selected>
+                                                    ${userMap.value}</option>
+                                            </c:if>
+                                            <c:if test="${userMap.key ne userId }">
+                                                <option class="service-small" value="${userMap.key}">
+                                                    ${userMap.value}</option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </form:select>
+                        </sec:authorize>
+                        <sec:authorize access="! hasAnyRole('ADMIN','LEAD_MANAGER')">
+                              <b><font color="red">${userName}</font></b>
+                        </sec:authorize>
                         </div>
                 </div>
                 <div class="form-cell" >
                     <div class="form-row">
                         <label for="active-status">Status:</label>
                        <form:select path="leadStatus" required="required" style="width:20%">
+                           <form:options items="${LEAD_STATUS_MAP}" />
                        </form:select>
                     </div>
                  </div>
@@ -79,37 +97,134 @@
                      </font>
                  </div>
                   <div class="form-cell">
-                      <div class="radio-group-container">
-                        <label for="field4">Qualified:</label>
-                         Qualified
-                    </div>
+                      <label for="Qualified">Qualified:</label>
+                         <div class="radio-group-container">
+                             <div class="radio-group">
+                                 <label>
+                                     <form:radiobutton path="qualified" name="qualified" value="true" required="required" />
+                                     <span>Yes</span>
+                                 </label>
+                                 <label>
+                                     <form:radiobutton path="qualified" name="qualified"  value="false" required="required" />
+                                     <span>No</span>
+                                 </label>
+                             </div>
+                         </div>
                    </div>
                    <div class="form-cell">
-                      <label for="">Flagged</label>
-                      <form:input path="flagged" />
+                      <label for="">Flagged:</label>
+                      <div class="radio-group-container">
+                           <div class="radio-group">
+                               <label>
+                                   <form:radiobutton path="flagged" name="flagged" value="true" required="required" />
+                                   <span>Yes</span>
+                               </label>
+                               <label>
+                                   <form:radiobutton path="flagged" name="flagged"  value="false" required="required" />
+                                   <span>No</span>
+                               </label>
+                           </div>
+                       </div>
                   </div>
 
             </div>
 
            <div class="form-table">
+<div class="form-cell">
+<label for="b2b-client">Query Type:</label>
+                 <div class="checkbox-container">
+                     <div class="checkbox-item">
+                         <form:checkbox path="fit" id="fit" />
+                         <label for="fit">FIT</label>
+                     </div>
+                     <div class="checkbox-item">
+                         <form:checkbox path="groupEvent" id="groupEvent" />
+                         <label for="groupEvent">Group</label>
+                     </div>
+                     <div class="checkbox-item">
+                         <form:checkbox path="marriage" id="marriage" />
+                         <label for="marriage">Marriage</label>
+                     </div>
+                     <div class="checkbox-item">
+                         <form:checkbox path="others" id="others" />
+                         <label for="others">Others</label>
+                     </div>
+                 </div>
+             </div>
 
 
-
-            <div class="form-cell">
+            <div class="form-cell" >
                <label for="">Client Remarks</label> <br>
-               <form:textarea path = "clientRemarks" rows="3" maxlength="1000"/>
+               <form:textarea path = "clientRemarks" rows="6" maxlength="1000" style="width: 100%; box-sizing: border-box;" />
            </div>
             <div class="form-cell">
                <label for="">Internal Remarks</label> <br>
-               <form:textarea path = "internalRemarks" rows="3" maxlength="1000"/>
+               <form:textarea path = "internalRemarks" rows="6"  maxlength="1000" style="width: 100%; box-sizing: border-box;"/>
            </div>
 
-           </div>
+           <div class="form-cell">
+
+                                <label for="b2b-client">Notify Client:</label>
+                                   <div class="radio-group-container">
+                                       <div class="radio-group">
+                                           <label>
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" required="required" />
+                                               <span>Yes</span>
+                                           </label>
+                                           <label>
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" required="required" />
+                                               <span>No</span>
+                                           </label>
+                                       </div>
+                                   </div>
+                 <div class="checkbox-container">
+                    <div class="checkbox-item">
+                        <form:checkbox path="notifyEmail" id="notifyEmail" />
+                        <label for="notifyEmail">Email</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <form:checkbox path="notifySMS" id="notifySMS" disabled="true" />
+                        <label for="notifySMS" style="color: gray; cursor: not-allowed;">SMS</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <form:checkbox path="notifyWhatsapp" id="notifyWhatsapp" disabled="true" />
+                        <label for="notifyWhatsapp" style="color: gray; cursor: not-allowed;">Whats App</label>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
            <div class="button-container">
-                <input type="submit" value="Add User">
-                <a href="view_users_list"><input type="button" class="clear-filter-btn" value="View User List"></input></a>
+                <input type="submit" value="Create">
+                <a href="view_leads_list"><input type="button" class="clear-filter-btn" value="View User List"></input></a>
             </div>
         </form:form>
     </div>
+
+<script>
+    $('#clientName').autocomplete({
+        serviceUrl: '${pageContext.request.contextPath}/getClientList',
+        paramName: "clientName",
+        delimiter: ",",
+        onSelect: function (suggestion) {
+            cityID = suggestion.data;
+            id = cityID;
+            jQuery("#clientId").val(clientID);
+            $('input[name=clientId]').val(id);
+            return false;
+        },
+        transformResult: function (response) {
+            return {
+                suggestions: $.map($.parseJSON(response), function (item) {
+                    return { value: item.clientName, data: item.clientId };
+                })
+
+            };
+        }
+    });
+
+
+    </script>
 
 <jsp:include page="../footer.jsp" />

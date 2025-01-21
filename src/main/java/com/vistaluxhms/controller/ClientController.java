@@ -4,10 +4,7 @@ import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.RateTypeEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
-import com.vistaluxhms.model.ClientEntityDTO;
-import com.vistaluxhms.model.RateType_Obj;
-import com.vistaluxhms.model.SalesPartnerEntityDto;
-import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
@@ -24,10 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -203,7 +197,9 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
             try {
                 clientEntityDto= new ClientEntityDTO();
                 clientEntityDto.updateClientVoFromEntity(clientEntity);
-                clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
+                if(clientEntity.getCity()!=null) {
+                    clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
+                }
                 salesPartnerVoList.add(clientEntityDto);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
@@ -266,7 +262,21 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
         return modelView;
     }
 
+    @RequestMapping(value = "/getClientList", method= {RequestMethod.GET,RequestMethod.POST})
+    public @ResponseBody
+    List<ClientEntityDTO> getTags(@RequestParam String clientName) {
+        List<ClientEntityDTO> result = new ArrayList<ClientEntityDTO>();
+        List <ClientEntity> entityList = clientService.listAllActiveClients();
+        // iterate a list and filter by tagName
+        for (ClientEntity entity : entityList) {
+            if (entity.getClientName().toLowerCase().contains(clientName.toLowerCase())) {
+                ClientEntityDTO clientEntityDTO = new ClientEntityDTO(entity);
+                result.add(clientEntityDTO);
+            }
+        }
 
+        return result;
+    }
 
 
 }

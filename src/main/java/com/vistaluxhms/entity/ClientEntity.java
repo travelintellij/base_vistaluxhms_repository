@@ -22,7 +22,7 @@ public class ClientEntity {
     @Column(name = "clientName", nullable = false)
     protected String clientName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cityId", referencedColumnName = "destinationId")
     protected City_Entity city;
 
@@ -35,7 +35,7 @@ public class ClientEntity {
     @Column(name = "reference")
     protected String reference;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "salesPartnerId", referencedColumnName = "salesPartnerId")
     protected SalesPartnerEntity salesPartner;
 

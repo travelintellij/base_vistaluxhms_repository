@@ -6,6 +6,7 @@ import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.LeadEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.model.WorkLoadStatusVO;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
@@ -28,10 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class LeadController {
@@ -70,6 +73,16 @@ public class LeadController {
         ModelAndView modelView = new ModelAndView("leads/createLead");
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
+                Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+        List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
+        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
+                Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
+        modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
+
+        modelView.addObject("userName", userObj.getUsername());
         return modelView;
     }
 

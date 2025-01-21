@@ -324,3 +324,30 @@ body {
     .eye-button:hover {
         color: #000;
     }
+
+
+     .checkbox-container {
+         width: 70%; /* Set the width to 50% of the parent container */
+         display: flex;
+         flex-wrap: wrap; /* Wrap checkboxes to the next line if needed */
+         justify-content: space-between; /* Add spacing between checkbox items */
+     }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Adjust spacing between checkbox and label */
+        }
+
+        .checkbox-item label {
+            font-size: 16px; /* Adjust label font size */
+            color: #333; /* Adjust label color */
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #007bff; /* Stylish blue checkmark */
+        }

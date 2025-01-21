@@ -13,7 +13,12 @@ public class LeadEntityDTO extends LeadEntity {
     public String cityName;
     public String salesPartnerName;
     public String clientName;
-    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
+
+    public boolean notifyEmail=true;
+    public boolean notifySMS;
+    public boolean notifyWhatsapp;
+
+   public void updateLeadVoFromEntity(LeadEntity leadEntity) {
 
     }
 
@@ -40,5 +45,29 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public boolean isNotifyEmail() {
+        return notifyEmail;
+    }
+
+    public void setNotifyEmail(boolean notifyEmail) {
+        this.notifyEmail = notifyEmail;
+    }
+
+    public boolean isNotifySMS() {
+        return notifySMS;
+    }
+
+    public void setNotifySMS(boolean notifySMS) {
+        this.notifySMS = notifySMS;
+    }
+
+    public boolean isNotifyWhatsapp() {
+        return notifyWhatsapp;
+    }
+
+    public void setNotifyWhatsapp(boolean notifyWhatsapp) {
+        this.notifyWhatsapp = notifyWhatsapp;
     }
 }
