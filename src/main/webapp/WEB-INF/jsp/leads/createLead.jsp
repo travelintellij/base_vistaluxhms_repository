@@ -1,4 +1,4 @@
-<jsp:include page="../../_menu_builder_header.jsp" />
+<jsp:include page="../_menu_builder_header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -9,128 +9,99 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
-    <h2>Add User</h2> <!-- Bold Header -->
+    <h2>New Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
             <div class="form-table">
                 <div class="form-cell">
-                    <label for="field1">User Name</label>
-                    <form:input path="username" maxlength="100" required="required"  autocomplete="new-username" />
-                    <font color="red">
-                        <form:errors path="username" cssClass="error" />
-                    </font>
+                    <label for="field1">Lead Id</label>
+                    Auto Generated
                 </div>
                 <div class="form-cell">
-                    <label for="field2" style="font-weight:600">Password</label>
-                    <form:password path="password" showPassword="true" required="required" autocomplete="new-password" />
+                    <label for="field2" style="font-weight:600">Client Name</label>
+                    <form:input path="clientName" required="required" />
                     <font color="red">
-                        <form:errors path="password" cssClass="error"  />
+                        <form:errors path="clientName" cssClass="error"  />
                     </font>
-                </div>
-                <div class="form-cell">
-                    <label for="field3" style="font-weight:600">Confirm Password</label>
-                    <form:password path="passwordConfirm" showPassword="true" required="required"  />
-                    <font color="red">
-                        <form:errors path="passwordConfirm" cssClass="error" />
                 </div>
                 <div class="form-cell">
                           <div class="radio-group-container">
-                            <label for="field4">User Type:</label>
-                            <div class="radio-group">
-                               <label>
-                                   <form:radiobutton path="roleName" name="roleName" value="USER" required="required" />
-                                   <span>USER</span>
-                               </label>
-                               <label>
-                                   <form:radiobutton path="roleName" name="roleName"  value="ADMIN" required="required" />
-                                   <span>ADMIN</span>
-                               </label>
-                           </div>
+                            <label for="field4">Lead Owner:</label>
+                            Lead Owner
                         </div>
                 </div>
+                <div class="form-cell" >
+                    <div class="form-row">
+                        <label for="active-status">Status:</label>
+                       <form:select path="leadStatus" required="required" style="width:20%">
+                       </form:select>
+                    </div>
+                 </div>
                 </div>
                 <div class="form-table">
                 <div class="form-cell" >
-                    <label for="field5">User Full Name</label>
-                    <form:input path="name" required="required" /> <br>
+                    <label for="field5">Adults</label>
+                    <form:input path="adults" required="required" /> <br>
                     <font color="red">
-                        <form:errors path="name" cssClass="error" />
+                        <form:errors path="adults" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
-                    <label for="field6">Company Email</label>
-                    <form:input path="email" required="required" />
+                    <label for="field6">Child With Bed</label>
+                    <form:input path="cwb" required="required" />
                     <font color="red">
-                        <form:errors path="email" cssClass="error" />
+                        <form:errors path="cwb" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
-                    <label for="field7">Company Mobile</label>
-                    <form:input path="mobile" type="number" required="required" /> <br>
+                    <label for="field7">Child No Bed</label>
+                    <form:input path="cnb" type="number" required="required" /> <br>
                     <font color="red">
-                        <form:errors path="mobile" cssClass="error" />
+                        <form:errors path="cnb" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
-                    <label for="field8">Designation</label>
-                    <form:input path="designation" /> <br>
+                    <label for="field8">Comp Child</label>
+                    <form:input path="compChild" /> <br>
                     <font color="red">
-                        <form:errors path="designation" cssClass="error" />
+                        <form:errors path="compChild" cssClass="error" />
                     </font>
                 </div>
-               <div class="form-cell">
-                   <label for="">Date of Birth</label>
-                   <form:input path="dob" type="date" />
-               </div>
                 <div class="form-cell">
-                    <label for="" >Personal Email</label>
-                    <form:input path="personalEmail" type="email" required="required"  />
-                </div>
-                <div class="form-cell">
-                     <label for="" >Personal Phone</label>
-                     <form:input path="personalMobile" type="number" required="required" />
+                     <label for="" >Check In Date</label>
+                     <form:input path="checkInDate" type="date" required="required" />
                  </div>
                   <div class="form-cell">
-                     <label for="field8">Address</label>
-                     <form:input path="address" /> <br>
+                     <label for="field8">Check Out Date</label>
+                     <form:input path="checkOutDate" type="date" /> <br>
                      <font color="red">
-                         <form:errors path="address" cssClass="error" />
+                         <form:errors path="checkOutDate" cssClass="error" />
                      </font>
                  </div>
+                  <div class="form-cell">
+                      <div class="radio-group-container">
+                        <label for="field4">Qualified:</label>
+                         Qualified
+                    </div>
+                   </div>
+                   <div class="form-cell">
+                      <label for="">Flagged</label>
+                      <form:input path="flagged" />
+                  </div>
+
             </div>
 
            <div class="form-table">
-            <div class="form-cell" >
-                <div class="form-row">
-                    <label for="active-status">Active:</label>
-                   <form:select path="active" required="required" style="width:20%">
-                       <form:option value="true">Active</form:option>
-                       <form:option value="false">In-Active</form:option>
-                   </form:select>
-                </div>
-             </div>
-             <div class="form-cell">
-                 <div class="radio-group-container">
-                   <label for="field4">Account Lock:</label>
-                   <div class="radio-group">
-                      <label>
-                          <form:radiobutton path="accountLocked" name="accountLocked" value="YES" required="required" />
-                          <span>Yes</span>
-                      </label>
-                      <label>
-                          <form:radiobutton path="accountLocked" name="accountLocked"  value="NO" required="required" />
-                          <span>No</span>
-                      </label>
-                  </div>
-               </div>
-              </div>
-              <div class="form-cell">
-                 <label for="">Last Working Day</label>
-                 <form:input path="lastWorkingDay" type="date" />
-             </div>
+
+
+
             <div class="form-cell">
-               <label for="">Remarks</label> <br>
-               <form:textarea path = "remarks" rows="3" maxlength="1000"/>
+               <label for="">Client Remarks</label> <br>
+               <form:textarea path = "clientRemarks" rows="3" maxlength="1000"/>
+           </div>
+            <div class="form-cell">
+               <label for="">Internal Remarks</label> <br>
+               <form:textarea path = "internalRemarks" rows="3" maxlength="1000"/>
            </div>
 
            </div>
@@ -141,4 +112,4 @@
         </form:form>
     </div>
 
-<jsp:include page="../../footer.jsp" />
+<jsp:include page="../footer.jsp" />

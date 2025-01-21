@@ -12,7 +12,7 @@ public class LeadEntityDTO extends LeadEntity {
 
     public String cityName;
     public String salesPartnerName;
-
+    public String clientName;
     public void updateLeadVoFromEntity(LeadEntity leadEntity) {
 
     }
@@ -32,5 +32,13 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setSalesPartnerName(String salesPartnerName) {
         this.salesPartnerName = salesPartnerName;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

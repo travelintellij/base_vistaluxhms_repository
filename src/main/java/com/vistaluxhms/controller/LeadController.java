@@ -4,6 +4,7 @@ import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.model.ClientEntityDTO;
+import com.vistaluxhms.model.LeadEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.ClientServicesImpl;
@@ -64,9 +65,9 @@ public class LeadController {
     }
 
     @RequestMapping("view_add_lead_form")
-    public ModelAndView view_add_lead_form(@ModelAttribute("LEAD_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
+    public ModelAndView view_add_lead_form(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadEntityDTO, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView("admin/client/Admin_Add_Client");
+        ModelAndView modelView = new ModelAndView("leads/createLead");
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
         return modelView;

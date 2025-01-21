@@ -40,6 +40,17 @@ username = "Guest";
 </header>
 <nav>
     <ul>
+       <c:if test="${role == 'admin' || role == 'guest'}">
+             <li>
+                 <a href="#">Lead Management</a>
+                 <ul class="submenu">
+                     <li><a href="view_add_lead_form">New Lead</a></li>
+                     <li>
+                         <a href="view_leads_list">Lead Management</a>
+                     </li>
+                 </ul>
+             </li>
+         </c:if>
          <c:if test="${role == 'admin' || role == 'guest'}">
                     <li>
                         <a href="#">User Management</a>
