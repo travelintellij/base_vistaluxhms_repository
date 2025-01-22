@@ -1,18 +1,14 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.City_Entity;
-import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.entity.LeadEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
-import com.vistaluxhms.model.ClientEntityDTO;
-import com.vistaluxhms.model.LeadEntityDTO;
-import com.vistaluxhms.model.UserDetailsObj;
-import com.vistaluxhms.model.WorkLoadStatusVO;
+import com.vistaluxhms.entity.*;
+import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.LeadValidator;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,13 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -60,6 +56,13 @@ public class LeadController {
 
     @Autowired
     LeadServicesImpl leadService;
+    @Autowired
+    EmailServiceImpl emailService;
+
+    @Value("${email.client.valid}")
+    private boolean emailClientNotifyActive;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -99,6 +102,7 @@ public class LeadController {
         UserDetailsObj userObj = getLoggedInUser();
         //leadRecorderObj.setLeadStatus(UdanChooConstants.LEAD_CLOSE_REASON.get(UdanChooConstants.LEAD_NEW));
         System.out.println(leadRecorderObj);
+        System.out.println("Client Details entered is " + leadRecorderObj.getClient());
         if(leadRecorderObj.getLeadOwner()==0) {
             leadRecorderObj.setLeadOwner(userObj.getUserId());
         }
@@ -112,20 +116,79 @@ public class LeadController {
             LeadEntity leadEntity = new LeadEntity(leadRecorderObj);
             ClientEntity clientEntity = clientService.findClientById(leadRecorderObj.getClient().getClientId());
             leadEntity.setClient(clientEntity);
-            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(leadRecorderObj.getLeadSource().getSalesPartnerId());
-            leadEntity.setLeadSource(salesPartnerEntity);
+            //SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(leadRecorderObj//.getLeadSource().getSalesPartnerId());
+            //leadEntity.setLeadSource(salesPartnerEntity);
             leadService.saveLead(leadEntity);
             leadRecorderObj.setLeadId(leadEntity.getLeadId());
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
             modelView.setViewName("redirect:view_add_lead_form?leadId="+leadEntity.getLeadId());
             if(leadRecorderObj.isLeadCreationClientInformed()) {
                 System.out.println("Lead Creation Client Informed");
-                //notifyLeadCreationTargetAudience(leadRecorderObj,"LeadCreateConfirmation.ftl",true,true);
+                if(leadRecorderObj.isNotifyEmail()) {
+                    notifyLeadCreationTargetAudience(leadRecorderObj, "LeadCreateConfirmation.ftl", true, true);
+                }else{
+                    System.out.println("Inform Client Active but email disabled. ");
+                }
                 //notifyLeadCreationSms(leadRecorderObj);
             }
             //write email code here.
         }
         return modelView;
+    }
+
+    private void notifyLeadCreationTargetAudience(LeadEntityDTO leadRecorderObj, String templateName,boolean isCreated,boolean markClient) {
+        if(emailClientNotifyActive) {
+            Mail mail = new Mail();
+            String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
+            String guestDetails = "Adults:" + leadRecorderObj.getAdults() + " Children: " + (leadRecorderObj.getCwb() + leadRecorderObj.getCnb() + leadRecorderObj.getCompChild());
+            String emailSubject = generateSubject(leadRecorderObj,guestDetails,leadReferenceNumber,isCreated);
+            String servicesList ="";
+            if(leadRecorderObj.isFit()) servicesList = servicesList + "Stay";
+            if(leadRecorderObj.isGroupEvent()) servicesList = servicesList + "| Group ";
+            if(leadRecorderObj.isMarriage()) servicesList = servicesList + " | Marriage";
+            if(leadRecorderObj.isOthers()) servicesList = servicesList + " | Others";
+
+            ClientEntity clientEntity =clientService.findClientById(leadRecorderObj.getClient().getClientId());
+            mail.setSubject(emailSubject);
+            AshokaTeam userObj = userDetailsService.findUserByID(leadRecorderObj.getLeadOwner());
+            if(markClient) {
+                mail.setTo(clientEntity.getEmailId());
+                mail.setCc(userObj.getEmail());
+            }else {
+                mail.setTo(userObj.getEmail());
+            }
+            mail.setCc(getLoggedInUser().getEmail());
+            try {
+                Map<String, Object> model = new HashMap<String, Object>();
+                model.put("leadId", leadReferenceNumber);
+                model.put("contactName",clientEntity.getClientName());
+                model.put("guestDetails", guestDetails);
+                model.put("checkInDate", formatter.format(leadRecorderObj.getCheckInDate()));
+                model.put("checkOutDate", formatter.format(leadRecorderObj.getCheckOutDate()));
+                model.put("Services", servicesList);
+                model.put("clientRemarks", leadRecorderObj.getClientRemarks());
+                model.put("serviceAdvisor", userObj.getName());
+                model.put("contactNumber", userObj.getMobile());
+                mail.setModel(model);
+                emailService.sendEmailMessageUsingTemplate(mail,templateName);
+            } catch (MessagingException | IOException | TemplateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Email Notification DISABLE. ");
+        }
+    }
+    private String generateSubject(LeadEntityDTO leadRecorderObj,String guestDetails,String leadReferenceNumber,boolean isCreated) {
+        String emailSubject;
+        if(isCreated) {
+            emailSubject = "Query Created with Query Id: " +leadReferenceNumber +" | "+  guestDetails + " | Check In " +  formatter.format(leadRecorderObj.getCheckInDate()) + " | Check Out " + formatter.format(leadRecorderObj.getCheckOutDate())   ;
+        }
+        else {
+            emailSubject = "Query Updated with Query Id: " +leadReferenceNumber +" | "+  guestDetails + " | Check In " +  formatter.format(leadRecorderObj.getCheckInDate()) + "- | Check Out " + formatter.format(leadRecorderObj.getCheckOutDate())   ;
+        }
+        return emailSubject;
     }
 
     /*

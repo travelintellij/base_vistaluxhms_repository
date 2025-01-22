@@ -151,7 +151,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@vistaluxhotel.com','direct ',5,'amazing growth. ',1),(3,'Tourism DMC,Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,1,9898989898,'mohit@bi.com','direct',5,'lets see',1);
+INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@vistaluxhotel.com','direct ',2,'amazing growth. ',1),(3,'Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,1,9898989898,'mohit@bi.com','direct',5,'lets see',1);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +187,6 @@ DROP TABLE IF EXISTS `lead_master`;
 CREATE TABLE `lead_master` (
   `leadId` bigint NOT NULL AUTO_INCREMENT,
   `clientId` int NOT NULL,
-  `leadSource` bigint NOT NULL,
   `adults` int NOT NULL,
   `CWB` int DEFAULT '0',
   `CNB` int DEFAULT '0',
@@ -210,12 +209,10 @@ CREATE TABLE `lead_master` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`leadId`),
   KEY `fk_client` (`clientId`),
-  KEY `fk_sales_partner` (`leadSource`),
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
-  CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`),
-  CONSTRAINT `fk_sales_partner` FOREIGN KEY (`leadSource`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +221,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (2,3,2,1,2,2,1,'asdgg','erhdfsjsd','2025-01-28','2025-01-30',101,NULL,1,0,1,0,1,0,1,1,'2025-01-23 21:53:29','2025-01-23 21:53:29');
+INSERT INTO `lead_master` VALUES (2,3,1,2,2,1,'asdgg','erhdfsjsd','2025-01-28','2025-01-30',101,NULL,1,0,1,0,1,0,1,1,'2025-01-23 21:53:29','2025-01-23 21:53:29'),(3,3,1,0,0,0,'','','2025-01-22','2025-01-29',101,NULL,0,0,1,0,0,0,1,1,'2025-01-24 11:18:34','2025-01-24 11:18:34'),(4,2,1,0,0,0,'asdgasdg','asg','2025-01-22','2025-01-29',101,NULL,0,0,1,0,0,0,1,1,'2025-01-24 11:19:54','2025-01-24 11:19:54'),(5,5,1,0,0,0,'','','2025-01-21','2025-01-22',101,NULL,0,0,1,0,0,0,1,1,'2025-01-24 11:47:21','2025-01-24 11:47:21'),(6,2,1,0,0,0,'asdg','asdg','2025-01-12','2025-01-28',101,NULL,0,0,1,0,0,0,1,1,'2025-01-24 11:59:52','2025-01-24 11:59:52');
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +335,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
-INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-10 03:22:40'),(3,'udanchoo back','udanchoo tourism',9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',0,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28',NULL),(7,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38');
+INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-10 03:22:40'),(3,'udanchoo back','udanchoo tourism',9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',9999999999,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28','2025-01-24 06:09:29'),(7,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38');
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,4 +376,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-23 22:07:50
+-- Dump completed on 2025-01-24 20:03:55

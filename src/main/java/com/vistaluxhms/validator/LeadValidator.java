@@ -25,7 +25,8 @@ public class LeadValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		LeadEntityDTO leadRecorderVO = (LeadEntityDTO)target;
-		if(!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName())) {
+
+		if((leadRecorderVO.getClient()==null) || (!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName()))) {
 			errors.rejectValue("clientName", "contact.error");
 		}
 		if(leadRecorderVO.getAdults()==0) {
@@ -37,7 +38,7 @@ public class LeadValidator implements Validator {
 		}
 		
 		if(leadRecorderVO.getCheckOutDate().compareTo(leadRecorderVO.getCheckInDate()) <0) {
-			errors.rejectValue("checkOutEndDate", "stay.start.end.error");
+			errors.rejectValue("checkOutDate", "stay.start.end.error");
 		}
 		
 	}

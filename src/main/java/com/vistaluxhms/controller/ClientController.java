@@ -271,6 +271,7 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
         for (ClientEntity entity : entityList) {
             if (entity.getClientName().toLowerCase().contains(clientName.toLowerCase())) {
                 ClientEntityDTO clientEntityDTO = new ClientEntityDTO(entity);
+                clientEntityDTO.setSalesPartnerName(salesService.findSalesPartnerById(entity.getSalesPartner().getSalesPartnerId()).getSalesPartnerShortName());
                 result.add(clientEntityDTO);
             }
         }

@@ -25,9 +25,6 @@ public class LeadEntity {
     @JoinColumn(name = "clientId", nullable = false)
     protected ClientEntity client;
 
-    @ManyToOne
-    @JoinColumn(name = "leadSource", nullable = false)
-    protected SalesPartnerEntity leadSource;
 
     @ManyToMany(targetEntity = AshokaTeam.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "leads_team_map",
@@ -46,10 +43,6 @@ public class LeadEntity {
 
     @Column(name = "compChild")
     protected int compChild;
-
-    @Column(name = "ageInfoRemarks")
-    protected String ageInfoRemarks;
-
 
 
     @Column(name = "clientRemarks")
@@ -107,13 +100,11 @@ public class LeadEntity {
 
     public LeadEntity(LeadEntityDTO leadRecorderObj) {
         //this.client = leadRecorderObj.getClient();
-        this.leadSource = leadRecorderObj.getLeadSource();
         //this.team = leadRecorderObj.getTeam();
         this.adults = leadRecorderObj.getAdults();
         this.cwb = leadRecorderObj.getCwb();
         this.cnb = leadRecorderObj.getCnb();
         this.compChild = leadRecorderObj.getCompChild();
-        this.ageInfoRemarks = leadRecorderObj.getAgeInfoRemarks();
         this.clientRemarks = leadRecorderObj.getClientRemarks();
         this.internalRemarks = leadRecorderObj.getInternalRemarks();
         this.checkInDate = leadRecorderObj.getCheckInDate();
@@ -148,13 +139,6 @@ public class LeadEntity {
         this.client = client;
     }
 
-    public SalesPartnerEntity getLeadSource() {
-        return leadSource;
-    }
-
-    public void setLeadSource(SalesPartnerEntity leadSource) {
-        this.leadSource = leadSource;
-    }
 
     public int getAdults() {
         return adults;
@@ -186,14 +170,6 @@ public class LeadEntity {
 
     public void setCompChild(int compChild) {
         this.compChild = compChild;
-    }
-
-    public String getAgeInfoRemarks() {
-        return ageInfoRemarks;
-    }
-
-    public void setAgeInfoRemarks(String ageInfoRemarks) {
-        this.ageInfoRemarks = ageInfoRemarks;
     }
 
 

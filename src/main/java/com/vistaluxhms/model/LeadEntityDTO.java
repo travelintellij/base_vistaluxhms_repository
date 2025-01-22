@@ -21,13 +21,11 @@ public class LeadEntityDTO extends LeadEntity {
 
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
            //this.client = leadRecorderObj.getClient();
-           this.leadSource = leadEntity.getLeadSource();
            //this.team = leadRecorderObj.getTeam();
            this.adults = leadEntity.getAdults();
            this.cwb = leadEntity.getCwb();
            this.cnb = leadEntity.getCnb();
            this.compChild = leadEntity.getCompChild();
-           this.ageInfoRemarks = leadEntity.getAgeInfoRemarks();
            this.clientRemarks = leadEntity.getClientRemarks();
            this.internalRemarks = leadEntity.getInternalRemarks();
            this.checkInDate = leadEntity.getCheckInDate();
@@ -114,13 +112,11 @@ public class LeadEntityDTO extends LeadEntity {
                 ", notifyWhatsapp=" + notifyWhatsapp +
                 ", leadId=" + leadId +
                 ", client=" + client +
-                ", leadSource=" + leadSource +
                 ", team=" + team +
                 ", adults=" + adults +
                 ", cwb=" + cwb +
                 ", cnb=" + cnb +
                 ", compChild=" + compChild +
-                ", ageInfoRemarks='" + ageInfoRemarks + '\'' +
                 ", clientRemarks='" + clientRemarks + '\'' +
                 ", internalRemarks='" + internalRemarks + '\'' +
                 ", checkInDate=" + checkInDate +

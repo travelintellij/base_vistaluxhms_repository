@@ -162,4 +162,20 @@ public class ClientEntity {
     public void setB2b(Boolean b2b) {
         this.b2b = b2b;
     }
+
+    @Override
+    public String toString() {
+        return "ClientEntity{" +
+                "clientId=" + clientId +
+                ", clientName='" + clientName + '\'' +
+                ", city=" + city +
+                ", mobile=" + mobile +
+                ", emailId='" + emailId + '\'' +
+                ", reference='" + reference + '\'' +
+                ", salesPartner=" + salesPartner +
+                ", remarks='" + remarks + '\'' +
+                ", active=" + active +
+                ", b2b=" + b2b +
+                '}';
+    }
 }

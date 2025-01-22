@@ -12,14 +12,7 @@
     <h2>New Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
-            <input type="hidden" id="clientId" name="client.clientId" />
-            <div class="form-row">
-                <label for="active-status">Lead Source (Sales Partner) :</label>
-               <form:select path="leadSource" required="required" style="width:20%">
-                   <form:options items="${SALES_PARTNER_MAP}" />
-               </form:select>
-            </div>
-
+            <input type="hidden" id="clientId" name="client.clientId" value="${LEAD_OBJ.client.clientId}" />
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">Lead Id</label>
@@ -98,7 +91,7 @@
                  </div>
                   <div class="form-cell">
                      <label for="field8">Check Out Date</label>
-                     <form:input path="checkOutDate" type="date" /> <br>
+                     <form:input path="checkOutDate" type="date" required="required" /> <br>
                      <font color="red">
                          <form:errors path="checkOutDate" cssClass="error" />
                      </font>
@@ -213,26 +206,32 @@
     </div>
 
 <script>
-    $('#clientName').autocomplete({
-        serviceUrl: '${pageContext.request.contextPath}/getClientList',
-        paramName: "clientName",
-        delimiter: ",",
-        onSelect: function (suggestion) {
-            clientID = suggestion.data;
-            id = clientID;
-            jQuery("#clientId").val(clientID);
-            $('input[name=clientId]').val(id);
-            return false;
-        },
-        transformResult: function (response) {
-            return {
-                suggestions: $.map($.parseJSON(response), function (item) {
-                    return { value: item.clientName, data: item.clientId };
-                })
+   $('#clientName').autocomplete({
+       serviceUrl: '${pageContext.request.contextPath}/getClientList',
+       paramName: "clientName",
+       delimiter: ",",
+       onSelect: function (suggestion) {
+           // Set only clientName in the input box
+           $('#clientName').val(suggestion.value.split(" - ")[0]);
 
-            };
-        }
-    });
+           // Set clientId in the hidden input
+           clientID = suggestion.data;
+           jQuery("#clientId").val(clientID);
+           $('input[name=clientId]').val(clientID);
+           return false;
+       },
+       transformResult: function (response) {
+           return {
+               suggestions: $.map($.parseJSON(response), function (item) {
+                   return {
+                       value: item.clientName + " - " + item.salesPartnerName, // Display suggestion as clientName - salesPartnerName
+                       data: item.clientId // Retain clientId for use in onSelect
+                   };
+               })
+           };
+       }
+   });
+
 
 
     </script>
