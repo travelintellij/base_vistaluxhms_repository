@@ -1,5 +1,8 @@
 package com.vistaluxhms.entity;
 
+import com.vistaluxhms.model.LeadEntityDTO;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 
 
@@ -11,20 +14,20 @@ import java.util.Set;
 
 @Entity
 @Table(name = "lead_master")
-public class LeadEntity extends  AuditModel{
+public class LeadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "leadId")
-    private Long leadId;
+    protected Long leadId;
 
     @ManyToOne
     @JoinColumn(name = "clientId", nullable = false)
-    private ClientEntity client;
+    protected ClientEntity client;
 
     @ManyToOne
     @JoinColumn(name = "leadSource", nullable = false)
-    private SalesPartnerEntity leadSource;
+    protected SalesPartnerEntity leadSource;
 
     @ManyToMany(targetEntity = AshokaTeam.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "leads_team_map",
@@ -33,74 +36,100 @@ public class LeadEntity extends  AuditModel{
     protected Set<AshokaTeam> team = new HashSet<AshokaTeam>();
 
     @Column(name = "adults", nullable = false)
-    private int adults;
+    protected int adults;
 
     @Column(name = "CWB")
-    private int cwb; // Children with Bed
+    protected int cwb; // Children with Bed
 
     @Column(name = "CNB")
-    private int cnb; // Children No Bed
+    protected int cnb; // Children No Bed
 
     @Column(name = "compChild")
-    private int compChild;
+    protected int compChild;
 
     @Column(name = "ageInfoRemarks")
-    private String ageInfoRemarks;
+    protected String ageInfoRemarks;
 
-    @Column(name = "tentativeCost")
-    private BigDecimal tentativeCost;
+
 
     @Column(name = "clientRemarks")
-    private String clientRemarks;
+    protected String clientRemarks;
 
     @Column(name = "internalRemarks")
-    private String internalRemarks;
+    protected String internalRemarks;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "checkInDate")
-    private Date checkInDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected Date checkInDate;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "checkOutDate")
-    private Date checkOutDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected Date checkOutDate;
 
     @Column(name = "leadStatus", nullable = false)
-    private int leadStatus;
+    protected int leadStatus;
 
     @Column(name = "resultReason")
-    private Integer resultReason;
+    protected Integer resultReason;
 
     @Column(name = "qualified")
-    private boolean qualified;
+    protected boolean qualified;
 
     @Column(name = "flagged")
-    private boolean flagged;
+    protected boolean flagged;
 
     @Column(name = "FIT")
-    private boolean fit;
+    protected boolean fit=true;
 
     @Column(name = "groupEvent")
-    private boolean groupEvent;
+    protected boolean groupEvent;
 
     @Column(name = "Marriage")
-    private boolean marriage;
+    protected boolean marriage;
 
 
     @Column(name = "Others")
-    private boolean others;
+    protected boolean others;
 
     @Column(name = "leadCreationClientInformed")
-    private boolean leadCreationClientInformed=true;
+    protected boolean leadCreationClientInformed=true;
 
 
     @Column(name = "leadOwner", nullable = false)
-    private int leadOwner;
+    protected int leadOwner;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+
+    public LeadEntity() {
+    }
+
+    public LeadEntity(LeadEntityDTO leadRecorderObj) {
+        //this.client = leadRecorderObj.getClient();
+        this.leadSource = leadRecorderObj.getLeadSource();
+        //this.team = leadRecorderObj.getTeam();
+        this.adults = leadRecorderObj.getAdults();
+        this.cwb = leadRecorderObj.getCwb();
+        this.cnb = leadRecorderObj.getCnb();
+        this.compChild = leadRecorderObj.getCompChild();
+        this.ageInfoRemarks = leadRecorderObj.getAgeInfoRemarks();
+        this.clientRemarks = leadRecorderObj.getClientRemarks();
+        this.internalRemarks = leadRecorderObj.getInternalRemarks();
+        this.checkInDate = leadRecorderObj.getCheckInDate();
+        this.checkOutDate = leadRecorderObj.getCheckOutDate();
+        this.leadStatus = leadRecorderObj.getLeadStatus();
+        this.resultReason = leadRecorderObj.getResultReason();
+        this.qualified = leadRecorderObj.isQualified();
+        this.flagged = leadRecorderObj.isFlagged();
+        this.fit = leadRecorderObj.isFit();
+        this.groupEvent = leadRecorderObj.isGroupEvent();
+        this.marriage = leadRecorderObj.isMarriage();
+        this.others = leadRecorderObj.isOthers();
+        this.leadCreationClientInformed = leadRecorderObj.isLeadCreationClientInformed();
+        this.leadOwner = leadRecorderObj.getLeadOwner();
+    }
+
 
     // Getters and Setters
     public Long getLeadId() {
@@ -167,13 +196,6 @@ public class LeadEntity extends  AuditModel{
         this.ageInfoRemarks = ageInfoRemarks;
     }
 
-    public BigDecimal getTentativeCost() {
-        return tentativeCost;
-    }
-
-    public void setTentativeCost(BigDecimal tentativeCost) {
-        this.tentativeCost = tentativeCost;
-    }
 
     public String getClientRemarks() {
         return clientRemarks;
@@ -281,9 +303,7 @@ public class LeadEntity extends  AuditModel{
         this.leadCreationClientInformed = leadCreationClientInformed;
     }
 
-   public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+
 
 
     public Set<AshokaTeam> getTeam() {

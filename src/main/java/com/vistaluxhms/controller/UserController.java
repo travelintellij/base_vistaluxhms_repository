@@ -107,10 +107,7 @@ public class UserController {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
         //implement the validation rule here.
-
         userValidator.validate(userDTO,result);
-        System.out.println("User Details are " + userDTO);
-
         if (result.hasErrors()) {
             // If there are validation errors, return the form view with errors
             modelView = view_add_user_form(userDTO, result);

@@ -12,7 +12,14 @@
     <h2>New Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
-            <input type="hidden" id="clientId" name="clientId" />
+            <input type="hidden" id="clientId" name="client.clientId" />
+            <div class="form-row">
+                <label for="active-status">Lead Source (Sales Partner) :</label>
+               <form:select path="leadSource" required="required" style="width:20%">
+                   <form:options items="${SALES_PARTNER_MAP}" />
+               </form:select>
+            </div>
+
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">Lead Id</label>
@@ -59,14 +66,14 @@
                 <div class="form-table">
                 <div class="form-cell" >
                     <label for="field5">Adults</label>
-                    <form:input path="adults" required="required" /> <br>
+                    <form:input path="adults" type="number" required="required" min="1" /> <br>
                     <font color="red">
                         <form:errors path="adults" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
                     <label for="field6">Child With Bed</label>
-                    <form:input path="cwb" required="required" />
+                    <form:input path="cwb" type="number" required="required" />
                     <font color="red">
                         <form:errors path="cwb" cssClass="error" />
                     </font>
@@ -130,8 +137,11 @@
             </div>
 
            <div class="form-table">
-<div class="form-cell">
-<label for="b2b-client">Query Type:</label>
+        <div class="form-cell">
+            <font color="red">
+                <form:errors path="minOneserviceError" cssClass="error" />
+            </font>
+            <label for="b2b-client">Query Type:</label>
                  <div class="checkbox-container">
                      <div class="checkbox-item">
                          <form:checkbox path="fit" id="fit" />
@@ -208,8 +218,8 @@
         paramName: "clientName",
         delimiter: ",",
         onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
+            clientID = suggestion.data;
+            id = clientID;
             jQuery("#clientId").val(clientID);
             $('input[name=clientId]').val(id);
             return false;

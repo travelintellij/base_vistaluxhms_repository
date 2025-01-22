@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -48,9 +48,9 @@ CREATE TABLE `ashokateam` (
   `accountExpired` tinyint DEFAULT '0',
   `accountLocked` tinyint DEFAULT '0',
   `credentialsExpired` tinyint DEFAULT '0',
-  `deleted` tinyint DEFAULT NULL,
+  `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner','Confirmed','First',450000,NULL,NULL,NULL,NULL,'sushil@vistaluxhotel.com',0,NULL,NULL,NULL,NULL,NULL,1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@udanchoo.com',NULL,NULL,'sushil@vistaluxhotel.com',0,NULL,NULL,NULL,NULL,'',1,0,0,0,0),(13,'Wasim','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puri',9999449267,'Partner',NULL,NULL,0,'1977-12-16','sushil@vistaluxhotel.com',NULL,NULL,'sushil.chugh@gmail.com',9999441267,NULL,NULL,NULL,NULL,'I am proud of you user. You rock. ',1,0,0,0,0),(14,'Sushil3','$2a$10$2mo3JX/Th08K6lpp1fkx1eimparjm.tC.Cv/eUqfGD.2fK0mTPjhO','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,1,0,0),(15,'Sushil3','$2a$10$M2sHZQ.LMqShWQe.QfcQROdG8pxfrcKXp1deTOMQGSVA/tSWIBbwq','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,0,0,0),(16,'Sushil4','$2a$10$B1aJH8A5KvMXDDgKRYvr7.qK6Fp6ONzhhAZEhNHWreJ53Khw7Iyz6','sushil 4 chugh','fundu',9999999999,'founder',NULL,NULL,0,'2020-12-12','sus@gmail.com',NULL,NULL,'persna@gmail.com',9999999999,NULL,NULL,NULL,NULL,'asdgag',0,0,0,0,0),(17,'guru','$2a$10$ULQWB5xKtS/Tbu3hPzb8AeQFFmU.7JJX26/5GXF2BVfMZ7UcfReua','guru chugh','tihar',9999999999,'furu guru',NULL,NULL,0,'2009-12-12','guru@gmail.com',NULL,NULL,'persu@gmail.com',9999999999,NULL,NULL,NULL,NULL,'check it out. ',0,0,0,0,0),(18,'ndps','$2a$10$UhY8sEWIigBQCqvyRnjt3.YKO9OngtETkNEce1GvrLUv9HxdgtlES','NPPS Chugh','chalo ji',9090909090,'perfectionist',NULL,NULL,0,'2009-10-10','ndps@gmail.com',NULL,NULL,'ndps@gil.com',8989898989,NULL,NULL,NULL,NULL,'adsga',0,0,0,0,0),(19,'udanchoo','$2a$10$r4J8rLihfdPQIEQR/C7Di.2SKFytXAJtd91LeTs7Pbx6WaEGpLaRu','UdanChoo Tourism LLP','vikas puri',9999446267,'founder',NULL,NULL,0,'1977-12-16','sales@udanchoo.com','2025-12-10 00:00:00',NULL,'sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,'perfect execution. ',1,0,0,0,0),(20,'s4solvents','$2a$10$VjDvxmncS24fQZW5K9bycOshG/bh.0FHmFwS7jYOoNNnCambP0jDu','S4 Solvents Group','',9898989898,'asdg',NULL,NULL,0,'2025-01-01','sanjy@sanju.com',NULL,NULL,'sushil@sushil.com',0,NULL,NULL,NULL,NULL,'',0,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ CREATE TABLE `ashokateam_role` (
   KEY `FK_ROLE_ID_idx` (`roleId`),
   CONSTRAINT `FK_ROLE_ID` FOREIGN KEY (`roleId`) REFERENCES `role` (`roleId`),
   CONSTRAINT `FK_USR_ID_RL_MAP` FOREIGN KEY (`userId`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `ashokateam_role` (
 
 LOCK TABLES `ashokateam_role` WRITE;
 /*!40000 ALTER TABLE `ashokateam_role` DISABLE KEYS */;
-INSERT INTO `ashokateam_role` VALUES (1,1,1);
+INSERT INTO `ashokateam_role` VALUES (1,1,1),(269,14,1),(271,15,2),(272,16,1),(273,17,1),(274,18,1),(276,13,2),(277,20,2),(278,19,2);
 /*!40000 ALTER TABLE `ashokateam_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,8 +173,84 @@ CREATE TABLE `hibernate_sequence` (
 
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (13);
+INSERT INTO `hibernate_sequence` VALUES (21);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lead_master`
+--
+
+DROP TABLE IF EXISTS `lead_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lead_master` (
+  `leadId` bigint NOT NULL AUTO_INCREMENT,
+  `clientId` int NOT NULL,
+  `leadSource` bigint NOT NULL,
+  `adults` int NOT NULL,
+  `CWB` int DEFAULT '0',
+  `CNB` int DEFAULT '0',
+  `compChild` int DEFAULT '0',
+  `clientRemarks` varchar(500) DEFAULT NULL,
+  `internalRemarks` varchar(500) DEFAULT NULL,
+  `checkInDate` date DEFAULT NULL,
+  `checkOutDate` date DEFAULT NULL,
+  `leadStatus` int NOT NULL,
+  `resultReason` int DEFAULT NULL,
+  `qualified` tinyint(1) DEFAULT '0',
+  `flagged` tinyint(1) DEFAULT '0',
+  `FIT` tinyint(1) DEFAULT '0',
+  `groupEvent` tinyint(1) DEFAULT '0',
+  `Marriage` tinyint(1) DEFAULT '0',
+  `Others` tinyint(1) DEFAULT '0',
+  `leadCreationClientInformed` tinyint(1) DEFAULT '0',
+  `leadOwner` int DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`leadId`),
+  KEY `fk_client` (`clientId`),
+  KEY `fk_sales_partner` (`leadSource`),
+  KEY `fk_lead_owner_user_idx` (`leadOwner`),
+  CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
+  CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`),
+  CONSTRAINT `fk_sales_partner` FOREIGN KEY (`leadSource`) REFERENCES `salespartner` (`salesPartnerId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lead_master`
+--
+
+LOCK TABLES `lead_master` WRITE;
+/*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
+INSERT INTO `lead_master` VALUES (2,3,2,1,2,2,1,'asdgg','erhdfsjsd','2025-01-28','2025-01-30',101,NULL,1,0,1,0,1,0,1,1,'2025-01-23 21:53:29','2025-01-23 21:53:29');
+/*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `leads_team_map`
+--
+
+DROP TABLE IF EXISTS `leads_team_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `leads_team_map` (
+  `leadId` bigint NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`leadId`,`userId`),
+  KEY `USR_LEAD_FK_idx` (`userId`),
+  CONSTRAINT `LEAD_USR_FK` FOREIGN KEY (`leadId`) REFERENCES `lead_master` (`leadId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `leads_team_map`
+--
+
+LOCK TABLES `leads_team_map` WRITE;
+/*!40000 ALTER TABLE `leads_team_map` DISABLE KEYS */;
+/*!40000 ALTER TABLE `leads_team_map` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -265,6 +341,34 @@ LOCK TABLES `salespartner` WRITE;
 INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',1,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-01-10 03:22:40'),(3,'udanchoo back','udanchoo tourism',9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',0,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28',NULL),(7,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38');
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `workload_status`
+--
+
+DROP TABLE IF EXISTS `workload_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `workload_status` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `workloadStatusId` int NOT NULL,
+  `workloadStatusObj` varchar(15) DEFAULT NULL,
+  `workloadStatusObjType` varchar(45) DEFAULT NULL,
+  `workloadStatusName` varchar(50) DEFAULT NULL,
+  `active` tinyint DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `workload_status`
+--
+
+LOCK TABLES `workload_status` WRITE;
+/*!40000 ALTER TABLE `workload_status` DISABLE KEYS */;
+INSERT INTO `workload_status` VALUES (1,101,'LEAD_STATUS','LEAD_STATUS','Open',1),(2,102,'LEAD_STATUS','LEAD_STATUS','Work In Progress',1),(3,103,'LEAD_STATUS','LEAD_STATUS','Closed',1);
+/*!40000 ALTER TABLE `workload_status` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -275,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-12 14:35:24
+-- Dump completed on 2025-01-23 22:07:50

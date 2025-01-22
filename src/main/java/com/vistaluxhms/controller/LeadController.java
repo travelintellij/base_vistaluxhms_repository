@@ -2,17 +2,16 @@ package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
+import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.LeadEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.model.WorkLoadStatusVO;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
-import com.vistaluxhms.services.ClientServicesImpl;
-import com.vistaluxhms.services.SalesRelatesServicesImpl;
-import com.vistaluxhms.services.UserDetailsServiceImpl;
-import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
+import com.vistaluxhms.validator.LeadValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +54,12 @@ public class LeadController {
 
     @Autowired
     SalesRelatesServicesImpl salesService;
+
+    @Autowired
+    LeadValidator leadValidator;
+
+    @Autowired
+    LeadServicesImpl leadService;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -86,33 +93,65 @@ public class LeadController {
         return modelView;
     }
 
-    /*
-    @PostMapping(value="create_create_client")
-    public ModelAndView create_create_client(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+    @Transactional
+    @PostMapping("create_create_lead")
+    public ModelAndView create_create_lead(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,  BindingResult result,final RedirectAttributes redirectAttrib ) {
+        UserDetailsObj userObj = getLoggedInUser();
+        //leadRecorderObj.setLeadStatus(UdanChooConstants.LEAD_CLOSE_REASON.get(UdanChooConstants.LEAD_NEW));
+        System.out.println(leadRecorderObj);
+        if(leadRecorderObj.getLeadOwner()==0) {
+            leadRecorderObj.setLeadOwner(userObj.getUserId());
+        }
         ModelAndView modelView = new ModelAndView();
-        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
-            result.rejectValue("cityName", "city.error");
-        }
-        if (result.hasErrors()) {
-            // If there are validation errors, return the form view with errors
-            modelView = view_add_lead_form(clientEntityDto, result);
-        } else {
-            City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
-            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(clientEntityDto.getSalesPartner().getSalesPartnerId());
-            ClientEntity clientEntity = new ClientEntity(clientEntityDto);
-            clientEntity.setCity(cityEntity);
-            clientEntity.setSalesPartner(salesPartnerEntity);
-            clientService.saveClient(clientEntity);
-            redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
-            modelView.setViewName("redirect:view_clients_list");
-        }
+        leadValidator.validate(leadRecorderObj, result);
 
+        if(result.hasErrors()) {
+            modelView = view_add_lead_form(leadRecorderObj, result);
+            return modelView;
+        }else {
+            LeadEntity leadEntity = new LeadEntity(leadRecorderObj);
+            ClientEntity clientEntity = clientService.findClientById(leadRecorderObj.getClient().getClientId());
+            leadEntity.setClient(clientEntity);
+            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(leadRecorderObj.getLeadSource().getSalesPartnerId());
+            leadEntity.setLeadSource(salesPartnerEntity);
+            leadService.saveLead(leadEntity);
+            leadRecorderObj.setLeadId(leadEntity.getLeadId());
+            redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
+            modelView.setViewName("redirect:view_add_lead_form?leadId="+leadEntity.getLeadId());
+            if(leadRecorderObj.isLeadCreationClientInformed()) {
+                System.out.println("Lead Creation Client Informed");
+                //notifyLeadCreationTargetAudience(leadRecorderObj,"LeadCreateConfirmation.ftl",true,true);
+                //notifyLeadCreationSms(leadRecorderObj);
+            }
+            //write email code here.
+        }
         return modelView;
     }
 
+    /*
+    private int notifyLeadCreationSms(TgLeadsRecorderVO leadRecorderObj) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ClientObj client = clientService.find_ClientBy_Id(leadRecorderObj.getContactId());
+        Map<String, Object> smsValuesMap=new HashMap<String, Object>();
+        smsValuesMap.put("CONTACT_NAME",client.getClientName());
+        smsValuesMap.put("QueryId","Q-"+ leadRecorderObj.getLeadId()+ "-" + leadRecorderObj.getLeadSourceShortName());
+        smsValuesMap.put("COMPANY_NAME",COMPANY_NAME);
+        smsValuesMap.put("USER_NAME",userObj.getName());
+        smsValuesMap.put("USER_MOBILE",userObj.getMobile());
 
-@RequestMapping("view_clients_list")
+        String message = UdanChooUtil.notificationMessagesList().getProperty(UdanChooConstants.QUERY_REGISTRATION_MSG);
+        SMS smsMessage = new SMS();
+        smsMessage.setTo(client.getMobile());
+        smsMessage.setMessage(message);
+        int returnCode =reminderService.sendSms(String.valueOf(smsMessage.getTo()),smsMessage.getMessage());
+        return returnCode;
+    }
+
+
+    /*
+
+
+    @RequestMapping("view_clients_list")
 public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,@RequestParam(value = "page", defaultValue = "0") int page,
                                       @RequestParam(value = "size", defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize) {
 

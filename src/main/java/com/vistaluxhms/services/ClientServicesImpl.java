@@ -145,4 +145,8 @@ public class ClientServicesImpl {
 		return listClients;
 	}
 
+	public boolean existsByClientIdAndClientName(long clientId, String clientName) {
+		return clientRepository.existsByclientIdAndClientName(clientId, clientName);
+	}
+
 }

@@ -12,4 +12,6 @@ import java.util.List;
 public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long>, JpaSpecificationExecutor<ClientEntity> {
     @Query("FROM ClientEntity a WHERE a.active=true")
     List<ClientEntity> findAllActiveClients();
+
+    boolean existsByclientIdAndClientName(long clientId, String clientName);
 }
