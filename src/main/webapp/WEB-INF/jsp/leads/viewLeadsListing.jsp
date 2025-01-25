@@ -14,21 +14,31 @@
     <form:form modelAttribute="LEAD_OBJ" action="view_leads_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="clientId">Lead ID:</label>
-                <form:input path="leadId" name="clientId" style="width:130px;" />
+                <label for="leadId">Lead ID:</label>
+                <form:input path="leadId" name="leadId" style="width:130px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="clientName">Client Name:</label>
                 <form:input path="clientName" name="clientName" style="width:180px;" />
             </div>
+
+            <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="city">City:</label>
-                <form:input path="cityName" name="cityName" style="width:200px;" />
-                 <input type="hidden" id="destinationId" name="city.destinationId" value="${CLIENT_OBJ.city.destinationId}" />
-                <font color="red">
-                    <form:errors path="cityName" cssClass="error" />
-                </font>
+                <label for="city">Lead Owner:</label>
+                 <form:select path="leadOwner" required="required" style="width:90%">
+                    <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
+                        <c:if test="${userMap.key eq userId }">
+                            <option class="service-small" value="${userMap.key}" selected>
+                                ${userMap.value}</option>
+                        </c:if>
+                        <c:if test="${userMap.key ne userId }">
+                            <option class="service-small" value="${userMap.key}">
+                                ${userMap.value}</option>
+                        </c:if>
+                    </c:forEach>
+                </form:select>
             </div>
+            </sec:authorize>
             <div class="form-group" style="flex: 1; min-width: 200px;">
                 <label for="salespartner">Sales Partner:</label>
                   <form:select id="salesPartnerSelect" path="salesPartner.salesPartnerId">
@@ -56,15 +66,32 @@
                </div>
            </div>
 
-            <div class="form-group" style="flex: 1; min-width: 200px;">
-                  <label for="active">Active:</label>
-                  <form:select path="active" name="active">
-                      <option value="">--Select--</option>
-                      <option value="true" ${CLIENT_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
-                      <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
-                  </form:select>
+            <div class="checkbox-container">
+                <div class="checkbox-item">
+                    <form:checkbox path="qualified" id="fit" />
+                    <label for="fit">Qualified</label>
+                </div>
+                <div class="checkbox-item">
+                    <form:checkbox path="flagged" id="fit" />
+                    <label for="fit">Flagged</label>
+                </div>
             </div>
-
+            <div class="form-group" style="flex: 1; min-width: 250px;">
+                <label for="b2b-client">Lead Status: </label>
+                <form:select path="leadStatus" class="inf">
+                    <form:option value="0" label="*** All Leads ***" class="service-small"/>
+                    <form:option value="200" label="*** All Open Leads ***" class="service-small"/>
+                    <form:option value="100" label="*** All Closed ***" class="service-small"/>
+                    <form:options items = "${LEAD_STATUS_MAP}" class="service-small" />
+                </form:select>
+            <div>
+            <div class="form-group" style="flex: 1; min-width: 250px;">
+                <label for="b2b-client">Lead Status: </label>
+                <form:select path="dateCriteria" class="dsc">
+                    <form:option value="0" label="Select Date Criteria" class="service-small"/>
+                    <form:option value="1" label="Creation Date" class="service-small"/>
+                    <form:option value="2" label="Travel Date" class="service-small"/>
+                </form:select>
 
         <div class="form-actions" style="flex: 1; min-width: 200px;">
             <button type="submit" class="apply-filter-btn">Apply Filter</button>
