@@ -269,6 +269,8 @@ public class LeadController {
             LeadEntity leadEntity = (LeadEntity) filteredLeadsIterator.next();
             LeadEntityDTO leadsVO =new LeadEntityDTO();
             leadsVO.updateLeadVoFromEntity(leadEntity);
+            leadsVO.setClientName(clientService.findClientById(leadEntity.getClient().getClientId()).getClientName());
+            leadsVO.setLeadOwnerName(userDetailsService.findUserByID(leadEntity.getLeadOwner()).getUsername());
             filteredLeadsVoList.add(leadsVO);
         }
         return filteredLeadsVoList;

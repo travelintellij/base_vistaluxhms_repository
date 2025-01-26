@@ -21,11 +21,13 @@ public class LeadEntityDTO extends LeadEntity {
 
     public boolean b2b;
     public String statusName;
+    public String leadOwnerName;
 
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
            //this.client = leadRecorderObj.getClient();
            //this.team = leadRecorderObj.getTeam();
-           this.adults = leadEntity.getAdults();
+       this.leadId=  leadEntity.getLeadId();
+       this.adults = leadEntity.getAdults();
            this.cwb = leadEntity.getCwb();
            this.cnb = leadEntity.getCnb();
            this.compChild = leadEntity.getCompChild();
@@ -151,5 +153,13 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public String getLeadOwnerName() {
+        return leadOwnerName;
+    }
+
+    public void setLeadOwnerName(String leadOwnerName) {
+        this.leadOwnerName = leadOwnerName;
     }
 }

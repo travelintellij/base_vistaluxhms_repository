@@ -168,7 +168,7 @@
                     <td>${leadRec.checkOutDate}</td>
                     <td>${leadRec.b2b ? "B2B" : "B2C"}</td>
                     <td>${leadRec.statusName}</td>
-                    <td>${leadRec.leadOwner}</td>
+                    <td>${leadRec.leadOwnerName}</td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="clientId" value="${clientRec.clientId}" />
