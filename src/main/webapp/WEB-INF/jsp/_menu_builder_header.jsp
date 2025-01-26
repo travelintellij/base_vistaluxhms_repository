@@ -46,7 +46,7 @@ username = "Guest";
                  <ul class="submenu">
                      <li><a href="view_add_lead_form">New Lead</a></li>
                      <li>
-                         <a href="view_leads_list">Lead Management</a>
+                         <a href="view_filter_leads">Lead Management</a>
                      </li>
                  </ul>
              </li>

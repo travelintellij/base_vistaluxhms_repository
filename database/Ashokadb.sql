@@ -352,6 +352,7 @@ CREATE TABLE `workload_status` (
   `workloadStatusObj` varchar(15) DEFAULT NULL,
   `workloadStatusObjType` varchar(45) DEFAULT NULL,
   `workloadStatusName` varchar(50) DEFAULT NULL,
+  `workloadCategory` varchar(45) DEFAULT NULL,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -363,7 +364,7 @@ CREATE TABLE `workload_status` (
 
 LOCK TABLES `workload_status` WRITE;
 /*!40000 ALTER TABLE `workload_status` DISABLE KEYS */;
-INSERT INTO `workload_status` VALUES (1,101,'LEAD_STATUS','LEAD_STATUS','Open',1),(2,102,'LEAD_STATUS','LEAD_STATUS','Work In Progress',1),(3,103,'LEAD_STATUS','LEAD_STATUS','Closed',1);
+INSERT INTO `workload_status` VALUES (1,101,'LEAD_STATUS','LEAD_STATUS','Open',NULL,1),(2,102,'LEAD_STATUS','LEAD_STATUS','Work In Progress',NULL,1),(3,103,'LEAD_STATUS','LEAD_STATUS','Closed',NULL,1);
 /*!40000 ALTER TABLE `workload_status` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -376,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-25  7:55:34
+-- Dump completed on 2025-01-25 19:50:59
