@@ -5,6 +5,7 @@ import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.FilterLeadObj;
 import com.vistaluxhms.repository.ClientEntityRepository;
 import com.vistaluxhms.repository.LeadEntityRepository;
+import com.vistaluxhms.repository.SalesPartnerEntityRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class LeadServicesImpl {
 			public Predicate toPredicate(Root<LeadEntity> leadsRootEntity, CriteriaQuery< ?> query, CriteriaBuilder criteriaBuilder) {
 				//CriteriaQuery<Udn_Deals_Recorder_Entity> criteriaQueryDeal = criteriaBuilder.createQuery(Udn_Deals_Recorder_Entity.class);
 				List<Predicate> predicates = new ArrayList<>();
+
+				Join<LeadEntity, ClientEntityRepository> clientJoin = leadsRootEntity.join("client", JoinType.LEFT);
+				Join<ClientEntity, SalesPartnerEntity> salesPartnerClientJoin = clientJoin.join("salesPartner", JoinType.LEFT);
+
 				//if(!(isAdmin||isLeadAdmin)) {
 				query.distinct(true);
 				if(leadOwner!=0) {
@@ -90,9 +95,19 @@ public class LeadServicesImpl {
 					}else {
 						predicates.add(criteriaBuilder.greaterThanOrEqualTo(leadsRootEntity.get("createdAt"),criteriaDate));
 					}
-					if(filterLeadObj.getClientId()!=0) {
-						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("contactId"), filterLeadObj.getClientId()));
+					if (filterLeadObj.getClientName() != null && !filterLeadObj.getClientName().trim().isEmpty()) {
+						predicates.add(criteriaBuilder.like(
+								criteriaBuilder.lower(clientJoin.get("clientName")),
+								"%" + filterLeadObj.getClientName().toLowerCase() + "%"
+						));
 					}
+
+
+					if (filterLeadObj.getSalesPartnerId() != null && filterLeadObj.getSalesPartnerId() > 0) {
+						// Add predicate for salesPartnerId
+						predicates.add(criteriaBuilder.equal(salesPartnerClientJoin.get("salesPartnerId"), filterLeadObj.getSalesPartnerId()));
+					}
+
 					if(filterLeadObj.getSource()!=0) {
 						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("source"), filterLeadObj.getSource()));
 					}
@@ -112,10 +127,13 @@ public class LeadServicesImpl {
 						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadSource"), filterLeadObj.getLeadSource()));
 					}
 					if(filterLeadObj.isQualified()) {
-						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("isQualified"), filterLeadObj.isQualified()));
+						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("qualified"), filterLeadObj.isQualified()));
 					}
 					if(filterLeadObj.isFlagged()) {
-						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("isFlagged"), filterLeadObj.isFlagged()));
+						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("flagged"), filterLeadObj.isFlagged()));
+					}
+					if(filterLeadObj.getB2b()!=null) {
+						predicates.add(criteriaBuilder.equal(clientJoin.get("b2b"), filterLeadObj.getB2b()));
 					}
 				}
 				else {

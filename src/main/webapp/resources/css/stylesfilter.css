@@ -403,3 +403,67 @@ body {
             border: none;
             cursor: pointer;
         }
+
+ /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table Header */
+    table thead {
+        background-color: #4CAF50; /* Green background */
+        color: white;
+        text-align: left;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    table thead th {
+        padding: 12px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    /* Table Rows */
+    table tbody tr {
+        background-color: #f9f9f9; /* Light gray */
+        transition: background-color 0.3s ease;
+    }
+
+    table tbody tr:hover {
+        background-color: #f1f1f1; /* Slightly darker on hover */
+    }
+
+    table tbody td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        font-size: 18px;
+        color: #333;
+    }
+
+    /* Highlighted Columns */
+    table tbody td:nth-child(2), /* Qualified */
+    table tbody td:nth-child(3) /* Flagged */ {
+        text-align: center;
+    }
+
+    /* Action Column */
+    table tbody td:last-child {
+        text-align: center;
+        color: #007BFF;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        table {
+            font-size: 12px;
+        }
+        table thead th,
+        table tbody td {
+            padding: 8px;
+        }
+    }

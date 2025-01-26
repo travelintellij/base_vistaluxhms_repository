@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<style>
+
+</style>
+
 
 <div class="page-container" style="display: flex; height: 100vh; overflow: hidden;">
     <!-- Sidebar -->
@@ -15,7 +19,7 @@
         <div style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
             <button onclick="toggleSidebar()" style="align-self: flex-end;">&times;</button>
             <h2>Filters</h2>
-            <form:form modelAttribute="FILTER_LEAD_WL" action="view_leads_list">
+            <form:form modelAttribute="FILTER_LEAD_WL" action="view_filter_leads">
                 <!-- Your existing filters -->
                 <!-- Example: -->
                 <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -32,6 +36,7 @@
                     <div class="form-group" style="flex: 1; min-width: 200px;">
                         <label for="leadOwner">Lead Owner:</label>
                         <form:select path="leadOwner" required="required" style="width: 90%;">
+                            <form:option value="0" label="***ALL***" class="service-small" />
                             <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
                                 <option class="service-small" value="${userMap.key}"
                                         ${userMap.key eq userId ? 'selected' : ''}>
@@ -114,7 +119,7 @@
                 <!-- Add other filters here -->
                 <div class="form-group">
                     <button type="submit" class="apply-filter-btn">Apply Filter</button>
-                    <a href="view_clients_list">
+                    <a href="view_filter_leads">
                         <input type="button" class="clear-filter-btn" value="Clear Filter" />
                     </a>
                 </div>
@@ -161,8 +166,13 @@
             <c:forEach items="${leadsList}" var="leadRec">
                 <tr>
                     <td>${leadRec.leadId}</td>
-                    <td>${leadRec.qualified}</td>
-                    <td>${leadRec.flagged}</td>
+                    <td><img src="<%= request.getContextPath() %>/resources/images/${leadRec.qualified ? 'tick.jpg' : 'cross.jpg'}"
+                                 alt="${leadRec.qualified ? 'Qualified' : 'Not Qualified'}"
+                                 style="width: 25px; height: 25px;" />
+                    </td>
+                    <td><img src="<%= request.getContextPath() %>/resources/images/${leadRec.flagged ? 'tick.jpg' : 'cross.jpg'}"
+                                                         alt="${leadRec.flagged ? 'Flagged' : 'Not Flagged'}"
+                                                         style="width: 25px; height: 25px;" /></td>
                     <td>${leadRec.clientName}</td>
                     <td>${leadRec.checkInDate}</td>
                     <td>${leadRec.checkOutDate}</td>

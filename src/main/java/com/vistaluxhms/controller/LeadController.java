@@ -1,5 +1,6 @@
 package com.vistaluxhms.controller;
 
+import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -218,8 +219,6 @@ public class LeadController {
         Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
                 Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
         modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
-
-
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
 
@@ -234,10 +233,7 @@ public class LeadController {
             return modelView;
         }
         UserDetailsObj user = getLoggedInUser();
-
-
         //filterObj.setLeadOwner(user.getUserId());
-
         boolean isAdmin=false;
         if(user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("LEAD_MANAGER"))) {
             isAdmin=true;
@@ -269,8 +265,11 @@ public class LeadController {
             LeadEntity leadEntity = (LeadEntity) filteredLeadsIterator.next();
             LeadEntityDTO leadsVO =new LeadEntityDTO();
             leadsVO.updateLeadVoFromEntity(leadEntity);
-            leadsVO.setClientName(clientService.findClientById(leadEntity.getClient().getClientId()).getClientName());
+            ClientEntity clientEntity =clientService.findClientById(leadEntity.getClient().getClientId());
+            leadsVO.setClientName(clientEntity.getClientName());
+            leadsVO.setB2b(clientEntity.getB2b());
             leadsVO.setLeadOwnerName(userDetailsService.findUserByID(leadEntity.getLeadOwner()).getUsername());
+            leadsVO.setStatusName(commonService.findWorkLoadStatusById(leadEntity.getLeadStatus()).getWorkloadStatusName());
             filteredLeadsVoList.add(leadsVO);
         }
         return filteredLeadsVoList;

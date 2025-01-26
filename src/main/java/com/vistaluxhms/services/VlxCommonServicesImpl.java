@@ -25,6 +25,7 @@ import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.WorkLoadStatusVO;
 import com.vistaluxhms.repository.LeadEntityRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.repository.WorkloadStatusEntityRepository;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class VlxCommonServicesImpl {
 
 	@Autowired
 	LeadEntityRepository leadRepository;
+	@Autowired
+	WorkloadStatusEntityRepository workloadStatusEntityRepository;
+
 	public List<String> findCities(String query) {
 		return cityRepository.findCitiesByQuery("%" + query + "%");
 	}
@@ -130,6 +134,11 @@ public class VlxCommonServicesImpl {
 			}
 		}
 		return workloadStatusVOList;
+	}
+
+	public Workload_Status_Entity findWorkLoadStatusById(int statusId) {
+		System.out.println("Status Id Received is " + statusId);
+		return workloadStatusEntityRepository.findByWorkloadStatusId(statusId).get();
 	}
 
 }
