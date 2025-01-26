@@ -20,6 +20,8 @@ public class WorkLoadStatusVO{
 	private String workloadStatusName;
 	private String workloadStatusActionPending;
 	private String workloadStatusObjType;
+
+	private String workloadCategory;
 	private boolean active=true;
 	
 	
@@ -128,8 +130,12 @@ public class WorkLoadStatusVO{
 	public void setWorkloadStatusObjType(String workloadStatusObjType) {
 		this.workloadStatusObjType = workloadStatusObjType;
 	}
-	
-	
-	
-	
+
+	public String getWorkloadCategory() {
+		return workloadCategory;
+	}
+
+	public void setWorkloadCategory(String workloadCategory) {
+		this.workloadCategory = workloadCategory;
+	}
 }

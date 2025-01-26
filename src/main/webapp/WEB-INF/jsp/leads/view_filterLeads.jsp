@@ -1,0 +1,253 @@
+<jsp:include page="../_menu_builder_header.jsp" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
+<script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+<script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+
+<div class="page-container" style="display: flex; height: 100vh; overflow: hidden;">
+    <!-- Sidebar -->
+    <div id="filter-sidebar" class="filter-sidebar" style="width: 0; transition: 0.3s; overflow-x: hidden; background: #f4f4f4; height: calc(100% - 140px); position: fixed; z-index: 1000; left: 0; top: 90px; box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);">
+        <div style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
+            <button onclick="toggleSidebar()" style="align-self: flex-end;">&times;</button>
+            <h2>Filters</h2>
+            <form:form modelAttribute="FILTER_LEAD_WL" action="view_leads_list">
+                <!-- Your existing filters -->
+                <!-- Example: -->
+                <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <div class="form-group">
+                    <label for="leadId">Lead ID:</label>
+                    <form:input path="leadId" name="leadId" style="width: 100%;" />
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="clientName">Client Name:</label>
+                    <form:input path="clientName" name="clientName" style="width: 180px;" />
+                </div>
+                  <!-- Lead Owner (for ADMIN/LEAD_MANAGER) -->
+                <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
+                    <div class="form-group" style="flex: 1; min-width: 200px;">
+                        <label for="leadOwner">Lead Owner:</label>
+                        <form:select path="leadOwner" required="required" style="width: 90%;">
+                            <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
+                                <option class="service-small" value="${userMap.key}"
+                                        ${userMap.key eq userId ? 'selected' : ''}>
+                                    ${userMap.value}
+                                </option>
+                            </c:forEach>
+                        </form:select>
+                    </div>
+                </sec:authorize>
+            <div class="form-group" style="flex: 1; min-width: 200px;">
+                <label for="salespartner">Sales Partner:</label>
+                <form:select id="salesPartnerSelect" path="salesPartnerId">
+                    <option value="0" selected>-- Please Select --</option>
+                    <form:options items="${SALES_PARTNER_MAP}" />
+                </form:select>
+            </div>
+            <div class="form-group" style="flex: 1; min-width: 250px;">
+                <label for="b2b-client">Client Type:</label>
+                <div class="radio-group-container">
+                    <div class="radio-group">
+                        <label>
+                            <form:radiobutton path="b2b" value="true" />
+                            <span>B2B</span>
+                        </label>
+                        <label>
+                            <form:radiobutton path="b2b" value="false" />
+                            <span>B2C</span>
+                        </label>
+                        <label>
+                            <form:radiobutton path="b2b" value="" />
+                            <span>Both</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+              <div class="form-group" style="flex: 1; min-width: 250px;">
+                <label>Filters:</label>
+                <div class="checkbox-container" >
+                    <div class="checkbox-item">
+                        <form:checkbox path="qualified" id="qualified" />
+                        <label for="qualified">Qualified</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <form:checkbox path="flagged" id="flagged" />
+                        <label for="flagged">Flagged</label>
+                    </div>
+                </div>
+            </div>
+          <div class="form-group" style="flex: 1; min-width: 250px;">
+                <label for="leadStatus">Lead Status:</label>
+                <form:select path="leadStatus" class="inf">
+                    <form:option value="0" label="*** All Leads ***" class="service-small" />
+                    <form:option value="200" label="*** All Open Leads ***" class="service-small" />
+                    <form:option value="100" label="*** All Closed ***" class="service-small" />
+                    <form:options items="${LEAD_STATUS_MAP}" class="service-small" />
+                </form:select>
+            </div>
+             <div class="form-group" style="flex: 1; display: flex; flex-direction: column; gap: 5px;">
+                <label for="dateCriteria">Date Criteria:</label>
+                <form:select path="dateCriteria" class="dsc">
+                    <form:option value="0" label="Select Date Criteria" class="service-small" />
+                    <form:option value="1" label="Creation Date" class="service-small" />
+                    <form:option value="2" label="Travel Date" class="service-small" />
+                </form:select>
+                <div class="form-group" style="display: flex; justify-content: space-between; gap: 10px;">
+                    <div class="form-cell">
+                        <label for="startDate" >From:</label>
+                        <form:input path="startDate" type="date" class="inf" />
+                    </div>
+                    <div class="form-cell">
+                        <label for="endDate" >To:</label>
+                        <form:input path="endDate" type="date" class="inf" />
+                    </div>
+                </div>
+            </div>
+
+
+
+                </div>
+                <!-- Add other filters here -->
+                <div class="form-group">
+                    <button type="submit" class="apply-filter-btn">Apply Filter</button>
+                    <a href="view_clients_list">
+                        <input type="button" class="clear-filter-btn" value="Clear Filter" />
+                    </a>
+                </div>
+            </form:form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" style="margin-left: 0; flex: 1; padding: 15px; overflow-y: auto; transition: 0.3s;">
+        <button onclick="toggleSidebar()" style="margin-bottom: 15px;">Open Filters</button>
+        <!-- Results Section -->
+        <div>
+            <!-- Your results section will go here -->
+            <h2>Results</h2>
+
+<!-- Success/Error Messages -->
+<div align="center" style="margin: 10px 0;">
+    <b>
+        <font color="green">${Success}</font>
+        <font color="red">${Error}</font>
+    </b>
+</div>
+
+
+<!-- Client List Table Section -->
+<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+    <c:set value="${FILTERED_LEADS_RECORDS}" var="leadsList" />
+    <table>
+        <thead>
+            <tr>
+                <th>Lead ID</th>
+                <th>Qualified</th>
+                <th>Flagged</th>
+                <th>Client Name</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Lead Owner</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${leadsList}" var="leadRec">
+                <tr>
+                    <td>${leadRec.leadId}</td>
+                    <td>${leadRec.qualified}</td>
+                    <td>${leadRec.flagged}</td>
+                    <td>${leadRec.clientName}</td>
+                    <td>${leadRec.checkInDate}</td>
+                    <td>${leadRec.checkOutDate}</td>
+                    <td>${leadRec.b2b ? "B2B" : "B2C"}</td>
+                    <td>${leadRec.statusName}</td>
+                    <td>${leadRec.leadOwner}</td>
+                    <td>
+                        <form action="view_client_details" method="POST" style="display:inline;">
+                                <input type="hidden" name="clientId" value="${clientRec.clientId}" />
+                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                        </form>
+                        <form action="view_edit_client_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="clientId" value="${clientRec.clientId}" />
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                        </form>
+
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+
+
+
+<!-- Pagination Section -->
+<div class="pagination-container">
+    <c:choose>
+        <c:when test="${CLIENT_OBJ.city.destinationId == null || CLIENT_OBJ.city.destinationId == 0}">
+            <c:set var="destinationId" value="0" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="destinationId" value="${CLIENT_OBJ.city.destinationId}" />
+        </c:otherwise>
+    </c:choose>
+
+    <c:if test="${not empty CLIENT_FILTERED_LIST}">
+        <c:set var="totalRecords" value="${CLIENT_FILTERED_LIST.size()}" />
+        <c:set var="recordsPerPage" value="${pageSize}" /> <!-- You can adjust this value -->
+
+        <!-- Display pagination links -->
+        <c:if test="${currentPage > 0}">
+            <a class="pagination-btn" href="view_clients_list?page=${currentPage-1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Previous</a>
+        </c:if>
+
+        <c:forEach begin="0" end="${totalPages-1}" var="page">
+            <c:choose>
+                <c:when test="${page == currentPage}">
+                    <span class="pagination-btn active">${page+1}</span> <!-- Current page is highlighted -->
+                </c:when>
+                <c:otherwise>
+                    <a class="pagination-btn" href="view_clients_list?page=${page}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">${page+1} </a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <c:if test="${currentPage+1 < totalPages}">
+               <a class="pagination-btn" href="view_clients_list?page=${currentPage+1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Next</a>
+        </c:if>
+    </c:if>
+</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById("filter-sidebar");
+        const mainContent = document.querySelector(".main-content");
+
+        if (sidebar.style.width === "0px" || sidebar.style.width === "") {
+            sidebar.style.width = "320px"; // Adjust the width as needed
+            mainContent.style.marginLeft = "300px";
+        } else {
+            sidebar.style.width = "0";
+            mainContent.style.marginLeft = "0";
+        }
+    }
+</script>
+
+
+<jsp:include page="../footer.jsp" />

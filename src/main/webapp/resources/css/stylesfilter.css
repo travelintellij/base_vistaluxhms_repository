@@ -351,3 +351,55 @@ body {
             cursor: pointer;
             accent-color: #007bff; /* Stylish blue checkmark */
         }
+
+
+
+        .filter-sidebar {
+            width: 0;
+            transition: width 0.3s ease;
+            overflow-x: hidden;
+            background: #f4f4f4;
+            height: 100%;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content {
+            margin-left: 0;
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .apply-filter-btn {
+            background: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .clear-filter-btn {
+            background: #dc3545;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }

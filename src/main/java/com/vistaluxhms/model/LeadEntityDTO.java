@@ -19,6 +19,9 @@ public class LeadEntityDTO extends LeadEntity {
     public boolean notifySMS;
     public boolean notifyWhatsapp;
 
+    public boolean b2b;
+    public String statusName;
+
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
            //this.client = leadRecorderObj.getClient();
            //this.team = leadRecorderObj.getTeam();
@@ -132,5 +135,21 @@ public class LeadEntityDTO extends LeadEntity {
                 ", leadCreationClientInformed=" + leadCreationClientInformed +
                 ", leadOwner=" + leadOwner +
                 '}';
+    }
+
+    public boolean isB2b() {
+        return b2b;
+    }
+
+    public void setB2b(boolean b2b) {
+        this.b2b = b2b;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

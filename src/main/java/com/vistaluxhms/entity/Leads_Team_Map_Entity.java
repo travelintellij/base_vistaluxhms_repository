@@ -8,7 +8,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ti_leads_team_map")
+@Table(name = "leads_team_map")
 @IdClass(Leads_User_Map_Id.class)
 public class Leads_Team_Map_Entity implements Serializable {
 

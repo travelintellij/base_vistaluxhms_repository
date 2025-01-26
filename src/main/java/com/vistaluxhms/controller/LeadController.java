@@ -17,10 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -210,142 +207,71 @@ public class LeadController {
         return returnCode;
     }
 
-
-    /*
-
-
-    @RequestMapping("view_clients_list")
-public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,@RequestParam(value = "page", defaultValue = "0") int page,
-                                      @RequestParam(value = "size", defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize) {
-
-    UserDetailsObj userObj = getLoggedInUser();
-    ModelAndView modelView = new ModelAndView("admin/client/viewClientListing");
-
-    // Adding user details to the model
-    modelView.addObject("userName", userObj.getUsername());
-    modelView.addObject("Id", userObj.getUserId());
-
-    // Validating if the city exists
-    if(clientEntityDto.getCity() != null && String.valueOf(clientEntityDto.getCity().getDestinationId()).trim().length() != 0
-            && clientEntityDto.getCity().getDestinationId() != 0) {
-        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
-            result.rejectValue("cityName", "city.error");
-        }
-    }
-
-    if (result.hasErrors()) {
-        // Logging the errors
-        for (FieldError fieldError : result.getFieldErrors()) {
-            System.out.println("Field Error: " + fieldError.getField() + " - " + fieldError.getDefaultMessage());
-        }
-        // Return the form view with errors
-        return modelView;
-    } else {
-        // Create PageRequest with pagination
-        Pageable pageable = PageRequest.of(page, pageSize);
-
-        // Get the paginated list of filtered clients
-        Page<ClientEntity> clientFilteredPage = clientService.filterClients(clientEntityDto, pageable);
-
-        // Convert the filtered list to DTOs
-        List<ClientEntityDTO> clientDTOFilteredList = generateClientObj(clientFilteredPage.getContent());
-
-        // Adding filtered clients and pagination details to the model
-        modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
-        modelView.addObject("currentPage", page);
-        modelView.addObject("totalPages", clientFilteredPage.getTotalPages());
-        modelView.addObject("totalClients", clientFilteredPage.getTotalElements());
-        modelView.addObject("pageSize", pageSize);
-
-        modelView.addObject("maxPages", clientFilteredPage.getTotalPages());
-        modelView.addObject("page", page);
-        //modelView.addObject("sortBy", sortBy);
-
-       // modelView.addObject("cityId", searchClientObj.getCityId());
-        //modelView.addObject("active", searchClientObj.isActive());
-
-        // Sales Partner Map for the filter
-        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
-        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
-        modelView.addObject("CLIENT_OBJ", clientEntityDto);
-    }
-
-    return modelView;
-}
-
-    private List<ClientEntityDTO> generateClientObj(List<ClientEntity> listSalesPartner) {
-        List<ClientEntityDTO> salesPartnerVoList = new ArrayList<ClientEntityDTO>();
-        Iterator<ClientEntity> itrClientEntity = listSalesPartner.iterator();
-        while(itrClientEntity.hasNext()) {
-            ClientEntity clientEntity = (ClientEntity) itrClientEntity.next();
-            ClientEntityDTO clientEntityDto;
-            try {
-                clientEntityDto= new ClientEntityDTO();
-                clientEntityDto.updateClientVoFromEntity(clientEntity);
-                clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
-                salesPartnerVoList.add(clientEntityDto);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return salesPartnerVoList;
-    }
-
-    @RequestMapping("view_edit_client_form")
-    public ModelAndView view_edit_client_form(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
-        UserDetailsObj userObj = getLoggedInUser();
-        ClientEntity clientEntity = clientService.findClientById(clientEntityDto.getClientId());
-        clientEntityDto.updateClientVoFromEntity(clientEntity);
-        clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
-        ModelAndView modelView = new ModelAndView("admin/client/Admin_Edit_Client");
-        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
-        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
-        return modelView;
-    }
-
-    @PostMapping(value="edit_edit_client")
-    public ModelAndView edit_edit_client(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,BindingResult result,final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView();
-        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
-            result.rejectValue("cityName", "city.error");
-        }
-        if (result.hasErrors()) {
-            // If there are validation errors, return the form view with errors
-            modelView = view_edit_client_form(clientEntityDto, result);
-        } else {
-            City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
-            SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(clientEntityDto.getSalesPartner().getSalesPartnerId());
-            ClientEntity clientEntity = new ClientEntity(clientEntityDto);
-            clientEntity.setClientId(clientEntityDto.getClientId());
-            clientEntity.setCity(cityEntity);
-            clientEntity.setSalesPartner(salesPartnerEntity);
-            clientService.saveClient(clientEntity);
-            redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
-            modelView.setViewName("redirect:view_clients_list");
-        }
-
-        return modelView;
-    }
-
-    @PostMapping("view_client_details")
-    public ModelAndView view_client_details(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto, BindingResult result) {
-        UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView("admin/client/Admin_View_Client");
-        // Adding user details to the model
-        modelView.addObject("userName", userObj.getUsername());
-        modelView.addObject(
-                "Id", userObj.getUserId());
-        // Filtering sales partners based on the search criteria
-        ClientEntity clientEntity = clientService.findClientById(clientEntityDto.getClientId());
-        clientEntityDto.updateClientVoFromEntity(clientEntity);
-        clientEntityDto.setCityName(commonService.findDestinationById(clientEntity.getCity().getDestinationId()).getCityName());
-        clientEntityDto.setSalesPartnerName(salesService.findSalesPartnerById(clientEntity.getSalesPartner().getSalesPartnerId()).getSalesPartnerShortName());
-        return modelView;
-    }
-
 */
 
+    @RequestMapping(value="view_filter_leads",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView view_filter_leads( @RequestParam(defaultValue = "0") String page,@RequestParam(defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) Integer pageSize, @RequestParam(defaultValue = "CreatedAt") String sortBy,@ModelAttribute("FILTER_LEAD_WL") FilterLeadObj filterObj,BindingResult result) {
+
+        ModelAndView modelView = new ModelAndView("leads/view_filterLeads");
+        //System.out.println(filterObj);
+        List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
+        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
+                Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
+        modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
+
+
+        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
+                Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+
+        //filterLeadValidator.validate(filterObj, result);
+        if(result.hasErrors()) {
+            System.out.println("error is " + result);
+            return modelView;
+        }
+        UserDetailsObj user = getLoggedInUser();
+
+
+        //filterObj.setLeadOwner(user.getUserId());
+
+        boolean isAdmin=false;
+        if(user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("LEAD_MANAGER"))) {
+            isAdmin=true;
+        }
+
+        //System.out.println("Lead Filter Owner is " + filterObj.getLeadOwner());
+
+        if((!isAdmin) && filterObj.getLeadOwner()==0) {
+            filterObj.setLeadOwner(user.getUserId());
+        }
+
+        int pageNum = Integer.parseInt(page);
+        Page<LeadEntity> pageLeadsFilteredRecords = leadService.filterLeads(pageNum, pageSize, filterObj.getLeadOwner(), sortBy, filterObj, isAdmin);
+        List<LeadEntityDTO> filteredLeadsVoList = generateFilteredLeadsVo(pageLeadsFilteredRecords);
+        modelView.addObject("FILTERED_LEADS_RECORDS",filteredLeadsVoList);
+        modelView.addObject("maxPages", pageLeadsFilteredRecords.getTotalPages());
+        modelView.addObject("page", pageNum);
+        modelView.addObject("sortBy", sortBy);
+        modelView.addObject("leadStatus", filterObj.getLeadStatus());
+
+        return modelView;
+    }
+
+    private List<LeadEntityDTO> generateFilteredLeadsVo(Page<LeadEntity> pagedResult) {
+        List<LeadEntityDTO> filteredLeadsVoList = new ArrayList<LeadEntityDTO>();
+        List<LeadEntity> leadsEntityList = pagedResult.getContent();
+        Iterator filteredLeadsIterator = leadsEntityList.iterator();
+        while(filteredLeadsIterator.hasNext()) {
+            LeadEntity leadEntity = (LeadEntity) filteredLeadsIterator.next();
+            LeadEntityDTO leadsVO =new LeadEntityDTO();
+            leadsVO.updateLeadVoFromEntity(leadEntity);
+            filteredLeadsVoList.add(leadsVO);
+        }
+        return filteredLeadsVoList;
+    }
 
 }

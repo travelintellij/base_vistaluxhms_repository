@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "lead_master")
-public class LeadEntity {
+public class LeadEntity extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
