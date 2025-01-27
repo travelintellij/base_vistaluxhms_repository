@@ -10,7 +10,7 @@ import com.vistaluxhms.model.WorkLoadStatusVO;
 
 @Entity
 @Table(name = "workload_status")
-public class Workload_Status_Entity{
+public class Workload_Status_Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(columnDefinition = "DEFAULT 0")
@@ -23,7 +23,8 @@ public class Workload_Status_Entity{
 	private String workloadStatusName;
 
 	private boolean active;
-	
+
+	private int workloadCategory;
 	
 	public Workload_Status_Entity() {
 		
@@ -35,6 +36,7 @@ public class Workload_Status_Entity{
 		workloadStatusObjType=statusVO.getWorkloadStatusObjType();
 		workloadStatusName=statusVO.getWorkloadStatusName();
 		active=statusVO.isActive();
+		workloadCategory=statusVO.getWorkloadCategory();
 			
 	}
 	
@@ -111,7 +113,12 @@ public class Workload_Status_Entity{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
 
+	public int getWorkloadCategory() {
+		return workloadCategory;
+	}
+
+	public void setWorkloadCategory(int workloadCategory) {
+		this.workloadCategory = workloadCategory;
+	}
 }

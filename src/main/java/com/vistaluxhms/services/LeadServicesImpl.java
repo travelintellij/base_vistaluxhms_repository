@@ -51,6 +51,7 @@ public class LeadServicesImpl {
 
 				Join<LeadEntity, ClientEntityRepository> clientJoin = leadsRootEntity.join("client", JoinType.LEFT);
 				Join<ClientEntity, SalesPartnerEntity> salesPartnerClientJoin = clientJoin.join("salesPartner", JoinType.LEFT);
+				Root<Workload_Status_Entity> workloadStatusEntity = query.from(Workload_Status_Entity.class);
 
 				//if(!(isAdmin||isLeadAdmin)) {
 				query.distinct(true);
@@ -112,17 +113,21 @@ public class LeadServicesImpl {
 						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("source"), filterLeadObj.getSource()));
 					}
 
-					/*if((filterLeadObj.getLeadStatus()!=0)&&(filterLeadObj.getLeadStatus()!= VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS)&&(filterLeadObj.getLeadStatus()!=VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS)) {
-						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadStatus"), filterLeadObj.getLeadStatus()));
-					}else if(filterLeadObj.getLeadStatus()==VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS){
-						predicates.add(criteriaBuilder.greaterThan(leadsRootEntity.get("leadStatus"), VistaluxConstants.LEAD_WL_STATUS_THRESHOLD_OPEN));
+
+					if((filterLeadObj.getLeadStatus()!=0)&&(filterLeadObj.getLeadStatus()!= VistaluxConstants.VIEW_ALL_LEADS_WL_STATUS)) {
+						if (filterLeadObj.getLeadStatus() == VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS) {
+							predicates.add(criteriaBuilder.equal(workloadStatusEntity.get("workloadCategory"), VistaluxConstants.VIEW_WL_OPEN));
+							predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadStatus"), workloadStatusEntity.get("workloadStatusId")));
+						} else if (filterLeadObj.getLeadStatus() == VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS) {
+							predicates.add(criteriaBuilder.equal(workloadStatusEntity.get("workloadCategory"), VistaluxConstants.VIEW_WL_CLOSED));
+							predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadStatus"), workloadStatusEntity.get("workloadStatusId")));
+						}
+						else{
+							predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadStatus"), filterLeadObj.getLeadStatus() ));
+						}
 					}
 
-					else if(filterLeadObj.getLeadStatus()==VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS){
-						predicates.add(criteriaBuilder.lessThanOrEqualTo(leadsRootEntity.get("leadStatus"), VistaluxConstants.LEAD_WL_STATUS_THRESHOLD_OPEN));
-					}
 
-					 */
 					if(filterLeadObj.getLeadSource()!=0) {
 						predicates.add(criteriaBuilder.equal(leadsRootEntity.get("leadSource"), filterLeadObj.getLeadSource()));
 					}

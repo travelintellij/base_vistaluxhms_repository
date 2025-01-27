@@ -18,5 +18,8 @@ public interface VistaluxConstants {
     public static String WORKLOAD_LEAD_STATUS = "LEAD_STATUS";
     public static final int VIEW_ALL_OPEN_LEADS_WL_STATUS = 100;
     public static final int VIEW_ALL_CLOSED_LEADS_WL_STATUS = 200;
+    public static final int VIEW_ALL_LEADS_WL_STATUS = 300;
 
+    public static final int VIEW_WL_OPEN=1000;
+    public static final int VIEW_WL_CLOSED=2000;
 }

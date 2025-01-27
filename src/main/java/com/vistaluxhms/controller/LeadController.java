@@ -216,9 +216,29 @@ public class LeadController {
         ModelAndView modelView = new ModelAndView("leads/view_filterLeads");
         //System.out.println(filterObj);
         List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
-        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
+
+        // Create a LinkedHashMap to preserve the insertion order
+        Map<Integer, String> leadStatusMap = new LinkedHashMap<>();
+
+        // Manually put the constants first so they appear at the top
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS, "***All Open Leads***");
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_LEADS_WL_STATUS, "***All Leads***");
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS, "***All Closed Leads***");
+        lead_wl_statusList.stream()
+                .sorted(Comparator.comparing(WorkLoadStatusVO::getWorkloadStatusId)) // Optional: Sort by name if needed
+                .forEach(status -> leadStatusMap.put(status.getWorkloadStatusId(), status.getWorkloadStatusName()));
+
+
+        /*Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
                 Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS,"***All Open Leads***");
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_LEADS_WL_STATUS,"***All Leads***");
+        leadStatusMap.put(VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS,"***All Closed Leads***");
+
+         */
+
         modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
+
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
 

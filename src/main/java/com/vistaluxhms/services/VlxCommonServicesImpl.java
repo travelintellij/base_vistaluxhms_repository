@@ -137,7 +137,6 @@ public class VlxCommonServicesImpl {
 	}
 
 	public Workload_Status_Entity findWorkLoadStatusById(int statusId) {
-		System.out.println("Status Id Received is " + statusId);
 		return workloadStatusEntityRepository.findByWorkloadStatusId(statusId).get();
 	}
 

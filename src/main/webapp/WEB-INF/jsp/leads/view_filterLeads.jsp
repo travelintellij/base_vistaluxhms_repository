@@ -88,9 +88,6 @@
           <div class="form-group" style="flex: 1; min-width: 250px;">
                 <label for="leadStatus">Lead Status:</label>
                 <form:select path="leadStatus" class="inf">
-                    <form:option value="0" label="*** All Leads ***" class="service-small" />
-                    <form:option value="200" label="*** All Open Leads ***" class="service-small" />
-                    <form:option value="100" label="*** All Closed ***" class="service-small" />
                     <form:options items="${LEAD_STATUS_MAP}" class="service-small" />
                 </form:select>
             </div>
