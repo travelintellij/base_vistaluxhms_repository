@@ -96,7 +96,7 @@
                 <form:select path="dateCriteria" class="dsc">
                     <form:option value="0" label="Select Date Criteria" class="service-small" />
                     <form:option value="1" label="Creation Date" class="service-small" />
-                    <form:option value="2" label="Travel Date" class="service-small" />
+                    <form:option value="2" label="Check In Date" class="service-small" />
                 </form:select>
                 <div class="form-group" style="display: flex; justify-content: space-between; gap: 10px;">
                     <div class="form-cell">

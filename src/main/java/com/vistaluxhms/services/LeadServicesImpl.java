@@ -81,21 +81,28 @@ public class LeadServicesImpl {
 							dateCriteria="createdAt";
 						}
 						else {
-							dateCriteria="travelStartDate";
+							dateCriteria="checkInDate";
 						}
 						Date dateTo;
 						Date dateFrom;
 						try {
 							dateTo = new SimpleDateFormat("yyyy-MM-dd").parse(filterLeadObj.getEndDate());
+							Calendar cal = Calendar.getInstance();
+							cal.setTime(dateTo);
+							cal.set(Calendar.HOUR_OF_DAY, 23);
+							cal.set(Calendar.MINUTE, 59);
+							cal.set(Calendar.SECOND, 59);
+							cal.set(Calendar.MILLISECOND, 999);
+							dateTo = cal.getTime();
 							dateFrom=new SimpleDateFormat("yyyy-MM-dd").parse(filterLeadObj.getStartDate());
 							predicates.add(criteriaBuilder.between(leadsRootEntity.get(dateCriteria),dateFrom,dateTo));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}else {
+					}/*else {
 						predicates.add(criteriaBuilder.greaterThanOrEqualTo(leadsRootEntity.get("createdAt"),criteriaDate));
-					}
+					}*/
 					if (filterLeadObj.getClientName() != null && !filterLeadObj.getClientName().trim().isEmpty()) {
 						predicates.add(criteriaBuilder.like(
 								criteriaBuilder.lower(clientJoin.get("clientName")),
