@@ -9,7 +9,75 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 <style>
+.modal {
+	  display: none; /* Hidden by default */
+	  position: fixed; /* Stay in place */
+	  z-index: 1; /* Sit on top */
+	  padding-top: 50px; /* Location of the box */
+	  left: 0;
+	  top: 0;
+	  width: 100%; /* Full width */
+	  height: 100%; /* Full height */
+	  overflow: scroll; /* Enable scroll if needed */
+	  background-color: rgb(0,0,0); /* Fallback color */
+	  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	  border-radius:10px;
+	}
 
+	/* Modal Content */
+	.modal-content {
+	  position: relative;
+	  background-color: #fefefe;
+	  margin: auto;
+	  padding: 0;
+	  border: 1px solid #888;
+	  width: 80%;
+	  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	  -webkit-animation-name: animatetop;
+	  -webkit-animation-duration: 0.4s;
+	  animation-name: animatetop;
+	  animation-duration: 0.4s
+	}
+
+	/* Add Animation */
+	@-webkit-keyframes animatetop {
+	  from {top:-300px; opacity:0}
+	  to {top:0; opacity:1}
+	}
+
+	@keyframes animatetop {
+	  from {top:-300px; opacity:0}
+	  to {top:0; opacity:1}
+	}
+
+	/* The Close Button */
+	.close {
+	  color: white;
+	  float: right;
+	  font-size: 28px;
+	  font-weight: bold;
+	}
+
+	.close:hover,
+	.close:focus {
+	  color: #000;
+	  text-decoration: none;
+	  cursor: pointer;
+	}
+
+	.modal-header {
+	  padding: 2px 16px;
+	  color: white;
+	  background:white;
+	}
+
+	.modal-body {padding: 2px 16px;background:white}
+
+	.modal-footer {
+	  padding: 2px 16px;
+	  background-color: lightblue;
+	  color: white;
+	}
 </style>
 
 
@@ -177,12 +245,12 @@
                     <td>${leadRec.statusName}</td>
                     <td>${leadRec.leadOwnerName}</td>
                     <td>
-                        <form action="view_client_details" method="POST" style="display:inline;">
-                                <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
-                        </form>
-                        <form action="view_edit_client_form" method="POST" style="display:inline;">
-                            <input type="hidden" name="clientId" value="${clientRec.clientId}" />
+                        <a style="cursor: pointer;" id="myBtn[${leadRec.leadId}]" onclick="myLeadDisplay(this)" data-load-url="view_lead_details_modal?leadId=${leadRec.leadId}">
+                            View
+                        </a>
+
+                        <form action="view_edit_lead_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="leadId" value="${clientRec.clientId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>
 
@@ -193,26 +261,25 @@
     </table>
 </div>
 
+ <div id="myModal" class="modal" style="display:none;">
+     <div class="modal-content">
+         <span class="close-btn" onclick="closeModal()">×</span>
+         <div id="modalContent"></div> <!-- This will be populated with the dynamic content -->
+     </div>
+ </div>
+
 
 
 <!-- Pagination Section -->
 <div class="pagination-container">
-    <c:choose>
-        <c:when test="${CLIENT_OBJ.city.destinationId == null || CLIENT_OBJ.city.destinationId == 0}">
-            <c:set var="destinationId" value="0" />
-        </c:when>
-        <c:otherwise>
-            <c:set var="destinationId" value="${CLIENT_OBJ.city.destinationId}" />
-        </c:otherwise>
-    </c:choose>
-
-    <c:if test="${not empty CLIENT_FILTERED_LIST}">
-        <c:set var="totalRecords" value="${CLIENT_FILTERED_LIST.size()}" />
+    <c:if test="${not empty FILTERED_LEADS_RECORDS}">
+        <c:set var="totalRecords" value="${FILTERED_LEADS_RECORDS.size()}" />
         <c:set var="recordsPerPage" value="${pageSize}" /> <!-- You can adjust this value -->
+        <c:set var="queryParams" value="&clientName=${FILTER_LEAD_WL.clientName}&leadOwner=${FILTER_LEAD_WL.leadOwner}&salesPartnerId=${FILTER_LEAD_WL.salesPartnerId}&b2b=${FILTER_LEAD_WL.b2b}&qualified=${FILTER_LEAD_WL.qualified}&flagged=${FILTER_LEAD_WL.flagged}&leadStatus=${FILTER_LEAD_WL.leadStatus}&dateCriteria=${FILTER_LEAD_WL.dateCriteria}&startDate=${FILTER_LEAD_WL.startDate}&endDate=${FILTER_LEAD_WL.endDate}" />
 
-        <!-- Display pagination links -->
+  <!-- Display pagination links -->
         <c:if test="${currentPage > 0}">
-            <a class="pagination-btn" href="view_clients_list?page=${currentPage-1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Previous</a>
+            <a class="pagination-btn" href="view_filter_leads?page=${currentPage-1}${queryParams}">Previous</a>
         </c:if>
 
         <c:forEach begin="0" end="${totalPages-1}" var="page">
@@ -221,14 +288,17 @@
                     <span class="pagination-btn active">${page+1}</span> <!-- Current page is highlighted -->
                 </c:when>
                 <c:otherwise>
-                    <a class="pagination-btn" href="view_clients_list?page=${page}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">${page+1} </a>
+                    <a class="pagination-btn" href="view_filter_leads?page=${page}${queryParams}">${page+1} </a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
 
+
+
         <c:if test="${currentPage+1 < totalPages}">
-               <a class="pagination-btn" href="view_clients_list?page=${currentPage+1}&city.destinationId=${destinationId}&cityName=${CLIENT_OBJ.cityName}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">Next</a>
-        </c:if>
+                      <a class="pagination-btn" href="view_filter_leads?page=${currentPage+1}${queryParams}">Next</a>
+               </c:if>
+
     </c:if>
 </div>
 
@@ -255,6 +325,41 @@
         }
     }
 </script>
+<script>
+    // Function to open the modal and load the content dynamically
+    function myLeadDisplay(element) {
+        // Fetch the URL to load content for the modal
+        var url = element.getAttribute('data-load-url');
 
+        // Use AJAX to load content into the modal
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('modalContent').innerHTML = data;
+                openModal(); // Show the modal after content is loaded
+            })
+            .catch(error => console.error('Error loading modal content:', error));
+    }
+
+    // Function to open the modal
+    function openModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
+
+    // Optionally, close the modal if the user clicks outside of it
+    window.onclick = function(event) {
+        var modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
 
 <jsp:include page="../footer.jsp" />

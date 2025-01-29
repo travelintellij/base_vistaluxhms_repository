@@ -1,0 +1,7522 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+    text-decoration: none;
+    list-style: none;
+    user-select: none;
+    font-size: 17px;
+}
+
+html {
+    min-height: 100%;
+    overflow-y: scroll;
+}
+
+body {
+    min-height: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ########## top header styling ###### */
+header {
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* right: 0; */
+    background: #FFCF53;
+    z-index: 999;
+    padding: 3px 0;
+}
+
+.navbar,
+.insideBottomHeader {
+    padding: 0 10px;
+}
+.navbar{
+	border:"2px solid red"
+}
+
+
+.topHeader {
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;  */
+    padding: 2.5px 0;
+}
+
+.topHeaderLinks {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    padding-bottom: 5px;
+}
+
+.topHeaderLinks li,
+.topHeaderLinks p {
+    margin-left: 10px;
+}
+
+.adminSignOut {
+    color: red;
+    font-weight: bold;
+}
+
+.tophHeaderMainLink p {
+    cursor: pointer;
+}
+
+.topHeaderLinks li a {
+    color: black;
+    cursor: pointer;
+}
+
+.leftSec img {
+    width: 190px;
+}
+
+.homeLink {
+    padding-top: 100px;
+}
+
+.headerCheckbox,
+.hamburgurLines {
+    display: none;
+}
+
+.topHeaderSubMenu {
+    position: absolute;
+    left: 8px;
+    display: none;
+    width: 200px;
+    height: auto;
+    padding: 10px 5px;
+    background: black;
+    color: white;
+    padding-left: -20px;
+    border-radius: 10px;
+}
+
+.topHeaderSubMenu li {
+    margin: 0;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.topHeaderSubMenu li a {
+    color: white;
+    /* padding-bottom: 20px; */
+}
+
+.topHeaderLinks li:hover .topHeaderSubMenu {
+    display: block;
+}
+
+.tophHeaderMainLink {
+    position: relative;
+}
+
+/* ####### bottom header styling ########## */
+
+/* .bottomHeader {
+    height: auto;
+    padding: 7px 0
+} */
+.bottomHeader {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    background: #F8AF51;
+    z-index: 99;
+    padding: 10px 0;
+}
+
+.linkPaddingBottom {
+    padding-bottom: 10px;
+}
+
+.insideBottomHeader {
+    display: flex;
+    /* justify-content: flex-end; */
+    justify-content: space-between;
+}
+
+.bottomSectionHeader {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    padding: 5px 0 2px 0;
+}
+
+.bottomSectionHeader p:hover {
+    cursor: pointer;
+}
+
+a {
+    transition: color 0.2s ease-in-out;
+}
+
+.hoverOnLink:hover {
+    color: #F8AF51;
+}
+
+.bottomSectionHeader li {
+    margin-right: 20px;
+}
+
+.bottomHeaderLinks {
+    position: relative;
+}
+
+.bottomSectionHeaderSubMenu {
+    position: absolute;
+    left: 0;
+    display: none;
+    width: 212px;
+    height: auto;
+    padding: 10px 5px;
+    background: rgb(0, 0, 0);
+    color: white;
+    padding-left: -20px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.bottomSectionHeader li:hover .bottomSectionHeaderSubMenu {
+    display: block;
+}
+
+.bottomSectionHeaderSubMenu li a {
+    color: white;
+}
+
+.signOut {
+    color: black;
+}
+
+.line1 {
+    transform-origin: 0% 0%;
+    transition: all 0.3s ease-in-out;
+}
+
+.line2 {
+    transform-origin: 0% 100%;
+    /* display: none; */
+    transition: all 0.3s ease-in-out;
+}
+
+.line3 {
+    transform-origin: 0% 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+.rightSec input[type="checkbox"]:checked~.hamburgurLines .line1 {
+    transform: rotate(45deg);
+}
+
+.rightSec input[type="checkbox"]:checked~.hamburgurLines .line2 {
+    /* display: none; */
+    transform: scale(0);
+}
+
+.rightSec input[type="checkbox"]:checked~.hamburgurLines .line3 {
+    transform: rotate(-45deg);
+}
+
+/* ############### media queries for header ################ */
+
+@media screen and (max-width:1200px) {
+    .settingIcon {
+        margin-top: 10px;
+    }
+
+    .bottomHeader {
+        position: fixed;
+        top: 95px;
+        left: 0;
+        right: 0;
+        background: #F8AF51;
+        z-index: 99;
+        padding: 5px 0;
+    }
+
+    .leftSec img {
+        width: 300px;
+    }
+
+    .bottomSectionHeaderSubMenu li {
+        margin-bottom: 5px;
+    }
+
+    .bottomSectionHeaderSubMenu {
+        width: 160px;
+    }
+
+    .topHeaderLinks {
+        width: 250px;
+        z-index: 1000;
+        background: #FFCF53;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 30px 20px 0 20px;
+        position: absolute;
+        top: 92px;
+        right: 0;
+        height: 100vh;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .insideBottomHeader {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .headerCheckbox,
+    .hamburgurLines {
+        display: block;
+        width: 50px;
+        height: 40px;
+    }
+
+    .headerCheckbox {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        opacity: 0;
+        z-index: 1002;
+    }
+
+    .hamburgurLines {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        z-index: 1001;
+    }
+
+    .hamburgurLines span {
+        display: inline-block;
+        background: black;
+        width: 100%;
+        height: 4px;
+        border-radius: 5px;
+    }
+
+    .rightSec input[type="checkbox"]:checked~.topHeaderLinks {
+        z-index: 1000;
+        background: #FFCF53;
+        ;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 30px 20px 0 20px;
+        position: absolute;
+        top: 92px;
+        right: 0;
+        height: 100vh;
+        opacity: 1;
+        transform: translateX(0);
+
+    }
+
+    .topHeaderLinks li {
+        /* padding: 20px; */
+        margin: 10px;
+    }
+
+    .tophHeaderMainLink {
+        /* position: relative; */
+        /* border: 2px solid black; */
+        width: 200px;
+        text-align: start;
+    }
+
+    .topHeaderSubMenu {
+        position: absolute;
+        top: 0px;
+        left: -164px;
+
+    }
+
+    .topHeaderSubMenu li {
+        margin: 0;
+        cursor: pointer;
+        margin-bottom: 5px;
+    }
+
+    .homeLink {
+        display: inline-block;
+        width: 200px;
+        color: black !important;
+        padding-top: 57px;
+    }
+
+    .topHeaderLinks li a {
+        color: white;
+        cursor: pointer;
+        /* padding-left: 16px; */
+    }
+
+    .bottomSectionHeader {
+        padding: 5px 0 2px 0;
+
+    }
+
+    .bottomSectionHeader li {
+        margin-top: 5px;
+    }
+}
+
+
+
+
+
+main {
+    margin-top: 120px;
+    padding: 10px 0;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('./images/admit_menu_bgimg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.imgSide {
+    height: 500px;
+    width: 50%;
+    position: relative;
+}
+
+.homeimg {
+    height: 200px;
+    position: absolute;
+}
+
+.firstImg {
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.secImg {
+    top: 148px;
+    left: 120px;
+    transform: rotate(-15deg);
+    z-index: 4;
+}
+
+
+.thirdImg {
+    top: 295px;
+    left: 0;
+    transform: rotate(15deg);
+    z-index: 4;
+}
+
+.mybox {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-top: 30px;
+    padding-right: 10px;
+}
+
+.textSec {
+    height: 500px;
+    width: 35%;
+    padding: 50px 0;
+}
+
+.textSec p {
+    color: white;
+    font-size: 37px;
+}
+
+.homeText {
+
+    color: #dca00a;
+}
+
+main {
+    padding: 50px;
+    top: 140px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    /* Other styles... */
+}
+
+.imgSide {
+    height: 500px;
+    width: 50%;
+    position: relative;
+}
+
+.textSec {
+    height: 500px;
+    width: 50%;
+    padding: 50px 0;
+}
+
+@media screen and (max-width: 1020px) {
+
+
+    .imgSide,
+    .textSec {
+        width: 100%;
+        text-align: center;
+    }
+
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .firstImg {
+        top: 0;
+        left: 30%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 40%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    /* DCA00A */
+    .thirdImg {
+        top: 295px;
+        left: 30%;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:815px) {
+    .firstImg {
+        top: 0;
+        left: 25%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 35%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: 25%;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:680px) {
+    .firstImg {
+        top: 0;
+        left: 21%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 31%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: 21%;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .firstImg {
+        top: 0;
+        left: 15%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 21%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: 15%;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:548px) {
+    .mybox {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width:547px) {
+    .mybox {
+        margin-top: 40px;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .leftSec img {
+        width: 300px;
+    }
+
+    .firstImg {
+        top: 0;
+        left: 8%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 15%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: 8%;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .homeimg {
+        height: 170px;
+        position: absolute;
+    }
+
+    .bottomHeader {
+        position: fixed;
+        top: 90px;
+        left: 0;
+        right: 0;
+        background: #F8AF51;
+        z-index: 99;
+    }
+
+    .headerCheckbox,
+    .hamburgurLines {
+        display: block;
+        width: 38px;
+        height: 30px;
+    }
+
+    .headerCheckbox {
+        position: absolute;
+        top: 33px;
+        right: 30px;
+        opacity: 0;
+        z-index: 1002;
+    }
+
+    .hamburgurLines {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: absolute;
+        top: 33px;
+        right: 30px;
+        z-index: 1001;
+    }
+
+    .hamburgurLines span {
+        display: inline-block;
+        background: black;
+        width: 100%;
+        height: 4px;
+        border-radius: 5px;
+    }
+
+    .textSec p {
+        color: white;
+        font-size: 28px;
+    }
+
+    .firstImg {
+        top: 0;
+        left: 10%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: 10%;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: 10;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+
+    footer p {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width:350px) {
+    .firstImg {
+        top: 0;
+        left: -10%;
+        z-index: 5;
+    }
+
+    .secImg {
+        top: 148px;
+        left: -10px;
+        transform: rotate(-15deg);
+        z-index: 4;
+    }
+
+    .thirdImg {
+        top: 295px;
+        left: -10px;
+        transform: rotate(15deg);
+        z-index: 4;
+    }
+}
+
+@media screen and (max-width:660px) {
+    .bottomSectionHeader {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 5px 0 2px 0;
+    }
+}
+
+footer {
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+.signOut {
+    color: red;
+    font-weight: bold;
+}
+
+
+.firstImg {
+    opacity: 0;
+    animation-name: imgdelay;
+    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+.secImg {
+    opacity: 0;
+    animation-name: imgdelay;
+    animation-duration: 2s;
+    /* animation-delay: 1s; */
+    animation-fill-mode: forwards;
+}
+
+.thirdImg {
+    opacity: 0;
+    animation-name: imgdelay;
+    animation-duration: 4s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes imgdelay {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+.textSec {
+    padding-top: 100px;
+    opacity: 0;
+    animation-name: textSide;
+    animation-duration: 4s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+.textSec p,
+.textsecp {
+    font-size: 30px;
+}
+
+@keyframes textSide {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+
+
+.settingIcon i {
+    color: black
+}
+
+.settingIcon i:hover {
+    cursor: pointer;
+}
+
+#gear-icon:hover {
+    animation: spin-reverse 2s infinite;
+}
+
+@keyframes spin-reverse {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+
+.rightSec p {
+    background: #F8AF51;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+
+.bottomSectionHeader p {
+    background: #FFCF53;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+/* ########### add new Client #################### */
+
+.anc-wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 30px 10px 30px 30px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.anc-personal-pref {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 30px 10px 30px 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.anc-heading {
+    font-size: 30px;
+    color: #FFBA08;
+    margin-bottom: 10px;
+}
+
+.anc-pp {
+    font-size: 17px;
+    color: blue;
+    margin-bottom: 10px;
+}
+
+.anc-fir-li,
+.anc-sec-li,
+.anc-third-li {
+    display: flex;
+    justify-content: flex-start;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.anc-fir-li input,
+.anc-sec-li input,
+.anc-third-li input {
+    width: 90%;
+}
+
+.anc-com {
+    width: 307px;
+}
+
+.anc-forth-li,
+.anc-fif-li {
+    display: flex;
+    justify-content: space-between;
+}
+
+.anc-com-ta {
+    text-align: start;
+    width: 50%;
+}
+
+.anc-com-ta textarea {
+    width: 95%;
+}
+
+.pp-wrapper {
+    text-align: start;
+    display: flex;
+}
+
+.pp-wrapper input {
+    width: 90%;
+}
+
+.anc-btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.anc-btns input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.anc-btns input:hover {
+    background: #FFBA08;
+}
+
+.anc-btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.anc-pref select {
+    width: 180px !important;
+    margin-right: 10px;
+}
+
+.anc-con-del {
+    width: 275px
+}
+
+.anc-gst {
+    text-align: start;
+    padding-left: 16px;
+}
+
+.anc-gst input {
+    width: 261px
+}
+
+.anc-mail {
+    width: 290px;
+}
+
+.anc-phone,
+.anc-mobile {
+    width: 289px;
+}
+
+/* ###################### manage clients ########################## */
+
+
+.manage-client-wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 30px 10px 30px 30px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.sc-first-li {
+    text-align: start;
+    display: flex;
+}
+
+.sc-first-li input {
+    width: 90%;
+}
+
+.sc-btns {
+    margin-left: 25px;
+}
+
+.sc-btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    margin-left: 7px;
+}
+
+.sc-btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.search-clients {
+    font-size: 30px;
+    color: #FFBA08;
+    margin-bottom: 5px;
+}
+
+.anc-active {
+    width: 263px !important;
+}
+
+.sc-table {
+    width: 100%;
+    text-align: center;
+
+}
+
+.sc-th {
+    width: 150px;
+    color:black;
+}
+.cli-em-sec .sc-first-li-d1{
+	width:95%;
+	
+}
+
+.search-clients-sec {
+    color: black;
+    width: 95vw;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 30px 10px 30px 30px;
+    border-radius: 10px;
+    margin: 20px auto
+}
+
+.search-clients-sec th {
+    color: black;
+    border: none;
+    margin-bottom: 20px;
+    font-size: 19px;
+}
+
+.ul-anc {
+    display: none;
+    padding: 5px;
+    position: absolute;
+    background: gray;
+    border-radius: 10px;
+    width: 160px;
+    left: -160px;
+    transition: all 0.3s ease-in-out;
+    top: -1px;
+    z-index: 1;
+    padding: 10px
+}
+
+.ul-anc a {
+    color: white;
+}
+.ul-anc ul li a:hover {
+    color: #FABA08;
+}
+.ul-anc li  {
+ border-bottom:2px solid #FABA08;
+}
+
+.anc-i {
+    position: relative;
+    color: black;
+}
+
+.anc-i:hover {
+    cursor: pointer;
+    
+    color: #FABA08;
+}
+
+.sc-first-li .sc-first-li-d1{
+
+	width:2950px !important;
+}
+.sc-first-li .sc-first-li-d1 input{
+	width:95% !important;
+}
+.search-client-form .mp{
+
+	width:290px !important;
+}
+.search-client-form .mp input{
+	width:95% !important;
+}
+.anc-i:hover .ul-anc {
+    display: block;
+}
+
+.pop-up-anc {
+    font-weight: normal;
+}
+
+.ul-anc ul li a:hover {
+    color: #FABA08;
+    /* font-size: medium */
+    font-size: 18px;
+}
+
+.vsc-cn {
+    border: 2px solid red;
+}
+
+/* #################### Add New Supplier ######################### */
+
+.add-new-supplier-wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 30px 10px 30px 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.ans-fir-li,
+.ans-sc-li {
+    display: flex;
+    justify-content: flex-start;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.ansd1 {
+    width: 295px;
+}
+
+.ansd1 input {
+    width: 90%;
+}
+
+.ans-thir-li,
+.ans-for-li {
+    display: flex;
+}
+
+.ansd1-rem {
+    width: 590px;
+    text-align: start;
+}
+
+.ansd1-rem textarea {
+    width: 95%;
+}
+
+.inside-services input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+}
+
+.ansd1-ser input {
+    padding-top: 10px;
+}
+
+.ansd1-ser {
+    display: flex;
+    align-items: center;
+}
+
+.ansd1-ser label {
+    margin-right: 5px;
+}
+
+.supp-sec {
+    display: flex;
+    justify-content: center;
+}
+
+.ans-btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    margin-left: 7px;
+}
+
+.ans-btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.ans-btns input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    margin-left: 7px;
+}
+
+.ans-btns input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+#supp-name {
+    width: 248px;
+}
+
+.ans-comDel {
+    width: 263px;
+}
+
+.ans-gst {
+    margin-left: 31px;
+    text-align: start;
+}
+
+.ans-5-li {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.ans-left-sec {
+
+    width: 50%;
+}
+
+.ans-right-sec {
+    width: 50%;
+}
+
+.inside-services {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ansd1-ser {
+    width: 20%;
+    margin-left: 10px;
+}
+
+.flight-lab {
+    margin-right: 50px;
+}
+
+.f,
+.h,
+.t,
+.s,
+.v,
+.i,
+.p,
+.o {
+    width: 250px;
+}
+
+.inside-services checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+/* #################### floowup lead ######################### */
+
+
+
+
+.follow-up-wrapper {
+    margin-top: 120px;
+    /* border: 2px solid red; */
+    padding: 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.follow-up-time {
+    /* border: 2px solid orange; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.follow-up-main-response {
+    /* border: 2px solid orange; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.fwaction-taken textarea,
+.fwnext-todo textarea {
+    height: 50px;
+    width: 580px;
+    border-radius: 5px;
+}
+
+.follow-up-lead-action-time input{
+	width:310px
+}
+
+.follow-up-next-action-time input{
+	width:310px
+}
+.follow-up-p {
+    margin: 0;
+}
+
+.follow-up-p {
+    font-size: 21px;
+}
+
+.follow-up-next-action-time {
+    width: 582px;
+}
+
+.follow-up-btn {
+    text-align: center;
+}
+
+.follow-up-heading {
+    text-align: center;
+}
+
+.follow-up-heading h1 {
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+
+
+.follow-up-btn a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.follow-up-btn a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+/* ################ follow up tabel stying########### */
+
+.follow-up-main-tabel table {
+	margin:60px auto;
+    color: black;
+    width: 1300px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.follow-up-main-tabel table th {
+    color: #FABA08;
+    border: none;
+    margin-bottom: 20px;
+    font-size: 19px;
+}
+
+/* ################ quick view lead ########### */
+.quick-lead-view i {
+    color: white;
+    color: #FFBA08;
+}
+
+.follow-up-icon p {
+    display: inline-block;
+    color: #FFBA08;
+    font-weight: bold;
+}
+
+.quick-lead-view {
+    position: absolute;
+    top: 120px;
+    left: 160px;
+}
+
+.inside-quick-lead-view {
+    position: absolute;
+    background: rgb(0, 0, 0);
+    color: white;
+    border-radius: 10px;
+    transition: all .5s ease-in-out;
+}
+
+.quick-lead-view p,
+.quick-lead-view label,
+.quick-lead-view h3,
+.quick-lead-view h1,
+.quick-lead-view h2 {
+    color: white;
+}
+
+.quick-lead-view i:hover {
+    cursor: pointer;
+}
+
+.inside-quick-lead-view {
+    color: black;
+    /* background: lightgoldenrodyellow; */
+}
+
+.follow-up-fl,
+.follow-up-f2,
+.follow-up-reqs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fu-box {
+    /* border: 2px solid red; */
+    width: 300px;
+}
+
+.follow-up-c1 input {
+    width: 21px;
+    height: 18px;
+}
+
+.follow-up-c1 label {
+    padding-bottom: 20px;
+}
+
+.follow-up-reqs {
+    height: 30px;
+}
+
+.inside-quick-lead-view h1 {
+    font-size: 30px;
+    color: #FFBA08;
+    text-align: center;
+}
+
+.follow-up-f3 h2 {
+    color: #FFBA08;
+}
+
+.follow-ups-remarks-qv h3 {
+    color: #FFBA08;
+}
+
+.fu-box label {
+    color: #FFBA08;
+}
+
+.inside-quick-lead-view {
+    transform: translateX(-140%);
+    opacity: 0;
+}
+
+.follw-up-cross {
+    position: relative;
+}
+
+.follw-up-cross {
+    color: red !important;
+}
+
+.fwtb:active+.inside-quick-lead-view {
+    transform: translateX(0);
+}
+
+.iqvl-cross:active .inside-quick-lead-view {
+    transform: translateX(0);
+}
+
+.qlv-text {
+    display: inline-block;
+}
+
+#show-fu-cb {
+    width: 23px;
+    height: 22px;
+    position: absolute;
+    cursor: pointer;
+}
+
+#show-fu-cb:checked~.inside-quick-lead-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.hamburgur-i-follow-up {
+    position: absolute;
+}
+
+.ham {
+    top: 14px;
+    left: 10px;
+}
+
+.ham:hover {
+    cursor: pointer;
+}
+
+.hamCh {
+   top: 3px;
+    left: 10px;
+    opacity: 0;
+}
+
+.qlv-text {
+    margin-left: 40px;
+    color: #FFBA08 !important;
+}
+
+.submitbtns {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    outline: none
+}
+
+.submitbtns:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+/* ################ lead details open nav view ########### */
+
+
+.follow-up-pop-up {
+    padding: 10px;
+    background: #6c757d;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid pink;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.fupp-fir-line,
+.fupp-2nd-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fupp-3nd-line {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.fupp-3nd-line .fupp-1-d {
+    width: 295px;
+}
+
+.fupp-1-d {
+    width: 400px;
+}
+
+.fupp-1-d h3 {
+    color: #FFBA08;
+}
+
+.fupp-4th-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fupp-sr h3 {
+    display: inline-block;
+}
+
+.fupp-srh {
+    color: #FFBA08 !important;
+}
+
+.fupp-5th-line h3 {
+    color: #FFBA08 !important;
+}
+
+.follow-up-pop-up {
+    position: relative;
+}
+
+.cross-red {
+    position: absolute;
+    top: 15px;
+    left: 10px
+}
+
+.cross-ldonv {
+    position: absolute;
+    top: 5px;
+    left: 10px
+}
+
+.actionTaken,
+.nextToDo {
+    width: 350px;
+    padding: 10px 5px !important;
+    margin: 0 20px
+}
+
+.leadActionTime {
+    border: 2px solid green !important;
+}
+
+.wrapper-box{
+	position: relative;
+}
+
+
+/* ###################### add Hotal styling #################### */
+
+.add-hotal-chain-wrapper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.add-hotal-chain-wrapper h1 {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.add-hotal-chain-wrapper a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.add-hotal-chain-wrapper a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.ahc-in-btn {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    outline: none;
+    border: none;
+}
+
+.ahc-in-btn:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.ahc-in {
+	margin: 10px auto;
+	width:600px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.ahc-l1,
+.ahc-l2 {
+    width: 300px;
+}
+
+.ahc-l1 input,
+.ahc-l2 input {
+    width: 90%;
+}
+
+.Ahc-btns {
+    display: flex;
+    justify-content: center;
+}
+
+.ahc-btn {
+    margin-right: 5px;
+}
+
+/* ############### manage hotal chain styling ################# */
+
+.manage_hotal_chain_wrapper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.manage_hotal_chain_wrapper h1 {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.mhc-in-l1 {
+	margin:10px auto;
+	width:800px;
+    display: flex;
+    justify-content: space-around;
+}
+.mhc-li{
+	width: 300px;
+}
+.mhc-li input{
+	width:90%
+}
+.mhc-in-l2 {
+    display: flex;
+    justify-content: center;
+}
+
+.mhc-in-l2 a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.mhc-in-l2 a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.mhc-in-l2 input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    border: none;
+    outline: none;
+}
+
+.mhc-in-l2 input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.mhc-btn {
+    margin-right: 5px;
+}
+
+.manage-hotal-chain table {
+	color:black;
+    background:white;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.manage-hotal-chain-tabel thead tr th {
+    color: #FFBA08;
+}
+
+.search-hotal-chain-actions {
+    color: red !important;
+}
+
+.search-hotal-chain-actions:hover {
+    cursor: pointer;
+}
+
+/* ################ add hotal styling ############### */
+
+.add_hotal_wrapper {
+    margin-top: 110px !important;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.add_hotal_wrapper h1 {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.add_hotal_fli {
+    display: flex;
+    justify-content: space-around;
+}
+
+.ah-d1 {
+    width: 360px;
+}
+
+.ah-d1 input {
+    width: 90%;
+}
+
+.ah-d1-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ah-d1-btn input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+    outline: none;
+    border: none;
+}
+
+.ah-d1-btn input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+
+}
+
+/* ################# search hotal styling ################# */
+
+.search_hotal_wraper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.search_hotal_wraper h1 {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.sh-f1 {
+    display: flex;
+}
+
+.sh-f1 .sh-fi-d,
+.sh-f2 .sh-fi-d,
+.sh-f3 .sh-fi-d {
+    width: 300px;
+}
+
+.sh-f1 .sh-fi-d input,
+.sh-f2 .sh-fi-d input,
+.sh-f3 .sh-fi-d input {
+    width: 95%;
+}
+
+.sh-f2 {
+    display: flex;
+}
+
+.sh-f2 .sh-fi-d-hn {
+    width: 590px;
+}
+
+.sh-f3 {
+    display: flex;
+}
+
+.sh-fi-d-hsc {
+    margin-right: 85px;
+}
+
+.sh-fi-d-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.sh-fi-d-btn button {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+}
+
+.sh-fi-d-btn button:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.sh-f1,
+.sh-f2,
+.sh-f3 {
+    margin-bottom: 10px;
+}
+
+/* ########################## search supplier ###################### */
+
+.serach_supplier_wrapper {
+    margin-top: 115px;
+    padding: 5px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.search_supplier_data_l1 {
+    display: flex;
+}
+
+.search_supplier_data_l1 .ssd1 {
+    width: 300px;
+}
+
+.search_supplier_data_l1 .ssd1 input {
+    width: 90%;
+}
+
+.inside_ss_ser {
+    display: flex;
+    justify-content: space-between;
+}
+
+.serach_supplier_wrapper h1 {
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.ss-btn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.ss-btn a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+}
+
+.ss-btn a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.ss-btn input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.ss-btn input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.ss-btn-1 {
+    margin-right: 5px
+}
+
+.search_suppler_table {
+    width: 1490px;
+    margin: 10px auto;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.search_suppler_table table {
+    width: 100%;
+    text-align: center;
+}
+
+.inside_ss_ser .ssd2 {
+    display: flex;
+    align-items: center;
+}
+
+.inside_ss_ser .ssd2 input {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.search_supplier_ul a {
+    color: white;
+}
+
+.search_supplier_iicon {
+    position: relative;
+}
+
+.search_supplier_ul {
+    padding: 7px;
+    border-radius: 10px;
+    color: white;
+    background: gray;
+    position: absolute;
+    display: none;
+    left: -97px;
+    top: -10px;
+    z-index:5
+}
+
+
+.search_supplier_ul ul li a:hover {
+    color: #FFBA08;
+}
+
+.search_supplier_iicon i {
+    color: red;
+
+}
+
+.search_supplier_iicon i:hover .search_supplier_ul {
+    display: block;
+}
+
+.search_supplier_iicon i:hover {
+    color: #FFBA08;
+    cursor: pointer;
+}
+
+.search_supplier_ul input {
+    color: white;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+.search_supplier_ul input:hover {
+    cursor: pointer;
+    color: #FFBA08;
+    ;
+}
+
+/* ######## view_supplier_Details_modal styling ######### */
+
+
+.view_supplier_details_wrapper {
+    margin-top:115px;
+    padding: 10px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.view_supplier_details_data1 {
+    display: flex;
+    /* justify-content: space-between; */
+}
+.view_supplier_details_data p{
+	color:black
+}
+.view_supplier_details_data1 .view_supplier_details_li {
+    width: 266px;
+    margin-right: 100px;
+}
+
+.view_supplier_details_data1 .view_supplier_details_li input {
+    width: 300px;
+}
+
+.view_supplier_details_data1 .view_supplier_details_li_add input {
+    width: 530px;
+}
+
+.view_supplier_details_data2,
+.view_supplier_details_data3 {
+    display: flex;
+}
+
+.view_supplier_details_data2 .view_supplier_details_li {
+    width: 300px;
+}
+
+.view_supplier_details_data2 .view_supplier_details_li input {
+    width: 90%;
+}
+
+.view_supplier_details_data3 .view_supplier_details_li {
+    width: 300px;
+}
+
+.view_supplier_details_data3 .view_supplier_details_li input {
+    width: 90%;
+}
+
+.view_supplier_details_data4 {
+    display: flex;
+}
+
+.view_supplier_details_data4 .view_supplier_details_li {
+    width: 295px;
+}
+
+.view_supplier_details_data4 .view_supplier_details_li input {
+    width: 90%;
+}
+
+
+/* ################### create new deal ############### */
+
+.create_new_deal_wrapper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.create_new_win_li1 {
+    display: flex;
+}
+
+.create_new_win_li1 .create_new_win_li {
+    width: 300px;
+}
+
+.create_new_win_li1 .create_new_win_li input {
+    width: 90%;
+}
+
+.create_new_win_li2 .create_new_win_li {
+    width: 295px;
+}
+
+.create_new_win_li2 .create_new_win_li input {
+    width: 90%;
+}
+
+.create_new_win_li2 {
+    display: flex;
+}
+
+.new_deal_ser {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cr-new-deal_infor_client {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.create_new_deal_btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.create_new_deal_btn button {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.create_new_deal_btn button:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.create_new_deal_heading {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+/* ################## search deal wrapper ############## */
+.search_deal_wrapper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.search_deal_h1 {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFBA08;
+}
+
+.search_deals_data {
+    display: flex;
+}
+
+.search_deals_data .search_deals_data_l1 {
+    width: 300px;
+}
+
+.search_deals_data .search_deals_data_l1 input {
+    width: 90%;
+}
+
+.search_deal_chs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search_deals_btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.search_deals_btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.search_deals_btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.search_deals_btns button {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.search_deals_btns button:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.search_deals_total {
+    margin: 10px auto;
+    text-align: center;
+    width: 200px;
+    background: rgba(0, 0, 0, 0.716);
+    border-radius: 10px;
+    color: #98FF98;
+}
+
+.search_deals_tabel {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.46);
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.search_deals_tabel th {
+    color: #FFBA08
+}
+
+/* ################ view tasks ################ */
+
+.view_task_wrapper {
+    margin-top: 115px;
+    padding: 20px 10px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.view_task_data {
+    display: flex;
+}
+
+.view_task_data .view_task_data_li {
+    width: 300px;
+}
+
+.view_task_data .view_task_data_li input {
+    width: 90%;
+}
+
+.view_task_tak_owner select,
+.view_task_task_pri select {
+    width: 90%
+}
+
+.view_task_date {
+    width: 295px !important;
+}
+
+.view_task_data_btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.view_task_data_btns button {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.view_task_data_btns button:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+
+.view_task_data_btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.view_task_data_btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.view_task_table {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    background: white;
+    color: black;
+    border-radius: 10px;
+}
+.view_task_table th {
+    color: #FFBA08
+}
+
+.view_task_td {
+    position: relative;
+}
+.vscl_action input{
+	 color: #FFBA08;
+	 transition: all 0.3s ease-in-out;
+}
+.vscl_action input:hover{
+	cursor: pointer;
+	color:red
+}
+.view_task_icon{
+	position:relative;
+	color:black;
+}
+.view_task_ul {
+	display: none;
+    padding: 5px;
+    width: 150px;
+    background: gray;
+    border-radius: 10px;
+    position: absolute;
+    z-index:9;
+    right:-150px;
+    top:-5px;
+}
+.view_task_icon:hover .view_task_ul {
+    display: block;
+    cursor: pointer;
+}
+.view_task_ul a {
+    color: white;
+}
+
+.view_task_ul a:hover{
+    color: #dca00a
+}
+.view_task_ul a:hover .view_task_ul{
+display: block;
+}
+.view_task_ul li {
+    border-bottom: 2px solid #dca00a;
+}
+.view_task_icon{
+	color:black
+}
+
+.view_task_icon:hover {
+    color: red;
+    cursor:pointer;
+}
+
+.view_task_icon:hover {
+    cursor: pointer;
+    color: red
+}
+
+
+
+/* ############################## create new ticket ##################### */
+
+.create-new-ticket-wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.create-new-ticket-wrapper-f-li {
+    /* border: 2px solid green; */
+    display: flex;
+    justify-content: space-between;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.create-new-ticket-wrapper-f-li-2 {
+    display: flex;
+    justify-content: flex-start;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.cntd {
+    width: 100%;
+}
+
+.cntd input {
+    width: 95%;
+}
+
+.cntd2 input {
+    width: 95.5%
+}
+
+.cntd-date input {
+    height: 27px;
+}
+
+.link-wid-cli {
+    width: 231px;
+}
+
+.link-wid-deal {
+    width: 473px;
+    margin-left: 5px;
+}
+
+.link-wid-deal input {
+    width: 97%;
+}
+
+.link-wid-deal input::placeholder {
+    font-size: 15px;
+}
+
+.cnt-des {
+
+    width: 473px;
+}
+
+.cnt-des input {
+    width: 98%;
+}
+
+.create-new-ticket-wrapper-f-li-3 {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cnt-check {
+    margin: 0 10px;
+}
+
+.cnt-check input {
+    width: 15px;
+    height: 15px;
+}
+
+.cnt-heading {
+    font-size: 30px;
+    color: #FFBA08;
+    margin-bottom: 10px;
+}
+
+.cnt_options {
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 116px;
+    margin-bottom: 20px;
+    background: #FFCF53;
+    padding: 5px 0;
+    color: black;
+    border-radius: 2px;
+}
+
+.cnt_options a {
+    color: black;
+
+    padding: 10px 5px;
+
+}
+
+.cnt_options a:hover {
+    color: red
+}
+
+.cnt-btns {
+    margin-top: 10px;
+}
+
+.cnt-btns input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.cnt-btns input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.cnt-btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.cnt-btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.link-wid-cli input {
+    width: 97% !important;
+}
+
+
+/* ################## create new task ######################## */
+
+.create-new-task-wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 30px 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.cntb {
+    /* width:100px; */
+    width: 100%;
+    /* border: 2px solid red; */
+}
+
+.cntb2 {
+    /* border: 2px solid red; */
+    width: 297px
+}
+
+.cntb input,
+.cntb2 input {
+    width: 90%;
+}
+
+
+
+.create-new-task-wrapper-f-li,
+.create-new-task-wrapper-f-li-2 {
+    /* border: 2px solid green; */
+    display: flex;
+    justify-content: flex-start;
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.cnt_des {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.cnt_des textarea {
+    width: 100%;
+    height: 50px;
+}
+
+/* ############### due date in deals and over due task ################# */
+
+
+.task_owner_viwe_task select,
+.task_pri_viwe_task select {
+    width: 90% !important;
+}
+
+.list_button {
+    border: 2px solid red;
+}
+
+.due_date_task_wrapper,
+.over_due_tasks_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.due_today_task_data,
+.over_due_tasks_data {
+    display: flex;
+}
+
+.due_today_task_data_l1,
+.over_due_tasks_li {
+    text-align: start;
+    width: 400px;
+}
+
+.due_today_task_data_l1 input,
+.over_due_tasks_li input {
+    width: 90%;
+}
+
+.due_today_task_owner {
+    width: 350px;
+}
+
+.due_today_task_owner select,
+.due_today_task_data_l1 select {
+    width: 312px !important;
+}
+
+.due_today_task_data_btns {
+    margin-top: 10px;
+}
+
+.due_today_task_data_btns a {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.due_today_task_data_btns a:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.due_today_task_data_btns input {
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+}
+
+.due_today_task_data_btns input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.due_date_task_tabel {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.due_date_task_tabel th {
+    color: #FFBA08;
+}
+
+/* ################# craete by me (tasks) ####################  */
+
+
+
+.created_by_me_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.created_by_me_data {
+    display: flex;
+}
+
+.created_by_me_data .created_by_me_data_li {
+    text-align: start;
+    width: 300px;
+}
+
+.created_by_me_data .created_by_me_data_li input {
+    width: 90%;
+}
+
+.my_created_task_sel select {
+    width: 265px;
+}
+
+
+/* ############# assigned to me (tasks) ################ */
+.assin_to_me_tasks_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.assin_to_me_tasks_data {
+    display: flex;
+}
+
+.assin_to_me_tasks_data .assin_to_me_tasks_data_li {
+    text-align: start;
+    width: 300px;
+}
+
+.assin_to_me_tasks_data .assin_to_me_tasks_data_li input {
+    width: 90%;
+}
+
+/* ######################## completed (tasks) ####################### */
+
+.completed_tasks_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.completed_tasks_data {
+    display: flex;
+}
+
+.completed_tasks_data .complete_tasks_data_li {
+    text-align: start;
+    width: 300px;
+}
+
+.completed_tasks_data .complete_tasks_data_li input {
+    width: 90%;
+}
+
+/* ################ view ticket ################## */
+
+.view_ticket_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.view_ticket_wrapper_data_line1 {
+    display: flex;
+}
+
+.view_ticket_wrapper_data_line1 .view_ticket_data_l1 {
+    text-align: start;
+    width: 300px;
+}
+
+.view_ticket_wrapper_data_line1 .view_ticket_data_l1 input {
+    width: 90%;
+}
+
+.view_ticket_wrapper_data_line2 {
+    display: flex;
+}
+
+.view_ticket_wrapper_data_line2 .view_ticket_data_l1 {
+    text-align: start;
+    width: 294px;
+}
+
+.view_ticket_wrapper_data_line2 .view_ticket_data_l1 input {
+    width: 90%;
+}
+
+/* ###################### due today(ticket) , over due (ticket) ################### */
+
+
+.due_today_ticket_wrapper,
+.over_due_ticket_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.over_due_ticket_wrapper_data,
+.due_today_ticket_wrapper_data {
+    display: flex;
+}
+
+.over_due_ticket_wrapper_data .over_due_ticket_wrapper_data_li {
+    width: 400px;
+    text-align: start;
+}
+
+.due_today_ticket_wrapper_data .due_today_ticket_wrapper_data_l1 input,
+.over_due_ticket_wrapper_data .over_due_ticket_wrapper_data_li input {
+    width: 90%;
+}
+
+.due_today_ticket_wrapper_data .due_today_ticket_wrapper_data_l1 {
+    display: flex;
+}
+
+due_today_ticket_wrapper_data_l1_1 {
+    width: 400px
+}
+
+/* ################### created by me (tickets) ################### */
+
+.created_by_me_ticket_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.created_by_me_ticket_wrapper_data {
+    display: flex;
+}
+
+.created_by_me_ticket_wrapper_data .created_by_me_ticket_wrapper_data_line1 {
+    width: 400px;
+    text-align: start;
+}
+
+.created_by_me_ticket_wrapper_data .created_by_me_ticket_wrapper_data_line1 input {
+    width: 90%;
+}
+
+.created_by_me_ticket_wrapper_data .created_by_me_ticket_wrapper_data_line2 {
+    width: 395px;
+    text-align: start;
+}
+
+.created_by_me_ticket_wrapper_data .created_by_me_ticket_wrapper_data_line2 input {
+    width: 90%;
+}
+
+/* ################### assigned_to_me (tickets) ###################### */
+
+.assigned_to_me_ticket_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.assigned_to_me_ticket_wrapper_data {
+    display: flex
+}
+
+.assigned_to_me_ticket_wrapper_data .assigned_to_me_ticket_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.assigned_to_me_ticket_wrapper_data .assigned_to_me_ticket_data_l1 input {
+    width: 90%;
+}
+
+/* ############# compleated (tickets) ################## */
+
+.compleated_ticket_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+
+.compleated_ticket_wrapper_data_line_1,
+.compleated_ticket_wrapper_data2 {
+    text-align: start;
+    display: flex;
+}
+
+.compleated_ticket_wrapper_data_line_1 .compleated_ticket_wrapper_data_l1 {
+    width: 400px;
+}
+
+.compleated_ticket_wrapper_data2 .compleated_ticket_wrapper_data_l1 {
+    width: 395px;
+}
+
+.compleated_ticket_wrapper_data_line_1 .compleated_ticket_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.compleated_ticket_wrapper_data2 .compleated_ticket_wrapper_data_l1 input {
+    width: 90%;
+}
+
+/* ################## view supplier contacts listing ################# */
+
+.vscl_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 160px;
+}
+
+.vscl_wrapper .vscl_wrapper_data_line_1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vscl_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.vscl_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.vscl_wrapper {
+    position: relative;
+}
+
+.vscl_side_menu_bar {
+    padding: 5px;
+    position: absolute;
+    height: auto;
+    border-radius: 2px;
+    right: 5px;
+    top: -40px;
+    width: 400px;
+}
+
+.vscl_side_menu_bar_ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vscl_side_menu_bar_ul li {
+    background: #FFCF53;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.vscl_side_menu_bar_ul li a {
+    color: black;
+}
+
+.vscl_side_menu_bar_ul li a:hover {
+    color: red;
+
+}
+
+.client_listing_tabel_div {
+    position: relative;
+
+}
+
+.table_div {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    position: absolute;
+    height: auto;
+    border-radius: 2px;
+    width: 270px;
+    right: 0;
+    top: -20px;
+}
+
+.table_div li a {
+    color: black;
+}
+
+.table_div li {
+    background: #FFCF53;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.table_div li a:hover {
+    color: red;
+}
+.scv_in_btn{
+transition: all 0.2s ease-in-out;
+}
+.scv_in_btn:hover{
+    color: red;
+    cursor: pointer;
+}
+
+
+.view_supplier_details_modal_data_line1{
+	display: flex;
+	justify-content: space-between;
+}
+.vsdm_d1 .view_supplier_details_l1{
+	width:232px
+}
+.view_supplier_details_modal_data_line2{
+	display: flex;
+	justify-content: space-between;
+}
+.vsdm_d2 .view_supplier_details_l1{
+	width:230px
+}
+.view_supplier_details_modal_data_line_con{
+	display: flex;
+}
+.view_supplier_details_modal_data_line_con .view_supplier_details_data_line{
+	width:235px
+}
+
+/* ################### view_SupplierContact_Modal ########################## */
+
+.view_SupplierContact_Modal_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:black;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 70px !important;
+}
+
+.view_SupplierContact_Modal_heading {
+    font-size: 30px;
+    color: #FFBA08;
+}
+.view_SupplierContact_Modal_data_line1,.view_SupplierContact_Modal_data_line2{
+    display: flex;
+    justify-content: space-between;
+}
+
+.view_SupplierContact_Modal_data_l1{
+	width:300px;
+	text-align:start
+}
+/* ############## delete Supplier Contact Confrm Modal ############# */
+
+.deleteSupplierContactConfrm_Modal_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:black;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top:25px;
+    background:#94D2BD;
+    box-shadow: 0 0 10px 5px #94D2BD, 0 0 20px 10px #94D2BD;
+}
+
+.deleteSupplierContactConfrm_Modal_data_line {
+    display: flex;
+}
+
+.deleteSupplierContactConfrm_Modal_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.dscc-btn{
+	background: red !important;
+	color:white !important;
+	border:2px solid black
+}
+/* ############### edit Supplier Contact ################ */
+.editSupplierContact_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 135px;
+}
+
+.editSupplierContact_wrapper_data_line {
+    display: flex;
+}
+
+.editSupplierContact_wrapper_data_line1 {
+    width: 300px;
+    text-align: start;
+}
+
+.editSupplierContact_wrapper_data_line1 input {
+    width: 90%
+}
+
+.editSupplierContact_data_line_info{
+    display: flex;
+}
+.editSupplierContact_data_line_info .editSupplierContact_data_line_l1_info{
+    width: 300px;
+    text-align: start;
+}
+
+/*   #################### View Supplier Details #################  */
+
+
+.view_supplier_details_data_line1{
+	display: flex;
+
+}
+.view_supplier_details_l1_d{
+	width: 300px;
+}
+
+.view_supplier_details_l1_d_max_w{
+	width: 471px !important;
+}
+
+.view_supplier_details_data_line5_box{
+	display: flex;
+}
+.view_supplier_details_data_line5_box .view_supplier_details_data_line_com{
+	width: 295px;
+}
+.vsd_btns_af{
+	display: flex;
+	justify-content: center;
+}
+
+
+
+/* ############### add new supplier contact styling ################# */
+.AddNewSupplierContact_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.AddNewSupplierContact_wrapper_data_line {
+    display: flex;
+}
+
+.AddNewSupplierContact_wrapper_data_line .AddNewSupplierContact_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.AddNewSupplierContact_wrapper_data_line_form_data,
+.AddNewSupplierContact_wrapper_data_line_form_data2 {
+    display: flex;
+
+}
+
+.AddNewSupplierContact_wrapper_data_line_form_data .AddNewSupplierContact_wrapper_data_form_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.AddNewSupplierContact_wrapper_data_line_form_data .AddNewSupplierContact_wrapper_data_form_l1 input {
+    width: 90%;
+
+}
+
+.AddNewSupplierContact_wrapper_data_line_form_data2 .AddNewSupplierContact_wrapper_data_form_l1 {
+    width: 295px;
+    text-align: start;
+}
+
+.AddNewSupplierContact_wrapper_data_line_form_data2 .AddNewSupplierContact_wrapper_data_form_l1 input {
+    width: 90%;
+}
+
+
+
+/* ################ admin add sight seeing ################# */
+
+
+.Admin_Add_SightSeeing_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Add_SightSeeing_wrapper_data_line {
+    display: flex;
+}
+
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l1  input{
+    width: 90%;
+}
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l2 {
+    width: 300px;
+    text-align: start;
+}
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l2  input{
+    width: 90%;
+}
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l3 {
+    width: 295px;
+    text-align: start;
+}
+.Admin_Add_SightSeeing_wrapper_data_line .Admin_Add_SightSeeing_wrapper_data_l3  input{
+    width: 90%;
+}
+.Admin_Add_SightSeeing_wrapper_data_des2{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+/* ################# search sight seeing ############### */
+
+.searchSightSeeing_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.searchSightSeeing_wrapper_data_line,.searchSightSeeing_wrapper_data_line2 {
+    display: flex;
+}
+
+.searchSightSeeing_wrapper_data_line .searchSightSeeing_wrapepr_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+.searchSightSeeing_wrapper_data_line2 .searchSightSeeing_wrapepr_data_l1 {
+    width: 295px;
+    text-align: start;
+}
+
+.searchSightSeeing_wrapper_data_line .searchSightSeeing_wrapepr_data_l1 input {
+    width: 90%;
+}
+.searchSightSeeing_wrapper_data_line2 .searchSightSeeing_wrapepr_data_l1 input {
+    width: 90%;
+}
+
+/* #################### admin create user styling ##################### */
+
+.AdminCreateNewUser_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5)
+}
+*{
+	resize:none;
+}
+.bs{
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.5)
+}
+.page-heading {
+    font-size: 30px;
+    color: #FFBA08;
+    margin-bottom: 10px;
+}
+
+.AdminCreateNewUser_wrapper_data_line1 {
+    display: flex;
+}
+
+.AdminCreateNewUser_wrapper_data_line1 .AdminCreateNewUser_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.AdminCreateNewUser_wrapper_data_line1 .AdminCreateNewUser_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.AdminCreateNewUser_wrapper_data_line2 {
+    display: flex;
+}
+
+.AdminCreateNewUser_wrapper_data_line2 .AdminCreateNewUser_wrapper_data_l1 {
+    width: 295px;
+    text-align: start;
+}
+
+.AdminCreateNewUser_wrapper_data_line2 .AdminCreateNewUser_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.add input {
+    width: 100%;
+}
+
+
+.rad-btn{
+	color:blue;
+}
+
+
+
+/* #################### AdminSearchUser ################### */
+
+.AdminSearchUser_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.AdminSearchUser_wrapper_data_line {
+    display: flex;
+}
+
+.AdminSearchUser_wrapper_data_l1_id {
+    text-align: start;
+    width: 60px;
+    margin-right: 10px;
+}
+
+.AdminSearchUser_wrapper_data_l1_id input {
+    width: 100%;
+}
+
+.AdminSearchUser_wrapper_data_line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.AdminSearchUser_wrapper_data_l1 {
+    text-align: start;
+}
+
+.AdminSearchUser_wrapper_data_line .AdminSearchUser_wrapper_data_l1 {
+    width: 260px;
+}
+
+.AdminSearchUser_wrapper_data_line .AdminSearchUser_wrapper_data_l1 input {
+    width: 95%;
+}
+
+.admin-search-user-tabel {
+    margin-top: 5px;
+    border-radius: 10px;
+    width: 100%;
+    background: white;
+    color:black
+}
+
+.admin-search-user-tabel th {
+    text-align: center;
+    color: black;
+}
+
+.admin-search-user-tabel td {
+    text-align: center;
+    color: black;
+}
+
+.adsu {
+    position: relative;
+    color: black;
+}
+
+.adsu:hover {
+    cursor: pointer;
+    color: #FFBA08;
+}
+.adsu:hover .admin-search_user{
+    display: block;
+}
+
+.admin-search_user {
+	width: 90px;
+    display: none;
+    border-radius: 10px;
+    position: absolute;
+    background:gray;
+    padding: 10px;
+    top: 0;
+    right: 18px;
+    color:black
+}
+
+
+.admin-search_user_lis {
+    width: 100px;
+    height: 75px;
+}
+
+.admin-search_user ul li {
+    text-decoration: none;
+    border-bottom: 2px solid #FFBA08;
+}
+
+.admin-search_user ul li a {
+    color: white;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+.admin-search_user ul li a:hover {
+    color: #FFBA08;
+}
+
+
+
+/* ################## AdminDisplayUser ##################### */
+
+.AdminDisplayUser_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.AdminDisplayUser_wrapper_data_line {
+    display: flex;
+}
+
+.AdminDisplayUser_wrapper_data_line .AdminDisplayUser_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.AdminDisplayUser_wrapper_data_l1 label {
+    color: black;
+    
+}
+
+.AdminDisplayUser_wrapper_data_l1 {
+    margin-bottom: 5px;
+}
+
+/* ################ Admin_Add_Visa #################### */
+.Admin_Add_Visa_wrapper{
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.Admin_Add_Visa_wrapper_data_line{
+    display: flex;
+}
+.Admin_Add_Visa_wrapper_data_l1{
+    text-align: start;
+    width: 300px;
+}
+.Admin_Add_Visa_wrapper_data_l1 input{
+    width: 90%;
+}
+.Admin_Add_Visa_wrapper_data_line_remarks{
+    display: flex;
+    justify-content: space-between;
+}
+.Admin_Add_Visa_wrapper_data_line_remarks .Admin_Add_Visa_wrapper_data_l1{
+    width: 50%;
+}
+
+
+/* ######################## Admin_Search_Visa ##################### */
+
+.Admin_Search_Visa_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Search_Visa_wrapper_data_line {
+	margin:10px auto;
+	width:500px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Admin_Search_Visa_wrapper_data_l1 {
+    text-align: start;
+    width: 100%;
+}
+
+.Admin_Search_Visa_wrapper_data_l1 input {
+    width: 100%;
+    height: 70px;
+}
+
+/* ################ admin_add_visa_consulate ################## */
+.Admin_Add_Visa_Consulate_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Add_Visa_Consulate_wrapper_data_line {
+    display: flex;
+}
+.Admin_Add_Visa_Consulate_wrapper_data_line .Admin_Add_Visa_Consulate_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+.Admin_Add_Visa_Consulate_wrapper_data_line .Admin_Add_Visa_Consulate_wrapper_data_l1 input {
+    width: 90%;
+}
+.Admin_Add_Visa_Consulate_wrapper_data_l1_add{
+    width: 600px;
+    text-align: start;
+}
+.Admin_Add_Visa_Consulate_wrapper_data_l1_add input{
+    width:95%;
+}
+
+
+/* ###################### Admin_Search_Visa_Consulate ################# */
+
+.Admin_Search_Visa_Consulate_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Search_Visa_Consulate_wrapper_data_line {
+    display: flex;
+    justify-content: space-around;
+    text-align: start;
+    width: 950px;
+    margin:10px auto
+}
+
+.Admin_Search_Visa_Consulate_wrapper_data_l1 {
+    width: 300px;
+    margin-right: 10px;
+}
+.Admin_Search_Visa_Consulate_wrapper_data_l1 input{
+    width: 90%;
+}
+
+
+
+/* ########### view tasks ############# */
+
+.view_Task_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.view_Task_wrapper_data {
+    width: 100%;
+    margin-right: 10px;
+    border-right: 2px solid #FFBA08;
+}
+
+.view_Task_wrapper_data label {
+    color: black;
+    font-weight: bold;
+}
+
+.view_Task_wrapepr_data_line,
+.view_Task_wrapepr_data_line2,
+.view_Task_wrapepr_data_line3,
+.view_Task_wrapepr_data_line4 {
+    display: flex;
+}
+
+.view_Task_wrapepr_data_line .view_Task_wrapepr_data_l1,
+.view_Task_wrapepr_data_line2 .view_Task_wrapepr_data_l1,
+.view_Task_wrapepr_data_line3 .view_Task_wrapepr_data_l1,
+.view_Task_wrapepr_data_line4 .view_Task_wrapepr_data_l1 {
+    text-align: start;
+    width: 40%;
+    margin-bottom: 10px;
+}
+.view_task_box_divide{
+    display: flex;
+}
+.view_Task_wrapper_data_comment_title{
+    text-align: start;
+}
+.view_Task_wrapper_data_comment_title label{
+color: black;
+font-weight: bold;
+}
+
+
+/* ################### edit task #################### */
+.edit_Task_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.edit_Task_wrapper_data_line,
+.edit_Task_wrapper_data_line2 {
+    display: flex;
+}
+
+.edit_Task_wrapper_data_line .edit_Task_wrapper_data_l1 {
+    text-align: start;
+    width: 300px;
+}
+
+.edit_Task_wrapper_data_line .edit_Task_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.edit_Task_wrapper_data_l1_des {
+    text-align: start;
+    width: 580px;
+}
+
+.edit_Task_wrapper_data_l1_des input {
+    width: 600px;
+}
+
+.edit_Task_wrapper_data_line2 .edit_Task_wrapper_data_l1 {
+    text-align: start;
+    width: 295px;
+}
+
+.edit_Task_wrapper_data_line2 .edit_Task_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.edit_Task_wrapper_data_l1_des {
+    text-align: start;
+    width: 580px;
+}
+
+.edit_Task_wrapper_data_l1_des input {
+    width: 560px;
+}
+
+.edit_Task_wrapper_data_line2_confom {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.edit_Task_wrapper_data_line2_confom .edit_Task_wrapper_data_l1 {
+    display: flex;
+    justify-content: space-between;
+    width: 520px;
+}
+
+/* ################## view_confirm_delete_task ################# */
+.view_confirm_delete_task_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.view_confirm_delete_task_wrapper label {
+    color: black;
+    font-weight: bold;
+}
+
+.view_confirm_delete_task_wrapper_data_line {
+    display: flex;
+}
+
+.view_confirm_delete_task_wrapper_data_line .view_confirm_delete_task_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+.view_confirm_delete_task_wrapper_data_l1_link{
+    text-align: start;
+    width: 600px;
+}
+
+
+/* ################### viewLeadQuotationsList ######################## */
+.viewLeadQuotationsList_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 155px;
+}
+
+.viewLeadQuotationsList_wrapper label {
+    color: black;
+    font-weight:bold;
+}
+
+.viewLeadQuotationsList_wrapper_data_line {
+    display: flex;
+}
+
+.viewLeadQuotationsList_wrapper_data_line .viewLeadQuotationsList_wrapper_data_l1 {
+    text-align: start;
+    width: 250px;
+}
+
+.leadQ-ser {
+    width: 100%;
+}
+
+.lq-sers {
+    display: flex;
+}
+.lq-sers .viewLeadQuotationsList_wrapper_data_l1 label{
+	color:black;
+	font-weight: normal;
+}
+.lq-sers label {
+    color: white;
+}
+
+.lq-btns {
+    position: absolute;
+    top: -50px;
+    right: 0px;
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.lq-btns a {
+    color: white;
+    border: 2px solid black;
+    background: #FABA08;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.viewLeadQuotationsList_wrapper_data {
+    position: relative;
+}
+
+.viewLeadQuotationsTabel {
+    margin-top: 5px;
+    margin-left:-150px;
+    color: black;
+    width: 1500px;
+    background:white;
+}
+
+.viewLeadQuotationsTabel th {
+    text-align: center;
+    color: #FABA08;
+}
+
+.viewLeadQuotationsTabel td {
+    text-align: center;
+    color: white
+}
+
+.vlq-icon {
+    color: #FABA08;
+    position: relative;
+    transition: 0.2s ease-in-out;
+}
+
+.vlq-icon:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.vlq-icon:hover .vlq-icon_div {
+    display: block;
+    cursor: pointer;
+    color: red;
+}
+
+.vlq-icon_div {
+    display: none;
+    width: 150px;
+    position: absolute;
+    background: black;
+    padding: 10px;
+    top: 0;
+    left: 19px;
+    border-radius: 10px;
+    border: 2px solid #FABA08;
+}
+
+.vlq-icon_div a {
+    color: white;
+}
+
+.vlq-icon_div ul li {
+    border-bottom: 2px solid #FABA08;
+    margin-bottom: 3px;
+}
+
+.vlq-icon_div ul li a:hover {
+    color: #FABA08;
+}
+.stqb{
+	position: relative;
+	color: #FABA08;
+}
+.stqb:hover{
+	cursor: pointer;
+	color:red
+}
+
+.quotation-box-three-bar{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	width:200px;
+	height:auto;
+	background:black;
+	display: none;
+	top:0;
+	left:17px;
+	padding: 2px 0;
+	border-radius: 5px;
+}
+.quotation-box-three-bar li{
+	border-bottom:2px solid #FABA08 ;
+}
+.quotation-box-three-bar ul  li a:hover{
+	color: #FABA08 ;
+	cursor:pointer;
+}
+.stqb:hover .quotation-box-three-bar{
+	display: block;
+}
+
+/* ####################### add city styling ######################### */
+
+.Admin_Add_City_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.Admin_Add_City_wrapper_data_line_div{
+    display: flex;
+    justify-content: center;
+}
+.Admin_Add_City_wrapper_data_l1{
+    text-align: start;
+    width: 300px;
+}
+.Admin_Add_City_wrapper_data_l1 input{
+    width: 90%;
+}
+
+
+/* ################ view city listing styling ################ */
+
+.viewCityListing_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.viewCityListing_wrapper_data_line {
+    display: flex;
+    justify-content: center;
+}
+
+.viewCityListing_wrapper_data_line .viewCityListing_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.viewCityListing_wrapper_data_line .viewCityListing_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.viewCityListing_table {
+    margin-top: 10px;
+    width: 100%;
+    background: rgba(0, 0, 0, 9);
+    border-radius: 10px;
+}
+
+
+.viewCityListing_table th{
+    color:#FABA08;
+    font-weight: bold;
+    text-align: center;
+}
+.viewCityListing_table td{
+    color: white;
+    text-align: center;
+}
+
+        /* ################### manageStatus_table ################## */
+.manageStatus_table{
+    text-align: center;
+    background:white;
+    color: black;
+    width: 100%;
+    border-radius: 10px;
+        margin-top: 115px;
+}
+.manageStatus__sub_table{
+    text-align: center;
+    width: 100%;
+}
+.manageStatus_table th{
+  color: #FABA08;
+}
+.manageStatus__sub_table th{
+  color: #FABA08;
+}
+.mng-sts-btn:hover{
+color:#249C91;
+	cursor: pointer;
+}
+.mng-st-btn:hover{
+	cursor: pointer;
+}
+.containermm{
+	width:1400px;
+	margin:130px auto;
+}
+
+
+
+
+
+
+/* #################### view_myprofile_styling ################# */
+
+.view_myprofile_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 0.689);
+    padding: 10px;
+    padding-top: 130px;
+    border-radius: 10px;
+    margin-top: 250px;
+    position: relative;
+    border: 1px solid #FABA08;
+}
+
+.other_data_view_profie {
+    display: flex;
+    justify-content: space-around;
+}
+
+.view_myprofile_wrapper_data_l1 {
+    width: 180px;
+    text-align: start;
+}
+
+.view_myprofile_wrapper_data_l1 label {
+    color: #FABA08;
+    font-weight: bold;
+}
+
+/* .view_myprofile_wrapper_data_l1 input {
+    width: 90%;
+} */
+
+.view_myprofile_wrapper_data_line_l1_pic {
+    position: absolute;
+    width: 300px;
+    top: -120px;
+    left: 38%;
+    display: flex;
+    /* Use flexbox */
+    justify-content: center;
+    /* Center content horizontally */
+    align-items: center;
+    /* Center content vertically */
+}
+
+.view_myprofile_wrapper_data_line_l1_pic {
+    width: 230px;
+    height: 230px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 10px solid #FFCF53;
+}
+
+.view_myprofile_wrapper_data_line_l1_pic img {
+	width:100%;
+
+    display: block;
+}
+
+.other_data_view_profie2 {
+	margin-top:10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.other_data_view_profie2 .view_myprofile_wrapper_data_l1 {
+    width: 180px;
+    text-align: start;
+}
+
+.view_profile_side_menu {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.689);
+    border: 1px solid #FABA08;
+    padding: 5px;
+    z-index: 10;
+    border-radius:5px ;
+}
+
+.view_profile_side_menu ul li a {
+    color: white;
+}
+.view_profile_side_menu ul li {
+    border-bottom: 2px solid #FABA08;
+}
+.container_view_p{
+    width: 1200px;
+    margin-left: 200px;
+}
+.view_profile_side_ul li a:hover{
+    color: #FABA08;
+}
+
+
+/* ################ change password ##############  */
+.view_changepassword_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 215px;
+    margin-left: 50px;
+    border: 2px solid #FABA08;
+}
+.view_changepassword_wrapper_data_line{
+    display: flex;
+    justify-content: center;
+}
+.view_changepassword_wrapper_data_l1{
+    text-align: start;
+    width: 300px;
+}
+.view_changepassword_wrapper_data_l1 input{
+    width: 90%;
+}
+
+
+
+
+/* ################## edit lead ################### */
+
+.edit_lead_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.edit_lead_wrapper_data_line {
+    display: flex;
+}
+.edit_lead_wrapper_data_line_ser{
+	text-align: start;
+}
+.edit_lead_wrapper_data_line .edit_lead_wrapper_data_l1 {
+    text-align: start;
+    width: 300px;
+}
+
+.edit_lead_wrapper_data_line .edit_lead_wrapper_data_l1 label {
+    color: black;
+}
+
+.edit_lead_wrapper_data_line .edit_lead_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.lead_markers_ch {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sun_edit_lead {
+    width: 50%;
+    display: flex;
+}
+
+.sun_edit_lead input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+    margin-left: 6px;
+    margin-top: 2px;
+}
+
+.adults_box_edit_box {
+    display: flex;
+}
+
+.adults_box_edit {
+
+    width: 31%;
+}
+
+.edit_ser_box {
+	background:lightgray;
+    width: 97.5%;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+}
+
+.edit_lead_wrapper_data_l1_rem {
+    display: flex;
+}
+
+.edit_lead_wrapper_data_l1_rem1 {
+    text-align: start;
+}
+
+.edit_lead_wrapper_data_l1_rem2 {
+    text-align: start;
+}
+
+.edit_lead_wrapper_data_l1_rem1 label {
+    color: black;
+}
+
+.edit_lead_wrapper_data_l1_rem2 label {
+    color: black;
+   
+}
+.info-client_3{
+    display: flex;
+    justify-content: center;
+}
+.view_lead_tag_team{
+	display: flex;
+}
+
+/* ################## createNewQuotation ################# */
+
+.createNewQuotation_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 165px;
+}
+
+.createNewQuotation_wrapper_data_line {
+    display: flex;
+}
+
+.createNewQuotation_wrapper_data_line label {
+    color: #FABA08;
+    font-weight: bold;
+}
+
+.createNewQuotation_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.createNewQuotation_wrapper_data_l3 {
+    width: 295px;
+    text-align: start;
+}
+
+.createNewQuotation_ser {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.createNewQuotation_ser_box {
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+}
+
+.createNewQuotation_ser_box input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin-left: 5px
+}
+.createNewQuotation_form_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.createNewQuotation_form_wrapper_data_line {
+    display: flex;
+}
+
+.createNewQuotation_form_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.createNewQuotation_form_wrapper_data_l1 input {
+    width: 90%;
+}
+
+.createNewQuotation_form_wrapper_data label {
+    color: black;
+    font-weight: normal;
+}
+.createNewQuotation_wrapper{
+	position: relative;
+}
+.createNewQuotation_btn{
+	    position: absolute;
+    right: 164px;
+    top: 128px;
+}
+
+.createNewQuotation_btn a{
+	outline: none;
+    border: 2px solid black;
+    padding: 5px;
+    background: #FABA08;
+    color: black;
+    border-radius: 5px;
+}
+.createNewQuotation_btn input{
+	outline: none;
+    border: 2px solid black;
+    padding: 5px;
+    background: #FABA08;
+    color: black;
+    border-radius: 5px;
+}
+
+/* ################ viewQuotationDetails ############### */
+.container_vqd {
+    width: 1200px;
+    margin-left: 230px
+}
+
+.viewQuotationDetails_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.viewQuotationDetails_wrapper_data_line {
+    display: flex;
+}
+
+.viewQuotationDetails_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.viewQuotationDetails_wrapper_data_l1 label {
+    font-weight: bold;
+    color: black;
+    width: 300px;
+    text-align: start;
+}
+
+.viewQuotationDetails_wrapper_data_line_ser {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.viewQuotationDetails_wrapper_data_ser {
+    display: flex;
+    align-items: center;
+}
+
+.viewQuotationDetails_wrapper_data_ser label {
+    margin-right: 5px;
+}
+
+.viewQuotationDetails_wrapper_data_ser input[type="checkbox"] {
+    margin-right: 5px;
+    width: 15px;
+    height: 15px;
+}
+
+.viewQuotationDetails_wrapper_data_line_ser_hd {
+    font-weight: bold;
+    color: black;
+    width: 300px;
+    text-align: start;
+}
+
+/* ##################### quotationServicesMenu ##############  */
+
+.quotationServicesMenu_table {
+	z-index:1;
+    margin: 10px a;
+    height: auto;
+    padding: 20px;
+    background: #d1b3c4;
+    color: white !important;
+    display: flex;
+    justify-content: center;
+}
+.afd{
+margin-top:100px
+}
+.com-q{
+	border:2px solid red;
+	margin:0 10px;
+	color:white;
+}
+.com-q a{
+	padding: 3px;
+	border-radius:2px;
+	color:white !important;
+	transition:all 0.2s ease-in-out
+}
+.com-q a:hover{
+	cursor:pointer;
+	color: black;
+	background:#FFCF53;
+}
+
+/* #################### sep_quick_lead_view ################# */
+.my-ki{
+	position: absolute;
+	top:105px;
+}
+.sep_quick_lead_view {
+	z-index:5;
+    margin-top: 22px;
+    margin-left: 10px;
+    position: absolute;
+    width: 200px;
+}
+
+.hamburgur_menu_quick_lead_view,
+.ch_quick_lead_view {
+    width: 45px;
+    height: 35px;
+}
+
+.hamburgur_menu_quick_lead_view span {
+    width: 100%;
+    height: 5px;
+    background: black;
+    border-radius: 5px;
+}
+
+.hamburgur_menu_quick_lead_view {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.lead_view_sep {
+    position: absolute;
+    transform: translateX(-110%);
+    transition: .5s ease-in-out;
+}
+
+.ch_quick_lead_view {
+    opacity: 0;
+    z-index: 9;
+}
+
+.ch_quick_lead_view:checked+.hamburgur_menu_quick_lead_view+h2+.lead_view_sep {
+    transform: translateX(150px);
+    /* Adjust the value as needed */
+}
+
+.ch_quick_lead_view {
+    position: absolute;
+    top: 0;
+}
+
+.sep_line1 {
+    transform-origin: 0% 0%;
+    transition: 0.5s ease-in-out;
+}
+
+.sep_line3 {
+    transform-origin: 0% 100%;
+    transition: 0.5s ease-in-out;
+}
+
+.ch_quick_lead_view:checked~.hamburgur_menu_quick_lead_view .sep_line1 {
+    transform: rotate(45deg);
+background:red
+}
+
+.ch_quick_lead_view:checked~.hamburgur_menu_quick_lead_view .sep_line2 {
+    display: none;
+}
+
+.ch_quick_lead_view:checked~.hamburgur_menu_quick_lead_view .sep_line3 {
+    transform: rotate(-45deg);
+background:red
+}
+
+/* #################### form_view_add_manual_transfer_quotation  ############################ */
+
+.form_view_add_manual_transfer_quotation_wrapper{
+        color: black;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        
+}  
+.form_view_add_manual_transfer_quotation_wrapper_data_line{
+    display: flex;
+}
+.form_view_add_manual_transfer_quotation_wrapper_data_l1{
+    width: 300px;
+    text-align: start;
+}
+.form_view_add_manual_transfer_quotation_wrapper_data_l1 input{
+    width: 90%;
+}
+.form_view_add_manual_transfer_quotation_wrapper_data_l1 label{
+    width: 90%;
+}
+
+.form_view_add_manual_transfer_wrapper_data_l1_small{
+    text-align: start;
+    width: 295px;
+    display: flex;
+    justify-content: flex-start;
+}
+.com-in{
+    width: 100px;
+}
+.com-in input{
+    width: 70px;
+}
+.form_view_add_manual_transfer_quotation_remarks{
+    text-align: start;
+}
+.form_view_add_manual_transfer_quotation_wrapper_data_line{
+    margin-bottom: 5px;
+}
+
+
+/* ################# viewTransfersQuotationDetails ################## */
+
+.viewTransfersQuotationDetails_wrapper{
+color: black;
+    width: 500px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin:0px auto;
+}
+.viewTransfersQuotationDetails_wrapper label{
+font-weight: bold;
+    color: black;
+    width: 300px;
+    text-align: start;
+}
+.viewTransfersQuotationDetails_wrapper_data_line{
+    display: flex;
+    justify-content: space-around;
+}
+.vtdh{
+    color: #FABA08;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+.vtdh_btns{
+	margin:0 auto;
+	width: 500px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    color:white;
+}
+.mfk{
+display: flex;
+justify-content: center;
+}
+.mfka{
+	background: #32cd32  ;
+}
+/* ################## view_transfer_quotation_table ################### */
+
+.view_transfer_quotation_table_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;     
+}
+
+.container2{
+	margin:10px 0;
+	display: flex;
+	justify-content: center;
+	width:100%
+}
+
+.view_transfer_quotation_table_wrapper_data {
+    display: flex;
+}
+
+.view_transfer_quotation_table_wrapper_data_li {
+    width: 300px;
+    text-align: start;
+}
+
+.view_transfer_quotation_table_wrapper_data_li label {
+    font-weight: bold;
+    color: black;
+    width: 300px;
+    text-align: start;
+}
+.view_transfer_quotation_table_wrapper_data_li_wrp{
+    width: 300px;
+    display: flex;
+    justify-content: flex-start;
+}
+.vtq_child{
+    text-align: start;
+    width: 80px;
+}
+.vtq_child label{
+    font-weight: bold;
+    color: #FABA08;
+    width: 300px;
+    text-align: start;
+}
+.view_transfer_quotation_table_wrapper_data label{
+    font-weight: bold;
+        color: #FABA08;
+        width: 300px;
+        text-align: start;
+}
+.vtdh2 {
+    color: red;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* ################### SIGHT SEEING QUOTATION ############# */
+.container_VTQ {
+    width: 1200px;
+    margin: 20px auto;
+}
+
+.sssec_wrapper {
+
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+/* .lb{
+    font-weight: bold;
+    color: #FABA08;
+    width: 300px;
+    text-align: start;
+} */
+
+.sssec_wrapper_data {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sssec_wrapper_data_line {
+    text-align: start;
+}
+
+.sssec_wrapper_data_line {
+    width: 300px;
+}
+
+.sssec_wrapper_data_line input {
+    width: 90%;
+}
+
+/* .sssec_radio_box{
+    border: 2px solid green;
+    display: flex;
+} */
+.sub_sssec_radio_box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.sssecb1 label{
+   margin-right: 20px;
+}
+.sssecb2 label{
+   margin-right: 41px;
+}
+
+.sub_sssec_radio_box input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+.sssec_wrapper_data_line_id_name{
+    margin-top: -20px;
+    text-align: start;
+    width: 97%;
+}
+.sssec_wrapper_data_line_fam_info{
+    width: 300px;
+    display: flex;
+}
+.fam_com_ssc{
+    width: 80px;
+    margin: 0 10px 0 0;
+}
+.fam_com_ssc input{
+    width: 100%;
+}
+.sssec_wrapper_data{
+    margin-bottom: 10px;
+}
+
+
+/* ########### form_view_delete_manual_sightseeing_quotation ############ */
+
+.form_view_delete_manual_wrapper{
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 0;
+}
+.form_view_delete_manual_wrapper_data_line{
+    display: flex;
+    justify-content: space-between;
+}
+.form_view_delete_manual_wrapper_data_l1{
+    width: 300px;
+    text-align: start;
+}
+.form_view_delete_manual_wrapper_data_l1 label,.fvmwdl1 label,.form_view_delete_manual_wrapper_data_l1_id label,.form_view_delete_manual_wrapper_data_l1_rem label{
+        font-weight: bold;
+            color: black;
+}
+.form_view_delete_manual_wrapper_data_l1_ad{
+    width: 300px;
+    display: flex;
+}
+.fvmwdl1{
+    text-align: start;
+    width: 25%;
+}
+.fvmwdl1m{
+    margin: 0 10px;
+}
+.form_view_delete_manual_wrapper_data_l1_id,.form_view_delete_manual_wrapper_data_l1_rem{
+    width: 100%;
+    text-align: start;
+}
+.sssec_wrapper_data_try{
+	display:flex;
+}
+.fvemsq{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row-reverse
+}
+
+/* ################################################## */
+
+
+.viewVisaQuotationDetails_wrapper {
+    color: black;
+    width: 500px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
+.viewVisaQuotationDetails_wrapper label {
+    font-weight: bold;
+    color: #FABA08;
+    width: 300px;
+    text-align: start;
+}
+
+.viewVisaQuotationDetails_wrapper_data_line{
+    display: flex;
+        justify-content: space-around;
+}
+.viewVisaQuotationDetails_wrapper2{
+    color: black;
+        width: 500px;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background:white;
+        padding: 10px;
+        border-radius: 10px;
+        margin:0 auto;
+      
+}
+
+/* ######################### form_view_search_visa_add_quotation ########################### */
+
+.form_view_search_visa_add_quotation_wrapper {
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 80px auto;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_l1_h {
+    border-radius: 2px;
+    background: #00b4d8;
+    color: black;
+    display: flex;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_l1_h p {
+    width: 300px;
+    font-weight: bold;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_l1_btns {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_l1 {
+    display: flex;
+    margin-top: 20px;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_in {
+    width: 300px;
+    text-align: start;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_in input {
+    width: 90%;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_l1_c {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.form_view_search_visa_add_quotation_wrapper_data_rem {
+    text-align: start;
+}
+
+.rel-btns input {
+    background: #00b4d8a7;
+    color: black;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 4px;
+    transition: background .5s ease-in-out;
+    border: none;
+    outline: none;
+}
+.rel-btns input:hover {
+    background: #00b4d8;
+}
+
+.vertical-line {
+    border-left: 2px solid #00b4d8;
+    /* You can change the color by modifying #000 */
+    height: 87px;
+    position: absolute;
+    left:49.3%;
+}
+
+.horizontal-line {
+    border-bottom: 2px solid #00b4d8;
+    height: 2px;
+    width: 51%;
+    position: absolute;
+    top: 30%;
+}
+
+/* ##################### view_visa_master_details_modal ###################### */
+
+.view_visa_master_details_modal_wrapper {
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.view_visa_master_details_modal_wrapper_data_line {
+    display: flex;
+}
+
+.view_visa_master_details_modal_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.view_visa_master_details_modal_wrapper_data_l1 label {
+    font-weight: bold;
+    color: black;
+    width: 300px;
+}
+.view_visa_master_details_modal_wrapper_data_line_rem_oc{
+    display: flex;
+    justify-content: space-between;
+}
+.view_visa_master_details_modal_wrapper_data_line_rem_oc label,.view_visa_master_details_modal_wrapper_data_line_rem label{
+font-weight: bold;
+    color: #FABA08;
+    width: 300px;
+}
+.rem_oc{
+    text-align: start;
+    width: 48%;
+}
+.view_visa_master_details_modal_wrapper_data_line_rem{
+    text-align: start;
+}
+.bc-clr{
+    background: #6082B6;
+    margin-bottom: 10px;
+}
+.view_visa_master_details_modal_wrapper_data_l1_cn{
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+.view_visa_master_details_modal_wrapper_data_l1_cn label{
+    font-size: 30px;
+}
+.view_visa_master_details_modal_wrapper_data_l1_cn p{
+    color: #32cd32;
+    font-size: 30px;
+}
+.m-try{
+	position: absolute;
+	top:200px;
+	height:auto;
+	z-index:999;
+}
+.mb-try{
+	margin-top:-100px
+}
+.mc-try{
+	color:red;
+	height: 30px;
+	width:30px;
+	position:absolute;
+	top:10px;
+	left:10px
+}
+.mc-try:hover{
+	cursor: pointer;
+}
+.l-st{
+    font-weight: bold;
+        color: black;
+        width: 300px;
+}
+/* ######## sb ############ */
+.sb_wrapper{
+        color:black;
+        width: 500px;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background:white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top:-30px;
+        margin-left:510px
+}
+/* ################# visa sec table ################### */
+.visa_sec_tabel {
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.vsi {
+    color:black;
+    position: relative;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+
+}
+
+.vsi-ul {
+    display: none;
+    position: absolute;
+    background: black;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all .2s ease-in-out;
+    z-index: 9;
+    top: 0;
+    left: 17px;
+    width: 150px;
+}
+
+.vsi-ul li a {
+    color: white;
+    /* border-bottom: 2px solid red; */
+    /* margin-bottom: 5px; */
+    /* padding-bottom:10px ; */
+}
+
+.vsi-ul li {
+    border-bottom: 2px solid #FABA08;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.vsi-ul li a:hover {
+    font-size: 18px;
+    color: #FABA08;
+}
+
+.vsi:hover .vsi-ul {
+    display: block;
+    cursor: pointer;
+}
+
+.vsi:hover {
+    color: red;
+
+}
+.vsh{
+    background:#6082B6;
+    height:50px;
+}
+
+
+
+/* ######################## viewCruiseQuotationDetails ###################### */
+
+.viewCruiseQuotationDetails_wrapper {
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.viewCruiseQuotationDetailsfrm_wrapper {
+    color: black;
+    width: 500px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin:20px auto;
+}
+
+.viewCruiseQuotationDetailsfrm_wrapper_2 {
+    color: black;
+    width: 500px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin:10px auto;
+}
+
+.viewCruiseQuotationDetails_wrapper_data_line {
+    display: flex;
+}
+
+.viewCruiseQuotationDetails_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.viewCruiseQuotationDetails_wrapper_data_l1 input {
+    width: 90;
+    text-align: start;
+}
+
+.lb {
+    font-weight:normal;
+    color: #FABA08;
+    width: 300px;
+}
+.viewCruiseQuotationDetailsfrm_wrapper_data{
+    display: flex;
+}
+.viewCruiseQuotationDetailsfrm_wrapper_l1{
+    width: 250px;
+    
+}
+.viewCruiseQuotationDetailsfrm_wrapper_data2{
+    border: 2px solid red;
+    display: flex;
+}
+.viewCruiseQuotationDetailsfrm_wrapper_l12{
+    border: 2px solid green;
+    width: 250px;
+    text-align: start;
+}
+.viewCruiseQuotationDetailsfrm_wrapper_l12  input{
+    width: 90%;
+}
+/* ################ Admin_Update_Visa_Docs ################## */
+
+.Admin_Update_Visa_Docs_wrapper{
+        color: white;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: rgba(0, 0, 0, 9);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 115px;
+}
+.Admin_Update_Visa_Docs_wrapper_data_line{
+    display: flex;
+}
+.Admin_Update_Visa_Docs_wrapper_data_l1{
+    width: 300px;
+    text-align: start;
+
+}
+.Admin_Update_Visa_Docs_wrapper_data_l1_rem{
+    width: 600px;
+    text-align: start;
+}
+.Admin_Update_Visa_Docs_wrapper_data_l1_rems{
+    width: 1200px;
+    text-align: start;
+}
+.vst_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.vsth {
+    font-weight: bold;
+    color: black;
+}
+.vts-btn a{
+	color:red
+}
+.vst-btn  a{
+	margin-right:10px
+}
+/* ################### Admin_View_Visa_Consulate ################ */
+
+.Admin_View_Visa_Consulate_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.Admin_View_Visa_Consulate_wrapepr_data_line{
+    display: flex;
+}
+.Admin_View_Visa_Consulate_wrapepr_data_l1{
+    text-align: start;
+    width: 300px;
+}
+.vst-btn-cbt{
+	background:#32cd32  
+}
+
+/* #################### vstab ################## */
+
+.vstab {
+    color: black;
+    width: 1500px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.vstab thead {
+    background: #6082B6;
+    font-size: 18px;
+    color: black;
+    height: 40px;
+}
+.vstab_wrap_btns {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    width:1500px;
+    margin:0 auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: white;
+    color: black;
+    align-items: center;
+}
+.vstab-btn input{
+	cursor:pointer;
+	border-radius:5px;
+	border:none;
+	outline:none;
+	padding: 5px 10px;
+	background: #32cd32  ;
+	color:white
+}
+
+
+/* ################### form_visa_docs_emailer ############### */
+.form_visa_docs_emailer_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.form_visa_docs_emailer_wrapper_data_wrapper_dl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_visa_docs_emailer_wrapper_data_wrapper_dl1 {
+    width: 600px;
+    text-align: start;
+}
+
+.form_visa_docs_emailer_wrapper_data_wrapper_dl1 input {
+    width: 100%;
+}
+
+.lb {
+    font-weight: bold;
+    color: black;
+}
+
+.form_visa_docs_emailer_wrapper_2_tabel {
+    width: 100%;
+}
+
+.form_visa_docs_emailer_wrapper_div {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.form_visa_docs_emailer_wrapper_2_tabel_h{
+   background: #6082B6
+}
+
+/* ####################  Admin_Del_Con_Visa_Docs ################  */
+.Admin_Del_Con_Visa_Docs_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Del_Con_Visa_Docs_wrapper_data_li {
+    display: flex;
+}
+
+.Admin_Del_Con_Visa_Docs_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.Admin_Del_Con_Visa_Docs_wrapper_data_lower {
+    display: flex;
+}
+
+.Admin_Del_Con_Visa_Docs_wrapper_document {
+    width: 290px;
+    text-align: start;
+}
+
+.Admin_Del_Con_Visa_Docs_wrapper_document_des {
+    width: 100%;
+    text-align: start;
+}
+.update_visa_table{
+	border:2px solid red
+}
+
+/* ##################################################### */
+
+.abc_fom_wrapper{
+    color: black;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        margin-top: 115px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+}
+.abc_fom_wrapper_data_line{
+    display: flex;
+}
+.abc_fom_wrapper_data_l1{
+    width: 300px;
+    text-align: start;
+}
+.abc_fom_wrapper_data_l1_rem{
+    width: 50%;
+    text-align: start;
+}
+.abc_fom_wrapper_data_l1_rems{
+    width: 100%;
+    text-align: start;
+}
+.container_v{
+	    color: white;
+        width: 100%;
+        text-align: center;
+        border: none;
+        background: rgba(0, 0, 0, 9);
+        padding: 10px;
+        margin-top: 115px;
+}
+/* ################## admin_visa_update_fr ############ */
+.admin_visa_update_fr_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.admin_visa_update_fr_wrapper_data_line{
+    display: flex;
+}
+.admin_visa_update_fr_wrapper_data_l1{
+    width:300px;
+    text-align: start;
+}
+.admin_visa_update_fr_wrapper_data_l1 input{
+    width:90%;
+}
+.admin_visa_update_fr_wrapper_data_rem{
+    width: 50%;
+    text-align: start;
+}
+.admin_visa_update_fr_wrapper_data_rem {
+    width: 50%;
+    text-align: start;
+}
+.admin_visa_update_fr_wrapper_data_rem input{
+    width: 95%;
+}
+.admin_visa_update_fr_wrapper_data_rems{
+    text-align: start;
+}
+
+/* ######################  UserCRUDDocs ##################### */
+.UserCRUDDocs_tabel{
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+   margin-top: 150px;
+    margin-left: 150px;
+}
+.UserCRUDDocs_tabel2{
+    color: black;
+     width: 600px;
+     text-align: center;
+     border-collapse: collapse;
+     border: none;
+     background: white;
+     padding: 10px;
+     border-radius: 10px;
+     margin-top:50px;
+     margin-left:450px
+}
+.UserCRUDDocs_tabel3{
+	 color: black;
+     width: 600px;
+     height: 50px;
+     text-align: center;
+     border-collapse: collapse;
+     border: none;
+     background: white;
+     padding: 50px;
+     border-radius: 10px;
+     margin-top:50px;
+     margin-left:450px
+}
+
+
+
+
+/* ####################### rso ######################## */
+.rso_wrapper {
+    color: black;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.rso_wrapper_data_line {
+    display: flex;
+}
+
+.rso_wrapper_data_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.rso_wrapper_data_l1_p {
+    width: 300px;
+    display: flex;
+}
+
+.qf {
+    text-align: start;
+    width: 50%;
+}
+
+.rso_wrapper_data_l1p {
+    width: 295px;
+    text-align: start;
+}
+
+.rso_wrapper_data_ser {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.rso_table {
+    color: black;
+    width: 1200px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.rso_sms {
+    color: black;
+    width: 800px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
+.rso_sms_heading,
+.rso_sms_input {
+    text-align: start;
+}
+
+.sms_email_wrapper{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.rso_sms_heading{
+    text-align: start;
+    width: 400px;
+}
+.rso_sms_heading input{
+   width: 550px;
+}
+
+/* ####################### viewEditQuotationDetails ############ */
+
+.viewEditQuotationDetails_wrapper{
+    color:black;
+        width: 1200px;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+       margin:25px auto;
+}
+.viewEditQuotationDetails_wrapper_data_line{
+    display: flex;
+}
+.viewEditQuotationDetails_wrapper_dl1{
+    width: 300px;
+    text-align: start;
+}
+.viewEditQuotationDetails_wrapper_data_line_sr{
+    display: flex;
+    justify-content: space-between;
+}
+/* ################ form_convertNewDeal ############### */
+
+.form_convertNewDeal_wrapper {
+    color: white;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.form_convertNewDeal_wrapper_data_line{
+    display: flex;
+}
+.form_convertNewDeal_wrapper_dl1{
+    width: 300px;
+    text-align: start;  
+}
+.form_convertNewDeal_ser{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* #################### form_supplier_request_quotation_emailer ############### */
+
+.form_supplier_request_quotation_emailer_wrapper {
+    color: black;
+    width: 700px;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+    margin-left:235px;
+}
+
+.form_supplier_request_quotation_emailer_wrapper_dline {
+    display: flex;
+}
+
+.form_supplier_request_quotation_emailer_wrapper_dl1 {
+    width: 400px;
+    text-align: center;
+}
+.form_supplier_request_quotation_e{
+    color: black;
+        width: 800px;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px auto;
+}
+.form_supplier_request_quotation_e_wr_d{
+    display: flex;
+    flex-direction: column;
+}
+.form_supplier_request_quotation_e_w{
+    width: 100%;
+    text-align: start;
+}
+.form_supplier_request_quotation_e_w input{
+    width:90% ;
+}
+.form_supplier_request_quotation_e_m{
+    width: 100%;
+    text-align: start;
+}
+
+/* #################### ViewClientDetails ############## */
+.ViewClientDetails_wrapper{
+    color:black;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 125px;
+        margin-bottom: 50px;
+}
+.ViewClientDetails_wrapper_data_line{
+    display: flex;
+}
+.ViewClientDetails_wrapper_dl1{
+    width: 300px;
+    text-align: start;
+}
+.ViewClientDetails_wrapper_dl1_add{
+    width: 1200px;
+    text-align: start;
+}
+.ViewClientDetails_wrapper_dl1_M{
+    width: 295px;
+    text-align: start;
+}
+.ViewClientDetails_wrapper_dl1_rem{
+    width: 1200px;
+    text-align: start;
+}
+.my-b{
+	cursor: pointer;
+}
+/* ##################### viewLeadDetails_modal ############### */
+.viewLeadDetails_modal_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.viewLeadDetails_modal_wrapper_data_line {
+    display: flex;
+}
+
+.viewLeadDetails_modal_wrapper_dl1 {
+    width: 300px;
+    text-align: start;
+}
+
+.viewLeadDetails_modal_wrapper_data_linesr {
+    display: flex;
+    justify-content: space-around;
+}
+
+.viewLeadDetails_modal_wrapper_dl1rem {
+    width: 100%;
+}
+
+.viewLeadDetails_modal_wrapper_data_line_ci {
+    display: flex;
+    justify-content: center;
+}
+.sms-mail-wrapper{
+	display:flex;
+	justify-content: space-between;
+	}
+	.rso_sms{
+		width:590px
+	}
+	
+	
+/* ################## viewHotelQuotationDetails ##################### */
+
+.viewHotelQuotationDetails_wrapper_dl {
+    display: flex;
+    width: 500px;
+    margin:20px auto;
+    background: black;
+    color: white;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+.viewHotelQuotationDetails_hd{
+    padding: 10px 0;
+    text-align: center;
+    /* display: flex; */
+    width: 500px;
+    margin: 20px auto;
+    background: white;
+    color: black;
+    /* justify-content: space-between; */
+    border-radius: 5px;
+}
+
+.viewHotelQuotationDetails_wrapper_dli {
+	
+	background:white;
+	color:black;
+    width: 250px;
+    padding: 10px;
+}
+
+
+/* #########################################    */
+.form_view_add_manual_hotel_quotation{
+       color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        width: 1200px;
+       margin:20px auto;
+        
+}
+.form_view_add_manual_hotel_quotation_wrapper {
+    display: flex;
+}
+
+.form_view_add_manual_hotel_quo_box {
+    width: 300px;
+    text-align: start;
+}
+
+.form_view_add_manual_hotel_quo_box input {
+    width: 90%;
+}
+
+/* ############# main_p ############## */
+
+.main_p_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.main_p_wrapper_data_line{
+display: flex;
+}
+.main_p_wrapper_dl{
+    width: 300px;
+    text-align: start;
+}
+.main_p_wrapper_dl_rem{
+    text-align: start;
+    width: 100%;
+}
+
+.due_today_task_data_btnss input{
+	display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+    cursor:pointer;
+}
+.due_today_task_data_btnss input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.due_today_task_data_btnss a input{
+	display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+    cursor:pointer;
+}
+.due_today_task_data_btnss a input:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+/* ##################### viewInsuranceQuotation ########### */
+.viewInsuranceQuotationD_wr_data {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 600px;
+    margin-top:20px
+}
+.viewInsuranceQuotationD_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.viewInsuranceQuotationD_wr_data{
+    display: flex;
+}
+.viewInsuranceQuotationD_wr_data_line{
+    text-align: center;
+    width: 300px;
+}
+.sa-q{
+        color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        width: 200px;
+        margin:10px auto;
+}
+
+.form_view_add_manual_insurance_q_wrap {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin:10px auto;
+}
+.form_view_add_manual_insurance_q_wrap_dl{
+    display: flex;
+}
+.form_view_add_manual_insurance_q_wrap_dl1{
+    text-align: start;
+    width: 300px;
+}
+.form_view_add_manual_insurance_q_wrap_dl1 input{
+    width: 90%;
+}
+.in_mu_add_wrp{
+	    margin:2px auto;
+        color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+}
+.in_mu_add_wrp_d{
+    display: flex;
+}
+.in_mu_add_wrp_l{
+    width: 300px;
+    text-align: start;
+}
+.in_mu_add_wrp {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.in_mu_add_wrp_d {
+    display: flex;
+}
+
+.in_mu_add_wrp_l {
+    width: 300px;
+    text-align: start;
+}
+
+
+.Flight_qu {
+    margin: 20px auto;
+    width: 700px;
+    color:black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.fr_view_fli_qu_wr{
+     color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.fr_view_fli_qu_wr_li_f{
+    display: flex;
+}
+.fr_view_fli_qu_wr_li_f .fr_view_fli_qu_wr_d{
+    text-align: start;
+    width: 600px;
+}
+.fr_view_fli_qu_wr_li_f .fr_view_fli_qu_wr_d input{
+    width: 95%;
+}
+.fr_view_fli_qu_wr_li{
+display: flex;
+}
+.fr_view_fli_qu_wr_li .fr_view_fli_qu_wr_d{
+width: 300px;
+text-align: start;
+}
+.fr_view_fli_qu_wr_li .fr_view_fli_qu_wr_d input{
+width: 90%
+}
+
+.oneW_wr {
+    color:black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.oneW_wr_d {
+    display: flex;
+}
+
+.oneW_wr_d_li {
+    width: 300px;
+    text-align: start;
+}
+
+.oneW_wr_d_li input {
+    width: 90%;
+}
+.oneW_wr_d_li_ch{
+    margin: 10px auto;
+}
+.hotal_btn{
+	border:none;
+	outline:none;
+	
+}
+
+/* ################### tour package ############# */
+
+.add_man_pckage_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top:20px;
+}
+.add_man_pckage_wrapper_data_line{
+    display: flex;
+}
+.add_man_pckage_wrapper_dl1{
+    text-align: start;
+    width: 300px;
+}
+.add_man_pckage_wrapper_dl1 input{
+    width: 90%;
+}
+.pt_wrapper {
+    width: 500px;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 100px auto;
+}
+
+/* #################### flight ###### */
+
+.fli_de_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius:5px;
+}
+
+.fli_de_wrapper_data_fli {
+    display: flex;
+}
+
+.fli_de_wrapper_data_fli .fli_de_wrapper_dl1 {
+    text-align: start;
+    width: 600px;
+}
+.fli_de_wrapper_data_li{
+    display: flex;
+}
+.fli_de_wrapper_data_li .fli_de_wrapper_dl1{
+    text-align: start;
+    width: 300px;
+}
+/* #################### fli dl ########### */
+.fl_view_wrapper{
+    color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: -80px;
+}
+.fl_view_wrapper_data_line{
+    display: flex;
+}
+.fl_view_wrapper_dl{
+    width: 300px;
+    text-align: start;
+}
+/* ############### com_page ############# */
+.com_page_wrapper{
+       color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background:white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 20px;
+}
+.com_page_wrapper_data_line{
+    display: flex;
+}
+.com_page_wrapper_dl1{
+   text-align: start;
+   width: 300px;
+}
+
+
+.form_view_add_manual_other_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.form_view_add_manual_other_w_dline{
+    display: flex;
+}
+.form_view_add_manual_other_w_dl1{
+    text-align: start;
+    width: 300px;
+}
+.form_view_add_manual_other_w_dl1 input{
+    width: 90%;
+}
+/* ################### flight stop view ################# */
+.view_flight_wrapper{ 
+color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width:80%;
+}
+.view_flight_wrapper_data_line{
+    display: flex;
+}
+.view_flight_wrapper_dl{
+    text-align: start;
+    width: 300px;
+}
+.view_flight{
+	display: flex;
+	justify-content: center;
+}
+/* ###################### ClientCRUDDocs_wrapper ############## */
+.ClientCRUDDocs_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.cli_crud {
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+}
+/* ################## Admin_Edit_HotelChain ########## */
+
+.Admin_Edit_HotelChain_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+.Admin_Edit_HotelChain_wrapper_li{
+    display: flex;
+}
+.Admin_Edit_HotelChain_wrapper_li .Admin_Edit_HotelChain_wrapper_dl1{
+    text-align: start;
+    width: 300px;
+}
+.Admin_Edit_HotelChain_wrapper_li .Admin_Edit_HotelChain_wrapper_dl1 input{
+    width: 90%;
+}
+.Admin_Edit_HotelChain_wrapper_li2 {
+    display: flex;
+    text-align: start;
+}
+/* ###############Admin_View_Hotel_wrapper############# */
+.Admin_View_Hotel_wrapper {
+    color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 115px;
+}
+.Admin_View_Hotel_wrapper_data_line{
+display: flex;
+}
+.Admin_View_Hotel_wrapper_d1{
+    width: 300px;
+    text-align: start;
+}
+.cat-btn{
+transition: all 0.3s ease-in-out;	
+}
+.cat-btn:hover{
+	cursor:pointer;
+	background:orangered;
+	color:white;
+}
+
+/* ############### form_searchHotel_Result ############### */
+
+.form_searchHotel_Result_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.form_searchHotel_Result_wrapper_data_lin {
+    display: flex;
+}
+
+.form_searchHotel_Result_wrapper_dl1 {
+    text-align: start;
+    width: 300px;
+}
+
+.form_searchHotel_Result_wrapper_dl1 input {
+    width: 90%;
+}
+
+.hotel_re_tb {
+    width: 98vw;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin:10px auto;
+}
+/* ################# hotel room category ########### */
+.Hotel_Room_Category_Update_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Hotel_Room_Category_Update_wrapper_dline {
+    display: flex;
+}
+
+.Hotel_Room_Category_Update_wrapper_dl1 {
+    width: 300px;
+    text-align: center;
+}
+
+.rm-ct-up {
+    width: 95vw;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 15px auto;
+}
+/* ############### Admin_Delete_Confirmation_RoomCategory_wr############## */
+
+.Admin_Delete_Confirmation_RoomCategory_wr {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Delete_Confirmation_RoomCategory_wr_dl {
+    display: flex;
+}
+
+.Admin_Delete_Confirmation_RoomCategory_wr_dl1 {
+    text-align: start;
+    width: 300px;
+}
+/* ################## form_searchSightSeeing_Result  #################### */
+
+.form_searchSightSeeing_Result_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.form_searchSightSeeing_Result_wrapper_dl {
+    display: flex;
+}
+
+.form_searchSightSeeing_Result_wrapper_dl1 {
+    width: 300px;
+    text-align: start;
+}
+
+.form_searchSightSeeing_Result_wrapper_dl1 input {
+    width: 90%;
+}
+
+.ssd-t {
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+.form_searchDealResults_wrapper{
+	width:1500px;
+	margin:10px auto;
+}
+.deal_table{
+	width: 100%;
+	background:white;
+	color:black;
+	text-align: center;
+}
+.deal_menu_icon{
+position: relative;	
+color:black;
+}
+.deal_menu{
+	border-radius:5px;
+	background:gray;
+	width:110px;
+	padding:5px;
+	position:absolute;
+	top:0;
+	right:18px;
+	display: none;
+}
+.deal_menu a{
+	color:white;
+	margin-bottom:10px ;
+	font-weight: normal;
+	
+}
+.deal_menu_icon:hover{
+	cursor: pointer;
+	color:red;
+}
+.deal_menu_icon:hover .deal_menu{
+	display: block;
+}
+.deal_menu a:hover{
+	color:#ffb908cf
+}
+
+/* ################### form_viewDeal ############### */
+
+.form_viewDeal_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.form_viewDeal_wrapper_data_line {
+    display: flex;
+}
+
+.form_viewDeal_wrapper_data_l1 {
+    text-align: start;
+    width: 300px;
+
+}
+
+.form_viewDeal_wrapper_data_line_ser {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap:wrap;
+}
+
+.form_viewDeal_wrapper_data_line_ser .form_viewDeal_wrapper_data_l1 {
+    width: 140px;
+}
+/* ##################### AdminIncentiveReportSearch ############## */
+.AdminIncentiveReportSearch_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.AdminIncentiveReportSearch_wrapper_data_line {
+    display: flex;
+}
+
+.AdminIncentiveReportSearch_wrapper_dl1 {
+    width: 300px;
+    text-align: start;
+}
+
+.AdminIncentiveReportSearch_wrapper_dl1 input {
+    width: 90%;
+}
+
+/* #################  IncentiveReportSearch   #################### */
+.IncentiveReportSearch_wrapper_data_line{
+    display: flex;
+    justify-content: space-between;
+}
+.IncentiveReportSearch_wrapper{
+    color: black;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 115px;
+}
+.IncentiveReportSearch_wrapper_dl1{
+    width: 300px;
+    text-align: start;
+}
+.IncentiveReportSearch_wrapper_dl1_r{
+    width: 300px;
+    text-align: start;
+}
+.IncentiveReportSearch_wrapper_dl1_r input{
+    width: 90%;
+}
+/* ################### form_view_delete_manual_visa_quotation_wrpr ############## */
+
+.form_view_delete_manual_visa_quotation_wrpr{
+color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 60px;
+}
+.form_view_delete_manual_visa_quotation_wrpe_data_line{
+    display: flex;
+}
+.form_view_delete_manual_visa_quotation_wdl1{
+    width: 300px;
+    text-align: start;
+}
+.visa-tp-tbns{
+    position: absolute;
+    right: 0;
+    top: -50px;
+}
+.form_view_delete_manual_visa_quotation_wrpr{
+    position: relative;
+}
+.a{
+	border-bottom: 2px solid gray
+}
+.ab{
+	border-bottom: 2px solid black;
+}
+
+/* ############ viewIncentiveDetails ############# */
+
+.viewIncentiveDetails_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 150px;
+}
+
+.viewIncentiveDetails_wr_dt {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.viewIncentiveDetails_wr_dt_line {
+    width: 300px;
+    text-align: start;
+}
+
+.hd {
+    color: #32cd32;
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+.viewIncentiveDetails_wr_dt_2 {
+	margin:0px auto;
+	width:983px;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.inc_q {
+    /* border: 2px solid red; */
+    width: 80%;
+    text-align: start;
+}
+
+.inc_a {
+    /* border: 2px solid blue; */
+    width: 20%;
+    text-align: start;
+}
+
+.viewIncentiveDetails_wr_dt_line_2 {
+    display: flex;
+    margin: 10px 0;
+}
+
+.viewIncentiveDetails_wr_dt_3 {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    margin-top: 10px;
+
+}
+.viewIncentiveDetails_wr_dt_3_b{
+    display: flex;
+}
+.viewIncentiveDetails_wr_dt_3_b_l3{
+    width: 300px;
+    text-align: start;
+}
+
+/* ################## form_editIncentiveClaim_wrapper ########## */
+.form_editIncentiveClaim{
+	margin-top:150px;
+}
+.form_editIncentiveClaim_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 1000px;
+}
+.form_editIncentiveClaim_wrapper_data{
+    display: flex;
+    justify-content: center;
+}
+.form_editIncentiveClaim_wrapper_data_line{
+   width: 300px;
+   text-align: start;
+}
+.form_editIncentiveClaim_wrapper_data_line input{
+   width: 90%;
+}
+.inc_sp_l{
+    display: flex;
+        justify-content: flex-start;
+}
+.inc_sp_l2{
+    display: flex;
+    flex-direction: column;
+}
+.inc-btn{
+	position: absolute;
+}
+.m-btn {
+	background: black;
+	color:white;
+}
+
+/* ##################################################### */
+.viewIncentiveDetails_modal_wrapper{
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+.viewIncentiveDetails_modal_wrapper_data{
+    display: flex;  
+}
+.viewIncentiveDetails_modal_wrapper_data_line{
+    width: 300px;
+    text-align: start;
+}
+/* ########################################### */
+
+.form_viewDeal_modal_wrapper{
+color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+   
+}
+.form_viewDeal_modal_wrapper_data{
+    display: flex;
+}
+.form_viewDeal_modal_wrapper_data_line{
+    width: 300px;
+    text-align: start;
+}
+.form_viewDeal_modal_wrapper_data_ser{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ########################  */
+.form_view_aCMQuotation_fb_wrp {
+    width: 200px;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.form_view_aCMQuotation_fbw {
+    display: flex;
+}
+.m-d{
+	display: flex;
+	width:600px;
+	background:white;
+	color:black;
+	margin: 5px auto;
+	border-radius:5px;
+}
+.form_view_aCMQuotation_fbwls {
+    width: 300px;
+    text-align: center;
+}
+
+.form_view_aCMQuotation_btns_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+}
+.form_view_aCMQuotation_btns_wrapper a input{
+	background:transparent;
+border:none;
+outline:none;
+text-align: start;
+cursor:pointer;
+color:white;
+transition:all 0.2s ease-in-out;
+width:100%;
+}
+.form_view_aCMQuotation_btns_wrapper a{
+	width:100%;
+	text-align:start;
+}
+.form_view_aCMQuotation_btns_wrapper input{
+	background:transparent;
+border:none;
+outline:none;
+cursor:pointer;
+color:white;
+transition:all 0.2s ease-in-out
+}
+.form_view_aCMQuotation_btns_wrapper a input:hover ,  .form_view_aCMQuotation_btns_wrapper input:hover{
+	color:orangered
+}
+
+.form_view_aCMQuotation_lb_wr {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 800px;
+}
+
+.form_view_aCMQuotation_lb_wr_f {
+    width: 800px;
+    margin: 10px auto;
+    display: flex;
+}
+
+.form_view_aCMQuotation_lb_wr_f_sb {
+    width: 300px;
+    text-align: center;
+}
+
+.fvacmq {
+    display: flex;
+}
+
+.form_view_aCMQuotation_lb_wr_tb {
+    width: 700px;
+    margin: 10px auto;
+}
+
+.qu_in {
+    width: 70%;
+}
+.qu_ans{
+    text-align: center;
+}
+/* ################# form_vaccmquotation_fbox_wrapper ########### */
+.form_vaccmquotation_fbox_wrapper {
+    width: 600px;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.form_vaccmquotation_fbox {
+    display: flex;
+}
+
+.form_vaccmquotation_fbox1 {
+    width: 300px;
+    text-align: center;
+}
+
+.form_vaccmquotation_btns {
+    width: auto;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px auto;
+}
+
+.form_vaccmquotation_btns2 {
+        color: white;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: rgba(0, 0, 0, 9);
+        padding: 10px;
+        border-radius: 10px;
+        margin: 50px auto;
+}
+.form_vaccmquotation_lastbox_wrapper{
+	 width: 800px;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+/* ################# form_vaccmquotation_fbox_wrapper ########### */
+.form_vaccmquotation_fbox_wrapper {
+    width: 600px;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.form_vaccmquotation_fbox {
+    display: flex;
+}
+
+.form_vaccmquotation_fbox1 {
+    width: 300px;
+    text-align: center;
+}
+
+.form_vaccmquotation_btns {
+    width: auto;
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.form_vaccmquotation_btns2 {
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+
+.form_view_send_email_quotation_emailer_wrapper {
+    width: 800px;
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+.form_view_send_emailqw_mw{
+    display: flex;
+    flex-direction: column;
+}
+.form_view_send_emailqw{
+    width: 100%;
+    text-align: start;
+}
+.form_view_send_emailqw Input{
+    width: 100%;
+    text-align: start;
+}
+.form_view_delete_cmquotation_dev{
+    width: 600px;
+        color: white;
+        text-align: center;
+        border-collapse: collapse;
+        border: none;
+        background: rgba(0, 0, 0, 9);
+        padding: 10px;
+        border-radius: 10px;
+        margin: 50px auto;
+}
+
+ .ch_c{
+ filter: invert(100%) hue-rotate(18deg) brightness(5);
+  }
+  .form:checkbox{
+	   filter: invert(100%) hue-rotate(18deg) brightness(5);
+  }
+  .deal_menu a:hover{
+	  font-size:18px;
+  }
+  
+  
+  /* ####################  DeleteConfirmationClient      ##################### */
+
+.DeleteConfirmationClient_wrapper {
+    color: white;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: rgba(0, 0, 0, 9);
+    padding: 10px;
+    border-radius: 10px;
+}
+.DeleteConfirmationClient_wrapper_data_line{
+    display: flex;
+}
+.DeleteConfirmationClient_wrapper_data_l2{
+    width: 300px;
+    text-align: start;
+}
+.del_war{
+    margin: 15px 0;
+    border-radius: 10px ;
+    background: black;
+    color: white;
+}
+.del_war_hd{
+    color: red;
+    text-align: center;
+    font-size: 25px;
+}
+.del_war_p{
+    text-align: center;
+    color: orangered;
+}
+/* ################# Admin_Edit_City ############ */
+
+.Admin_Edit_City_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.Admin_Edit_City_wrapper_data_line {
+    display: flex;
+    justify-content:space-around
+}
+
+.Admin_Edit_City_wrapper_data_line_l1 {
+    width: 300px;
+    text-align: start;
+}
+
+.Admin_Edit_City_wrapper_data_line_l1 input {
+    width: 90%;
+}
+.user_btn:hover{
+	background:transparent;border:none;outline:none;color: white;font-weight: normal;transition: all 0.2s ease-in-out
+}
+.vsdch{
+	display: flex;
+	justify-content: space-between;
+}
+.vsdchsd{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+/* ################### SubmitNewIncentiveClaim ##################  */
+.SubmitNewIncentiveClaim_wrapper {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 115px;
+}
+
+.SubmitNewIncentiveClaim_wrapper_data {
+    display: flex;
+    justify-content: center;
+}
+
+.SubmitNewIncentiveClaim_wrapper_data_line {
+    display: flex;
+    align-items: center;
+}
+
+.SubmitNewIncentiveClaim_wrapper_dl1 {
+    width: 300px;
+    text-align: start;
+}
+
+.SubmitNewIncentiveClaim_wrapper_dl1 input {
+    width: 90%;
+}
+
+.SubmitNewIncentiveClaim_wrapper_dl2 {
+    width: 300px;
+    text-align: start;
+}
+
+.SubmitNewIncentiveClaim_wrapper_dl2 input {
+    width: 90%;
+}
+
+.claim_ques {
+    color: black;
+    text-align: center;
+    border-collapse: collapse;
+    border: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 15px;
+    color: orangered;
+}
+
+
+
+/* ################### leadStyle starts here ##################  */
+
+.searchLeads {
+    margin-top: 115px;
+    margin-bottom: 20px;
+}
+
+.heading {
+    text-align: center;
+    font-size: 25px;
+    color: #FABA08;
+}
+
+.upperPart,
+.lowerPart {
+    background: white;
+    color:black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.firstL {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -9px;
+}
+.secondL {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.thirdL {
+
+    display: flex;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.inBtns {
+    margin-left: 40%;
+    display: inline-block;
+    width: auto;
+}
+
+label {
+    color: black;
+}
+
+.inf {
+    width: 200px;
+}
+
+.box {
+    margin-right: 20px;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    display: inline-block;
+    color: white;
+    width: auto;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffb908cf;
+    color: black;
+    transition: all 0.3s ease-in-out;
+}
+
+.chflex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    margin-right:10px
+}
+
+#quali,
+#flag {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+
+}
+
+.btn:hover {
+    cursor: pointer;
+    background: #FFBA08;
+}
+
+.fromBox {
+    margin-left: 0;
+}
+
+.btns {
+    margin-top: 8px;
+}
+
+
+/* ############## lead style tabel styling ############## */
+table {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+}
+
+
+
+th {
+    color: #FABA08;
+    border: none;
+    margin-bottom: 20px;
+    font-size: 19px;
+}
+
+td {
+    margin-top: 40px;
+    text-align: center;
+    border: none;
+}
+
+.leadId {
+    color: red;
+}
+
+.st i {
+    color: #FABA08;
+}
+
+.tick {
+    color: #32CD32;
+}
+
+.cross {
+    color: red;
+}
+
+.ul {
+    display: none;
+    padding: 5px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.885);
+    border-radius: 10px;
+    width: 160px;
+    right: 16px;
+    transition: all 0.3s ease-in-out;
+    top: -1px;
+    z-index: 1;
+    padding: 10px
+}
+
+.pop-up {
+    font-weight: normal;
+}
+
+
+.ul ul li a:hover {
+    color: #FABA08;
+    /* font-size: medium */
+    font-size: 18px;
+}
+
+.ul ul li {
+    border-bottom: 1px solid #FABA08;
+}
+
+i {
+    position: relative;
+}
+
+
+.fili i:hover {
+    color: red;
+    cursor: pointer;
+}
+
+i:hover .ul {
+    display: block;
+}
+
+.ul ul li {
+    list-style: none;
+}
+
+.ul ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.dsc {
+    width: 200px;
+}
+.lowerPart{color: white;
+    margin: 10px auto;
+    width: 1400px;
+    }
+    
+.full-names{
+	color: white;
+	display: flex;
+	background: black;
+	padding: 5px 10px;
+	border-radius: 5px;
+	margin-top:-10px
+}
+.full-names p {
+	margin-right:10px;
+	font-weight:bold
+}
+.full-names span {
+	color:#FABA08;
+}
+
+/* ############## lead style styling ends here ############## */
+.locdev{
+	position: relative;
+}
+.locdevhi{
+	position: absolute;
+	border: 2px solid black;
+	background:black;
+	color:white;
+	height:auto;
+	width:150px;
+	padding:10px;
+	border-radius:5px;
+	display:none;
+	z-index:9;
+	transition: all 0.5s ease-in-out ;
+}
+.locdev img:hover ~ .locdevhi{
+	display:inline-block
+}

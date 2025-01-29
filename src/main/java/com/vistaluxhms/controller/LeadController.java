@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -229,14 +230,6 @@ public class LeadController {
                 .forEach(status -> leadStatusMap.put(status.getWorkloadStatusId(), status.getWorkloadStatusName()));
 
 
-        /*Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
-                Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
-        leadStatusMap.put(VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS,"***All Open Leads***");
-        leadStatusMap.put(VistaluxConstants.VIEW_ALL_LEADS_WL_STATUS,"***All Leads***");
-        leadStatusMap.put(VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS,"***All Closed Leads***");
-
-         */
-
         modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
 
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
@@ -249,7 +242,6 @@ public class LeadController {
 
         //filterLeadValidator.validate(filterObj, result);
         if(result.hasErrors()) {
-            System.out.println("error is " + result);
             return modelView;
         }
         UserDetailsObj user = getLoggedInUser();
@@ -269,8 +261,12 @@ public class LeadController {
         Page<LeadEntity> pageLeadsFilteredRecords = leadService.filterLeads(pageNum, pageSize, filterObj.getLeadOwner(), sortBy, filterObj, isAdmin);
         List<LeadEntityDTO> filteredLeadsVoList = generateFilteredLeadsVo(pageLeadsFilteredRecords);
         modelView.addObject("FILTERED_LEADS_RECORDS",filteredLeadsVoList);
+        modelView.addObject("currentPage", page);
+        modelView.addObject("totalPages", pageLeadsFilteredRecords.getTotalPages());
+        modelView.addObject("totalLeads", pageLeadsFilteredRecords.getTotalElements());
+        modelView.addObject("pageSize", pageSize);
         modelView.addObject("maxPages", pageLeadsFilteredRecords.getTotalPages());
-        modelView.addObject("page", pageNum);
+        modelView.addObject("page", page);
         modelView.addObject("sortBy", sortBy);
         modelView.addObject("leadStatus", filterObj.getLeadStatus());
 
@@ -293,6 +289,23 @@ public class LeadController {
             filteredLeadsVoList.add(leadsVO);
         }
         return filteredLeadsVoList;
+    }
+
+
+    @RequestMapping("view_lead_details_modal")
+    public String view_lead_details_modal(@RequestParam long leadId, Model model){
+        LeadEntity leadEntity =leadService.findLeadById(leadId);
+        LeadEntityDTO leadsVO =new LeadEntityDTO();
+        leadsVO.updateLeadVoFromEntity(leadEntity);
+        ClientEntity clientEntity =clientService.findClientById(leadEntity.getClient().getClientId());
+        leadsVO.setClientName(clientEntity.getClientName());
+        leadsVO.setB2b(clientEntity.getB2b());
+        leadsVO.setLeadOwnerName(userDetailsService.findUserByID(leadEntity.getLeadOwner()).getUsername());
+        leadsVO.setStatusName(commonService.findWorkLoadStatusById(leadEntity.getLeadStatus()).getWorkloadStatusName());
+
+        model.addAttribute("LEAD_OBJ",leadsVO );
+        //return "leads/viewLeadDetails";
+        return "leads/viewLeadDetails_modal";
     }
 
 }
