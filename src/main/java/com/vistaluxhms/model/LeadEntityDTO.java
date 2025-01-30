@@ -19,6 +19,8 @@ public class LeadEntityDTO extends LeadEntity {
     public boolean notifySMS;
     public boolean notifyWhatsapp;
 
+    public boolean notifyAgain;
+
     public boolean b2b;
     public String statusName;
     public String leadOwnerName;
@@ -45,6 +47,7 @@ public class LeadEntityDTO extends LeadEntity {
            this.others = leadEntity.isOthers();
            this.leadCreationClientInformed = leadEntity.isLeadCreationClientInformed();
            this.leadOwner = leadEntity.getLeadOwner();
+           this.client = leadEntity.getClient();
     }
 
     public LeadEntityDTO(){}
@@ -161,5 +164,13 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setLeadOwnerName(String leadOwnerName) {
         this.leadOwnerName = leadOwnerName;
+    }
+
+    public boolean isNotifyAgain() {
+        return notifyAgain;
+    }
+
+    public void setNotifyAgain(boolean notifyAgain) {
+        this.notifyAgain = notifyAgain;
     }
 }

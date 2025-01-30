@@ -9,75 +9,82 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 <style>
+/* Modal Background */
 .modal {
-	  display: none; /* Hidden by default */
-	  position: fixed; /* Stay in place */
-	  z-index: 1; /* Sit on top */
-	  padding-top: 50px; /* Location of the box */
-	  left: 0;
-	  top: 0;
-	  width: 100%; /* Full width */
-	  height: 100%; /* Full height */
-	  overflow: scroll; /* Enable scroll if needed */
-	  background-color: rgb(0,0,0); /* Fallback color */
-	  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-	  border-radius:10px;
-	}
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-	/* Modal Content */
-	.modal-content {
-	  position: relative;
-	  background-color: #fefefe;
-	  margin: auto;
-	  padding: 0;
-	  border: 1px solid #888;
-	  width: 80%;
-	  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-	  -webkit-animation-name: animatetop;
-	  -webkit-animation-duration: 0.4s;
-	  animation-name: animatetop;
-	  animation-duration: 0.4s
-	}
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    width: 60%;
+    max-width: 800px;
+    min-height: 300px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    margin: auto; /* Ensures centering */
+}
 
-	/* Add Animation */
-	@-webkit-keyframes animatetop {
-	  from {top:-300px; opacity:0}
-	  to {top:0; opacity:1}
-	}
+/* Header with Close Button on Right */
+.modal-header {
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: relative;
+}
 
-	@keyframes animatetop {
-	  from {top:-300px; opacity:0}
-	  to {top:0; opacity:1}
-	}
+/* Close Button - Properly Positioned */
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+    margin-left: auto; /* Forces it to the right */
+}
 
-	/* The Close Button */
-	.close {
-	  color: white;
-	  float: right;
-	  font-size: 28px;
-	  font-weight: bold;
-	}
+.close:hover {
+    color: #000;
+}
 
-	.close:hover,
-	.close:focus {
-	  color: #000;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
+/* Modal Body */
+.modal-body {
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+}
 
-	.modal-header {
-	  padding: 2px 16px;
-	  color: white;
-	  background:white;
-	}
+/* Modal Footer */
+.modal-footer {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-align: right;
+}
 
-	.modal-body {padding: 2px 16px;background:white}
 
-	.modal-footer {
-	  padding: 2px 16px;
-	  background-color: lightblue;
-	  color: white;
-	}
 </style>
 
 
@@ -250,7 +257,7 @@
                         </a>
 
                         <form action="view_edit_lead_form" method="POST" style="display:inline;">
-                            <input type="hidden" name="leadId" value="${clientRec.clientId}" />
+                            <input type="hidden" name="leadId" value="${leadRec.leadId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>
 

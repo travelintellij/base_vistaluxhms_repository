@@ -308,4 +308,90 @@ public class LeadController {
         return "leads/viewLeadDetails_modal";
     }
 
+    @RequestMapping(value="view_edit_lead_form",method= {RequestMethod.GET,RequestMethod.POST})
+    //@PostMapping("/form_view_editlead")
+    public ModelAndView form_view_editlead(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderVO,BindingResult result) {
+        ModelAndView modelView = view_add_lead_form(leadRecorderVO,result);
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderVO.getLeadId());
+        leadRecorderVO.updateLeadVoFromEntity(leadEntity);
+        leadRecorderVO.setNotifyEmail(false);
+        leadRecorderVO.setNotifySMS(false);
+        leadRecorderVO.setNotifyWhatsapp(false);
+        /*HashSet operatingTeam= new HashSet();
+        tgLeadEntity.getTeam().forEach(e->operatingTeam.add(String.valueOf(e.getUserId())));
+        leadRecorderVO.setOperatingTeams(operatingTeam);
+        List<Object> jsonList = new ArrayList();
+        Iterator itr = leadRecorderVO.getOperatingTeams().iterator();
+        while(itr.hasNext()) {
+            int jsonString = Integer.parseInt((String) itr.next());
+            JSONObject opDestin = new JSONObject();
+            JSONArray array = new JSONArray();
+            opDestin.put("id", jsonString);
+            UdnTeam team = userService.findUserByID(jsonString);
+            opDestin.put("tagName", team.getUsername() + "--" + team.getName());
+            jsonList.add(opDestin);
+        }
+        JSONArray myArray = new JSONArray(jsonList);
+        String arrayToJson = myArray.toString(2);
+        leadRecorderVO.setTeamNames(arrayToJson);
+        */
+        leadRecorderVO.setClientName(clientService.findClientById(leadRecorderVO.getClient().getClientId()).getClientName());
+        //TODO following db call is also done inside form_register_newlead as well. this can be reduced. Think it over.
+        //leadRecorderVO.setStatusName(commonService.find_DealStatusById(leadRecorderVO.getLeadStatus()).getWorkloadStatusName());
+        /*List<UdnDealStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
+        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
+                Collectors.toMap(UdnDealStatusVO::getWorkloadStatusId, UdnDealStatusVO::getWorkloadStatusName));
+        modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
+    */
+        leadRecorderVO.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderVO.getLeadOwner()).getUsername());
+        modelView.setViewName("leads/editLead");
+        return modelView;
+    }
+
+    @Transactional
+    @PostMapping("edit_edit_lead")
+    public ModelAndView edit_edit_lead(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,  BindingResult result,final RedirectAttributes redirectAttrib ) {
+        UserDetailsObj userObj = getLoggedInUser();
+        //leadRecorderObj.setLeadStatus(UdanChooConstants.LEAD_CLOSE_REASON.get(UdanChooConstants.LEAD_NEW));
+        if(leadRecorderObj.getLeadOwner()==0) {
+            leadRecorderObj.setLeadOwner(userObj.getUserId());
+        }
+        ModelAndView modelView = new ModelAndView();
+        leadValidator.validate(leadRecorderObj, result);
+        if(result.hasErrors()) {
+            modelView = form_view_editlead(leadRecorderObj, result);
+            return modelView;
+        }else {
+            LeadEntity orgEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+            long orgLeadOwner = orgEntity.getLeadOwner();
+            LeadEntity leadEntity = new LeadEntity(leadRecorderObj);
+            leadEntity.setLeadId(leadRecorderObj.getLeadId());
+            ClientEntity clientEntity = clientService.findClientById(leadRecorderObj.getClient().getClientId());
+            leadEntity.setClient(clientEntity);
+            long newLeadOwner = leadEntity.getLeadOwner();
+            /*leadRecorderObj.getOperatingTeams().forEach((e) -> {
+                UdnTeam userEntity = userService.findUserByID(Integer.parseInt(e));
+                tgLeadEntity.getTeam().add(userEntity);
+            });*/
+
+            leadService.saveLead(leadEntity);
+            redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
+            modelView.setViewName("redirect:view_filter_leads?leadId="+leadEntity.getLeadId());
+
+            /*if(orgLeadOwner!=newLeadOwner) {
+                notifyLeadCreationTargetAudience(leadRecorderObj,"LeadAssignmentConfirmation.ftl",false,false);
+            }*/
+            //if(leadRecorderObj.) {
+
+                // notifyLeadCreationTargetAudience(leadRecorderObj,"LeadUpdateConfirmation.ftl",false,true);
+                //notifyLeadCreationSms(leadRecorderObj);
+            //}
+            //write email code here.
+        }
+        return modelView;
+    }
+
+
+
+
 }

@@ -9,14 +9,15 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
-    <h2>New Lead</h2> <!-- Bold Header -->
+    <h2>Update Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
-        <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
-            <input type="hidden" id="clientId" name="client.clientId" value="${LEAD_OBJ.client.clientId}" />
+        <form:form method="post" action="edit_edit_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
+               <form:hidden path="leadId" />
+            <form:hidden path="client.clientId" id="clientId" />
             <div class="form-table">
                 <div class="form-cell">
                     <label for="field1">Lead Id</label>
-                    Auto Generated
+                    ${LEAD_OBJ.leadId}
                 </div>
                 <div class="form-cell">
                     <label for="field2" style="font-weight:600">Client Name</label>
@@ -29,18 +30,9 @@
                     <div class="form-row">
                         <label for="field4">Lead Owner:</label>
                         <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
-                                    <form:select path="leadOwner" required="required" style="width:90%">
-                                        <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
-                                            <c:if test="${userMap.key eq userId }">
-                                                <option class="service-small" value="${userMap.key}" selected>
-                                                    ${userMap.value}</option>
-                                            </c:if>
-                                            <c:if test="${userMap.key ne userId }">
-                                                <option class="service-small" value="${userMap.key}">
-                                                    ${userMap.value}</option>
-                                            </c:if>
-                                        </c:forEach>
-                                    </form:select>
+                                <form:select path="leadOwner" style="width:90%" required="required">
+                                    <form:options items="${ACTIVE_USERS_MAP}" class="service-small" />
+                                </form:select>
                         </sec:authorize>
                         <sec:authorize access="! hasAnyRole('ADMIN','LEAD_MANAGER')">
                               <b><font color="red">${userName}</font></b>
@@ -129,7 +121,7 @@
 
             </div>
 
-           <div class="form-table">
+        <div class="form-table">
         <div class="form-cell">
             <font color="red">
                 <form:errors path="minOneserviceError" cssClass="error" />
@@ -167,19 +159,19 @@
 
            <div class="form-cell">
 
-                                <label for="b2b-client">Notify Client:</label>
-                                   <div class="radio-group-container">
-                                       <div class="radio-group">
-                                           <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" required="required" />
-                                               <span>Yes</span>
-                                           </label>
-                                           <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" required="required" />
-                                               <span>No</span>
-                                           </label>
-                                       </div>
-                                   </div>
+                <label for="b2b-client">Notify Client:</label>
+                   <div class="radio-group-container">
+                       <div class="radio-group">
+                           <label>
+                               <form:radiobutton path="notifyAgain" name="leadCreationClientInformed" value="true" required="required" />
+                               <span>Yes</span>
+                           </label>
+                           <label>
+                               <form:radiobutton path="notifyAgain" name="leadCreationClientInformed"  value="false" required="required" />
+                               <span>No</span>
+                           </label>
+                       </div>
+                   </div>
                  <div class="checkbox-container">
                     <div class="checkbox-item">
                         <form:checkbox path="notifyEmail" id="notifyEmail" />
@@ -194,12 +186,24 @@
                         <label for="notifyWhatsapp" style="color: gray; cursor: not-allowed;">Whats App</label>
                     </div>
                 </div>
-            </div>
-
+           </div>
+            <div class="form-cell">
+             <div class="checkbox-container">
+                   <div class="checkbox-item">
+                       <form:checkbox path="leadCreationClientInformed" disabled="true"/> Client Informed Earlier
+                   </div>
+             </div>
+           </div>
+           <div class="form-cell">
+           </div>
+           <div class="form-cell">
+           </div>
+           <div class="form-cell">
+           </div>
     </div>
 
            <div class="button-container">
-                <input type="submit" value="Create">
+                <input type="submit" value="Update Lead">
                 <a href="view_filter_leads"><input type="button" class="clear-filter-btn" value="View Leads List"></input></a>
             </div>
         </form:form>
