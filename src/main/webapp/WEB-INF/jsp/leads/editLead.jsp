@@ -195,6 +195,9 @@
              </div>
            </div>
            <div class="form-cell">
+                <form:select path="leadContributors" multiple="true">
+                        <form:options items="${ACTIVE_USERS_MAP}" />
+                 </form:select>
            </div>
            <div class="form-cell">
            </div>

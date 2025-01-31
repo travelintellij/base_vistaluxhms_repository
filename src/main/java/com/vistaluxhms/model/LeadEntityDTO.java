@@ -4,6 +4,8 @@ import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 
+import java.util.List;
+
 /**
  * A DTO for the {@link LeadEntity} entity
  */
@@ -24,6 +26,8 @@ public class LeadEntityDTO extends LeadEntity {
     public boolean b2b;
     public String statusName;
     public String leadOwnerName;
+
+    public List<Integer> leadContributors;
 
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
            //this.client = leadRecorderObj.getClient();
@@ -172,5 +176,13 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setNotifyAgain(boolean notifyAgain) {
         this.notifyAgain = notifyAgain;
+    }
+
+    public List<Integer> getLeadContributors() {
+        return leadContributors;
+    }
+
+    public void setLeadContributors(List<Integer> leadContributors) {
+        this.leadContributors = leadContributors;
     }
 }
