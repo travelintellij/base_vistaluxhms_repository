@@ -13,7 +13,8 @@
 
          </div>
    <div class="form-container">
-       <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
+       <form:form method="post" action="view_edit_lead_form" modelAttribute="LEAD_OBJ" autocomplete="off">
+            <form:hidden path="leadId" />
            <div class="form-grid">
                <div class="form-cell"><label>Lead Id:</label> ${LEAD_OBJ.leadId}</div>
                <div class="form-cell"><label>Client Name:</label> ${LEAD_OBJ.clientName}</div>
@@ -49,7 +50,22 @@
                    <textarea readonly>${LEAD_OBJ.internalRemarks}</textarea>
                </div>
 
-               <div class="form-cell full-width">
+                <div class="form-cell full-width">
+                    <label>Other Lead Contributors:</label>
+                    <c:choose>
+                    <c:when test="${empty LEAD_OBJ.team}">
+                            None
+                        </c:when>
+                    <c:otherwise>
+                    <c:forEach var="teamMember" items="${LEAD_OBJ.team}" varStatus="status">
+                        ${teamMember.username}
+                       <c:if test="${!status.last}"> | </c:if>
+                    </c:forEach>
+                    </c:otherwise>
+                    </c:choose>
+                </div>
+
+               <div class="form-cell">
                    <label>Client Informed:</label>
                    ${LEAD_OBJ.leadCreationClientInformed}
                </div>

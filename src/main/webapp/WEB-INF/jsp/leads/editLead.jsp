@@ -9,6 +9,7 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
+
     <h2>Update Lead</h2> <!-- Bold Header -->
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="edit_edit_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
@@ -35,7 +36,7 @@
                                 </form:select>
                         </sec:authorize>
                         <sec:authorize access="! hasAnyRole('ADMIN','LEAD_MANAGER')">
-                              <b><font color="red">${userName}</font></b>
+                              <b><font color="red">${LEAD_OBJ.leadOwnerName}</font></b>
                         </sec:authorize>
                         </div>
                 </div>
@@ -195,9 +196,30 @@
              </div>
            </div>
            <div class="form-cell">
-                <form:select path="leadContributors" multiple="true">
-                        <form:options items="${ACTIVE_USERS_MAP}" />
-                 </form:select>
+                <label for="leadcontibutors">Lead Contributors:</label> <br>
+                 <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
+                        <form:select path="leadContributors" multiple="true">
+                        <form:option value="">----- Select Contributors -----</form:option>
+                            <c:forEach var="entry" items="${ACTIVE_CONTRIBUTORS_MAP}">
+                                <option value="${entry.key}"
+                                    ${SELECTED_CONTRIBUTORS.contains(entry.key) ? 'selected="selected"' : ''}>
+                                    ${entry.value}
+                                </option>
+                            </c:forEach>
+                     </form:select>
+                  </sec:authorize>
+                  <sec:authorize access="! hasAnyRole('ADMIN','LEAD_MANAGER')">
+                        <form:select path="leadContributors" multiple="true" disabled="true">
+                        <form:option value="">----- Select Contributors -----</form:option>
+                            <c:forEach var="entry" items="${ACTIVE_CONTRIBUTORS_MAP}">
+                                <option value="${entry.key}"
+                                    ${SELECTED_CONTRIBUTORS.contains(entry.key) ? 'selected="selected"' : ''}>
+                                    ${entry.value}
+                                </option>
+                            </c:forEach>
+                     </form:select>
+                  </sec:authorize>
+
            </div>
            <div class="form-cell">
            </div>

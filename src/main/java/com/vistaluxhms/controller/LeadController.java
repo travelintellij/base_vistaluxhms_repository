@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -303,6 +304,13 @@ public class LeadController {
         leadsVO.setLeadOwnerName(userDetailsService.findUserByID(leadEntity.getLeadOwner()).getUsername());
         leadsVO.setStatusName(commonService.findWorkLoadStatusById(leadEntity.getLeadStatus()).getWorkloadStatusName());
 
+        Set<AshokaTeam> teamSet = leadEntity.getTeam();
+        // Convert to a List of user IDs
+        List<String> selectedUserIds = teamSet.stream()
+                .map(AshokaTeam::getUsername)  // Extract userId from each AshokaTeam object
+                .collect(Collectors.toList());
+
+        leadsVO.setTeam(teamSet);
         model.addAttribute("LEAD_OBJ",leadsVO );
         //return "leads/viewLeadDetails";
         return "leads/viewLeadDetails_modal";
@@ -317,24 +325,22 @@ public class LeadController {
         leadRecorderVO.setNotifyEmail(false);
         leadRecorderVO.setNotifySMS(false);
         leadRecorderVO.setNotifyWhatsapp(false);
-        /*HashSet operatingTeam= new HashSet();
-        tgLeadEntity.getTeam().forEach(e->operatingTeam.add(String.valueOf(e.getUserId())));
-        leadRecorderVO.setOperatingTeams(operatingTeam);
-        List<Object> jsonList = new ArrayList();
-        Iterator itr = leadRecorderVO.getOperatingTeams().iterator();
-        while(itr.hasNext()) {
-            int jsonString = Integer.parseInt((String) itr.next());
-            JSONObject opDestin = new JSONObject();
-            JSONArray array = new JSONArray();
-            opDestin.put("id", jsonString);
-            UdnTeam team = userService.findUserByID(jsonString);
-            opDestin.put("tagName", team.getUsername() + "--" + team.getName());
-            jsonList.add(opDestin);
-        }
-        JSONArray myArray = new JSONArray(jsonList);
-        String arrayToJson = myArray.toString(2);
-        leadRecorderVO.setTeamNames(arrayToJson);
-        */
+        Map<Integer, String>  activeUsersMap = (Map<Integer, String>) modelView.getModel().get("ACTIVE_USERS_MAP");
+        // Create a new HashMap copy
+        Map<Integer, String> ACTIVE_CONTRIBUTORS_MAP = new HashMap<>(activeUsersMap);
+        ACTIVE_CONTRIBUTORS_MAP.remove(leadEntity.getLeadOwner());
+        modelView.addObject("ACTIVE_CONTRIBUTORS_MAP",ACTIVE_CONTRIBUTORS_MAP);
+
+        // teamSet contains a Set of AshokaTeam objects (user entity)
+        Set<AshokaTeam> teamSet = leadEntity.getTeam();
+
+        // Convert to a List of user IDs
+        List<Integer> selectedUserIds = teamSet.stream()
+                .map(AshokaTeam::getUserId)  // Extract userId from each AshokaTeam object
+                .collect(Collectors.toList());
+
+        // Add selected user IDs to model
+        modelView.addObject("SELECTED_CONTRIBUTORS", selectedUserIds);
         leadRecorderVO.setClientName(clientService.findClientById(leadRecorderVO.getClient().getClientId()).getClientName());
         //TODO following db call is also done inside form_register_newlead as well. this can be reduced. Think it over.
         //leadRecorderVO.setStatusName(commonService.find_DealStatusById(leadRecorderVO.getLeadStatus()).getWorkloadStatusName());
@@ -362,31 +368,28 @@ public class LeadController {
             modelView = form_view_editlead(leadRecorderObj, result);
             return modelView;
         }else {
-            LeadEntity orgEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+           LeadEntity orgEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
             long orgLeadOwner = orgEntity.getLeadOwner();
             LeadEntity leadEntity = new LeadEntity(leadRecorderObj);
             leadEntity.setLeadId(leadRecorderObj.getLeadId());
             ClientEntity clientEntity = clientService.findClientById(leadRecorderObj.getClient().getClientId());
             leadEntity.setClient(clientEntity);
             long newLeadOwner = leadEntity.getLeadOwner();
-            /*leadRecorderObj.getOperatingTeams().forEach((e) -> {
-                UdnTeam userEntity = userService.findUserByID(Integer.parseInt(e));
-                tgLeadEntity.getTeam().add(userEntity);
-            });*/
-
+            leadRecorderObj.getLeadContributors().forEach((e) -> {
+                AshokaTeam userEntity = userDetailsService.findUserByID(e);
+                leadEntity.getTeam().add(userEntity);
+            });
             leadService.saveLead(leadEntity);
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
             modelView.setViewName("redirect:view_filter_leads?leadId="+leadEntity.getLeadId());
-
-            /*if(orgLeadOwner!=newLeadOwner) {
+            if(orgLeadOwner!=newLeadOwner) {
                 notifyLeadCreationTargetAudience(leadRecorderObj,"LeadAssignmentConfirmation.ftl",false,false);
-            }*/
-            //if(leadRecorderObj.) {
-
-                // notifyLeadCreationTargetAudience(leadRecorderObj,"LeadUpdateConfirmation.ftl",false,true);
-                //notifyLeadCreationSms(leadRecorderObj);
-            //}
-            //write email code here.
+            }
+            if(leadRecorderObj.notifyAgain) {
+                if(leadRecorderObj.isNotifyEmail()) {
+                    notifyLeadCreationTargetAudience(leadRecorderObj, "LeadUpdateConfirmation.ftl", false, true);
+                }
+            }
         }
         return modelView;
     }
