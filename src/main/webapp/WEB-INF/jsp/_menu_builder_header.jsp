@@ -105,6 +105,14 @@ username = "Guest";
                         <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
                         <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
                     </ul>
+                    </li>
+                      <li>
+                        <a href="#">Master Rooms Management</a>
+                        <ul class="second-level">
+                        <li><a href="view_add_room_category_form">Add Room</a></li>
+                        <li><a href="view_rooms_list">Manage Rooms</a></li>
+                    </ul>
+                    </li>
                 </ul>
             </li>
         </c:if>

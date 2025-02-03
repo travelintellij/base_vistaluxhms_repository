@@ -1,10 +1,12 @@
 package com.vistaluxhms.services;
 import com.vistaluxhms.entity.City_Entity;
+import com.vistaluxhms.entity.MasterRoomDetailsEntity;
 import com.vistaluxhms.entity.RateTypeEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.RateType_Obj;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
+import com.vistaluxhms.repository.MasterRoomDetailsEntityRepository;
 import com.vistaluxhms.repository.RateTypeRepository;
 import com.vistaluxhms.repository.SalesPartnerEntityRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -37,6 +39,9 @@ public class SalesRelatesServicesImpl {
 	@Autowired
 	SalesPartnerEntityRepository salesPartnerRepository;
 
+	@Autowired
+	MasterRoomDetailsEntityRepository masterRoomDetailsEntityRepository;
+
 	public RateTypeEntity saveRateType(RateTypeEntity rateTypeEntity) {
 		rateTypeRepository.save(rateTypeEntity);
 		return rateTypeEntity;
@@ -54,7 +59,9 @@ public class SalesRelatesServicesImpl {
 		salesPartnerRepository.save(salesPartnerEntity);
 	}
 
-
+	public void saveRoomDetails(MasterRoomDetailsEntity roomDetailsEntity) {
+		masterRoomDetailsEntityRepository.save(roomDetailsEntity);
+	}
 	public List<SalesPartnerEntity> filterSalesPartners(SalesPartnerEntityDto searchSalesPartnerObj) {
 		// Fetch all filtered results without pagination
 		List<SalesPartnerEntity> filteredSalesPartnerList = salesPartnerRepository.findAll(new Specification<SalesPartnerEntity>() {
@@ -110,5 +117,9 @@ public class SalesRelatesServicesImpl {
 		return salesPartnerRepository.findByActive(activeFlag)
 				.stream()
 				.collect(Collectors.toMap(SalesPartnerEntity::getSalesPartnerId, SalesPartnerEntity::getSalesPartnerShortName));
+	}
+
+	public List<MasterRoomDetailsEntity> findActiveRoomsList(){
+		return masterRoomDetailsEntityRepository.findByActiveTrue();
 	}
 }

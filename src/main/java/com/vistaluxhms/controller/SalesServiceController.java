@@ -1,6 +1,7 @@
 package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.City_Entity;
+import com.vistaluxhms.entity.MasterRoomDetailsEntity;
 import com.vistaluxhms.entity.RateTypeEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.model.City_Obj;
@@ -118,25 +119,7 @@ public class SalesServiceController {
         return modelView;
     }
 
-    /*
-    @PostMapping(value="edit_edit_rate_type")
-    public ModelAndView edit_edit_rate_type(@ModelAttribute("RATE_TYPE_OBJ") RateType_Obj rateTypeObj, BindingResult result,final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView();
-        //cityMgmtValidator.validate(cityObj, result);
-        if(result.hasErrors()) {
-            modelView = view_edit_city_form(cityObj,result );
-        }
-        else {
-            RateTypeEntity rateTypeEntity = new RateTypeEntity(rateTypeObj);
-            salesService.saveRateType(rateTypeEntity);
-            redirectAttrib.addFlashAttribute("Success", "Rate Type Record is updated Successfully..");
-            modelView.setViewName("redirect:view_search_city_form?destinationId="+cityEntity.getDestinationId()+"&countryCode="+cityEntity.getCountryCode());
-        }
-        return modelView;
-    }
 
-     */
     @PostMapping(value="create_create_sales_partner")
     public ModelAndView createEditSalesPartner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
@@ -242,4 +225,29 @@ public class SalesServiceController {
         return modelView;
     }
 
+    @RequestMapping("view_add_room_category_form")
+    public ModelAndView view_add_room_category_form(@ModelAttribute("ROOM_OBJ") MasterRoomDetailsEntity roomEntity, BindingResult result) {
+        ModelAndView modelView = new ModelAndView("admin/rooms/Admin_Add_Room");
+        return modelView;
+    }
+
+
+    @PostMapping(value="create_create_room_category")
+    public ModelAndView create_create_room_category(@ModelAttribute("ROOM_OBJ") MasterRoomDetailsEntity roomDetailsEntity,BindingResult result,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView("admin/rooms/Admin_Add_Room");
+        salesService.saveRoomDetails(roomDetailsEntity);
+        redirectAttrib.addFlashAttribute("Success", "Room Details record updated successfully.");
+        modelView.setViewName("redirect:view_rooms_list");
+        return modelView;
+    }
+
+    @RequestMapping("view_rooms_list")
+    public ModelAndView view_rooms_list() {
+        ModelAndView modelView = new ModelAndView("admin/rooms/viewRoomsListing");
+        // Adding user details to the model
+        // Filtering sales partners based on the search criteria
+        List<MasterRoomDetailsEntity> listActiveRooms = salesService.findActiveRoomsList();
+        modelView.addObject("ACTIVE_ROOMS_LIST", listActiveRooms);
+        return modelView;
+    }
 }
