@@ -31,7 +31,8 @@ username = "Guest";
 <body>
 <header>
     <div class="logo">
-        <img src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo">
+        <a href="view_workloadhome"><img src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
+
         <h1>Ashoka Resort - Sales Management System</h1>
     </div>
     <div class="welcome">

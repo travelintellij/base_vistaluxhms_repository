@@ -14,6 +14,8 @@ public interface MasterRoomDetailsEntityRepository extends JpaRepository<MasterR
     // Custom Query: Find all active rooms
     List<MasterRoomDetailsEntity> findByActiveTrue();
 
+
+
     // Custom Query: Find rooms by category
-    List<MasterRoomDetailsEntity> findByRoomCategory(String roomCategory);
+
 }

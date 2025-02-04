@@ -44,33 +44,44 @@
                     <th>ID</th>
                     <th>Room Category</th>
                     <th>Size</th>
-                    <th>Standard Occupancy</th>
                     <th>Max Occupancy</th>
+                    <th>Standard Occupancy</th>
                     <th>Extra Bed</th>
                     <th>Category Level</th>
+                    <th>Active</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="room" items="${ACTIVE_ROOMS_LIST}">
-                    <tr>
-                        <td>${room.id}</td>
-                        <td>${room.roomCategory}</td>
-                        <td>${room.size}</td>
-                        <td>${room.standardOccupancy}</td>
-                        <td>${room.maxOccupancy}</td>
-                        <td>${room.extraBed}</td>
-                        <td>${room.categoryLevel}</td>
+                    <tr >
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.roomCategoryId}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.roomCategoryName}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.size}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.maxOccupancy}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.standardOccupancy}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.extraBed}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.categoryLevel}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.active}</td>
                         <td class="action-btns">
-                            <a href="viewRoomCategory?id=${room.id}" class="btn btn-info btn-sm">View</a>
-                            <a href="editRoomCategory?id=${room.id}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="view_room_category_details" method="POST" style="display:inline;">
+                                <input type="hidden" name="roomCategoryId" value="${room.roomCategoryId}" />
+                                <button type="submit" class="btn btn-info btn-sm">View</button>
+                             </form>
+
+                            <form action="view_edit_room_form" method="POST" style="display:inline;">
+                                <input type="hidden" name="roomCategoryId" value="${room.roomCategoryId}" />
+                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                             </form>
+
+
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
         <div class="text-center mt-3">
-            <a href="addRoomCategory" class="btn btn-success">Add New Room Category</a>
+            <a href="view_add_room_category_form" class="btn btn-success">Add New Room Category</a>
         </div>
     </div>
 </body>

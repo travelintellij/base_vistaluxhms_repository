@@ -148,7 +148,7 @@ label {
 
             <div class="form-group">
                 <label>Room Category:</label>
-                <form:input path="roomCategory" cssClass="form-control" required="true"/>
+                <form:input path="roomCategoryName" cssClass="form-control" required="true"/>
             </div>
 
             <div class="form-group">
@@ -157,13 +157,13 @@ label {
             </div>
 
             <div class="form-group">
-                <label>Standard Occupancy (Without Extrabed):</label>
-                <form:input path="standardOccupancy" type="number" min="1" cssClass="form-control" required="true"/>
+                <label>Max Occupancy:</label>
+                <form:input path="maxOccupancy" type="number" min="1" cssClass="form-control" required="true"/>
             </div>
 
             <div class="form-group">
-                <label>Max Occupancy:</label>
-                <form:input path="maxOccupancy" type="number" min="1" cssClass="form-control" required="true"/>
+                <label>Standard Occupancy (Without Extrabed):</label>
+                <form:input path="standardOccupancy" type="number" min="1" cssClass="form-control" required="true"/>
             </div>
 
             <div class="form-group">
@@ -209,7 +209,7 @@ label {
 
             <div class="button-group">
                 <button type="submit" class="submit-btn">Save</button>
-                <a href="roomList.jsp" class="cancel-btn">Cancel</a>
+                <a href="view_rooms_list" class="cancel-btn">Cancel</a>
             </div>
 
         </form:form>

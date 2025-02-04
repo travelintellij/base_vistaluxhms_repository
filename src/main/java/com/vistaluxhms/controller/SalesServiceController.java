@@ -1,13 +1,7 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.City_Entity;
-import com.vistaluxhms.entity.MasterRoomDetailsEntity;
-import com.vistaluxhms.entity.RateTypeEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
-import com.vistaluxhms.model.City_Obj;
-import com.vistaluxhms.model.RateType_Obj;
-import com.vistaluxhms.model.SalesPartnerEntityDto;
-import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.entity.*;
+import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
@@ -29,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SalesServiceController {
@@ -246,8 +241,39 @@ public class SalesServiceController {
         ModelAndView modelView = new ModelAndView("admin/rooms/viewRoomsListing");
         // Adding user details to the model
         // Filtering sales partners based on the search criteria
-        List<MasterRoomDetailsEntity> listActiveRooms = salesService.findActiveRoomsList();
+        List<MasterRoomDetailsEntity> listActiveRooms = salesService.findRoomsList();
         modelView.addObject("ACTIVE_ROOMS_LIST", listActiveRooms);
         return modelView;
     }
+
+    @PostMapping("view_room_category_details")
+    public ModelAndView view_room_category_details(@ModelAttribute("ROOM_OBJ") MasterRoomDetailsEntity roomCategoryDTO, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/rooms/Admin_View_Room");
+        // Adding user details to the model
+        // Filtering sales partners based on the search criteria
+        roomCategoryDTO= salesService.findRoomCategoryById(roomCategoryDTO.getRoomCategoryId());
+        modelView.addObject("ROOM_OBJ", roomCategoryDTO);
+        return modelView;
+    }
+
+    @PostMapping("view_edit_room_form")
+    public ModelAndView view_edit_room_form(@ModelAttribute("ROOM_OBJ") MasterRoomDetailsEntity roomCategoryDTO, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("admin/rooms/Admin_Edit_Room");
+        roomCategoryDTO= salesService.findRoomCategoryById(roomCategoryDTO.getRoomCategoryId());
+        modelView.addObject("ROOM_OBJ", roomCategoryDTO);
+        return modelView;
+    }
+
+    @PostMapping(value="edit_edit_room")
+    public ModelAndView edit_edit_room(@ModelAttribute("ROOM_OBJ") MasterRoomDetailsEntity roomCategoryDTO,BindingResult result,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+        ModelAndView modelView = new ModelAndView();
+        salesService.saveRoomDetails(roomCategoryDTO);
+        redirectAttrib.addFlashAttribute("Success", "Room record is updated successfully.");
+        modelView.setViewName("redirect:view_rooms_list");
+        return modelView;
+    }
+
 }

@@ -8,10 +8,10 @@ public class MasterRoomDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int roomCategoryId;
 
-    @Column(name = "room_category", nullable = false)
-    private String roomCategory;
+    @Column(name = "roomCategoryName", nullable = false)
+    private String roomCategoryName;
 
     @Column(name = "description")
     private String description;
@@ -19,19 +19,19 @@ public class MasterRoomDetailsEntity {
     @Column(name = "size")
     private String size;
 
-    @Column(name = "standard_occupancy", nullable = false)
+    @Column(name = "standardOccupancy", nullable = false)
     private int standardOccupancy;
 
-    @Column(name = "max_occupancy", nullable = false)
+    @Column(name = "maxOccupancy", nullable = false)
     private int maxOccupancy;
 
-    @Column(name = "extra_bed", columnDefinition = "int default 0")
+    @Column(name = "extraBed", columnDefinition = "int default 0")
     private int extraBed;
 
     @Column(name = "child", columnDefinition = "int default 0")
     private int child;
 
-    @Column(name = "comp_child", columnDefinition = "int default 0")
+    @Column(name = "compChild", columnDefinition = "int default 0")
     private int compChild;
 
     @Column(name = "categorylevel", columnDefinition = "int default 0")
@@ -43,9 +43,9 @@ public class MasterRoomDetailsEntity {
     // Constructors
     public MasterRoomDetailsEntity() {}
 
-    public MasterRoomDetailsEntity(String roomCategory, String description, String size, int standardOccupancy,
+    public MasterRoomDetailsEntity(String roomCategoryName, String description, String size, int standardOccupancy,
                              int maxOccupancy, int extraBed, int child, int compChild, int categoryLevel, boolean active) {
-        this.roomCategory = roomCategory;
+        this.roomCategoryName = roomCategoryName;
         this.description = description;
         this.size = size;
         this.standardOccupancy = standardOccupancy;
@@ -58,21 +58,9 @@ public class MasterRoomDetailsEntity {
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getRoomCategory() {
-        return roomCategory;
-    }
 
-    public void setRoomCategory(String roomCategory) {
-        this.roomCategory = roomCategory;
-    }
 
     public String getDescription() {
         return description;
@@ -144,5 +132,21 @@ public class MasterRoomDetailsEntity {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getRoomCategoryId() {
+        return roomCategoryId;
+    }
+
+    public void setRoomCategoryId(int roomCategoryId) {
+        this.roomCategoryId = roomCategoryId;
+    }
+
+    public String getRoomCategoryName() {
+        return roomCategoryName;
+    }
+
+    public void setRoomCategoryName(String roomCategoryName) {
+        this.roomCategoryName = roomCategoryName;
     }
 }

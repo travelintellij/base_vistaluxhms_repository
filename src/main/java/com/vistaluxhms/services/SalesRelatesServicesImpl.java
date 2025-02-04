@@ -119,7 +119,13 @@ public class SalesRelatesServicesImpl {
 				.collect(Collectors.toMap(SalesPartnerEntity::getSalesPartnerId, SalesPartnerEntity::getSalesPartnerShortName));
 	}
 
-	public List<MasterRoomDetailsEntity> findActiveRoomsList(){
-		return masterRoomDetailsEntityRepository.findByActiveTrue();
+	public List<MasterRoomDetailsEntity> findRoomsList(){
+		Sort sort = Sort.by(Sort.Order.desc("active"));
+		List<MasterRoomDetailsEntity> roomList = masterRoomDetailsEntityRepository.findAll(sort);
+		return roomList;
+	}
+
+	public MasterRoomDetailsEntity findRoomCategoryById(int roomCategoryId){
+		return masterRoomDetailsEntityRepository.findById(roomCategoryId).get();
 	}
 }
