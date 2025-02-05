@@ -117,6 +117,21 @@ username = "Guest";
                 </ul>
             </li>
         </c:if>
+         <c:if test="${role == 'admin' || role == 'guest'}">
+                    <li>
+                        <a href="#">Cost Management</a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="#">Session</a>
+                                <ul class="second-level">
+                                    <li><a href="view_add_city_form">Add Session</a></li>
+                                    <li><a href="view_search_city_form">Manage Sessions</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+         </c:if>
+
 
         <li><a href="logout" class="logout">Logout</a></li>
     </ul>
