@@ -3,6 +3,7 @@ package com.vistaluxhms.controller;
 import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -33,7 +34,7 @@ public class SessionController {
 	VlxCommonServicesImpl commonService;
 
 	@Autowired
-	CityManagementValidator cityMgmtValidator;
+	SalesRelatesServicesImpl salesRelatedServices;
 
 
 	private UserDetailsObj getLoggedInUser() {
@@ -52,7 +53,9 @@ public class SessionController {
 	@RequestMapping("view_add_session_form")
 	public ModelAndView view_add_session_form(@ModelAttribute("CITY_OBJ") City_Obj cityObj, BindingResult result ) {
 		UserDetailsObj userObj = getLoggedInUser();
-		ModelAndView modelView = new ModelAndView("session/Admin_Session");
+		List ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
+		ModelAndView modelView = new ModelAndView("session/Admin_Add_Session");
+		modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
 		return modelView;
 	}
 
