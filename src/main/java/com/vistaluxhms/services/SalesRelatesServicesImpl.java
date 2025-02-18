@@ -128,4 +128,10 @@ public class SalesRelatesServicesImpl {
 	public MasterRoomDetailsEntity findRoomCategoryById(int roomCategoryId){
 		return masterRoomDetailsEntityRepository.findById(roomCategoryId).get();
 	}
+
+	public List<MasterRoomDetailsEntity> findActiveRoomsList(){
+		Sort sort = Sort.by(Sort.Order.desc("active"));
+		List<MasterRoomDetailsEntity> roomList = masterRoomDetailsEntityRepository.findByActiveTrue();
+		return roomList;
+	}
 }
