@@ -41,16 +41,29 @@
     <form action="saveRates" method="post">
 
         <!-- Date Range Selection -->
-        <div class="row mb-3">
-            <label class="col-sm-2 col-form-label"><b>Season Valid From:</b></label>
-            <div class="col-sm-4">
-                <input type="date" name="seasonStart" class="form-control" required>
-            </div>
-            <label class="col-sm-2 col-form-label"><b>To:</b></label>
-            <div class="col-sm-4">
-                <input type="date" name="seasonEnd" class="form-control" required>
-            </div>
-        </div>
+       <div class="row mb-4 align-items-center">
+           <div class="col-sm-2">
+               <label class="col-form-label"><b>Season Name:</b></label>
+           </div>
+           <div class="col-sm-3">
+               <input type="text" name="seasonName" class="form-control" required>
+           </div>
+
+           <div class="col-sm-2">
+               <label class="col-form-label"><b>Season Valid From:</b></label>
+           </div>
+           <div class="col-sm-2">
+               <input type="date" name="seasonStart" class="form-control" required>
+           </div>
+
+           <div class="col-sm-1 text-end">
+               <label class="col-form-label"><b>To:</b></label>
+           </div>
+           <div class="col-sm-2">
+               <input type="date" name="seasonEnd" class="form-control" required>
+           </div>
+       </div>
+
 
         <!-- Meal Plans -->
         <c:set var="mealPlans" value="EP,CP,MAP,AP"/>
@@ -73,7 +86,7 @@
                             <c:forEach var="mealPlan" items="${mealPlanList}">
                                 <tr>
                                     <td class="fw-bold">${mealPlan}</td>
-                                    <c:forEach var="i" begin="1" end="${room.maxOccupancy}">
+                                    <c:forEach var="i" begin="1" end="${room.maxOccupancy-room.extraBed}">
                                         <td><input type="text" class="form-control input-box" name="rate_${room.roomCategoryId}_${mealPlan}_p${i}" placeholder="Person ${i}" required></td>
                                     </c:forEach>
                                     <c:forEach var="j" begin="1" end="${room.extraBed}">
