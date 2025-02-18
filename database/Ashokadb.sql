@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +221,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,0,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,8 +280,35 @@ CREATE TABLE `master_room_details` (
 
 LOCK TABLES `master_room_details` WRITE;
 /*!40000 ALTER TABLE `master_room_details` DISABLE KEYS */;
-INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,4,1,1,2,1,1),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1);
+INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1);
 /*!40000 ALTER TABLE `master_room_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mealplan`
+--
+
+DROP TABLE IF EXISTS `mealplan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mealplan` (
+  `mealPlanId` int NOT NULL AUTO_INCREMENT,
+  `planName` varchar(255) NOT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`mealPlanId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mealplan`
+--
+
+LOCK TABLES `mealplan` WRITE;
+/*!40000 ALTER TABLE `mealplan` DISABLE KEYS */;
+INSERT INTO `mealplan` VALUES (1,'EP',1,'2025-02-18 14:18:36','2025-02-18 14:18:36'),(2,'CP',1,'2025-02-18 14:18:36','2025-02-18 14:18:36'),(3,'MAP',1,'2025-02-18 14:18:36','2025-02-18 14:18:36'),(4,'AP',1,'2025-02-18 14:18:36','2025-02-18 14:18:36');
+/*!40000 ALTER TABLE `mealplan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -374,42 +401,97 @@ INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'s
 UNLOCK TABLES;
 
 --
--- Table structure for table `sessiondetails`
+-- Table structure for table `session`
 --
 
-DROP TABLE IF EXISTS `sessiondetails`;
+DROP TABLE IF EXISTS `session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sessiondetails` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `sessionId` int NOT NULL,
+CREATE TABLE `session` (
+  `sessionId` int NOT NULL AUTO_INCREMENT,
   `sessionName` varchar(255) NOT NULL,
-  `description` varchar(300) DEFAULT NULL,
-  `roomCategoryId` int NOT NULL,
-  `mealPlanId` int NOT NULL,
-  `personNumber` int NOT NULL,
-  `personAmount` int NOT NULL,
-  `extraAdult` int NOT NULL,
-  `cwb` int DEFAULT '0',
-  `cnb` int DEFAULT '0',
-  `active` tinyint(1) DEFAULT '1',
-  `createdAt` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_sessionId` (`sessionId`),
-  KEY `idx_roomCategoryId` (`roomCategoryId`),
-  KEY `idx_mealPlanId` (`mealPlanId`),
-  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`) ON DELETE CASCADE
+  `sessionStart` date NOT NULL,
+  `sessionEnd` date NOT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`sessionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sessiondetails`
+-- Dumping data for table `session`
 --
 
-LOCK TABLES `sessiondetails` WRITE;
-/*!40000 ALTER TABLE `sessiondetails` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sessiondetails` ENABLE KEYS */;
+LOCK TABLES `session` WRITE;
+/*!40000 ALTER TABLE `session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessiondetail`
+--
+
+DROP TABLE IF EXISTS `sessiondetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessiondetail` (
+  `sessionDetailId` int NOT NULL AUTO_INCREMENT,
+  `sessionId` int NOT NULL,
+  `roomCategoryId` int NOT NULL,
+  `mealPlanId` int NOT NULL,
+  `baseRate` int NOT NULL,
+  `maxOccupancy` int NOT NULL,
+  `extraBed` int DEFAULT '0',
+  `activeFlag` tinyint(1) DEFAULT '1',
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`sessionDetailId`),
+  KEY `fk_session` (`sessionId`),
+  KEY `fk_roomCategory` (`roomCategoryId`),
+  KEY `fk_mealPlan` (`mealPlanId`),
+  CONSTRAINT `fk_mealPlan` FOREIGN KEY (`mealPlanId`) REFERENCES `mealplan` (`mealPlanId`),
+  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`),
+  CONSTRAINT `fk_session` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessiondetail`
+--
+
+LOCK TABLES `sessiondetail` WRITE;
+/*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessionrate`
+--
+
+DROP TABLE IF EXISTS `sessionrate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessionrate` (
+  `sessionRateId` int NOT NULL AUTO_INCREMENT,
+  `sessionDetailId` int NOT NULL,
+  `personType` varchar(50) NOT NULL,
+  `personCount` int NOT NULL,
+  `rate` int NOT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`sessionRateId`),
+  KEY `fk_sessionDetail` (`sessionDetailId`),
+  CONSTRAINT `fk_sessionDetail` FOREIGN KEY (`sessionDetailId`) REFERENCES `sessiondetail` (`sessionDetailId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessionrate`
+--
+
+LOCK TABLES `sessionrate` WRITE;
+/*!40000 ALTER TABLE `sessionrate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sessionrate` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -450,4 +532,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-06 20:19:37
+-- Dump completed on 2025-02-18 20:16:40
