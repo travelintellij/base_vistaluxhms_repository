@@ -9,6 +9,33 @@
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 <style>
+ body {
+        background-image: url('<%= request.getContextPath() %>/resources/images/leadlist.jpg');
+        background-size: cover; /* Ensures the image covers the full page */
+        background-position: center; /* Centers the image */
+        background-attachment: fixed; /* Keeps the background fixed while scrolling */
+        height: 100vh; /* Ensures the background covers the full height of the viewport */
+        position: relative; /* Required for the overlay */
+    }
+
+    /* Create a watermark-like effect using an overlay */
+    body::after {
+        content: "";  /* Empty content for the overlay */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background: rgba(255, 255, 255, 0.3); /* Semi-transparent white overlay */
+        z-index: -1; /* Place the overlay behind the content */
+    }
+
+    /* Optional: If you want to adjust the opacity of the image to make it more subtle */
+    body {
+        opacity: .98; /* Adjust the opacity for the background image */
+    }
+
 /* Modal Background */
 .modal {
     display: none; /* Hidden by default */

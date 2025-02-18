@@ -9,8 +9,37 @@
 
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<style>
+    body {
+        background-image: url('<%= request.getContextPath() %>/resources/images/clientedit.jpg');
+        background-size: cover; /* Ensures the image covers the full page */
+        background-position: center; /* Centers the image */
+        background-attachment: fixed; /* Keeps the background fixed while scrolling */
+        height: 100vh; /* Ensures the background covers the full height of the viewport */
+        position: relative; /* Required for the overlay */
+    }
 
-<div class="form-container-wrapper">
+    /* Create a watermark-like effect using an overlay */
+    body::after {
+        content: "";  /* Empty content for the overlay */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background: rgba(255, 255, 255, 0.3); /* Semi-transparent white overlay */
+        z-index: -1; /* Place the overlay behind the content */
+    }
+
+    /* Optional: If you want to adjust the opacity of the image to make it more subtle */
+    body {
+        opacity: .98; /* Adjust the opacity for the background image */
+    }
+
+</style>
+
+<div class="form-container-wrapper" style="background: transparent !important;">
     <div class="form-container">
         <h2>Edit Client</h2> <!-- Bold Header -->
         <form:form method="post" action="edit_edit_client" modelAttribute="CLIENT_OBJ">

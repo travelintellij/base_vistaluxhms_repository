@@ -8,6 +8,35 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 
 <style>
+    body {
+        background-image: url('<%= request.getContextPath() %>/resources/images/salespartnerview.jpg');
+        background-size: cover; /* Ensures the image covers the full page */
+        background-position: center; /* Centers the image */
+        background-attachment: fixed; /* Keeps the background fixed while scrolling */
+        height: 100vh; /* Ensures the background covers the full height of the viewport */
+        position: relative; /* Required for the overlay */
+    }
+
+    /* Create a watermark-like effect using an overlay */
+    body::after {
+        content: "";  /* Empty content for the overlay */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background: rgba(255, 255, 255, 0.3); /* Semi-transparent white overlay */
+        z-index: -1; /* Place the overlay behind the content */
+    }
+
+    /* Optional: If you want to adjust the opacity of the image to make it more subtle */
+    body {
+        opacity: .98; /* Adjust the opacity for the background image */
+    }
+
+
+
 /* Container for each form-row to reduce spacing */
 .form-row {
     display: flex;
@@ -35,7 +64,7 @@
 }
 
 </style>
-<div class="form-container-wrapper">
+<div class="form-container-wrapper" style="background: transparent !important;">
     <div class="form-container">
         <h2>View Sales Partner</h2>
     <form:form method="post" action="view_edit_sales_partner_form" modelAttribute="SALES_PARTNER_OBJ">
