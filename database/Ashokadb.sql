@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (0,'dummy','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Dummy','Vikas',9999999999,'dummy',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,'2025-01-01','sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,NULL,0,0,0,0,0),(1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@udanchoo.com',NULL,NULL,'sushil@vistaluxhotel.com',0,NULL,NULL,NULL,NULL,'',1,0,0,0,0),(13,'Wasim','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puri',9999449267,'Partner',NULL,NULL,0,'1977-12-16','sushil@vistaluxhotel.com',NULL,NULL,'sushil.chugh@gmail.com',9999441267,NULL,NULL,NULL,NULL,'I am proud of you user. You rock. ',1,0,0,0,0),(14,'Sushil3','$2a$10$2mo3JX/Th08K6lpp1fkx1eimparjm.tC.Cv/eUqfGD.2fK0mTPjhO','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,1,0,0),(15,'Sushil3','$2a$10$M2sHZQ.LMqShWQe.QfcQROdG8pxfrcKXp1deTOMQGSVA/tSWIBbwq','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,0,0,0),(16,'Sushil4','$2a$10$B1aJH8A5KvMXDDgKRYvr7.qK6Fp6ONzhhAZEhNHWreJ53Khw7Iyz6','sushil 4 chugh','fundu',9999999999,'founder',NULL,NULL,0,'2020-12-12','sus@gmail.com',NULL,NULL,'persna@gmail.com',9999999999,NULL,NULL,NULL,NULL,'asdgag',0,0,0,0,0),(17,'guru','$2a$10$ULQWB5xKtS/Tbu3hPzb8AeQFFmU.7JJX26/5GXF2BVfMZ7UcfReua','guru chugh','tihar',9999999999,'furu guru',NULL,NULL,0,'2009-12-12','guru@gmail.com',NULL,NULL,'persu@gmail.com',9999999999,NULL,NULL,NULL,NULL,'check it out. ',0,0,0,0,0),(18,'ndps','$2a$10$UhY8sEWIigBQCqvyRnjt3.YKO9OngtETkNEce1GvrLUv9HxdgtlES','NPPS Chugh','chalo ji',9090909090,'perfectionist',NULL,NULL,0,'2009-10-10','ndps@gmail.com',NULL,NULL,'ndps@gil.com',8989898989,NULL,NULL,NULL,NULL,'adsga',0,0,0,0,0),(19,'udanchoo','$2a$10$r4J8rLihfdPQIEQR/C7Di.2SKFytXAJtd91LeTs7Pbx6WaEGpLaRu','UdanChoo Tourism LLP','vikas puri',9999446267,'founder',NULL,NULL,0,'1977-12-16','sales@udanchoo.com','2025-12-10 00:00:00',NULL,'sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,'perfect execution. ',1,0,0,0,0),(20,'s4solvents','$2a$10$VjDvxmncS24fQZW5K9bycOshG/bh.0FHmFwS7jYOoNNnCambP0jDu','S4 Solvents Group','',9898989898,'asdg',NULL,NULL,0,'2025-01-01','sanjy@sanju.com',NULL,NULL,'sushil@sushil.com',0,NULL,NULL,NULL,NULL,'',0,0,0,0,0),(21,'kashish','$2a$10$dv6HkaDKNDihxTd4GjETfeFLtEAwcN5fx8a815JuHLEZEpOjEX3d2','Kashish','',9090762424,'Reservations',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,NULL,'sub.coll@gmail.com',0,NULL,NULL,NULL,NULL,'',1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (0,'dummy','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Dummy','Vikas',9999999999,'dummy',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,'2025-01-01','sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,NULL,0,0,0,0,0),(1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@udanchoo.com',NULL,NULL,'sushil@vistaluxhotel.com',9999441267,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0),(13,'Wasim','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puri',9999449267,'Partner',NULL,NULL,0,'1977-12-16','sushil@vistaluxhotel.com',NULL,NULL,'sushil.chugh@gmail.com',9999441267,NULL,NULL,NULL,NULL,'I am proud of you user. You rock. ',1,0,0,0,0),(14,'Sushil3','$2a$10$2mo3JX/Th08K6lpp1fkx1eimparjm.tC.Cv/eUqfGD.2fK0mTPjhO','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,1,0,0),(15,'Sushil3','$2a$10$M2sHZQ.LMqShWQe.QfcQROdG8pxfrcKXp1deTOMQGSVA/tSWIBbwq','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,0,0,0),(16,'Sushil4','$2a$10$B1aJH8A5KvMXDDgKRYvr7.qK6Fp6ONzhhAZEhNHWreJ53Khw7Iyz6','sushil 4 chugh','fundu',9999999999,'founder',NULL,NULL,0,'2020-12-12','sus@gmail.com',NULL,NULL,'persna@gmail.com',9999999999,NULL,NULL,NULL,NULL,'asdgag',0,0,0,0,0),(17,'guru','$2a$10$ULQWB5xKtS/Tbu3hPzb8AeQFFmU.7JJX26/5GXF2BVfMZ7UcfReua','guru chugh','tihar',9999999999,'furu guru',NULL,NULL,0,'2009-12-12','guru@gmail.com',NULL,NULL,'persu@gmail.com',9999999999,NULL,NULL,NULL,NULL,'check it out. ',0,0,0,0,0),(18,'ndps','$2a$10$UhY8sEWIigBQCqvyRnjt3.YKO9OngtETkNEce1GvrLUv9HxdgtlES','NPPS Chugh','chalo ji',9090909090,'perfectionist',NULL,NULL,0,'2009-10-10','ndps@gmail.com',NULL,NULL,'ndps@gil.com',8989898989,NULL,NULL,NULL,NULL,'adsga',0,0,0,0,0),(19,'udanchoo','$2a$10$r4J8rLihfdPQIEQR/C7Di.2SKFytXAJtd91LeTs7Pbx6WaEGpLaRu','UdanChoo Tourism LLP','vikas puri',9999446267,'founder',NULL,NULL,0,'1977-12-16','sales@udanchoo.com','2025-12-10 00:00:00',NULL,'sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,'perfect execution. ',1,0,0,0,0),(20,'s4solvents','$2a$10$VjDvxmncS24fQZW5K9bycOshG/bh.0FHmFwS7jYOoNNnCambP0jDu','S4 Solvents Group','',9898989898,'asdg',NULL,NULL,0,'2025-01-01','sanjy@sanju.com',NULL,NULL,'sushil@sushil.com',0,NULL,NULL,NULL,NULL,'',0,0,0,0,0),(21,'kashish','$2a$10$dv6HkaDKNDihxTd4GjETfeFLtEAwcN5fx8a815JuHLEZEpOjEX3d2','Kashish','',9090762424,'Reservations',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,NULL,'sub.coll@gmail.com',0,NULL,NULL,NULL,NULL,'',1,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +221,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,0,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,6 +270,8 @@ CREATE TABLE `master_room_details` (
   `compChild` int DEFAULT '0',
   `categorylevel` int DEFAULT '0',
   `active` tinyint(1) DEFAULT '1',
+  `extraBedPercentage` int DEFAULT '0',
+  `cnbPercentage` int DEFAULT '0',
   PRIMARY KEY (`roomCategoryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -280,7 +282,7 @@ CREATE TABLE `master_room_details` (
 
 LOCK TABLES `master_room_details` WRITE;
 /*!40000 ALTER TABLE `master_room_details` DISABLE KEYS */;
-INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1);
+INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1,0,0),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1,0,0);
 /*!40000 ALTER TABLE `master_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +337,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
-INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-01-03 13:53:43'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Worked','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-01-03 13:56:51'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
+INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Worked','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-01-03 13:56:51'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,22 +438,26 @@ DROP TABLE IF EXISTS `sessiondetail`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessiondetail` (
   `sessionDetailId` int NOT NULL AUTO_INCREMENT,
-  `sessionId` int NOT NULL,
+  `sessionGroupId` varchar(200) NOT NULL,
+  `sessionName` varchar(255) DEFAULT NULL,
   `roomCategoryId` int NOT NULL,
   `mealPlanId` int NOT NULL,
-  `baseRate` int NOT NULL,
+  `person1` int DEFAULT NULL,
+  `person2` int DEFAULT NULL,
+  `person3` int DEFAULT NULL,
+  `person4` int DEFAULT NULL,
+  `person5` int DEFAULT NULL,
+  `person6` varchar(45) DEFAULT NULL,
   `maxOccupancy` int NOT NULL,
-  `extraBed` int DEFAULT '0',
   `activeFlag` tinyint(1) DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`sessionDetailId`),
-  KEY `fk_session` (`sessionId`),
+  KEY `fk_session` (`sessionGroupId`),
   KEY `fk_roomCategory` (`roomCategoryId`),
   KEY `fk_mealPlan` (`mealPlanId`),
   CONSTRAINT `fk_mealPlan` FOREIGN KEY (`mealPlanId`) REFERENCES `mealplan` (`mealPlanId`),
-  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`),
-  CONSTRAINT `fk_session` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`)
+  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -462,36 +468,6 @@ CREATE TABLE `sessiondetail` (
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sessionrate`
---
-
-DROP TABLE IF EXISTS `sessionrate`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sessionrate` (
-  `sessionRateId` int NOT NULL AUTO_INCREMENT,
-  `sessionDetailId` int NOT NULL,
-  `personType` varchar(50) NOT NULL,
-  `personCount` int NOT NULL,
-  `rate` int NOT NULL,
-  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`sessionRateId`),
-  KEY `fk_sessionDetail` (`sessionDetailId`),
-  CONSTRAINT `fk_sessionDetail` FOREIGN KEY (`sessionDetailId`) REFERENCES `sessiondetail` (`sessionDetailId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sessionrate`
---
-
-LOCK TABLES `sessionrate` WRITE;
-/*!40000 ALTER TABLE `sessionrate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sessionrate` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -532,4 +508,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-18 20:16:40
+-- Dump completed on 2025-02-24 20:56:25
