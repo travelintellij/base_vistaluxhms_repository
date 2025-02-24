@@ -102,6 +102,14 @@
                 <label>Category Level:</label>
                 <div class="value-box">${ROOM_OBJ.categoryLevel}</div>
             </div>
+             <div class="col-md-4 form-group">
+                <label>Extra Bed Percentage:</label>
+                <div class="value-box">${ROOM_OBJ.extraBedPercentage}</div>
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Child No Bed Percentage:</label>
+                <div class="value-box">${ROOM_OBJ.cnbPercentage}</div>
+            </div>
             <div class="col-md-12 form-group">
                 <label>Description:</label>
                 <div class="value-box">${ROOM_OBJ.description}</div>

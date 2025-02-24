@@ -228,7 +228,17 @@ label {
                      </div>
                    </div>
             </div>
-
+             <div class="form-group">
+                <label>Extra Adult Percentage (Standard 35%) :</label>
+                <form:input path="extraBedPercentage" type="number" min="1" cssClass="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Child No Bed Percentage (Standard 20%) :</label>
+                <form:input path="cnbPercentage" type="number" min="1" cssClass="form-control"/>
+            </div>
+            <div class="form-group">
+                &nbsp;
+            </div>
             <div class="form-group full-width">
                 <label>Description:</label>
                 <form:textarea path="description" cssClass="form-control large-textarea"/>
