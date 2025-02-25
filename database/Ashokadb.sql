@@ -273,7 +273,7 @@ CREATE TABLE `master_room_details` (
   `extraBedPercentage` int DEFAULT '0',
   `cnbPercentage` int DEFAULT '0',
   PRIMARY KEY (`roomCategoryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,7 +282,7 @@ CREATE TABLE `master_room_details` (
 
 LOCK TABLES `master_room_details` WRITE;
 /*!40000 ALTER TABLE `master_room_details` DISABLE KEYS */;
-INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1,0,0),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1,0,0);
+INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1,35,20),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1,0,0),(3,'Tiger Den','','200',2,3,1,1,1,2,1,35,15);
 /*!40000 ALTER TABLE `master_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,8 +447,9 @@ CREATE TABLE `sessiondetail` (
   `person3` int DEFAULT NULL,
   `person4` int DEFAULT NULL,
   `person5` int DEFAULT NULL,
-  `person6` varchar(45) DEFAULT NULL,
+  `person6` int DEFAULT NULL,
   `maxOccupancy` int NOT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
   `activeFlag` tinyint(1) DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -508,4 +509,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-24 20:56:25
+-- Dump completed on 2025-02-25 22:05:59

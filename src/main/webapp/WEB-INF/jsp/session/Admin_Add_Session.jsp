@@ -1,5 +1,11 @@
 <jsp:include page="../_menu_builder_header.jsp" />
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,30 +40,55 @@
         z-index: -1; /* Place the overlay behind the content */
     }
 
+    textarea {
+        width: 70%;
+        height: 50px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 16px;
+        resize: none;
+      }
+
     /* Optional: If you want to adjust the opacity of the image to make it more subtle */
     body {
         opacity: .98; /* Adjust the opacity for the background image */
     }
 
+    body {
+        background-color: #f8f9fa;
+    }
+    .container {
+        margin-top: 30px;
+        max-width: 90%;
+    }
+    .table {
+        background-color: white;
+    }
+    .meal-header {
+        background-color: #007bff;
+        color: white;
+    }
+    .input-box {
+        width: 120px;
+        text-align: center;
+    }
+th:first-child, td:first-child {
+    background-color: #28a745; /* Green */
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
 
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 30px;
-            max-width: 90%;
-        }
-        .table {
-            background-color: white;
-        }
-        .meal-header {
-            background-color: #007bff;
-            color: white;
-        }
-        .input-box {
-            width: 120px;
-            text-align: center;
-        }
+th:not(:first-child), td:not(:first-child) {
+    background-color: #f8f9fa; /* Light Gray */
+    text-align: center;
+    padding: 8px;
+}
+
+
     </style>
 </head>
 <body>
@@ -66,7 +97,7 @@
     <h2 class="text-center mb-4">Seasonal Room Rates</h2>
 
     <!-- Form to Submit Rates -->
-    <form action="saveRates" method="post">
+    <form:form action="create_create_session_detail" modelAttribute="SESSION_OBJ" method="post">
 
         <!-- Date Range Selection -->
        <div class="row mb-4 align-items-center">
@@ -76,19 +107,11 @@
            <div class="col-sm-3">
                <input type="text" name="seasonName" class="form-control" required>
            </div>
-
-           <div class="col-sm-2">
-               <label class="col-form-label"><b>Season Valid From:</b></label>
+        <div class="col-sm-2">
+               <label class="col-form-label"><b>Remarks:</b></label>
            </div>
-           <div class="col-sm-2">
-               <input type="date" name="seasonStart" class="form-control" required>
-           </div>
-
-           <div class="col-sm-1 text-end">
-               <label class="col-form-label"><b>To:</b></label>
-           </div>
-           <div class="col-sm-2">
-               <input type="date" name="seasonEnd" class="form-control" required>
+           <div class="col-sm-3">
+                <textarea name="remarks" cssClass="form-control large-textarea"></textarea>
            </div>
        </div>
 
@@ -106,20 +129,22 @@
                     <table class="table table-bordered">
                         <thead class="meal-header">
                             <tr>
-                                <th>Meal Plan</th>
-                                <th colspan="${room.maxOccupancy + room.extraBed}">Rates per Person</th>
+                                <th style="background-color: #007bff; color: white;">Meal Plan</th>
+                                <th colspan="${room.maxOccupancy + room.extraBed}" style="background-color: #007bff; color: white;">Rates per Person</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="mealPlan" items="${mealPlanList}">
                                 <tr>
-                                    <td class="fw-bold">${mealPlan}</td>
-                                    <c:forEach var="i" begin="1" end="${room.maxOccupancy-room.extraBed}">
-                                        <td><input type="text" class="form-control input-box" name="rate_${room.roomCategoryId}_${mealPlan}_p${i}" placeholder="Person ${i}" required></td>
-                                    </c:forEach>
-                                    <c:forEach var="j" begin="1" end="${room.extraBed}">
-                                        <td><input type="text" class="form-control input-box" name="rate_${room.roomCategoryId}_${mealPlan}_eb${j}" placeholder="Extra Bed ${j}" required></td>
-                                    </c:forEach>
+                                    <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlan}</td>
+                                    <td style="width: 70%; text-align: center;">
+                                    <div style="display: flex; justify-content: left; gap: 10px;">
+                                        <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
+                                            Person ${i} <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" />
+                                        </c:forEach>
+                                        </div>
+                                     </td>
+
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -132,7 +157,7 @@
         <div class="text-center mt-3">
             <button type="submit" class="btn btn-primary px-4">Save Rates</button>
         </div>
-    </form>
+    </form:form>
 </div>
 
 <!-- Bootstrap JS for responsiveness -->
