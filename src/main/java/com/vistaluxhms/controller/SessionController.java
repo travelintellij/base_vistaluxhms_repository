@@ -1,8 +1,11 @@
 package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.City_Entity;
+import com.vistaluxhms.entity.ClientEntity;
+import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.entity.SessionDetailsEntity;
 import com.vistaluxhms.model.City_Obj;
+import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
@@ -68,6 +71,18 @@ public class SessionController {
 		return modelView;
 	}
 
+
+
+	@PostMapping(value="create_create_session_detail")
+	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
+		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+		System.out.println("Session Entity object is " + sessionDetailsEntity);
+
+		ModelAndView modelView = new ModelAndView();
+		modelView.setViewName("forward:view_add_session_form");
+
+		return modelView;
+	}
 
     
 }
