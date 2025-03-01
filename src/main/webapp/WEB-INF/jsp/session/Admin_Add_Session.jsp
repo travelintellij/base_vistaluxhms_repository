@@ -97,7 +97,7 @@ th:not(:first-child), td:not(:first-child) {
     <h2 class="text-center mb-4">Seasonal Room Rates</h2>
 
     <!-- Form to Submit Rates -->
-    <form:form action="create_create_session_detail" modelAttribute="SESSION_OBJ" method="post">
+
 
         <!-- Date Range Selection -->
        <div class="row mb-4 align-items-center">
@@ -135,17 +135,19 @@ th:not(:first-child), td:not(:first-child) {
                         </thead>
                         <tbody>
                             <c:forEach var="mealPlan" items="${mealPlanList}">
+                                <form:form action="create_create_session_detail" modelAttribute="SESSION_OBJ" method="post">
                                 <tr>
                                     <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlan}</td>
                                     <td style="width: 70%; text-align: center;">
-                                    <div style="display: flex; justify-content: left; gap: 10px;">
+                                        <div style="display: flex; justify-content: left; gap: 10px;">
                                         <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
                                             Person ${i} <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" />
                                         </c:forEach>
                                         </div>
                                      </td>
-
+                                     <td><div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Rates</button></div></td>
                                 </tr>
+                                </form:form>
                             </c:forEach>
                         </tbody>
                     </table>
@@ -153,11 +155,6 @@ th:not(:first-child), td:not(:first-child) {
             </div>
         </c:forEach>
 
-        <!-- Submit Button -->
-        <div class="text-center mt-3">
-            <button type="submit" class="btn btn-primary px-4">Save Rates</button>
-        </div>
-    </form:form>
 </div>
 
 <!-- Bootstrap JS for responsiveness -->

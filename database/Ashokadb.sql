@@ -412,8 +412,7 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `sessionId` int NOT NULL AUTO_INCREMENT,
   `sessionName` varchar(255) NOT NULL,
-  `sessionStart` date NOT NULL,
-  `sessionEnd` date NOT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`sessionId`)
@@ -438,8 +437,7 @@ DROP TABLE IF EXISTS `sessiondetail`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessiondetail` (
   `sessionDetailId` int NOT NULL AUTO_INCREMENT,
-  `sessionGroupId` varchar(200) NOT NULL,
-  `sessionName` varchar(255) DEFAULT NULL,
+  `sessionId` int DEFAULT NULL,
   `roomCategoryId` int NOT NULL,
   `mealPlanId` int NOT NULL,
   `person1` int DEFAULT NULL,
@@ -454,11 +452,12 @@ CREATE TABLE `sessiondetail` (
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`sessionDetailId`),
-  KEY `fk_session` (`sessionGroupId`),
   KEY `fk_roomCategory` (`roomCategoryId`),
   KEY `fk_mealPlan` (`mealPlanId`),
+  KEY `fk_sessionId_idx` (`sessionId`),
   CONSTRAINT `fk_mealPlan` FOREIGN KEY (`mealPlanId`) REFERENCES `mealplan` (`mealPlanId`),
-  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`)
+  CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`),
+  CONSTRAINT `fk_sessionId` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -509,4 +508,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-25 22:05:59
+-- Dump completed on 2025-03-01 20:09:33
