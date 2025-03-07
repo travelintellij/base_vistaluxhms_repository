@@ -100,20 +100,25 @@ th:not(:first-child), td:not(:first-child) {
 
 
         <!-- Date Range Selection -->
+       <form:form action="create_create_session_master" modelAttribute="SESSION_MASTER_OBJ" method="post">
        <div class="row mb-4 align-items-center">
            <div class="col-sm-2">
                <label class="col-form-label"><b>Season Name:</b></label>
            </div>
            <div class="col-sm-3">
-               <input type="text" name="seasonName" class="form-control" required>
+               <form:input path="seasonName" placeholder="Session Name" class="form-control"  required="required" />
            </div>
-        <div class="col-sm-2">
+            <div class="col-sm-2">
                <label class="col-form-label"><b>Remarks:</b></label>
            </div>
            <div class="col-sm-3">
                 <textarea name="remarks" cssClass="form-control large-textarea"></textarea>
            </div>
+           <div class="col-sm-2">
+               <div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Session Master</button></div>
+          </div>
        </div>
+       </form:form>
 
 
         <!-- Meal Plans -->

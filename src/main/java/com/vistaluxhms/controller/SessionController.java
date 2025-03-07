@@ -1,13 +1,11 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.City_Entity;
-import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
-import com.vistaluxhms.entity.SessionDetailsEntity;
+import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
+import com.vistaluxhms.services.SessionServiceImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -36,7 +34,7 @@ public class SessionController {
 	UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
-	VlxCommonServicesImpl commonService;
+	SessionServiceImpl sessionService;
 
 	@Autowired
 	SalesRelatesServicesImpl salesRelatedServices;
@@ -73,8 +71,19 @@ public class SessionController {
 
 
 
+	@PostMapping(value="create_create_session_master")
+	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity,BindingResult result, final RedirectAttributes redirectAttrib) {
+		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+		ModelAndView modelView = new ModelAndView();
+
+		sessionService.saveSessionMaster(sessionEntity);
+		modelView.setViewName("forward:view_add_session_form");
+
+		return modelView;
+	}
+
 	@PostMapping(value="create_create_session_detail")
-	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
+	public ModelAndView create_create_session_master(@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
 		System.out.println("Session Entity object is " + sessionDetailsEntity);
 
@@ -83,6 +92,5 @@ public class SessionController {
 
 		return modelView;
 	}
-
     
 }

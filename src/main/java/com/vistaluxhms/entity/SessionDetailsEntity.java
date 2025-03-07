@@ -11,6 +11,11 @@ public class SessionDetailsEntity {
     @Column(name = "sessionDetailId")
     private int sessionDetailId;
 
+
+    @ManyToOne
+    @JoinColumn(name = "sessionId", referencedColumnName = "sessionId")
+    private SessionEntity session;
+
     @Column(name = "sessionGroupId", nullable = false, length = 200)
     private String sessionGroupId;
 
@@ -160,5 +165,25 @@ public class SessionDetailsEntity {
 
     public void setActiveFlag(Boolean activeFlag) {
         this.activeFlag = activeFlag;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionDetailsEntity{" +
+                "sessionDetailId=" + sessionDetailId +
+                ", sessionGroupId='" + sessionGroupId + '\'' +
+                ", sessionName='" + sessionName + '\'' +
+                ", roomCategoryId=" + roomCategoryId +
+                ", mealPlanId=" + mealPlanId +
+                ", person1=" + person1 +
+                ", person2=" + person2 +
+                ", person3=" + person3 +
+                ", person4=" + person4 +
+                ", person5=" + person5 +
+                ", person6=" + person6 +
+                ", maxOccupancy=" + maxOccupancy +
+                ", remarks='" + remarks + '\'' +
+                ", activeFlag=" + activeFlag +
+                '}';
     }
 }

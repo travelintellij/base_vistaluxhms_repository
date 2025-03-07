@@ -1,12 +1,7 @@
 package com.vistaluxhms.services;
-import com.vistaluxhms.entity.MasterRoomDetailsEntity;
-import com.vistaluxhms.entity.RateTypeEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
+import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
-import com.vistaluxhms.repository.MasterRoomDetailsEntityRepository;
-import com.vistaluxhms.repository.RateTypeRepository;
-import com.vistaluxhms.repository.SalesPartnerEntityRepository;
-import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,17 +18,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class SessionServiceImpl {
-	@Autowired
-	Vlx_City_Master_Repository cityRepository;
 
 	@Autowired
-	RateTypeRepository rateTypeRepository;
+	SessionRepository sessionRepository;
 
-	@Autowired
-	SalesPartnerEntityRepository salesPartnerRepository;
 
-	@Autowired
-	MasterRoomDetailsEntityRepository masterRoomDetailsEntityRepository;
+	public void saveSessionMaster(SessionEntity sessionEntity) {
+		sessionRepository.save(sessionEntity);
+	}
 
 
 }
