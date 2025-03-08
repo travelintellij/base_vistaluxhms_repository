@@ -103,10 +103,10 @@ th:not(:first-child), td:not(:first-child) {
        <form:form action="create_create_session_master" modelAttribute="SESSION_MASTER_OBJ" method="post">
        <div class="row mb-4 align-items-center">
            <div class="col-sm-2">
-               <label class="col-form-label"><b>Season Name:</b></label>
+               <label class="col-form-label"><b>Session Name:</b></label>
            </div>
            <div class="col-sm-3">
-               <form:input path="seasonName" placeholder="Session Name" class="form-control"  required="required" />
+               <form:input path="sessionName" placeholder="Session Name" class="form-control"  required="required" />
            </div>
             <div class="col-sm-2">
                <label class="col-form-label"><b>Remarks:</b></label>

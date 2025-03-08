@@ -60,7 +60,7 @@ public class SessionController {
     }
 
 	@RequestMapping("view_add_session_form")
-	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionObj, BindingResult result ) {
+	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionObj, BindingResult result ) {
 		UserDetailsObj userObj = getLoggedInUser();
 		List ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
 		ModelAndView modelView = new ModelAndView("session/Admin_Add_Session");

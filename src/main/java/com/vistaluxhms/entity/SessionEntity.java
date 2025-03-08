@@ -19,10 +19,11 @@ public class SessionEntity {
     @Column(name = "remarks")
     private String remarks;
 
-    @Column(name = "createdAt", updatable = false)
+
+    @Column(name = "createdAt", updatable = false, insertable = false)
     private Timestamp createdAt;
 
-    @Column(name = "updatedAt")
+    @Column(name = "updatedAt", insertable = false)
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
