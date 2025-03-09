@@ -1,6 +1,7 @@
 package com.vistaluxhms.services;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
+import com.vistaluxhms.model.SessionFilterDTO;
 import com.vistaluxhms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,5 +28,39 @@ public class SessionServiceImpl {
 		sessionRepository.save(sessionEntity);
 	}
 
+
+	public List<SessionEntity> filterSession(SessionFilterDTO sessionFilterDTO) {
+		// Fetch all filtered results without pagination
+		List<SessionEntity> filteredSessionList = sessionRepository.findAll(new Specification<SessionEntity>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Predicate toPredicate(Root<SessionEntity> sessionEntityRoot, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				List<Predicate> predicates = new ArrayList<>();
+
+				// Filter by Sales Partner ID
+				if (sessionFilterDTO.getSessionId() != null && sessionFilterDTO.getSessionId() != 0) {
+					predicates.add(criteriaBuilder.equal(sessionEntityRoot.get("sessionId"), sessionFilterDTO.getSessionId()));
+				}
+
+				// Filter by Sales Partner Short Name
+				if (sessionFilterDTO.getSessionName() != null && !sessionFilterDTO.getSessionName().trim().isEmpty()) {
+					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(sessionEntityRoot.get("sessionName")),
+							"%" + sessionFilterDTO.getSessionName().toLowerCase() + "%"));
+				}
+
+
+
+				// Filter by Active Status
+				if (sessionFilterDTO.getActive() != null) {
+					predicates.add(criteriaBuilder.equal(sessionEntityRoot.get("active"), sessionFilterDTO.getActive()));
+				}
+
+				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+			}
+		});
+
+		return filteredSessionList;
+	}
 
 }

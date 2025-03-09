@@ -1,9 +1,7 @@
 package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.*;
-import com.vistaluxhms.model.City_Obj;
-import com.vistaluxhms.model.ClientEntityDTO;
-import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.SessionServiceImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
@@ -92,5 +90,19 @@ public class SessionController {
 
 		return modelView;
 	}
-    
+
+	@RequestMapping("view_session_list")
+	public ModelAndView view_session_list(@ModelAttribute("SESSION_FILTER_OBJ") SessionFilterDTO sessionFilterDTO, BindingResult result) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("session/viewSessionListing");
+		// Adding user details to the model
+		modelView.addObject("userName", userObj.getUsername());
+		modelView.addObject("Id", userObj.getUserId());
+		// Filtering sales partners based on the search criteria
+		List<SessionEntity> sessionEntityList = sessionService.filterSession(sessionFilterDTO);
+		modelView.addObject("SALES_PARTNER_FILTERED_LIST", sessionEntityList);
+		return modelView;
+	}
+
+
 }

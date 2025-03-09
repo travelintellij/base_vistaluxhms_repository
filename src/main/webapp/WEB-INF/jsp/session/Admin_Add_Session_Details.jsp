@@ -101,37 +101,66 @@ th:not(:first-child), td:not(:first-child) {
 
         <!-- Date Range Selection -->
        <form:form action="create_create_session_master" modelAttribute="SESSION_MASTER_OBJ" method="post">
-   <div class="container d-flex justify-content-center">
-       <div class="w-50"> <!-- Adjust width as needed -->
-           <div class="row mb-4 align-items-center">
-               <div class="col-sm-4">
-                   <label class="col-form-label"><b>Session Name:</b></label>
-               </div>
-               <div class="col-sm-8">
-                   <form:input path="sessionName" placeholder="Session Name" class="form-control" required="required" />
-               </div>
+       <div class="row mb-4 align-items-center">
+           <div class="col-sm-2">
+               <label class="col-form-label"><b>Session Name:</b></label>
            </div>
-
-           <div class="row mb-4 align-items-center">
-               <div class="col-sm-4">
-                   <label class="col-form-label"><b>Remarks:</b></label>
-               </div>
-               <div class="col-sm-8">
-                   <textarea name="remarks" class="form-control large-textarea"></textarea>
-               </div>
+           <div class="col-sm-3">
+               <form:input path="sessionName" placeholder="Session Name" class="form-control"  required="required" />
            </div>
-
-           <div class="row">
-               <div class="col-12 text-center mt-3">
-                   <button type="submit" class="btn btn-primary px-4">Save Session Master</button>
-               </div>
+            <div class="col-sm-2">
+               <label class="col-form-label"><b>Remarks:</b></label>
            </div>
+           <div class="col-sm-3">
+                <textarea name="remarks" cssClass="form-control large-textarea"></textarea>
+           </div>
+           <div class="col-sm-2">
+               <div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Session Master</button></div>
+          </div>
        </div>
-   </div>
-
-
        </form:form>
 
+
+        <!-- Meal Plans -->
+        <c:set var="mealPlans" value="EP,CP,MAP,AP"/>
+        <c:set var="mealPlanList" value="${mealPlans.split(',')}"/>
+
+        <c:forEach var="room" items="${ACTIVE_ROOM_LIST}">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">${room.roomCategoryName} (Max: ${room.maxOccupancy}, Extra Beds: ${room.extraBed})</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="meal-header">
+                            <tr>
+                                <th style="background-color: #007bff; color: white;">Meal Plan</th>
+                                <th colspan="${room.maxOccupancy + room.extraBed}" style="background-color: #007bff; color: white;">Rates per Person</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="mealPlan" items="${mealPlanList}">
+                                <form:form action="create_create_session_detail" modelAttribute="SESSION_OBJ" method="post">
+                                <tr>
+                                    <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlan}</td>
+                                    <td style="width: 70%; text-align: center;">
+                                        <div style="display: flex; justify-content: left; gap: 10px;">
+                                        <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
+                                            Person ${i} <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" />
+                                        </c:forEach>
+                                        </div>
+                                     </td>
+                                     <td><div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Rates</button></div></td>
+                                </tr>
+                                </form:form>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </c:forEach>
+
+</div>
 
 <!-- Bootstrap JS for responsiveness -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
