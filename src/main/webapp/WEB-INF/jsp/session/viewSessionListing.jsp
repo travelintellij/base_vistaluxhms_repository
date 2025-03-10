@@ -52,12 +52,12 @@
                 <form:input path="sessionName" name="sessionName" style="width:180px;" />
             </div>
             <div class="form-group" style="flex: 1; min-width: 200px;">
-                          <label for="active">Active:</label>
-                          <form:select path="active" name="active">
-                              <option value="">--Select--</option>
-                              <option value="true" ${SESSION_FILTER_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
-                              <option value="false" ${SESSION_FILTER_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
-                          </form:select>
+                  <label for="active">Active:</label>
+                  <form:select path="active" name="active">
+                      <option value="">--Select--</option>
+                      <option value="true" ${SESSION_FILTER_OBJ.active == 'true' ? 'selected' : ''}>Active</option>
+                      <option value="false" ${SESSION_FILTER_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
+                  </form:select>
             </div>
 
         <div class="form-actions" style="flex: 1; min-width: 200px;">
@@ -76,23 +76,23 @@
 </div>
 
 <!-- Sales Partner List Table Section -->
-<div class="form-container sales-partner-list-container">
+<div class="form-container sales-partner-list-container" style="width: 100%;max-width: 1200px;margin: auto;">
     <c:set value="${SESSION_FILTER_OBJ}" var="sessionList" />
-    <table>
+    <table style="width:100%;">
         <thead>
             <tr>
-                <th>Session ID</th>
-                <th>Session Name</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th style="width: 10%; border: 1px solid #ddd;text-align:center;">Session ID</th>
+                <th style="width: 30%; border: 1px solid #ddd;text-align:center;">Session Name</th>
+                <th style="width: 10%; border: 1px solid #ddd;text-align:center;">Status</th>
+                <th style="width: 50%; border: 1px solid #ddd;text-align:center;">Action</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach items="${SALES_PARTNER_FILTERED_LIST}" var="sessionRec">
                 <tr>
-                    <td>${sessionRec.sessionId}</td>
-                    <td>${sessionRec.sessionName}</td>
-                    <td>
+                    <td style="width: 10%; border: 1px solid #ddd;text-align:center;">${sessionRec.sessionId}</td>
+                    <td style="width: 30%; border: 1px solid #ddd;text-align:center;">${sessionRec.sessionName}</td>
+                    <td style="width: 10%; border: 1px solid #ddd;text-align:center;">
                         <c:if test="${sessionRec.active eq true}">
                             <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
                         </c:if>
@@ -100,12 +100,12 @@
                             <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
                         </c:if>
                     </td>
-                    <td>
+                    <td style="width: 50%; border: 1px solid #ddd;text-align:center;">
                         <form action="view_session_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                         </form>
-                        <form action="view_edit_sales_partner_form" method="POST" style="display:inline;">
+                        <form action="view_edit_session_form" method="POST" style="display:inline;">
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>

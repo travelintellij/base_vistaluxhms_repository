@@ -16,12 +16,6 @@ public class SessionDetailsEntity {
     @JoinColumn(name = "sessionId", referencedColumnName = "sessionId")
     private SessionEntity session;
 
-    @Column(name = "sessionGroupId", nullable = false, length = 200)
-    private String sessionGroupId;
-
-    @Column(name = "sessionName", length = 255)
-    private String sessionName;
-
     @Column(name = "roomCategoryId", length = 255)
     private int roomCategoryId;
 
@@ -63,21 +57,6 @@ public class SessionDetailsEntity {
         this.sessionDetailId = sessionDetailId;
     }
 
-    public String getSessionGroupId() {
-        return sessionGroupId;
-    }
-
-    public void setSessionGroupId(String sessionGroupId) {
-        this.sessionGroupId = sessionGroupId;
-    }
-
-    public String getSessionName() {
-        return sessionName;
-    }
-
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
-    }
 
     public int getRoomCategoryId() {
         return roomCategoryId;
@@ -171,8 +150,6 @@ public class SessionDetailsEntity {
     public String toString() {
         return "SessionDetailsEntity{" +
                 "sessionDetailId=" + sessionDetailId +
-                ", sessionGroupId='" + sessionGroupId + '\'' +
-                ", sessionName='" + sessionName + '\'' +
                 ", roomCategoryId=" + roomCategoryId +
                 ", mealPlanId=" + mealPlanId +
                 ", person1=" + person1 +

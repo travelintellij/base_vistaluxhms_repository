@@ -104,5 +104,41 @@ public class SessionController {
 		return modelView;
 	}
 
+	@PostMapping("view_session_details")
+	public ModelAndView viewSessionDetails(@RequestParam("sessionId") Integer sessionId) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("session/Admin_View_Session");
+
+		// Adding user details to the model
+		modelView.addObject("userName", userObj.getUsername());
+		modelView.addObject("Id", userObj.getUserId());
+
+		// Fetch session details from the database
+		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
+		modelView.addObject("SESSION_MASTER_OBJ", sessionEntity);
+
+		return modelView;
+	}
+
+	@RequestMapping(value="view_edit_session_form",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_edit_session_form(@RequestParam("sessionId") Integer sessionId) {
+		//ModelAndView modelView = view_add_lead_form(leadRecorderVO,result);
+		ModelAndView modelView = new ModelAndView("session/Admin_Edit_Session");
+		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
+		modelView.addObject("SESSION_MASTER_OBJ", sessionEntity);
+		return modelView;
+	}
+
+
+	@PostMapping(value="edit_edit_session")
+	public ModelAndView edit_edit_session(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,BindingResult result,final RedirectAttributes redirectAttrib) {
+		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+		ModelAndView modelView = new ModelAndView();
+		sessionService.saveSessionMaster(sessionEntity);
+		redirectAttrib.addFlashAttribute("Success", "Session record updated successfully.");
+		modelView.setViewName("redirect:view_session_list");
+		return modelView;
+	}
+
 
 }

@@ -55,12 +55,22 @@ public class SessionServiceImpl {
 				if (sessionFilterDTO.getActive() != null) {
 					predicates.add(criteriaBuilder.equal(sessionEntityRoot.get("active"), sessionFilterDTO.getActive()));
 				}
-
+				//query.orderBy(criteriaBuilder.desc(sessionEntityRoot.get("updatedAt")));
+				query.orderBy(
+						criteriaBuilder.asc(criteriaBuilder.selectCase()
+								.when(criteriaBuilder.isTrue(sessionEntityRoot.get("active")), 0)  // Active first
+								.otherwise(1)), // Inactive later
+						criteriaBuilder.desc(sessionEntityRoot.get("updatedAt")) // Sort by updatedAt
+				);
 				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 			}
 		});
 
 		return filteredSessionList;
+	}
+
+	public SessionEntity findSessionById(Integer sessionId){
+		return sessionRepository.findById(sessionId).get();
 	}
 
 }

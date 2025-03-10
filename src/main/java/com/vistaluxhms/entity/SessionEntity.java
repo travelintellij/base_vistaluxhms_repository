@@ -23,8 +23,9 @@ public class SessionEntity {
     @Column(name = "createdAt", updatable = false, insertable = false)
     private Timestamp createdAt;
 
-    @Column(name = "updatedAt", insertable = false)
+    @Column(name = "updatedAt", updatable = false)
     private Timestamp updatedAt;
+
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SessionDetailsEntity > sessionDetailsEntity;
