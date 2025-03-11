@@ -107,9 +107,12 @@
                         </form>
                         <form action="view_edit_session_form" method="POST" style="display:inline;">
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">Edit</button>
                         </form>
-
+                        <form action="view_edit_session_detail_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit Session Details</button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>

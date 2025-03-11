@@ -163,4 +163,12 @@ public class SessionDetailsEntity {
                 ", activeFlag=" + activeFlag +
                 '}';
     }
+
+    public SessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(SessionEntity session) {
+        this.session = session;
+    }
 }

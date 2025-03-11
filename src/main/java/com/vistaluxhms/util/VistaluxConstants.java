@@ -3,6 +3,7 @@ package com.vistaluxhms.util;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public interface VistaluxConstants {
     public static final String DEFAULT_DESTINATION_INDIA_CTRY_CODE="IND";
     public static final String DEFAULT_DESTINATION_INDIA_CTRY_NAME="India";
@@ -22,4 +23,12 @@ public interface VistaluxConstants {
 
     public static final int VIEW_WL_OPEN=1000;
     public static final int VIEW_WL_CLOSED=2000;
+    static final Map<Integer, String> MEAL_PLANS_MAP = new HashMap<Integer, String>(){
+        {
+            put(1,"EPAI");
+            put(2,"CPAI");
+            put(3,"MAPAI");
+            put(4,"APAI");
+        }
+    };
 }

@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,9 @@ public class SessionServiceImpl {
 
 	@Autowired
 	SessionRepository sessionRepository;
+
+	@Autowired
+	SessionDetailsRepository sessionDetailsRepository;
 
 
 	public void saveSessionMaster(SessionEntity sessionEntity) {
@@ -71,6 +75,10 @@ public class SessionServiceImpl {
 
 	public SessionEntity findSessionById(Integer sessionId){
 		return sessionRepository.findById(sessionId).get();
+	}
+
+	public Optional<SessionDetailsEntity> findSessionDetailsEntity(int sessionId, int roomCategoryId, int mealPlanId){
+		return sessionDetailsRepository.findBySession_SessionIdAndRoomCategoryIdAndMealPlanId(sessionId,roomCategoryId,mealPlanId);
 	}
 
 }

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -56,17 +57,6 @@ public class SessionController {
 
 		return userObj;
     }
-
-	@RequestMapping("view_add_session_form")
-	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionObj, BindingResult result ) {
-		UserDetailsObj userObj = getLoggedInUser();
-		List ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
-		ModelAndView modelView = new ModelAndView("session/Admin_Add_Session");
-		modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
-
-		return modelView;
-	}
-
 
 
 	@PostMapping(value="create_create_session_master")
@@ -140,5 +130,37 @@ public class SessionController {
 		return modelView;
 	}
 
+	@RequestMapping("view_edit_session_detail_form")
+	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity, @ModelAttribute("SESSION_DETAIL_OBJ") SessionDetailsEntity sessionObj, BindingResult result) {
+		UserDetailsObj userObj = getLoggedInUser();
+		List<MasterRoomDetailsEntity> ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
+		ModelAndView modelView = new ModelAndView("session/Admin_Edit_Session_Details");
+		modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
+
+		for (MasterRoomDetailsEntity activeRoomCategory : ACTIVE_ROOM_LIST) {
+			List<SessionDetailsEntity> sessionDetailsEntityList = new ArrayList<>();
+
+			for (Integer mealPlanKey : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+				Optional<SessionDetailsEntity> existingSessionDetailsEntity =sessionService.findSessionDetailsEntity(sessionEntity.getSessionId(),activeRoomCategory.getRoomCategoryId(),mealPlanKey);
+				if(existingSessionDetailsEntity.isPresent()) {
+					System.out.println("Room Category " + activeRoomCategory.getRoomCategoryName() + "   Key: " + mealPlanKey + ", Value: " + VistaluxConstants.MEAL_PLANS_MAP.get(mealPlanKey));
+					sessionDetailsEntityList.add(existingSessionDetailsEntity.get());
+				}
+				else{
+					System.out.println("Not Present");
+					SessionDetailsEntity newSessionDetailsEntity = new SessionDetailsEntity();
+					newSessionDetailsEntity.setRoomCategoryId(activeRoomCategory.getRoomCategoryId());
+					SessionEntity session = new SessionEntity();
+					session.setSessionId(sessionEntity.getSessionId());
+					newSessionDetailsEntity.setSession(session);
+					newSessionDetailsEntity.setMealPlanId(mealPlanKey);
+					sessionDetailsEntityList.add(newSessionDetailsEntity);
+				}
+			}
+		}
+
+
+		return modelView;
+	}
 
 }

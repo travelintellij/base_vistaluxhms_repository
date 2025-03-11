@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SessionDetailsRepository extends JpaRepository<SessionDetailsEntity, Long>, JpaSpecificationExecutor<SessionDetailsEntity> {
+    Optional<SessionDetailsEntity> findBySession_SessionIdAndRoomCategoryIdAndMealPlanId(int sessionId, int roomCategoryId, int mealPlanId);
 
 }

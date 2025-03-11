@@ -174,4 +174,23 @@ public class MasterRoomDetailsEntity {
     public void setCnbPercentage(int cnbPercentage) {
         this.cnbPercentage = cnbPercentage;
     }
+
+    @Override
+    public String toString() {
+        return "MasterRoomDetailsEntity{" +
+                "roomCategoryId=" + roomCategoryId +
+                ", roomCategoryName='" + roomCategoryName + '\'' +
+                ", description='" + description + '\'' +
+                ", size='" + size + '\'' +
+                ", standardOccupancy=" + standardOccupancy +
+                ", maxOccupancy=" + maxOccupancy +
+                ", extraBed=" + extraBed +
+                ", child=" + child +
+                ", compChild=" + compChild +
+                ", categoryLevel=" + categoryLevel +
+                ", active=" + active +
+                ", extraBedPercentage=" + extraBedPercentage +
+                ", cnbPercentage=" + cnbPercentage +
+                '}';
+    }
 }

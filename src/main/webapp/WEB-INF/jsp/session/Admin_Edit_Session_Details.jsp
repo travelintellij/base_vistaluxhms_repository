@@ -140,7 +140,7 @@ th:not(:first-child), td:not(:first-child) {
                         </thead>
                         <tbody>
                             <c:forEach var="mealPlan" items="${mealPlanList}">
-                                <form:form action="create_create_session_detail" modelAttribute="SESSION_OBJ" method="post">
+                                <form:form action="create_create_session_detail" modelAttribute="SESSION_DETAIL_OBJ" method="post">
                                 <tr>
                                     <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlan}</td>
                                     <td style="width: 70%; text-align: center;">
