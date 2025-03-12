@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -63,9 +60,8 @@ public class SessionController {
 	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity,BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
 		ModelAndView modelView = new ModelAndView();
-
 		sessionService.saveSessionMaster(sessionEntity);
-		modelView.setViewName("forward:view_add_session_form");
+		modelView.setViewName("redirect:view_session_list");
 
 		return modelView;
 	}
@@ -76,7 +72,7 @@ public class SessionController {
 		System.out.println("Session Entity object is " + sessionDetailsEntity);
 
 		ModelAndView modelView = new ModelAndView();
-		modelView.setViewName("forward:view_add_session_form");
+		modelView.setViewName("redirect:view_session_list");
 
 		return modelView;
 	}
@@ -110,6 +106,15 @@ public class SessionController {
 		return modelView;
 	}
 
+	@RequestMapping(value="view_add_session_form",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,BindingResult result,final RedirectAttributes redirectAttrib) {
+		//ModelAndView modelView = view_add_lead_form(leadRecorderVO,result);
+		ModelAndView modelView = new ModelAndView("session/Admin_Add_Session");
+		return modelView;
+	}
+
+
+
 	@RequestMapping(value="view_edit_session_form",method= {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView view_edit_session_form(@RequestParam("sessionId") Integer sessionId) {
 		//ModelAndView modelView = view_add_lead_form(leadRecorderVO,result);
@@ -131,34 +136,74 @@ public class SessionController {
 	}
 
 	@RequestMapping("view_edit_session_detail_form")
-	public ModelAndView view_add_session_form(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity, @ModelAttribute("SESSION_DETAIL_OBJ") SessionDetailsEntity sessionObj, BindingResult result) {
+	public ModelAndView view_add_session_form(@RequestParam("sessionId") Integer sessionId, @ModelAttribute("SESSION_DETAIL_OBJ") SessionDetailsEntity sessionObj, BindingResult result) {
 		UserDetailsObj userObj = getLoggedInUser();
+		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
 		List<MasterRoomDetailsEntity> ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
 		ModelAndView modelView = new ModelAndView("session/Admin_Edit_Session_Details");
 		modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
-
-		for (MasterRoomDetailsEntity activeRoomCategory : ACTIVE_ROOM_LIST) {
-			List<SessionDetailsEntity> sessionDetailsEntityList = new ArrayList<>();
-
+		modelView.addObject("SESSION_MASTER_OBJ",sessionEntity);
+		/*for (MasterRoomDetailsEntity activeRoomCategory : ACTIVE_ROOM_LIST) {
+			List<SessionDetailsEntityDTO> sessionDetailsEntityList = new ArrayList<>();
 			for (Integer mealPlanKey : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+				SessionDetailsEntityDTO newSessionDetailsEntityDTO = new SessionDetailsEntityDTO();
 				Optional<SessionDetailsEntity> existingSessionDetailsEntity =sessionService.findSessionDetailsEntity(sessionEntity.getSessionId(),activeRoomCategory.getRoomCategoryId(),mealPlanKey);
 				if(existingSessionDetailsEntity.isPresent()) {
 					System.out.println("Room Category " + activeRoomCategory.getRoomCategoryName() + "   Key: " + mealPlanKey + ", Value: " + VistaluxConstants.MEAL_PLANS_MAP.get(mealPlanKey));
-					sessionDetailsEntityList.add(existingSessionDetailsEntity.get());
+					newSessionDetailsEntityDTO.updateVOFromEntity(existingSessionDetailsEntity.get());
+					newSessionDetailsEntityDTO.setExists(true);
+					sessionDetailsEntityList.add(newSessionDetailsEntityDTO);
 				}
 				else{
 					System.out.println("Not Present");
-					SessionDetailsEntity newSessionDetailsEntity = new SessionDetailsEntity();
-					newSessionDetailsEntity.setRoomCategoryId(activeRoomCategory.getRoomCategoryId());
+					newSessionDetailsEntityDTO.setRoomCategoryId(activeRoomCategory.getRoomCategoryId());
 					SessionEntity session = new SessionEntity();
 					session.setSessionId(sessionEntity.getSessionId());
-					newSessionDetailsEntity.setSession(session);
-					newSessionDetailsEntity.setMealPlanId(mealPlanKey);
-					sessionDetailsEntityList.add(newSessionDetailsEntity);
+					newSessionDetailsEntityDTO.setSession(session);
+					newSessionDetailsEntityDTO.setMealPlanId(mealPlanKey);
+					newSessionDetailsEntityDTO.setExists(false);
+					sessionDetailsEntityList.add(newSessionDetailsEntityDTO);
 				}
 			}
+		}*/
+		Map<Integer, Map<Integer, SessionDetailsEntityDTO>> sessionDetailsMap = new LinkedHashMap<>();
+		Map<Integer,MasterRoomDetailsEntity> activeRoomCategoriesMap = new HashMap<Integer,MasterRoomDetailsEntity>();
+		for (MasterRoomDetailsEntity activeRoomCategory : ACTIVE_ROOM_LIST) {
+			int roomCategoryId = activeRoomCategory.getRoomCategoryId();
+			String roomCategoryName = activeRoomCategory.getRoomCategoryName();
+			activeRoomCategoriesMap.put(roomCategoryId,activeRoomCategory);
+
+			// Create or retrieve inner map for this room category
+			Map<Integer, SessionDetailsEntityDTO> mealPlanMap = sessionDetailsMap.getOrDefault(roomCategoryId, new LinkedHashMap<>());
+
+			for (Integer mealPlanKey : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+				SessionDetailsEntityDTO newSessionDetailsEntityDTO = new SessionDetailsEntityDTO();
+
+				Optional<SessionDetailsEntity> existingSessionDetailsEntity =
+						sessionService.findSessionDetailsEntity(sessionEntity.getSessionId(), roomCategoryId, mealPlanKey);
+
+				if (existingSessionDetailsEntity.isPresent()) {
+					newSessionDetailsEntityDTO.updateVOFromEntity(existingSessionDetailsEntity.get());
+					newSessionDetailsEntityDTO.setExists(true);
+				} else {
+					newSessionDetailsEntityDTO.setRoomCategoryId(roomCategoryId);
+					newSessionDetailsEntityDTO.setMealPlanId(mealPlanKey);
+					newSessionDetailsEntityDTO.setSession(sessionEntity);
+					newSessionDetailsEntityDTO.setExists(false);
+				}
+
+				// Store the DTO in the inner map
+				mealPlanMap.put(mealPlanKey, newSessionDetailsEntityDTO);
+			}
+
+			// Store the inner map in the outer map
+			sessionDetailsMap.put(roomCategoryId, mealPlanMap);
 		}
 
+// Add to model for JSP
+		modelView.addObject("sessionDetailsMap", sessionDetailsMap);
+		modelView.addObject("roomCategoryNames", activeRoomCategoriesMap); // e.g., {1: "Deluxe", 2: "Premium"}
+		modelView.addObject("mealPlans", VistaluxConstants.MEAL_PLANS_MAP); // {1: "EPAI", 2: "CPAI", 3: "MAPAI", 4: "APAI"}
 
 		return modelView;
 	}

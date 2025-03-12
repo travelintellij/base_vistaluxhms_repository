@@ -23,7 +23,7 @@ public class SessionEntity {
     @Column(name = "createdAt", updatable = false, insertable = false)
     private Timestamp createdAt;
 
-    @Column(name = "updatedAt", updatable = false)
+    @Column(name = "updatedAt", insertable = false, updatable = false)
     private Timestamp updatedAt;
 
 

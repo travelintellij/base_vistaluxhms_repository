@@ -100,26 +100,69 @@ th:not(:first-child), td:not(:first-child) {
 
 
         <!-- Date Range Selection -->
-       <form:form action="create_create_session_master" modelAttribute="SESSION_MASTER_OBJ" method="post">
+       <form:form action="view_edit_session_form" modelAttribute="SESSION_MASTER_OBJ" method="post">
+       <form:hidden path="sessionId"/>
        <div class="row mb-4 align-items-center">
            <div class="col-sm-2">
                <label class="col-form-label"><b>Session Name:</b></label>
            </div>
            <div class="col-sm-3">
-               <form:input path="sessionName" placeholder="Session Name" class="form-control"  required="required" />
+                ${SESSION_MASTER_OBJ.sessionName}
            </div>
             <div class="col-sm-2">
                <label class="col-form-label"><b>Remarks:</b></label>
            </div>
            <div class="col-sm-3">
-                <textarea name="remarks" cssClass="form-control large-textarea"></textarea>
+                ${SESSION_MASTER_OBJ.remarks}
            </div>
            <div class="col-sm-2">
-               <div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Session Master</button></div>
+               <div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Edit Session Master</button></div>
           </div>
        </div>
        </form:form>
 
+        <c:forEach var="entry" items="${sessionDetailsMap}">
+            <c:set var="roomCategoryId" value="${entry.key}" />
+            <c:set var="room" value="${roomCategoryNames[roomCategoryId]}" />
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">${room.roomCategoryName} (Max: ${room.maxOccupancy}, Extra Beds: ${room.extraBed})</h5>
+                    </div>
+                     <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead class="meal-header">
+                                    <tr>
+                                        <th style="background-color: #007bff; color: white;">Meal Plan</th>
+                                        <th colspan="${room.maxOccupancy + room.extraBed}" style="background-color: #007bff; color: white;">Rates per Person</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <form:form action="create_create_session_detail" modelAttribute="SESSION_DETAIL_OBJ" method="post">
+                                <c:forEach var="mealPlanEntry" items="${entry.value}">
+                                       <c:set var="mealPlanId" value="${mealPlanEntry.key}" />
+                                        <c:set var="sessionDetail" value="${mealPlanEntry.value}" />
+                                    <tr>
+                                        <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlans[mealPlanId]}</td>
+                                        <td style="width: 70%; text-align: center;">
+                                            <div style="display: flex; justify-content: left; gap: 10px;">
+                                            <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
+                                                Person ${i} <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" />
+                                            </c:forEach>
+                                            </div>
+                                         </td>
+                                         <td><div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Rates</button></div></td>
+                                    </tr>
+                                </c:forEach>
+                                </form:form>
+                                </tbody>
+                                </table>
+                    </div>
+                 </div>
+        </c:forEach>
+
+
+
+<%--
 
         <!-- Meal Plans -->
         <c:set var="mealPlans" value="EP,CP,MAP,AP"/>
@@ -159,7 +202,7 @@ th:not(:first-child), td:not(:first-child) {
                 </div>
             </div>
         </c:forEach>
-
+    --%>
 </div>
 
 <!-- Bootstrap JS for responsiveness -->

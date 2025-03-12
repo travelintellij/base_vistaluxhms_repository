@@ -9,45 +9,45 @@ public class SessionDetailsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sessionDetailId")
-    private int sessionDetailId;
+    protected int sessionDetailId;
 
 
     @ManyToOne
     @JoinColumn(name = "sessionId", referencedColumnName = "sessionId")
-    private SessionEntity session;
+    protected SessionEntity session;
 
     @Column(name = "roomCategoryId", length = 255)
-    private int roomCategoryId;
+    protected int roomCategoryId;
 
     @Column(name = "mealPlanId", length = 255)
-    private int mealPlanId;
+    protected int mealPlanId;
 
     @Column(name = "person1")
-    private int person1;
+    protected int person1;
 
     @Column(name = "person2")
-    private int person2;
+    protected int person2;
 
     @Column(name = "person3")
-    private int person3;
+    protected int person3;
 
     @Column(name = "person4")
-    private int person4;
+    protected int person4;
 
     @Column(name = "person5")
-    private int person5;
+    protected int person5;
 
     @Column(name = "person6")
-    private int person6;
+    protected int person6;
 
     @Column(name = "maxOccupancy", nullable = false)
-    private int maxOccupancy;
+    protected int maxOccupancy;
 
     @Column(name = "remarks", length = 500)
-    private String remarks;
+    protected String remarks;
 
     @Column(name = "activeFlag")
-    private Boolean activeFlag = true;
+    protected Boolean activeFlag = true;
 
     public int getSessionDetailId() {
         return sessionDetailId;
@@ -171,4 +171,6 @@ public class SessionDetailsEntity {
     public void setSession(SessionEntity session) {
         this.session = session;
     }
+
+
 }
