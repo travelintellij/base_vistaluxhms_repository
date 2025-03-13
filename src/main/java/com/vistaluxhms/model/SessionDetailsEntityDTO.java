@@ -5,6 +5,9 @@ import com.vistaluxhms.entity.SessionEntity;
 
 public class SessionDetailsEntityDTO extends SessionDetailsEntity {
     private boolean exists;
+    private int roomCategoryId;
+    private int mealPlanId;
+
 
     public boolean isExists() {
         return exists;
@@ -17,8 +20,6 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
     public void updateVOFromEntity(SessionDetailsEntity sessionDetailsEntity) {
         this.sessionDetailId = sessionDetailsEntity.getSessionDetailId();
         this.session = sessionDetailsEntity.getSession();
-        this.roomCategoryId = sessionDetailsEntity.getRoomCategoryId();
-        this.mealPlanId = sessionDetailsEntity.getMealPlanId();
         this.person1 = sessionDetailsEntity.getPerson1();
         this.person2 = sessionDetailsEntity.getPerson2();
         this.person3 = sessionDetailsEntity.getPerson3();
@@ -27,8 +28,22 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
         this.person6 = sessionDetailsEntity.getPerson6();
         this.maxOccupancy = sessionDetailsEntity.getMaxOccupancy();
         this.remarks = sessionDetailsEntity.getRemarks();
-        this.activeFlag = sessionDetailsEntity.getActiveFlag();
+        this.active = sessionDetailsEntity.getActive();
     }
 
+    public int getRoomCategoryId() {
+        return roomCategoryId;
+    }
 
+    public void setRoomCategoryId(int roomCategoryId) {
+        this.roomCategoryId = roomCategoryId;
+    }
+
+    public int getMealPlanId() {
+        return mealPlanId;
+    }
+
+    public void setMealPlanId(int mealPlanId) {
+        this.mealPlanId = mealPlanId;
+    }
 }

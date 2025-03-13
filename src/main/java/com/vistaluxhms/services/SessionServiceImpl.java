@@ -81,7 +81,8 @@ public class SessionServiceImpl {
 	}
 
 	public Optional<SessionDetailsEntity> findSessionDetailsEntity(int sessionId, int roomCategoryId, int mealPlanId){
-		return sessionDetailsRepository.findBySession_SessionIdAndRoomCategoryIdAndMealPlanId(sessionId,roomCategoryId,mealPlanId);
+		SessionDetailId sessionDetailId = new SessionDetailId(sessionId, roomCategoryId, mealPlanId);
+		return sessionDetailsRepository.findById(sessionDetailId);
 	}
 
 }

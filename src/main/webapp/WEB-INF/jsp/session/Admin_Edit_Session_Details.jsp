@@ -138,10 +138,9 @@ th:not(:first-child), td:not(:first-child) {
                                 </thead>
                                 <tbody>
                                 <c:forEach var="mealPlanEntry" items="${entry.value}">
-                                <c:set var="sessionDetail" value="${entry.key}" />
+                                <c:set var="sessionDetail" value="${mealPlanEntry.value}" />
                                 <form:form action="create_create_session_detail" modelAttribute="SESSION_DETAIL_OBJ" method="post">
                                        <input type="hidden" name="mealPlanId" value="${mealPlanEntry.key}" />
-                                       <c:out value="${SESSION_DETAIL_OBJ.session.sessionId}" />
                                        <input type="hidden" name="sessionId" value="${SESSION_DETAIL_OBJ.session.sessionId}" />
                                        <input type="hidden" name="roomCategoryId" value="${roomCategoryId}" />
                                        <form:hidden path="sessionDetailId" />
@@ -153,7 +152,8 @@ th:not(:first-child), td:not(:first-child) {
                                         <td style="width: 70%; text-align: center;">
                                             <div style="display: flex; justify-content: left; gap: 10px;">
                                             <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
-                                                Person ${i} <input type="text" name="person${i}" value="${SESSION_DETAIL_OBJ.person1}" />
+                                                <c:set var="personField" value="person${i}" />
+                                                Person ${i} <input type="text" name="person${i}" value="${sessionDetail[personField]}" />
 
                                                 <%-- <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" /> --%>
                                             </c:forEach>

@@ -6,21 +6,17 @@ import javax.persistence.*;
 @Table(name = "sessiondetail")
 public class SessionDetailsEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sessionDetailId")
-    protected int sessionDetailId;
+    @EmbeddedId
+    protected SessionDetailId sessionDetailId;
 
 
     @ManyToOne
+    @MapsId("sessionId")  // Mapping sessionId in composite key
     @JoinColumn(name = "sessionId", referencedColumnName = "sessionId")
     protected SessionEntity session;
 
-    @Column(name = "roomCategoryId", length = 255)
-    protected int roomCategoryId;
 
-    @Column(name = "mealPlanId", length = 255)
-    protected int mealPlanId;
+
 
     @Column(name = "person1")
     protected int person1;
@@ -46,33 +42,14 @@ public class SessionDetailsEntity {
     @Column(name = "remarks", length = 500)
     protected String remarks;
 
-    @Column(name = "activeFlag")
-    protected Boolean activeFlag = true;
-
-    public int getSessionDetailId() {
-        return sessionDetailId;
-    }
-
-    public void setSessionDetailId(int sessionDetailId) {
-        this.sessionDetailId = sessionDetailId;
-    }
+    @Column(name = "active")
+    protected Boolean active = true;
 
 
-    public int getRoomCategoryId() {
-        return roomCategoryId;
-    }
 
-    public void setRoomCategoryId(int roomCategoryId) {
-        this.roomCategoryId = roomCategoryId;
-    }
 
-    public int getMealPlanId() {
-        return mealPlanId;
-    }
 
-    public void setMealPlanId(int mealPlanId) {
-        this.mealPlanId = mealPlanId;
-    }
+
 
     public int getPerson1() {
         return person1;
@@ -138,20 +115,18 @@ public class SessionDetailsEntity {
         this.remarks = remarks;
     }
 
-    public Boolean getActiveFlag() {
-        return activeFlag;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setActiveFlag(Boolean activeFlag) {
-        this.activeFlag = activeFlag;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
     public String toString() {
         return "SessionDetailsEntity{" +
                 "sessionDetailId=" + sessionDetailId +
-                ", roomCategoryId=" + roomCategoryId +
-                ", mealPlanId=" + mealPlanId +
                 ", person1=" + person1 +
                 ", person2=" + person2 +
                 ", person3=" + person3 +
@@ -160,7 +135,7 @@ public class SessionDetailsEntity {
                 ", person6=" + person6 +
                 ", maxOccupancy=" + maxOccupancy +
                 ", remarks='" + remarks + '\'' +
-                ", activeFlag=" + activeFlag +
+                ", active=" + active +
                 '}';
     }
 
@@ -172,5 +147,11 @@ public class SessionDetailsEntity {
         this.session = session;
     }
 
+    public SessionDetailId getSessionDetailId() {
+        return sessionDetailId;
+    }
 
+    public void setSessionDetailId(SessionDetailId sessionDetailId) {
+        this.sessionDetailId = sessionDetailId;
+    }
 }

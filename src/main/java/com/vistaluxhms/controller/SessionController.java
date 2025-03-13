@@ -67,10 +67,12 @@ public class SessionController {
 	}
 
 	@PostMapping(value="create_create_session_detail")
-	public ModelAndView create_create_session_detail(@RequestParam("sessionId") Integer sessionId,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
+	public ModelAndView create_create_session_detail(@RequestParam("sessionId") Integer sessionId,@ModelAttribute("SESSION_OBJ") SessionDetailsEntityDTO sessionDetailsEntityDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-		System.out.println("Session id is " + sessionId);
-		System.out.println("Session Entity object is " + sessionDetailsEntity);
+		System.out.println("Session Entity object is " + sessionDetailsEntityDTO);
+		SessionDetailId sessionDetailId = new SessionDetailId(sessionId, sessionDetailsEntityDTO.getRoomCategoryId(), sessionDetailsEntityDTO.getRoomCategoryId());
+		SessionDetailsEntity sessionDetailsEntity = new SessionDetailsEntity();
+		sessionDetailsEntity.setSessionDetailId(sessionDetailId);
 		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
 		sessionDetailsEntity.setSession(sessionEntity);
 		ModelAndView modelView = new ModelAndView();
