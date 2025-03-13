@@ -151,7 +151,8 @@ th:not(:first-child), td:not(:first-child) {
                                             <div style="display: flex; justify-content: left; gap: 10px;">
                                             <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
                                                 <c:set var="personField" value="person${i}" />
-                                                Person ${i} <input type="text" name="person${i}" value="${sessionDetail[personField]}" />
+                                                Person ${i} <input type="text" name="person${i}" value="${sessionDetail[personField]}" style="background-color: ${sessionDetail[personField] == 0 ? 'lightcoral' : 'lightgreen'};" />
+
 
                                                 <%-- <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" /> --%>
                                             </c:forEach>
