@@ -60,20 +60,23 @@ public class SessionController {
 	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity,BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
 		ModelAndView modelView = new ModelAndView();
-		sessionService.saveSessionMaster(sessionEntity);
+		sessionService.saveSessionDetails(sessionDetailsEntity);
 		modelView.setViewName("redirect:view_session_list");
 
 		return modelView;
 	}
 
 	@PostMapping(value="create_create_session_detail")
-	public ModelAndView create_create_session_master(@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
+	public ModelAndView create_create_session_detail(@RequestParam("sessionId") Integer sessionId,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity, BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+		System.out.println("Session id is " + sessionId);
 		System.out.println("Session Entity object is " + sessionDetailsEntity);
-
+		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
+		sessionDetailsEntity.setSession(sessionEntity);
 		ModelAndView modelView = new ModelAndView();
-		modelView.setViewName("redirect:view_session_list");
-
+		modelView.setViewName("redirect:view_edit_session_detail_form?sessionId="+sessionId);
+		sessionService.saveSessionDetails(sessionDetailsEntity);
+		redirectAttrib.addFlashAttribute("Success", "Session Details record updated successfully.");
 		return modelView;
 	}
 
@@ -136,9 +139,10 @@ public class SessionController {
 	}
 
 	@RequestMapping("view_edit_session_detail_form")
-	public ModelAndView view_add_session_form(@RequestParam("sessionId") Integer sessionId, @ModelAttribute("SESSION_DETAIL_OBJ") SessionDetailsEntity sessionObj, BindingResult result) {
+	public ModelAndView view_add_session_form(@RequestParam("sessionId") Integer sessionId, @ModelAttribute("SESSION_DETAIL_OBJ") SessionDetailsEntityDTO sessionObj, BindingResult result) {
 		UserDetailsObj userObj = getLoggedInUser();
 		SessionEntity sessionEntity = sessionService.findSessionById(sessionId);
+		sessionObj.setSession(sessionEntity);
 		List<MasterRoomDetailsEntity> ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
 		ModelAndView modelView = new ModelAndView("session/Admin_Edit_Session_Details");
 		modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
@@ -207,5 +211,7 @@ public class SessionController {
 
 		return modelView;
 	}
+
+
 
 }

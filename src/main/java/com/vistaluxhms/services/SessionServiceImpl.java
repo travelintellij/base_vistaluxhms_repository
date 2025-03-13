@@ -32,6 +32,9 @@ public class SessionServiceImpl {
 		sessionRepository.save(sessionEntity);
 	}
 
+	public void saveSessionDetails(SessionDetailsEntity sessionDetailsEntity) {
+		sessionDetailsRepository.save(sessionDetailsEntity);
+	}
 
 	public List<SessionEntity> filterSession(SessionFilterDTO sessionFilterDTO) {
 		// Fetch all filtered results without pagination

@@ -137,23 +137,33 @@ th:not(:first-child), td:not(:first-child) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <form:form action="create_create_session_detail" modelAttribute="SESSION_DETAIL_OBJ" method="post">
                                 <c:forEach var="mealPlanEntry" items="${entry.value}">
+                                <c:set var="sessionDetail" value="${entry.key}" />
+                                <form:form action="create_create_session_detail" modelAttribute="SESSION_DETAIL_OBJ" method="post">
+                                       <input type="hidden" name="mealPlanId" value="${mealPlanEntry.key}" />
+                                       <c:out value="${SESSION_DETAIL_OBJ.session.sessionId}" />
+                                       <input type="hidden" name="sessionId" value="${SESSION_DETAIL_OBJ.session.sessionId}" />
+                                       <input type="hidden" name="roomCategoryId" value="${roomCategoryId}" />
+                                       <form:hidden path="sessionDetailId" />
                                        <c:set var="mealPlanId" value="${mealPlanEntry.key}" />
                                         <c:set var="sessionDetail" value="${mealPlanEntry.value}" />
+
                                     <tr>
                                         <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlans[mealPlanId]}</td>
                                         <td style="width: 70%; text-align: center;">
                                             <div style="display: flex; justify-content: left; gap: 10px;">
                                             <c:forEach var="i" begin="1" end="${room.standardOccupancy}">
-                                                Person ${i} <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" />
+                                                Person ${i} <input type="text" name="person${i}" value="${SESSION_DETAIL_OBJ.person1}" />
+
+                                                <%-- <form:input path="person${i}" id="person${i}" placeholder="Person ${i}" class="form-control" style="width:120px;" required="required" /> --%>
                                             </c:forEach>
                                             </div>
                                          </td>
                                          <td><div class="text-center mt-3"><button type="submit" class="btn btn-primary px-4">Save Rates</button></div></td>
                                     </tr>
-                                </c:forEach>
                                 </form:form>
+                                </c:forEach>
+
                                 </tbody>
                                 </table>
                     </div>
