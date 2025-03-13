@@ -1,5 +1,7 @@
 package com.vistaluxhms.entity;
 
+import com.vistaluxhms.model.SessionDetailsEntityDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -46,8 +48,22 @@ public class SessionDetailsEntity {
     protected Boolean active = true;
 
 
+    public SessionDetailsEntity() {
+    }
 
-
+    public SessionDetailsEntity(SessionDetailsEntityDTO sessionDetailsEntityDTO){
+        this.sessionDetailId = sessionDetailsEntityDTO.getSessionDetailId();
+        this.session = sessionDetailsEntityDTO.getSession();
+        this.person1 = sessionDetailsEntityDTO.getPerson1();
+        this.person2 = sessionDetailsEntityDTO.getPerson2();
+        this.person3 = sessionDetailsEntityDTO.getPerson3();
+        this.person4 = sessionDetailsEntityDTO.getPerson4();
+        this.person5 = sessionDetailsEntityDTO.getPerson5();
+        this.person6 = sessionDetailsEntityDTO.getPerson6();
+        this.maxOccupancy = sessionDetailsEntityDTO.getMaxOccupancy();
+        this.remarks = sessionDetailsEntityDTO.getRemarks();
+        this.active = sessionDetailsEntityDTO.getActive();
+}
 
 
 

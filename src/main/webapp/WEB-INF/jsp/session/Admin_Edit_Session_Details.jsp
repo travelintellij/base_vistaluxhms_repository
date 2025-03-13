@@ -143,10 +143,8 @@ th:not(:first-child), td:not(:first-child) {
                                        <input type="hidden" name="mealPlanId" value="${mealPlanEntry.key}" />
                                        <input type="hidden" name="sessionId" value="${SESSION_DETAIL_OBJ.session.sessionId}" />
                                        <input type="hidden" name="roomCategoryId" value="${roomCategoryId}" />
-                                       <form:hidden path="sessionDetailId" />
                                        <c:set var="mealPlanId" value="${mealPlanEntry.key}" />
                                         <c:set var="sessionDetail" value="${mealPlanEntry.value}" />
-
                                     <tr>
                                         <td class="fw-bold" style="width: 20%; text-align: center; white-space: nowrap;">${mealPlans[mealPlanId]}</td>
                                         <td style="width: 70%; text-align: center;">
