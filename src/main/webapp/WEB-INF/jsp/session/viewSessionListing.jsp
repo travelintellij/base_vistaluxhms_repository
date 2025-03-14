@@ -113,6 +113,11 @@
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit Session Details</button>
                         </form>
+                        <form action="view_session_rate_mapping_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Map Rates</button>
+                        </form>
+
                     </td>
                 </tr>
             </c:forEach>

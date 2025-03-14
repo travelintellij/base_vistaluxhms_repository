@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class SessionServiceImpl {
 	@Autowired
 	SessionDetailsRepository sessionDetailsRepository;
 
+	@Autowired
+	private SessionRateMappingEntityRepository sessionRateMappingEntityRepository;
 
 	public void saveSessionMaster(SessionEntity sessionEntity) {
 		sessionRepository.save(sessionEntity);
@@ -85,4 +88,13 @@ public class SessionServiceImpl {
 		return sessionDetailsRepository.findById(sessionDetailId);
 	}
 
+	public List<SessionRateMappingEntity> filterSessionRateMappingBySessionId(Integer sessionId){
+			return sessionRateMappingEntityRepository.findBySessionEntity_SessionId(sessionId);
+	}
+
+
+	@Transactional
+	public SessionRateMappingEntity addSessionRateMapping(SessionRateMappingEntity sessionRateMapping) {
+		return sessionRateMappingEntityRepository.save(sessionRateMapping);
+	}
 }

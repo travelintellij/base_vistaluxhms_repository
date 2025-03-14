@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.41
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,6 +431,39 @@ INSERT INTO `session` VALUES (8,'Holi_Package_2026','Holi is on. ','2025-03-08 1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `session_rate_mapping`
+--
+
+DROP TABLE IF EXISTS `session_rate_mapping`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `session_rate_mapping` (
+  `sessionRateTypeId` int NOT NULL AUTO_INCREMENT,
+  `sessionId` int NOT NULL,
+  `rateTypeId` int NOT NULL,
+  `startDate` date NOT NULL,
+  `endDate` date NOT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`sessionRateTypeId`),
+  KEY `sessionId` (`sessionId`),
+  KEY `rateTypeId` (`rateTypeId`),
+  CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
+  CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session_rate_mapping`
+--
+
+LOCK TABLES `session_rate_mapping` WRITE;
+/*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
+INSERT INTO `session_rate_mapping` VALUES (1,9,2,'2025-01-01','2025-12-31','2025-03-14 16:38:32','2025-03-14 16:38:32');
+/*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sessiondetail`
 --
 
@@ -468,7 +501,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (8,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-13 07:44:32');
+INSERT INTO `sessiondetail` VALUES (8,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-13 07:44:32'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-13 13:50:44
+-- Dump completed on 2025-03-14 23:32:10

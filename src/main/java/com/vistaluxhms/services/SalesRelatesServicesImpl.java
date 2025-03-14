@@ -134,4 +134,8 @@ public class SalesRelatesServicesImpl {
 		List<MasterRoomDetailsEntity> roomList = masterRoomDetailsEntityRepository.findByActiveTrue();
 		return roomList;
 	}
+
+	public List<RateTypeEntity> findAllActiveRateTypes(boolean activeFlag){
+		return rateTypeRepository.findByActive(activeFlag);
+	}
 }

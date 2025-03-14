@@ -213,6 +213,31 @@ public class SessionController {
 		return modelView;
 	}
 
+	@RequestMapping(value="view_session_rate_mapping_form",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_session_rate_mapping_form(@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO, BindingResult result) {
+		//ModelAndView modelView = view_add_lead_form(leadRecorderVO,result);
+		ModelAndView modelView = new ModelAndView("session/Admin_Session_Rate_Mapping");
+		SessionEntity sessionEntity = sessionService.findSessionById(sessionRateMappingEntityDTO.getSessionId());
+		List<RateTypeEntity> activeRateTypeList = salesRelatedServices.findAllActiveRateTypes(true);
 
+		List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.filterSessionRateMappingBySessionId(sessionRateMappingEntityDTO.getSessionId());
+		List<SessionRateMappingEntityDTO> listSessionRateMappingEntitiesDTO = generateSessionRateMappingDTO(sessionRateMappingEntities);
+		modelView.addObject("EXISTING_SESSION_RATE_MAPPING", listSessionRateMappingEntitiesDTO);
+		modelView.addObject("ACTIVE_RATE_TYPES", activeRateTypeList);
+		return modelView;
+	}
 
+	private List<SessionRateMappingEntityDTO> generateSessionRateMappingDTO(List<SessionRateMappingEntity> sessionRateMappingEntities) {
+		List<SessionRateMappingEntityDTO> filteredListSessionRateMappingDTO= new ArrayList<SessionRateMappingEntityDTO>();
+		Iterator filteredSessionRateIterator = sessionRateMappingEntities.iterator();
+		while(filteredSessionRateIterator.hasNext()) {
+			SessionRateMappingEntity sessionRateMappingEntity = (SessionRateMappingEntity) filteredSessionRateIterator.next();
+			SessionRateMappingEntityDTO sessionRateMappingEntityDTO =new SessionRateMappingEntityDTO();
+			sessionRateMappingEntityDTO.updateVoFromEntity(sessionRateMappingEntity);
+			sessionRateMappingEntityDTO.setSessionName(sessionRateMappingEntity.getSessionEntity().getSessionName());
+			sessionRateMappingEntityDTO.setRateTypeName(sessionRateMappingEntity.getRateTypeEntity().getRateTypeName());
+			filteredListSessionRateMappingDTO.add(sessionRateMappingEntityDTO);
+		}
+		return filteredListSessionRateMappingDTO;
+	}
 }
