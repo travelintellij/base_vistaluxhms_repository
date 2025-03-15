@@ -1,5 +1,7 @@
 package com.vistaluxhms.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -23,9 +25,11 @@ public class SessionRateMappingEntity {
     protected RateTypeEntity rateTypeEntity;
 
     @Column(name = "startDate", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate startDate;
 
     @Column(name = "endDate", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate endDate;
 
     @Column(name = "createdAt", updatable = false, insertable = false)

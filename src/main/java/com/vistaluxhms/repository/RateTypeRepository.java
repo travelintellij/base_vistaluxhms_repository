@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RateTypeRepository extends JpaRepository<RateTypeEntity,Long> {
+public interface RateTypeRepository extends JpaRepository<RateTypeEntity,Integer> {
 
     List<RateTypeEntity> findByActive(boolean active);
 }

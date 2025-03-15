@@ -10,7 +10,7 @@ public class RateTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long rateTypeId;
+    protected Integer rateTypeId;
 
     @Column(name = "rateTypeName", nullable = false, length = 50)
     protected String rateTypeName;
@@ -23,11 +23,11 @@ public class RateTypeEntity {
     }
 
     // Getters and Setters
-    public Long getRateTypeId() {
+    public Integer getRateTypeId() {
         return rateTypeId;
     }
 
-    public void setRateTypeId(Long rateTypeId) {
+    public void setRateTypeId(Integer rateTypeId) {
         this.rateTypeId = rateTypeId;
     }
 

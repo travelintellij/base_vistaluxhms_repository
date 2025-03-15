@@ -51,7 +51,7 @@ public class SalesRelatesServicesImpl {
 		return rateTypeRepository.findAll();
 	}
 
-	public RateTypeEntity findById(Long rateTypeId){
+	public RateTypeEntity findById(Integer rateTypeId){
 		return rateTypeRepository.findById(rateTypeId).get();
 	}
 

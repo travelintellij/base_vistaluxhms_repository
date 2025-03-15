@@ -337,7 +337,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
-INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Worked','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-01-03 13:56:51'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
+INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',0,'2025-01-03 07:52:58','2025-03-15 02:24:00'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -450,7 +450,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -459,7 +459,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
-INSERT INTO `session_rate_mapping` VALUES (1,9,2,'2025-01-01','2025-12-31','2025-03-14 16:38:32','2025-03-14 16:38:32');
+INSERT INTO `session_rate_mapping` VALUES (1,9,2,'2025-01-01','2025-12-31','2025-03-14 16:38:32','2025-03-14 16:38:32'),(2,9,1,'2025-03-02','2025-03-18','2025-03-15 04:37:33','2025-03-15 04:37:33');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -543,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-14 23:32:10
+-- Dump completed on 2025-03-15 10:09:16

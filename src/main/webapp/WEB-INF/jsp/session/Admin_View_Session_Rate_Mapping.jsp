@@ -119,6 +119,7 @@
 
 </style>
 
+
 <div class="page-container" style="display: flex; height: 100vh; overflow: hidden;">
     <!-- Sidebar -->
     <div id="filter-sidebar" class="filter-sidebar" style="width: 0; transition: 0.3s; overflow-x: hidden; background: #f4f4f4; height: calc(100% - 140px); position: fixed; z-index: 1000; left: 0; top: 90px; box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);">
@@ -154,26 +155,27 @@
      </div>
 
  <!-- Main Content -->
-
+ <div align="center" style="margin:10px 0">
+     <b>
+         <font color="green">${Success}</font>
+         <font color="red">${Error}</font>
+     </b>
+ </div>
     <div class="main-content" style="margin-left: 0; flex: 1; padding: 15px; overflow-y: auto; transition: 0.3s;">
         <button onclick="toggleSidebar()" style="margin-bottom: 15px;">Existing Session Mapping</button>
 <div class="container mt-5">
     <h2 class="text-center">Create Session Rate Mapping</h2>
 
 <div class="form-container sales-partner-list-container" style="width: 100%;max-width: 700px;margin: auto;">
-
    <form:form action="create_create_session_rate_mapping" method="post" modelAttribute="SESSION_RATE_MAP_OBJ">
-           <center><font color="red"><form:errors path="rateTypeId" cssClass="error"  /></font></center>
-            <form:hidden path="sessionId" />
+
           <div class="form-row" style="flex: 1; min-width: 100px;">
              <label for="rateTypeId" class="form-label">Session Name:</label>
              <font color="maroon"><b>${SESSION_RATE_MAP_OBJ.sessionName}</b></font>
           </div>
          <div class="form-row" style="flex: 1; min-width: 100px;">
-            <label for="rateTypeId" class="form-label">Select Rate Type(s):</label>
-            <form:select path="rateTypeId" required="required" style="width:20%">
-                <form:options items="${ACTIVE_RATE_TYPES}" itemValue="rateTypeId" itemLabel="rateTypeName" />
-            </form:select>
+            <label for="rateTypeId" class="form-label">Rate Type:</label>
+            ${SESSION_RATE_MAP_OBJ.sessionName}
          </div>
 
         <!-- Start Date -->
@@ -184,15 +186,15 @@
      <div class="form-table">
             <div class="form-cell" >
                     <label for="startDate">Start Date:</label>
-                     <form:input type="date" class="form-control" id="startDate" path="startDate" required="true" />
+                     ${SESSION_RATE_MAP_OBJ.startDate}
                 </div>
                 <div class="form-cell" >
                     <label for="endDate" class="form-label">End Date:</label>
-                    <form:input type="date" class="form-control" id="endDate" path="endDate" required="true" />
+                     ${SESSION_RATE_MAP_OBJ.endDate}
                 </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary w-100">Map Rates</button>
+                    <button type="submit" class="btn btn-primary w-100">Edit Mapping</button>
                  </div>
             </div>
      </div>

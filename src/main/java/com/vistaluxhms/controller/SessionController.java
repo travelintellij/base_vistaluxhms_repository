@@ -219,7 +219,7 @@ public class SessionController {
 		ModelAndView modelView = new ModelAndView("session/Admin_Session_Rate_Mapping");
 		SessionEntity sessionEntity = sessionService.findSessionById(sessionRateMappingEntityDTO.getSessionId());
 		List<RateTypeEntity> activeRateTypeList = salesRelatedServices.findAllActiveRateTypes(true);
-
+		sessionRateMappingEntityDTO.setSessionName(sessionEntity.getSessionName());
 		List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.filterSessionRateMappingBySessionId(sessionRateMappingEntityDTO.getSessionId());
 		List<SessionRateMappingEntityDTO> listSessionRateMappingEntitiesDTO = generateSessionRateMappingDTO(sessionRateMappingEntities);
 		modelView.addObject("EXISTING_SESSION_RATE_MAPPING", listSessionRateMappingEntitiesDTO);
@@ -239,5 +239,25 @@ public class SessionController {
 			filteredListSessionRateMappingDTO.add(sessionRateMappingEntityDTO);
 		}
 		return filteredListSessionRateMappingDTO;
+	}
+
+	@PostMapping(value="create_create_session_rate_mapping")
+	public ModelAndView create_create_session_rate_mapping(@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+		ModelAndView modelView = new ModelAndView();
+		System.out.println("Mapping Entity Object is " + sessionRateMappingEntityDTO);
+		boolean conflictExists = sessionService.isRateTypeConflict(
+				sessionRateMappingEntityDTO.getRateTypeId(), sessionRateMappingEntityDTO.getStartDate(), sessionRateMappingEntityDTO.getEndDate());
+
+		if (conflictExists) {
+			result.rejectValue("rateTypeId", "error.conflictRateType", "Date Type Conflict Found for Rate Type.");
+			modelView = view_session_rate_mapping_form(sessionRateMappingEntityDTO, result) ;
+		}
+		else {
+			sessionService.saveSessionRateMapping(sessionRateMappingEntityDTO);
+			modelView.setViewName("session/Admin_View_Session_Rate_Mapping");
+		}
+
+
+		return modelView;
 	}
 }

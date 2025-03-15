@@ -2,6 +2,7 @@ package com.vistaluxhms.services;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
 import com.vistaluxhms.model.SessionFilterDTO;
+import com.vistaluxhms.model.SessionRateMappingEntityDTO;
 import com.vistaluxhms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,9 @@ public class SessionServiceImpl {
 
 	@Autowired
 	SessionRepository sessionRepository;
+
+	@Autowired
+	RateTypeRepository rateTypeRepository;
 
 	@Autowired
 	SessionDetailsRepository sessionDetailsRepository;
@@ -97,4 +102,23 @@ public class SessionServiceImpl {
 	public SessionRateMappingEntity addSessionRateMapping(SessionRateMappingEntity sessionRateMapping) {
 		return sessionRateMappingEntityRepository.save(sessionRateMapping);
 	}
+
+
+	public boolean isRateTypeConflict(int rateTypeId, LocalDate startDate, LocalDate endDate) {
+		return sessionRateMappingEntityRepository.existsConflictingMapping(rateTypeId, startDate, endDate);
+	}
+
+	public void saveSessionRateMapping(SessionRateMappingEntityDTO sessionRateMappingEntityDTO) {
+		SessionEntity sessionEntity = sessionRepository.findById(sessionRateMappingEntityDTO.getSessionId())
+				.orElseThrow(() -> new RuntimeException("Session not found"));
+
+		RateTypeEntity rateTypeEntity = rateTypeRepository.findById(sessionRateMappingEntityDTO.getRateTypeId())
+				.orElseThrow(() -> new RuntimeException("Rate Type not found"));
+
+		SessionRateMappingEntity mapping = new SessionRateMappingEntity(
+				sessionEntity, rateTypeEntity, sessionRateMappingEntityDTO.getStartDate(), sessionRateMappingEntityDTO.getEndDate());
+
+		sessionRateMappingEntityRepository.save(mapping);
+	}
+
 }

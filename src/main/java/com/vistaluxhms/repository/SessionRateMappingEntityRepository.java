@@ -19,16 +19,13 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
         // Fetch mappings by rateTypeId
         List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeId(Integer rateTypeId);
 
-        // Check if a rate type is already assigned to a session within a given date range (for validation)
-        @Query("SELECT COUNT(srm) > 0 FROM SessionRateMappingEntity srm " +
-                "WHERE srm.sessionEntity.sessionId = :sessionId " +
-                "AND srm.rateTypeEntity.rateTypeId = :rateTypeId " +
-                "AND (:startDate BETWEEN srm.startDate AND srm.endDate " +
-                "OR :endDate BETWEEN srm.startDate AND srm.endDate " +
-                "OR srm.startDate BETWEEN :startDate AND :endDate)")
-        boolean existsOverlappingRate(@Param("sessionId") Integer sessionId,
-                                      @Param("rateTypeId") Integer rateTypeId,
-                                      @Param("startDate") LocalDate startDate,
-                                      @Param("endDate") LocalDate endDate);
+        @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
+                "FROM SessionRateMappingEntity s " +
+                "WHERE s.rateTypeEntity.rateTypeId = :rateTypeId " + // ✅ Use correct PK field
+                "AND ((s.startDate <= :endDate AND s.endDate >= :startDate))")
+        boolean existsConflictingMapping(@Param("rateTypeId") int rateTypeId,
+                                         @Param("startDate") LocalDate startDate,
+                                         @Param("endDate") LocalDate endDate);
+
 
 }
