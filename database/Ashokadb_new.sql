@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,6 +377,7 @@ CREATE TABLE `salespartner` (
   `salesPartnerId` bigint NOT NULL AUTO_INCREMENT,
   `salesPartnerShortName` varchar(50) NOT NULL,
   `salesPartnerName` varchar(100) NOT NULL,
+  `rateTypeId` int DEFAULT NULL,
   `mobile` bigint DEFAULT NULL,
   `emailId` varchar(250) DEFAULT NULL,
   `cityId` bigint DEFAULT NULL,
@@ -388,8 +389,10 @@ CREATE TABLE `salespartner` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`salesPartnerId`),
   KEY `fk_city` (`cityId`),
-  CONSTRAINT `fk_city` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_ratetype_idx` (`rateTypeId`),
+  CONSTRAINT `fk_city` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_ratetype` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +401,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
-INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',9999449267,'sales@udanchoo.com',3,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-02-06 12:38:13'),(3,'udanchoo back','udanchoo tourism',9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',9999999999,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28','2025-01-24 06:09:29'),(7,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38'),(11,'B2C','All B2c Client',9999999999,'unknown@gmail.com',3,'','','',1,'2025-01-25 01:54:54',NULL);
+INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',4,9999449267,'sales@udanchoo.com',3,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-03-15 14:50:04'),(3,'udanchoo back','udanchoo tourism',NULL,9898989898,'undo@undo.com',1,'hello','hljlsk','nklnkl',0,'2025-01-03 17:56:23','2025-01-11 03:56:41'),(4,'udanchoo3','udanchoo t3',NULL,9999449267,'sales@udanchoo.com',1,'vikas puri','final hai','perfectu hai',0,'2025-01-03 18:00:19','2025-01-09 16:31:03'),(5,'ashoka self','vistalux',NULL,0,NULL,4,'nainital','self made','hum hi hum hai. ',1,'2025-01-03 18:01:28','2025-01-06 12:54:01'),(6,'tourish','Tourish DMC',NULL,9999999999,'tourish@gmail.com',3,'Sec 18','Direct','perfect. ',1,'2025-01-06 14:04:28','2025-01-24 06:09:29'),(7,'udanchoo','udanchoo tourism',NULL,9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:11:08','2025-01-09 16:31:16'),(8,'udanchoo','udanchoo tourism',NULL,9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:21','2025-01-09 16:31:25'),(9,'udanchoo','udanchoo tourism',NULL,9999449267,'sushil@udanchoo.com',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:12:58','2025-01-09 16:31:32'),(10,'udanchoo','udanchoo tourism',NULL,9999449267,'sushil@udanchoo',1,'vikas puri','direct','perfect company',0,'2025-01-06 14:28:19','2025-01-09 16:31:38'),(11,'B2C','All B2c Client',NULL,9999999999,'unknown@gmail.com',3,'','','',1,'2025-01-25 01:54:54',NULL),(12,'Table 1','Table 1 Lowest Rate',2,9999449267,'sushil@udanchoo.com',1,'pata nahi','direct','this is good man. ',1,'2025-03-15 14:56:27','2025-03-15 15:03:09');
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -443,6 +446,7 @@ CREATE TABLE `session_rate_mapping` (
   `rateTypeId` int NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
+  `active` tinyint DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`sessionRateTypeId`),
@@ -450,7 +454,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -459,7 +463,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
-INSERT INTO `session_rate_mapping` VALUES (1,9,2,'2025-01-01','2025-12-31','2025-03-14 16:38:32','2025-03-14 16:38:32'),(2,9,1,'2025-03-02','2025-03-18','2025-03-15 04:37:33','2025-03-15 04:37:33');
+INSERT INTO `session_rate_mapping` VALUES (9,9,1,'2025-03-01','2025-03-03',0,'2025-03-15 12:35:52','2025-03-15 13:20:12'),(10,9,1,'2025-03-02','2025-03-04',0,'2025-03-15 13:20:28','2025-03-15 13:35:37'),(11,9,1,'2025-03-05','2025-03-06',1,'2025-03-15 13:24:31','2025-03-15 13:24:31'),(12,9,1,'2025-03-07','2025-03-08',0,'2025-03-15 13:35:15','2025-03-15 13:35:29'),(13,9,1,'2025-03-20','2025-03-16',0,'2025-03-15 13:52:12','2025-03-15 13:52:28'),(14,9,1,'2025-03-20','2025-03-18',1,'2025-03-15 13:54:31','2025-03-15 13:54:31'),(15,9,1,'2025-03-21','2025-03-21',1,'2025-03-15 14:28:08','2025-03-15 14:28:08');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,7 +505,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (8,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-13 07:44:32'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
+INSERT INTO `sessiondetail` VALUES (8,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-13 07:44:32'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(9,1,3,4500,5000,0,0,0,0,0,NULL,1,'2025-03-15 13:45:55','2025-03-15 13:45:55'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -543,4 +547,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-15 10:09:16
+-- Dump completed on 2025-03-15 20:57:45

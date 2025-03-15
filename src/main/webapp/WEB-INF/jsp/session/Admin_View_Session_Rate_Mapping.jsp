@@ -135,6 +135,7 @@
                                <th style="padding: 8px; border: 1px solid #ccc;text-align: center;">Rate Type</th>
                                <th style="padding: 8px; border: 1px solid #ccc;text-align: center;">Start Date</th>
                                <th style="padding: 8px; border: 1px solid #ccc;text-align: center;">End Date</th>
+                               <th style="padding: 8px; border: 1px solid #ccc;text-align: center;">Action</th>
                            </tr>
                        </thead>
                        <tbody>
@@ -146,25 +147,37 @@
                                    <td style="padding: 8px; border: 1px solid #ccc;cursor: default !important; text-decoration: none !important; font-weight: normal !important;">
                                        <span>${sessionRateMapRec.endDate}</span>
                                    </td>
-
+                                    <td>
+                                        <form:form action="manage_sessionmap" method="post">
+                                            <input type="hidden" name="sessionRateTypeId" value="${sessionRateMapRec.sessionRateTypeId}" />
+                                            <button type="submit" class="btn btn-primary w-100" name="View" value="View">View</button>
+                                            <button type="submit" class="btn btn-primary w-100" style="background-color:red;" name="Delete" value="Delete">Delete</button>
+                                        </form:form>
+                                    </td>
                                </tr>
                          </c:forEach>
                        </tbody>
                    </table>
+                   <a href="view_session_rate_mapping_form?sessionId=${SESSION_ID}">
+                   <center><button style="background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                                  Create Mapping
+                   </button></center>
+                   </a>
+
           </div>
      </div>
 
  <!-- Main Content -->
- <div align="center" style="margin:10px 0">
-     <b>
-         <font color="green">${Success}</font>
-         <font color="red">${Error}</font>
-     </b>
- </div>
     <div class="main-content" style="margin-left: 0; flex: 1; padding: 15px; overflow-y: auto; transition: 0.3s;">
         <button onclick="toggleSidebar()" style="margin-bottom: 15px;">Existing Session Mapping</button>
-<div class="container mt-5">
-    <h2 class="text-center">Create Session Rate Mapping</h2>
+    <div class="container mt-5">
+     <div align="center" style="margin:10px 0">
+         <b>
+             <font color="green">${Success}</font>
+             <font color="red">${Error}</font>
+         </b>
+     </div>
+    <h2 class="text-center">View Session Rate Mapping</h2>
 
 <div class="form-container sales-partner-list-container" style="width: 100%;max-width: 700px;margin: auto;">
    <form:form action="create_create_session_rate_mapping" method="post" modelAttribute="SESSION_RATE_MAP_OBJ">
@@ -175,7 +188,7 @@
           </div>
          <div class="form-row" style="flex: 1; min-width: 100px;">
             <label for="rateTypeId" class="form-label">Rate Type:</label>
-            ${SESSION_RATE_MAP_OBJ.sessionName}
+            ${SESSION_RATE_MAP_OBJ.rateTypeName}
          </div>
 
         <!-- Start Date -->
@@ -194,7 +207,12 @@
                 </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary w-100">Edit Mapping</button>
+                    <a href="view_session_list">
+                         <center><button type="button" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                                        Session List
+                         </button></center>
+                    </a>
+
                  </div>
             </div>
      </div>

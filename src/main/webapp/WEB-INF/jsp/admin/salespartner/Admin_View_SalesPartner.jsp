@@ -75,6 +75,13 @@
                 <font color="blue">${SALES_PARTNER_OBJ.salesPartnerId}</font>
             </div>
         </div>
+        <div class="form-row">
+            <label for="salesPartner-short-name">Rate Type:</label>
+            <div class="form-value">
+                ${SALES_PARTNER_OBJ.rateTypeName}
+            </div>
+        </div>
+
 
         <div class="form-row">
             <label for="salesPartner-short-name">Short Name:</label>

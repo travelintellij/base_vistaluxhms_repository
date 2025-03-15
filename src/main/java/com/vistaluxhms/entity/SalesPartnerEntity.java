@@ -41,6 +41,10 @@ public class SalesPartnerEntity {
 
     protected long mobile;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rateTypeId", referencedColumnName = "rateTypeId")
+    protected RateTypeEntity rateTypeEntity;
+
     @Column(name = "emailId", length = 250)
     protected String emailId;
 
@@ -183,5 +187,14 @@ public class SalesPartnerEntity {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+
+    public RateTypeEntity getRateTypeEntity() {
+        return rateTypeEntity;
+    }
+
+    public void setRateTypeEntity(RateTypeEntity rateTypeEntity) {
+        this.rateTypeEntity = rateTypeEntity;
     }
 }

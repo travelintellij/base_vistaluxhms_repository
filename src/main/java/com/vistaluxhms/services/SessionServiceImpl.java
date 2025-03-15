@@ -94,7 +94,7 @@ public class SessionServiceImpl {
 	}
 
 	public List<SessionRateMappingEntity> filterSessionRateMappingBySessionId(Integer sessionId){
-			return sessionRateMappingEntityRepository.findBySessionEntity_SessionId(sessionId);
+			return sessionRateMappingEntityRepository.findBySessionEntity_SessionIdAndActiveTrue(sessionId);
 	}
 
 
@@ -118,7 +118,35 @@ public class SessionServiceImpl {
 		SessionRateMappingEntity mapping = new SessionRateMappingEntity(
 				sessionEntity, rateTypeEntity, sessionRateMappingEntityDTO.getStartDate(), sessionRateMappingEntityDTO.getEndDate());
 
-		sessionRateMappingEntityRepository.save(mapping);
+		SessionRateMappingEntity sessionRateMappingEntity = sessionRateMappingEntityRepository.save(mapping);
+		sessionRateMappingEntityDTO.setSessionRateTypeId(sessionRateMappingEntity.getSessionRateTypeId());
 	}
 
+	public void updateSessionRateMapping(SessionRateMappingEntityDTO sessionRateMappingEntityDTO) {
+		SessionEntity sessionEntity = sessionRepository.findById(sessionRateMappingEntityDTO.getSessionId())
+				.orElseThrow(() -> new RuntimeException("Session not found"));
+
+		RateTypeEntity rateTypeEntity = rateTypeRepository.findById(sessionRateMappingEntityDTO.getRateTypeId())
+				.orElseThrow(() -> new RuntimeException("Rate Type not found"));
+
+		SessionRateMappingEntity mapping = sessionRateMappingEntityRepository.findById(sessionRateMappingEntityDTO.getSessionRateTypeId()).get();
+		mapping.setStartDate(sessionRateMappingEntityDTO.getStartDate());
+		mapping.setEndDate(sessionRateMappingEntityDTO.getEndDate());
+
+		SessionRateMappingEntity sessionRateMappingEntity = sessionRateMappingEntityRepository.save(mapping);
+		sessionRateMappingEntityDTO.setSessionRateTypeId(sessionRateMappingEntity.getSessionRateTypeId());
+	}
+
+
+
+	public SessionRateMappingEntity findSessionRateMappingEntityById(Integer sessionRateMappingId){
+		return sessionRateMappingEntityRepository.findById(sessionRateMappingId).get();
+	}
+
+
+	public void deleteSessionRateMapping(SessionRateMappingEntityDTO sessionRateMappingEntityDTO) {
+		SessionRateMappingEntity sessionRateMappingEntity = sessionRateMappingEntityRepository.findById(sessionRateMappingEntityDTO.getSessionRateTypeId()).get();
+		sessionRateMappingEntity.setActive(false);
+		sessionRateMappingEntityRepository.save(sessionRateMappingEntity);
+	}
 }

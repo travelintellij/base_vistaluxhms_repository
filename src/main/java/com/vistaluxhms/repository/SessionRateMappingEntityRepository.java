@@ -14,7 +14,7 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
         List<Integer> findRateTypeIdsBySessionId(@Param("sessionId") Integer sessionId);
 
         // Fetch mappings by sessionId
-        List<SessionRateMappingEntity> findBySessionEntity_SessionId(Integer sessionId);
+        List<SessionRateMappingEntity> findBySessionEntity_SessionIdAndActiveTrue(Integer sessionId);
 
         // Fetch mappings by rateTypeId
         List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeId(Integer rateTypeId);
@@ -22,7 +22,9 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
         @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
                 "FROM SessionRateMappingEntity s " +
                 "WHERE s.rateTypeEntity.rateTypeId = :rateTypeId " + // ✅ Use correct PK field
-                "AND ((s.startDate <= :endDate AND s.endDate >= :startDate))")
+                "AND ((s.startDate <= :endDate AND s.endDate >= :startDate))" +
+                "AND s.active = TRUE"
+        )
         boolean existsConflictingMapping(@Param("rateTypeId") int rateTypeId,
                                          @Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);

@@ -127,6 +127,8 @@ public class SalesServiceController {
             modelView = view_add_sales_partner_form(salesPartnerDto, result);
         } else {
             SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
+            RateTypeEntity rateTypeEntity = salesService.findById(salesPartnerDto.getRateTypeId());
+            salesPartnerEntity.setRateTypeEntity(rateTypeEntity);
             salesService.saveSalesPartner(salesPartnerEntity);
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
@@ -139,6 +141,9 @@ public class SalesServiceController {
     public ModelAndView view_add_sales_partner_form(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/salespartner/Admin_Add_SalesPartner");
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        modelView.addObject("ACTIVE_RATE_TYPES_LIST",listRateType );
+
         return modelView;
     }
 
@@ -186,6 +191,7 @@ public class SalesServiceController {
         SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(searchSalesPartnerObj.getSalesPartnerId());
         searchSalesPartnerObj.updateSalesPartnerVoFromEntity(salesPartnerEntity);
         searchSalesPartnerObj.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+        searchSalesPartnerObj.setRateTypeName(salesPartnerEntity.getRateTypeEntity().getRateTypeName());
         return modelView;
     }
 
@@ -196,6 +202,9 @@ public class SalesServiceController {
         SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
         salesPartnerEntityDto.setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        salesPartnerEntityDto.setRateTypeId(salesPartnerEntity.getRateTypeEntity().getRateTypeId());
+        modelView.addObject("ACTIVE_RATE_TYPES_LIST",listRateType );
         return modelView;
     }
 
@@ -211,6 +220,8 @@ public class SalesServiceController {
             modelView = view_edit_sales_partner_form(salesPartnerDto, result);
         } else {
             SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
+            RateTypeEntity rateTypeEntity = salesService.findById(salesPartnerDto.getRateTypeId());
+            salesPartnerEntity.setRateTypeEntity(rateTypeEntity);
             salesPartnerEntity.setSalesPartnerId(salesPartnerDto.getSalesPartnerId());
             salesService.saveSalesPartner(salesPartnerEntity);
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");

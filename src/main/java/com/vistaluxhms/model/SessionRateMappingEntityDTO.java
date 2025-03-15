@@ -42,10 +42,12 @@ public class SessionRateMappingEntityDTO extends SessionRateMappingEntity {
     }
 
     public void updateVoFromEntity(SessionRateMappingEntity sessionRateMappingEntity){
+        this.sessionRateTypeId=sessionRateMappingEntity.getSessionRateTypeId();
         this.sessionEntity = sessionRateMappingEntity.getSessionEntity();
         this.rateTypeEntity = sessionRateMappingEntity.getRateTypeEntity();
         this.startDate = sessionRateMappingEntity.getStartDate();
         this.endDate = sessionRateMappingEntity.getEndDate();
+        this.active=sessionRateMappingEntity.isActive();
     }
     @Override
     public String toString() {

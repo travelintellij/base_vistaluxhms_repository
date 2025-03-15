@@ -224,6 +224,7 @@ public class SessionController {
 		List<SessionRateMappingEntityDTO> listSessionRateMappingEntitiesDTO = generateSessionRateMappingDTO(sessionRateMappingEntities);
 		modelView.addObject("EXISTING_SESSION_RATE_MAPPING", listSessionRateMappingEntitiesDTO);
 		modelView.addObject("ACTIVE_RATE_TYPES", activeRateTypeList);
+		modelView.addObject("SESSION_ID", sessionRateMappingEntityDTO.getSessionId());
 		return modelView;
 	}
 
@@ -254,10 +255,45 @@ public class SessionController {
 		}
 		else {
 			sessionService.saveSessionRateMapping(sessionRateMappingEntityDTO);
-			modelView.setViewName("session/Admin_View_Session_Rate_Mapping");
+			redirectAttrib.addFlashAttribute("Success","Session Rate Mapping Record is created successfully. ");
+			modelView.setViewName("redirect:/manage_sessionmap?sessionRateTypeId="+ sessionRateMappingEntityDTO.getSessionRateTypeId() + "&View");
 		}
-
-
 		return modelView;
 	}
+
+	@RequestMapping(value="manage_sessionmap",params = "View",method= {RequestMethod.GET,RequestMethod.POST})
+	//@PostMapping(value = "/manage_sessionmap", params = "View")
+	public ModelAndView view_view_session_map_details(@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+		SessionRateMappingEntity sesisionRateMapping = sessionService.findSessionRateMappingEntityById(sessionRateMappingEntityDTO.getSessionRateTypeId());
+		sessionRateMappingEntityDTO.setSessionId(sesisionRateMapping.getSessionEntity().getSessionId());
+		sessionRateMappingEntityDTO.setRateTypeId(sesisionRateMapping.getRateTypeEntity().getRateTypeId());
+		sessionRateMappingEntityDTO.setRateTypeName(sesisionRateMapping.getRateTypeEntity().getRateTypeName());
+		ModelAndView modelView = view_session_rate_mapping_form(sessionRateMappingEntityDTO,result);
+		sessionRateMappingEntityDTO.updateVoFromEntity(sesisionRateMapping);
+		modelView.setViewName("session/Admin_View_Session_Rate_Mapping");
+		return modelView;
+	}
+
+
+	@RequestMapping(value="manage_sessionmap",params = "Delete",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_delete_session_map_details(@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+		SessionRateMappingEntity sesisionRateMapping = sessionService.findSessionRateMappingEntityById(sessionRateMappingEntityDTO.getSessionRateTypeId());
+		sessionRateMappingEntityDTO.setSessionId(sesisionRateMapping.getSessionEntity().getSessionId());
+		sessionRateMappingEntityDTO.setRateTypeId(sesisionRateMapping.getRateTypeEntity().getRateTypeId());
+		sessionRateMappingEntityDTO.setRateTypeName(sesisionRateMapping.getRateTypeEntity().getRateTypeName());
+		sessionRateMappingEntityDTO.updateVoFromEntity(sesisionRateMapping);
+		ModelAndView modelView = view_session_rate_mapping_form(sessionRateMappingEntityDTO,result);
+		modelView.setViewName("session/Admin_Delete_Session_Rate_Mapping");
+		 return modelView;
+	}
+
+	@PostMapping(value="delete_delete_session_rate_mapping")
+	public ModelAndView delete_delete_session_rate_mapping(@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+		ModelAndView modelView = new ModelAndView();
+		sessionService.deleteSessionRateMapping(sessionRateMappingEntityDTO);
+		redirectAttrib.addFlashAttribute("Success","Session Rate Mapping Record is deleted successfully. ");
+		modelView.setViewName("redirect:/view_session_list");
+		return modelView;
+	}
+
 }

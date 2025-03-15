@@ -48,6 +48,15 @@
                 <label for="salesPartner-id">Sales Partner Id:</label>
                 <label for="auto-generated"><font color="blue">${SALES_PARTNER_OBJ.salesPartnerId}</font></label>
             </div>
+
+
+            <div class="form-row">
+                <label for="salesPartner-short-name">Rate Type:</label>
+                <form:select path="rateTypeId" required="required" style="width:20%">
+                    <form:options items="${ACTIVE_RATE_TYPES_LIST}" itemValue="rateTypeId" itemLabel="rateTypeName" />
+                </form:select>
+            </div>
+
             <div class="form-row">
                 <label for="salesPartner-short-name">Short Name:</label>
                 <form:input path="salesPartnerShortName" name="salesPartnerShortName" placeholder="Enter Short Name" required="required"/>

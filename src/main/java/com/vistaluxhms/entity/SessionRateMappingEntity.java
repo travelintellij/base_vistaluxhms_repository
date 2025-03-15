@@ -38,6 +38,8 @@ public class SessionRateMappingEntity {
     @Column(name = "updatedAt", insertable = false, updatable = false)
     protected Timestamp updatedAt;
 
+    protected boolean active = true;
+
     // Constructors
     public SessionRateMappingEntity() {}
 
@@ -97,5 +99,13 @@ public class SessionRateMappingEntity {
 
     public void setRateTypeEntity(RateTypeEntity rateTypeEntity) {
         this.rateTypeEntity = rateTypeEntity;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

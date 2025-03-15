@@ -7,8 +7,9 @@ import com.vistaluxhms.entity.SalesPartnerEntity;
  */
 public class SalesPartnerEntityDto extends SalesPartnerEntity {
 
-
     public String cityName;
+    public int rateTypeId;
+    public String rateTypeName;
 
     public void updateSalesPartnerVoFromEntity(SalesPartnerEntity salesPartnerEntity) {
         this.salesPartnerId=salesPartnerEntity.getSalesPartnerId();
@@ -23,6 +24,7 @@ public class SalesPartnerEntityDto extends SalesPartnerEntity {
         this.description = salesPartnerEntity.getDescription();
         this.createdAt = salesPartnerEntity.getCreatedAt();
         this.updatedAt = salesPartnerEntity.getUpdatedAt();
+        this.rateTypeEntity=salesPartnerEntity.getRateTypeEntity();
     }
 
 
@@ -34,5 +36,21 @@ public class SalesPartnerEntityDto extends SalesPartnerEntity {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public int getRateTypeId() {
+        return rateTypeId;
+    }
+
+    public void setRateTypeId(int rateTypeId) {
+        this.rateTypeId = rateTypeId;
+    }
+
+    public String getRateTypeName() {
+        return rateTypeName;
+    }
+
+    public void setRateTypeName(String rateTypeName) {
+        this.rateTypeName = rateTypeName;
     }
 }
