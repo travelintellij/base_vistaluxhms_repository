@@ -131,7 +131,17 @@ username = "Guest";
                         </ul>
                     </li>
          </c:if>
-
+        <c:if test="${role == 'admin' || role == 'guest'}">
+             <li>
+                 <a href="#">Quotation Management</a>
+                 <ul class="submenu">
+                     <li><a href="view_add_quotation_form">New Quotation</a></li>
+                     <li>
+                         <a href="view_filter_quotations">Quotation Management</a>
+                     </li>
+                 </ul>
+             </li>
+         </c:if>
 
         <li><a href="logout" class="logout">Logout</a></li>
     </ul>

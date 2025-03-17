@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.41
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
-INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',0,'2025-01-03 07:52:58','2025-03-15 02:24:00'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
+INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-03-16 17:30:48'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -454,7 +454,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -463,7 +463,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
-INSERT INTO `session_rate_mapping` VALUES (9,9,1,'2025-03-01','2025-03-03',0,'2025-03-15 12:35:52','2025-03-15 13:20:12'),(10,9,1,'2025-03-02','2025-03-04',0,'2025-03-15 13:20:28','2025-03-15 13:35:37'),(11,9,1,'2025-03-05','2025-03-06',1,'2025-03-15 13:24:31','2025-03-15 13:24:31'),(12,9,1,'2025-03-07','2025-03-08',0,'2025-03-15 13:35:15','2025-03-15 13:35:29'),(13,9,1,'2025-03-20','2025-03-16',0,'2025-03-15 13:52:12','2025-03-15 13:52:28'),(14,9,1,'2025-03-20','2025-03-18',1,'2025-03-15 13:54:31','2025-03-15 13:54:31'),(15,9,1,'2025-03-21','2025-03-21',1,'2025-03-15 14:28:08','2025-03-15 14:28:08');
+INSERT INTO `session_rate_mapping` VALUES (9,9,1,'2025-03-01','2025-03-03',0,'2025-03-15 12:35:52','2025-03-15 13:20:12'),(10,9,1,'2025-03-02','2025-03-04',0,'2025-03-15 13:20:28','2025-03-15 13:35:37'),(11,9,1,'2025-03-05','2025-03-06',1,'2025-03-15 13:24:31','2025-03-15 13:24:31'),(12,9,1,'2025-03-07','2025-03-08',0,'2025-03-15 13:35:15','2025-03-15 13:35:29'),(13,9,1,'2025-03-20','2025-03-16',0,'2025-03-15 13:52:12','2025-03-15 13:52:28'),(14,9,1,'2025-03-20','2025-03-18',1,'2025-03-15 13:54:31','2025-03-15 13:54:31'),(15,9,1,'2025-03-21','2025-03-21',0,'2025-03-15 14:28:08','2025-03-16 03:46:31'),(16,8,4,'2025-06-05','2025-07-22',1,'2025-03-16 17:33:44','2025-03-16 17:33:44');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -505,7 +505,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (8,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-13 07:44:32'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(9,1,3,4500,5000,0,0,0,0,0,NULL,1,'2025-03-15 13:45:55','2025-03-15 13:45:55'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
+INSERT INTO `sessiondetail` VALUES (8,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-16 17:32:53'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(9,1,3,4500,5000,0,0,0,0,0,NULL,1,'2025-03-15 13:45:55','2025-03-15 13:45:55'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -547,4 +547,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-15 20:57:45
+-- Dump completed on 2025-03-17 10:30:37
