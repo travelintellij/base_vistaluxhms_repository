@@ -60,7 +60,7 @@ public class SessionController {
 	public ModelAndView create_create_session_detail(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,@ModelAttribute("SESSION_OBJ") SessionDetailsEntity sessionDetailsEntity,BindingResult result, final RedirectAttributes redirectAttrib) {
 		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
 		ModelAndView modelView = new ModelAndView();
-		sessionService.saveSessionDetails(sessionDetailsEntity);
+		sessionService.saveSessionMaster(sessionEntity);
 		modelView.setViewName("redirect:view_session_list");
 
 		return modelView;

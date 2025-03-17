@@ -1,8 +1,6 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.AshokaTeam;
-import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.entity.LeadEntity;
+import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
@@ -73,25 +71,37 @@ public class QuotationController {
     }
 
     @RequestMapping("view_add_quotation_form")
-    public ModelAndView view_add_lead_form(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadEntityDTO, BindingResult result) {
+    public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("quotation/createQuotation");
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
-        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
-        Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
-                Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
-        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
-        List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
-        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
-                Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
-        modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        Map<Integer, String> rateTypeMap = listRateType.stream()
+                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        Map<Integer, String> roomTypeMap = listRoomType.stream()
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP",VistaluxConstants.MEAL_PLANS_MAP);
 
         modelView.addObject("userName", userObj.getUsername());
         return modelView;
     }
 
+    @PostMapping(value="create_create_quotation")
+    public ModelAndView create_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,BindingResult result, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+        ModelAndView modelView = new ModelAndView();
 
+
+
+
+
+
+        return modelView;
+    }
 
 
 

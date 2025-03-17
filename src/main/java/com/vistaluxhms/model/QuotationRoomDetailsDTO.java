@@ -1,0 +1,79 @@
+package com.vistaluxhms.model;
+
+
+import java.time.LocalDate;
+
+public class QuotationRoomDetailsDTO {
+    private int roomCategoryId;
+    private int mealPlanId;
+    private int adults;
+    private int childWithBed;
+    private int childNoBed;
+    private int extraBed;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+
+    public int getRoomCategoryId() {
+        return roomCategoryId;
+    }
+
+    public void setRoomCategoryId(int roomCategoryId) {
+        this.roomCategoryId = roomCategoryId;
+    }
+
+    public int getMealPlanId() {
+        return mealPlanId;
+    }
+
+    public void setMealPlanId(int mealPlanId) {
+        this.mealPlanId = mealPlanId;
+    }
+
+    public int getAdults() {
+        return adults;
+    }
+
+    public void setAdults(int adults) {
+        this.adults = adults;
+    }
+
+    public int getChildWithBed() {
+        return childWithBed;
+    }
+
+    public void setChildWithBed(int childWithBed) {
+        this.childWithBed = childWithBed;
+    }
+
+    public int getChildNoBed() {
+        return childNoBed;
+    }
+
+    public void setChildNoBed(int childNoBed) {
+        this.childNoBed = childNoBed;
+    }
+
+    public int getExtraBed() {
+        return extraBed;
+    }
+
+    public void setExtraBed(int extraBed) {
+        this.extraBed = extraBed;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+}
