@@ -1,6 +1,8 @@
 package com.vistaluxhms.model;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class QuotationRoomDetailsDTO {
@@ -10,8 +12,13 @@ public class QuotationRoomDetailsDTO {
     private int childWithBed;
     private int childNoBed;
     private int extraBed;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
+
 
     public int getRoomCategoryId() {
         return roomCategoryId;
@@ -75,5 +82,24 @@ public class QuotationRoomDetailsDTO {
 
     public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+
+    // Ensure valid inputs
+    public boolean isValid() {
+        return roomCategoryId > 0 && mealPlanId > 0;
+    }
+
+    @Override
+    public String toString() {
+        return "QuotationRoomDetailsDTO{" +
+                "roomCategoryId=" + roomCategoryId +
+                ", mealPlanId=" + mealPlanId +
+                ", adults=" + adults +
+                ", childWithBed=" + childWithBed +
+                ", childNoBed=" + childNoBed +
+                ", extraBed=" + extraBed +
+                ", checkInDate=" + checkInDate +
+                ", checkOutDate=" + checkOutDate +
+                '}';
     }
 }

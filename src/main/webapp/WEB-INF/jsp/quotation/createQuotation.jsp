@@ -180,7 +180,8 @@ h2, h3 {
 <div class="container">
     <h2>Create Quotation</h2>
 
-    <form:form method="post" action="create_edit_rate_type" modelAttribute="QUOTATION_OBJ">
+    <form:form method="post" action="create_create_quotation" modelAttribute="QUOTATION_OBJ">
+
         <!-- User Type Selection -->
   <div class="form-group">
               <label for="quotationAudienceType">User Type:</label>
@@ -224,7 +225,6 @@ h2, h3 {
               </div>
           </div>
 
-
         <!-- Room Details (Dynamically Added Rows) -->
         <div id="roomsContainer">
             <h3>Room Details</h3>
@@ -246,6 +246,9 @@ h2, h3 {
                 <tbody>
                     <!-- Dynamic Rows Will Be Added Here -->
 
+
+
+
                 </tbody>
             </table>
         </div>
@@ -253,6 +256,7 @@ h2, h3 {
         <button type="submit" class="btn">Submit</button>
 
 </div>
+
 
   <script>
 
@@ -301,42 +305,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+function addRoom() {
+    let tableBody = document.querySelector("#roomsTable tbody");
+    let rowCount = tableBody.rows.length; // Get the row index for naming
+    let newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td>
+            <select name="roomDetails[\${rowCount}].roomCategoryId" class="input-field">
+                <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
+                    <option value="${entry.key}">${entry.value}</option>
+                </c:forEach>
+            </select>
+        </td>
+        <td>
+            <select name="roomDetails[\${rowCount}].mealPlanId" class="input-field">
+                <c:forEach var="entry" items="${MEAL_PLAN_MAP}">
+                    <option value="${entry.key}">${entry.value}</option>
+                </c:forEach>
+            </select>
+        </td>
+        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" required /></td>
+        <td><input type="date" name="roomDetails[\${rowCount}].checkInDate" class="input-field"  /></td>
+        <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" class="input-field"  /></td>
+        <td>
+            <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
+        </td>
+    `;
+    tableBody.appendChild(newRow);
 
-     // Function to Add a Room
-     function addRoom() {
-         let tableBody = document.querySelector("#roomsTable tbody");
-         let newRow = document.createElement("tr");
+}
 
-         newRow.innerHTML = `
-             <td>
-                 <form:select path="roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                    <form:options items="${ROOM_TYPE_MAP}" />
-                 </form:select>
-             </td>
-             <td>
-                 <form:select path="mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                     <form:options items="${MEAL_PLAN_MAP}" />
-                  </form:select>
-             </td>
-             <td><input type="number" class="input-field" placeholder="Adults" min="1" style="width:70px;"></td>
-             <td><input type="number" class="input-field" placeholder="Child (with bed)" min="0" style="width:70px;"></td>
-             <td><input type="number" class="input-field" placeholder="Child (no bed)" min="0" style="width:70px;"></td>
-             <td><input type="number" class="input-field" placeholder="Extra Bed" min="0" style="width:70px;"></td>
-             <td><input type="date" class="input-field" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"></td>
-             <td><input type="date" class="input-field" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"></td>
-             <td>
-                 <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
-             </td>
-         `;
+function removeRoom(button) {
+    let row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
 
-         tableBody.appendChild(newRow);
-     }
 
-     // Function to Remove a Room
-     function removeRoom(button) {
-         let row = button.parentNode.parentNode;
-         row.parentNode.removeChild(row);
-     }
+
 
     </script>
 

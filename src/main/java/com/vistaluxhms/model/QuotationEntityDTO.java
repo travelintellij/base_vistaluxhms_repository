@@ -12,7 +12,7 @@ public class QuotationEntityDTO {
     private String contactMethod;
     private int mobile;
     private String email;
-    private List<QuotationRoomDetailsDTO> roomDetails = new ArrayList<QuotationRoomDetailsDTO>();
+    private List<QuotationRoomDetailsDTO> roomDetails;
 
     public int getRateTypeId() {
         return rateTypeId;

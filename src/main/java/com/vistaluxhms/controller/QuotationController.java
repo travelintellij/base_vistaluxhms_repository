@@ -73,6 +73,11 @@ public class QuotationController {
     @RequestMapping("view_add_quotation_form")
     public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
+        if (quotationEntityDTO.getRoomDetails() == null || quotationEntityDTO.getRoomDetails().isEmpty()) {
+            quotationEntityDTO.setRoomDetails(new ArrayList<>()); // Only initialize if it's empty
+        }
+
+
         ModelAndView modelView = new ModelAndView("quotation/createQuotation");
         Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
@@ -87,17 +92,31 @@ public class QuotationController {
         modelView.addObject("MEAL_PLAN_MAP",VistaluxConstants.MEAL_PLANS_MAP);
 
         modelView.addObject("userName", userObj.getUsername());
+
         return modelView;
     }
 
     @PostMapping(value="create_create_quotation")
     public ModelAndView create_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView();
+        ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
+        System.out.println("Controller invoked " + quotationEntityDTO.getRoomDetails());
+        for (QuotationRoomDetailsDTO emp : quotationEntityDTO.getRoomDetails()) {
+            System.out.println(emp); // Calls toString() implicitly
+        }
 
+        // Ensure the roomDetails list is initialized
+        if (quotationEntityDTO.getRoomDetails() == null) {
+            quotationEntityDTO.setRoomDetails(new ArrayList<>());
+        }
 
+        // Remove invalid room entries (e.g., empty rows)
+        List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
+                .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
+                .collect(Collectors.toList());
 
+        quotationEntityDTO.setRoomDetails(validRooms);
 
 
         return modelView;
