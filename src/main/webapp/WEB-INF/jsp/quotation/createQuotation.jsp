@@ -11,6 +11,15 @@
     <meta charset="UTF-8">
     <title>Dynamic Form</title>
     <style>
+           body {
+               background-image: url('<%= request.getContextPath() %>/resources/images/quotation.jpg');
+               background-size: cover; /* Ensures the image covers the full page */
+               background-position: center; /* Centers the image */
+               background-attachment: fixed; /* Keeps the background fixed while scrolling */
+               height: 100vh; /* Ensures the background covers the full height of the viewport */
+               position: relative; /* Required for the overlay */
+           }
+
         select, input {
             height: 30px;
             margin: 5px;
@@ -245,9 +254,42 @@ h2, h3 {
                 </thead>
                 <tbody>
                     <!-- Dynamic Rows Will Be Added Here -->
-
-
-
+    <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
+        <tr>
+            <td>
+                 <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>
+                <select name="roomDetails[${status.index}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
+                    <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
+                        <option value="${entry.key}" ${room.roomCategoryId == entry.key ? 'selected' : ''}>${entry.value}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="roomDetails[${status.index}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
+                    <c:forEach var="entry" items="${MEAL_PLAN_MAP}">
+                        <option value="${entry.key}" ${room.mealPlanId == entry.key ? 'selected' : ''}>${entry.value}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
+            <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required /></td>
+            <td><input type="number" name="roomDetails[${status.index}].childWithBed" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
+            <td>
+                <font color="red"><form:errors path="roomDetails[${status.index}].childNoBed" cssClass="error"  /></font>
+                <input type="number" name="roomDetails[${status.index}].childNoBed" class="input-field" value="${room.childNoBed}" min="0"  style="width:70px;" required />
+            </td>
+            <td><input type="number" name="roomDetails[${status.index}].extraBed" class="input-field" value="${room.extraBed}" min="0" style="width:70px;" required /></td>
+            <td>
+            <font color="red"><form:errors path="roomDetails[${status.index}].checkInDate" cssClass="error"  /></font>
+            <input type="date" name="roomDetails[${status.index}].checkInDate" class="input-field" value="${room.checkInDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
+            <td>
+            <font color="red"><form:errors path="roomDetails[${status.index}].checkOutDate" cssClass="error"  /></font>
+            <input type="date" name="roomDetails[${status.index}].checkOutDate" class="input-field" value="${room.checkOutDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
+            </td>
+        </tr>
+    </c:forEach>
 
                 </tbody>
             </table>
@@ -311,25 +353,25 @@ function addRoom() {
     let newRow = document.createElement("tr");
     newRow.innerHTML = `
         <td>
-            <select name="roomDetails[\${rowCount}].roomCategoryId" class="input-field">
+            <select name="roomDetails[\${rowCount}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                 <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
                     <option value="${entry.key}">${entry.value}</option>
                 </c:forEach>
             </select>
         </td>
         <td>
-            <select name="roomDetails[\${rowCount}].mealPlanId" class="input-field">
+            <select name="roomDetails[\${rowCount}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                 <c:forEach var="entry" items="${MEAL_PLAN_MAP}">
                     <option value="${entry.key}">${entry.value}</option>
                 </c:forEach>
             </select>
         </td>
-        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" required /></td>
-        <td><input type="date" name="roomDetails[\${rowCount}].checkInDate" class="input-field"  /></td>
-        <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" class="input-field"  /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" required /></td>
+        <td><input type="date" name="roomDetails[\${rowCount}].checkInDate"  style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"  required /></td>
+        <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required  /></td>
         <td>
             <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
         </td>
@@ -342,6 +384,8 @@ function removeRoom(button) {
     let row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
 }
+
+
 
 
 

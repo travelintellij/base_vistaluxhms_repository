@@ -6,6 +6,7 @@ import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.LeadValidator;
+import com.vistaluxhms.validator.QuotationValidator;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +56,9 @@ public class QuotationController {
     @Value("${email.client.valid}")
     private boolean emailClientNotifyActive;
 
+    @Autowired
+    QuotationValidator quotationValidator;
+
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private UserDetailsObj getLoggedInUser() {
@@ -99,26 +103,33 @@ public class QuotationController {
     @PostMapping(value="create_create_quotation")
     public ModelAndView create_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
+        ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");  // Return to the same JSP
 
-        System.out.println("Controller invoked " + quotationEntityDTO.getRoomDetails());
-        for (QuotationRoomDetailsDTO emp : quotationEntityDTO.getRoomDetails()) {
+        /*for (QuotationRoomDetailsDTO emp : quotationEntityDTO.getRoomDetails()) {
             System.out.println(emp); // Calls toString() implicitly
-        }
+        }*/
 
-        // Ensure the roomDetails list is initialized
+        // Initialize roomDetails list if null
         if (quotationEntityDTO.getRoomDetails() == null) {
             quotationEntityDTO.setRoomDetails(new ArrayList<>());
         }
 
-        // Remove invalid room entries (e.g., empty rows)
+        // Remove empty rows from roomDetails list
         List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
                 .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
                 .collect(Collectors.toList());
 
         quotationEntityDTO.setRoomDetails(validRooms);
 
+        quotationValidator.validate(quotationEntityDTO,result);
+        if(result.hasErrors()) {
+            System.out.println("Rejecting this because of adult issue");
+            modelView = view_add_quotation_form( quotationEntityDTO, result);
+            return modelView;
+        }
 
+        // Add object back to model so JSP can retrieve it
+        modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
         return modelView;
     }
 

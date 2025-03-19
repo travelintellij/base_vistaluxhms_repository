@@ -1,13 +1,22 @@
 package com.vistaluxhms.validator;
 
+import com.vistaluxhms.entity.MasterRoomDetailsEntity;
 import com.vistaluxhms.model.LeadEntityDTO;
 import com.vistaluxhms.model.QuotationEntityDTO;
+import com.vistaluxhms.model.QuotationRoomDetailsDTO;
 import com.vistaluxhms.services.ClientServicesImpl;
+import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class QuotationValidator implements Validator {
@@ -16,7 +25,10 @@ public class QuotationValidator implements Validator {
 	VlxCommonServicesImpl commonService;
 
 	@Autowired
-	ClientServicesImpl clientService;
+	SalesRelatesServicesImpl salesService;
+
+	@Value("${ANY_ROOM_CHILD_NO_BED_ALLOWED}")
+	private int ANY_ROOM_CHILD_NO_BED_ALLOWED;
 	
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -26,7 +38,8 @@ public class QuotationValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		QuotationEntityDTO quotationEntityDTO = (QuotationEntityDTO)target;
-
+		isValidRoomDetails(quotationEntityDTO.getRoomDetails(),errors);
+		validateOccupancy(quotationEntityDTO.getRoomDetails(),errors);
 
 		/*
 		if((leadRecorderVO.getClient()==null) || (!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName()))) {
@@ -47,5 +60,80 @@ public class QuotationValidator implements Validator {
 		 */
 		
 	}
- 
+
+	private void validateOccupancy(List<QuotationRoomDetailsDTO> roomDetailsList, Errors errors) {
+		List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+
+		for (int i = 0; i < roomDetailsList.size(); i++) {
+			QuotationRoomDetailsDTO quotationRoomDetailsDTO = roomDetailsList.get(i);
+
+			Optional<MasterRoomDetailsEntity> masterRoomEntity = listRoomType.stream()
+					.filter(room -> room.getRoomCategoryId() == quotationRoomDetailsDTO.getRoomCategoryId())
+					.findFirst();
+
+			if (masterRoomEntity.isPresent()) {
+				MasterRoomDetailsEntity masterRoomDetailsEntity = masterRoomEntity.get();
+				int quotationOccupancy = quotationRoomDetailsDTO.getAdults() + quotationRoomDetailsDTO.getExtraBed() + quotationRoomDetailsDTO.getChildWithBed();
+				int childNoBed = quotationRoomDetailsDTO.getChildNoBed();
+				if(quotationOccupancy>masterRoomDetailsEntity.getMaxOccupancy()){
+					errors.rejectValue("roomDetails[" + i + "].roomCategoryId", "error.roomDetails", "Max Occupancy Exceeded.");
+				}
+				if(childNoBed>ANY_ROOM_CHILD_NO_BED_ALLOWED){
+					errors.rejectValue("roomDetails[" + i + "].childNoBed", "error.roomDetails", "Child No Bed Exceeded.");
+				}
+
+				// Use the found room entity
+			} else {
+				errors.rejectValue("roomDetails[" + i + "].roomCategoryId", "error.roomDetails", "Room Category Not Found.");
+			}
+		}
+
+	}
+
+
+	private boolean isValidRoomDetails(List<QuotationRoomDetailsDTO> roomDetails, Errors errors) {
+		boolean isValid = true;
+		LocalDate today = LocalDate.now();
+
+		if (roomDetails != null) {
+			for (int i = 0; i < roomDetails.size(); i++) {
+				QuotationRoomDetailsDTO room = roomDetails.get(i);
+
+				// Validate Adults count
+				if (room.getAdults() < 1) {
+					errors.rejectValue("roomDetails[" + i + "].adults", "error.roomDetails", "Adults must be greater than zero.");
+					isValid = false;
+				}
+
+				// Validate Check-in and Check-out dates
+				LocalDate checkIn = room.getCheckInDate();
+				LocalDate checkOut = room.getCheckOutDate();
+
+				if (checkIn == null || checkOut == null) {
+					errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in and Check-out dates are required.");
+					isValid = false;
+				} else {
+					if (checkIn.isBefore(today)) {
+						errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in date cannot be in the past.");
+						isValid = false;
+					}
+
+					if (checkOut.isBefore(today)) {
+						errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date cannot be in the past.");
+						isValid = false;
+					}
+
+					if (checkOut.isBefore(checkIn)) {
+						errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date must be the same or after Check-in date.");
+						isValid = false;
+					}
+				}
+			}
+		}
+		return isValid;
+	}
+
+
+
+
 }
