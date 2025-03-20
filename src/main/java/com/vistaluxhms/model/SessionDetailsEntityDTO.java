@@ -6,7 +6,7 @@ import com.vistaluxhms.entity.SessionEntity;
 public class SessionDetailsEntityDTO extends SessionDetailsEntity {
     private boolean exists;
     private int roomCategoryId;
-    private int mealPlanId;
+    protected int mealPlanId;
 
 
     public boolean isExists() {
@@ -38,6 +38,7 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
     public void setRoomCategoryId(int roomCategoryId) {
         this.roomCategoryId = roomCategoryId;
     }
+
 
     public int getMealPlanId() {
         return mealPlanId;

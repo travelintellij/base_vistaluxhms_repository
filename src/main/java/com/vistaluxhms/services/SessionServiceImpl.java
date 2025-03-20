@@ -149,4 +149,35 @@ public class SessionServiceImpl {
 		sessionRateMappingEntity.setActive(false);
 		sessionRateMappingEntityRepository.save(sessionRateMappingEntity);
 	}
+
+	public List<SessionRateMappingEntity> getMappingsByRateTypeId(int rateTypeId) {
+		return sessionRateMappingEntityRepository.findByRateTypeEntity_RateTypeId(rateTypeId);
+	}
+
+	public SessionDetailsEntity getSessionDetails_Rate_And_Date_and_MealPlan(
+			List<SessionRateMappingEntity> sessionRateMappings, LocalDate checkInDate, int roomCategoryId, int mealPlanId) {
+
+		for (SessionRateMappingEntity mapping : sessionRateMappings) {
+			// Check if the check-in date is within the valid date range
+			if ((checkInDate.isEqual(mapping.getStartDate()) || checkInDate.isAfter(mapping.getStartDate())) &&
+					(checkInDate.isEqual(mapping.getEndDate()) || checkInDate.isBefore(mapping.getEndDate()))) {
+
+				SessionEntity session = mapping.getSessionEntity();
+				if (session != null && session.getSessionDetailsEntity() != null) {
+					// Find the first matching SessionDetailsEntity with the given mealPlanId and roomCategoryId
+					return session.getSessionDetailsEntity().stream()
+							.filter(detail -> detail.getSessionDetailId().getMealPlanId() == mealPlanId &&
+									detail.getSessionDetailId().getRoomCategoryId() == roomCategoryId) // Matching both mealPlanId and roomCategoryId
+							.findFirst()
+							.orElse(null);
+				}
+			}
+		}
+		return null; // No matching session details found
+	}
+
+
+
+
+
 }

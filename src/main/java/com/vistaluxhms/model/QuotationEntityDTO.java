@@ -10,7 +10,7 @@ public class QuotationEntityDTO {
     private int mealPlanId;
     private int quotationAudienceType;
     private String contactMethod;
-    private int mobile;
+    private String mobile;
     private String email;
     private List<QuotationRoomDetailsDTO> roomDetails;
 
@@ -54,11 +54,11 @@ public class QuotationEntityDTO {
         this.contactMethod = contactMethod;
     }
 
-    public int getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(int mobile) {
+    public void setMobile(String  mobile) {
         this.mobile = mobile;
     }
 

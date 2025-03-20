@@ -20,6 +20,7 @@ public class SessionDetailsEntity {
 
 
 
+
     @Column(name = "person1")
     protected int person1;
 
@@ -170,4 +171,6 @@ public class SessionDetailsEntity {
     public void setSessionDetailId(SessionDetailId sessionDetailId) {
         this.sessionDetailId = sessionDetailId;
     }
+
+
 }

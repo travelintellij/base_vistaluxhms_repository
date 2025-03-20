@@ -24,6 +24,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,9 @@ public class QuotationController {
 
     @Autowired
     QuotationValidator quotationValidator;
+
+    @Autowired
+    SessionServiceImpl sessionService;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -123,16 +127,36 @@ public class QuotationController {
 
         quotationValidator.validate(quotationEntityDTO,result);
         if(result.hasErrors()) {
-            System.out.println("Rejecting this because of adult issue");
             modelView = view_add_quotation_form( quotationEntityDTO, result);
             return modelView;
         }
+        else {
+            int grandTotalSum = 0;
 
+            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
+            for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
+                SessionDetailsEntity sessionDetailsEntity = sessionService.getSessionDetails_Rate_And_Date_and_MealPlan(sessionRateMappingEntities, quotationRoomDTO.getCheckInDate(),quotationRoomDTO.getRoomCategoryId(),quotationRoomDTO.getMealPlanId());
+                if(sessionDetailsEntity!=null) {
+                    processTotalPrice(quotationRoomDTO,sessionDetailsEntity);
+                    System.out.println("Session Details Applicable is :  " + sessionDetailsEntity); // Calls toString() implicitly
+                }
+                else {
+                    System.out.println("Session Received is null. ");
+                }
+            }
+        }
         // Add object back to model so JSP can retrieve it
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
         return modelView;
     }
 
+    private int processTotalPrice(QuotationRoomDetailsDTO quotationRoomDTO,SessionDetailsEntity sessionDetailsEntity){
+        int totalPrice=0;
+        if(quotationRoomDTO.getAdults()==1){
+            totalPrice = totalPrice + sessionDetailsEntity.getPerson1();
+        }
 
+        return totalPrice;
+    }
 
 }

@@ -29,5 +29,6 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
                                          @Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);
 
+        List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeId(int rateTypeId);
 
 }

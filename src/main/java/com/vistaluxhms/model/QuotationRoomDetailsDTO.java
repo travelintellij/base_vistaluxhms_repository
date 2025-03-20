@@ -12,6 +12,10 @@ public class QuotationRoomDetailsDTO {
     private int childWithBed;
     private int childNoBed;
     private int extraBed;
+    private int totalPrice;
+    private int discount;
+    private int finalPrice;
+    private boolean showBreakup;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
@@ -101,5 +105,37 @@ public class QuotationRoomDetailsDTO {
                 ", checkInDate=" + checkInDate +
                 ", checkOutDate=" + checkOutDate +
                 '}';
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public int getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(int finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+    public boolean isShowBreakup() {
+        return showBreakup;
+    }
+
+    public void setShowBreakup(boolean showBreakup) {
+        this.showBreakup = showBreakup;
     }
 }
