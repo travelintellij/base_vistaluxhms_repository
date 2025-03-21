@@ -9,6 +9,7 @@ public class QuotationRoomDetailsDTO {
     private int roomCategoryId;
     private int mealPlanId;
     private int adults;
+    private int adultPrice;
     private int childWithBed;
     private int childNoBed;
     private int extraBed;
@@ -16,6 +17,13 @@ public class QuotationRoomDetailsDTO {
     private int discount;
     private int finalPrice;
     private boolean showBreakup;
+    private int childWithBedPrice;
+    private int childNoBedPrice;
+    private int extraBedPrice;
+    private String roomCategoryName;
+    private String mealPlanName;
+
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
@@ -137,5 +145,53 @@ public class QuotationRoomDetailsDTO {
 
     public void setShowBreakup(boolean showBreakup) {
         this.showBreakup = showBreakup;
+    }
+
+    public int getChildWithBedPrice() {
+        return childWithBedPrice;
+    }
+
+    public void setChildWithBedPrice(int childWithBedPrice) {
+        this.childWithBedPrice = childWithBedPrice;
+    }
+
+    public int getChildNoBedPrice() {
+        return childNoBedPrice;
+    }
+
+    public void setChildNoBedPrice(int childNoBedPrice) {
+        this.childNoBedPrice = childNoBedPrice;
+    }
+
+    public int getExtraBedPrice() {
+        return extraBedPrice;
+    }
+
+    public void setExtraBedPrice(int extraBedPrice) {
+        this.extraBedPrice = extraBedPrice;
+    }
+
+    public String getRoomCategoryName() {
+        return roomCategoryName;
+    }
+
+    public void setRoomCategoryName(String roomCategoryName) {
+        this.roomCategoryName = roomCategoryName;
+    }
+
+    public String getMealPlanName() {
+        return mealPlanName;
+    }
+
+    public void setMealPlanName(String mealPlanName) {
+        this.mealPlanName = mealPlanName;
+    }
+
+    public int getAdultPrice() {
+        return adultPrice;
+    }
+
+    public void setAdultPrice(int adultPrice) {
+        this.adultPrice = adultPrice;
     }
 }

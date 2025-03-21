@@ -48,40 +48,7 @@
 
 
     </style>
-    <script>
-        function handleUserTypeChange() {
-            var userType = document.getElementById("quotationAudienceType").value;
-            document.getElementById("clientBox").classList.add("hidden");
-            document.getElementById("salesBox").classList.add("hidden");
-            document.getElementById("unregisteredBox").classList.add("hidden");
-            document.getElementById("contactMethod").value = ""; // Reset contact dropdown
-            document.getElementById("mobile").classList.add("hidden");
-            document.getElementById("email").classList.add("hidden");
 
-            if (userType === "1") {
-                document.getElementById("clientBox").classList.remove("hidden");
-            } else if (userType === "2") {
-                document.getElementById("salesBox").classList.remove("hidden");
-            } else if (userType === "3") {
-                document.getElementById("unregisteredBox").classList.remove("hidden");
-            }
-        }
-
-        function handleContactChange() {
-            var contactMethod = document.getElementById("contactMethod").value;
-            document.getElementById("mobile").classList.add("hidden");
-            document.getElementById("email").classList.add("hidden");
-
-            if (contactMethod === "mobile") {
-                document.getElementById("mobile").classList.remove("hidden");
-            } else if (contactMethod === "email") {
-                document.getElementById("email").classList.remove("hidden");
-            } else if (contactMethod === "both") {
-                document.getElementById("mobile").classList.remove("hidden");
-                document.getElementById("email").classList.remove("hidden");
-            }
-        }
-    </script>
 </head>
 
 <style>
@@ -187,210 +154,99 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Create Quotation</h2>
+    <h2>Review Quotation</h2>
 
     <form:form method="post" action="create_create_quotation" modelAttribute="QUOTATION_OBJ">
 
         <!-- User Type Selection -->
-  <div class="form-group">
-              <label for="quotationAudienceType">User Type:</label>
+            <div class="container">
+            <div class="form-group">
+              <label for="quotationAudienceType">Guest:</label>
+                <form:input path="guestName" id="guestName" name="guestName"  class= "input-field" style="height:50px;"/>
+            </div>
 
-              <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 600px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                    <form:option value="0">Select</form:option>
-                 <form:option value="1">Client</form:option>
-                 <form:option value="2">Sales Partner</form:option>
-                 <form:option value="3">Unregistered</form:option>
-              </form:select>
+          <div id="clientBox" style="width: 700px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
+              <label for="clientName">Mobile:</label>
+              <form:input path="mobile" type="number" id="mobile" name="mobile"  class= "input-field"/>
+               <label for="quotationAudienceType">Email:</label>
+              <form:input path="email" id="email" name="email"  type="email" class= "input-field" style="width:250px;"/>
           </div>
-
-          <div id="clientBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-              <label for="clientName">Client Name:</label>
-              <input type="text" id="clientName" name="clientName" class="input-field">
           </div>
-
-          <div id="salesBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-              <label for="salespartner">Sales Partner:</label>
-              <input type="text" id="salespartner" name="salespartner" class="input-field">
-          </div>
-
-          <div id="unregisteredBox" class="hidden">
-              <div class="row">
-                  <label for="contactMethod">Contact By:</label>
-                    <form:select path="contactMethod" onchange="handleContactChange()" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                       <form:option value="">Select</form:option>
-                       <form:option value="mobile">Mobile</form:option>
-                       <form:option value="email">Email</form:option>
-                       <form:option value="both">Both</form:option>
-                    </form:select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <label for="rateTypes">Rate Type:</label>
-                    <form:select path="rateTypeId" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                            <form:options items="${RATE_TYPE_MAP}" />
-                    </form:select>
-              </div>
-              <div class="row">
-                  <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
-                  <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
-              </div>
-          </div>
-
+<br>
+<hr/>
         <!-- Room Details (Dynamically Added Rows) -->
         <div id="roomsContainer">
-            <h3>Room Details</h3>
-            <button type="button" class="btn add-room" onclick="addRoom()">+ Add Room</button>
+            <h3>Pricing Details</h3>
+
             <table id="roomsTable">
                 <thead>
                     <tr>
-                        <th>Room Category</th>
-                        <th>Meal Plan</th>
-                        <th>Adults</th>
-                        <th>Children (with bed)</th>
-                        <th>Children (no bed)</th>
-                        <th>Extra Bed (Adult)</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Action</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Room Category</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Meal Plan</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Adults</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Child with bed</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Child no bed</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Extra Bed</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Check-in</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Check-out</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Dynamic Rows Will Be Added Here -->
-    <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
-        <tr>
-            <td>
-                 <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>
-                <select name="roomDetails[${status.index}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                    <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
-                        <option value="${entry.key}" ${room.roomCategoryId == entry.key ? 'selected' : ''}>${entry.value}</option>
-                    </c:forEach>
-                </select>
-            </td>
-            <td>
-                <select name="roomDetails[${status.index}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                    <c:forEach var="entry" items="${MEAL_PLAN_MAP}">
-                        <option value="${entry.key}" ${room.mealPlanId == entry.key ? 'selected' : ''}>${entry.value}</option>
-                    </c:forEach>
-                </select>
-            </td>
-            <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
-            <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required /></td>
-            <td><input type="number" name="roomDetails[${status.index}].childWithBed" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
-            <td>
-                <font color="red"><form:errors path="roomDetails[${status.index}].childNoBed" cssClass="error"  /></font>
-                <input type="number" name="roomDetails[${status.index}].childNoBed" class="input-field" value="${room.childNoBed}" min="0"  style="width:70px;" required />
-            </td>
-            <td><input type="number" name="roomDetails[${status.index}].extraBed" class="input-field" value="${room.extraBed}" min="0" style="width:70px;" required /></td>
-            <td>
-            <font color="red"><form:errors path="roomDetails[${status.index}].checkInDate" cssClass="error"  /></font>
-            <input type="date" name="roomDetails[${status.index}].checkInDate" class="input-field" value="${room.checkInDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
-            <td>
-            <font color="red"><form:errors path="roomDetails[${status.index}].checkOutDate" cssClass="error"  /></font>
-            <input type="date" name="roomDetails[${status.index}].checkOutDate" class="input-field" value="${room.checkOutDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
-            <td>
-                <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
-            </td>
-        </tr>
-    </c:forEach>
-
-                </tbody>
+                    <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
+                    <tr>
+                        <td>${room.roomCategoryName}</td>
+                        <td>${room.mealPlanName}</td>
+                        <td><font size="2">${room.adults} Adult(s)</font> | <font color="blue" size="4"><b> &#8377; ${room.adultPrice} </b></font></td>
+                        <td><font size="2">${room.childWithBed} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.childWithBedPrice}</b></font></td>
+                        <td><font size="2">${room.childNoBed} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.childNoBedPrice}</b></font></td>
+                        <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedPrice}</b></font></td>
+                        <td>${room.checkInDate}</td>
+                        <td>${room.checkOutDate}</td>
+                        <td><font color="#503732" size="4"> <b>&#8377; ${room.totalPrice} </b></font></td>
+                    </tr>
+                     </c:forEach>
+                     <tr>
+                        <td colspan="6">&nbsp;</td>
+                        <th style=" background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
+                       <td><font color="blue"><b> &#8377; ${QUOTATION_OBJ.grandTotal} </b></font></td>
+                     </tr>
+                     <tr>
+                         <td colspan="3">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
+                         <th style=" background-color: red;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Discount :</th>
+                        <td>&#8377; <form:input path="discount" type="number" id="discount" name="discount"  style="width:70px;"/> </td>
+                        <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
+                         <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${QUOTATION_OBJ.grandTotal}</span></td>
+                     </tr>
             </table>
         </div>
 
         <button type="submit" class="btn">Submit</button>
 
 </div>
+<script>
+    $(document).ready(function () {
+        $("#discount").on("input", function () {
+            var grandTotal = parseFloat(${QUOTATION_OBJ.grandTotal}); // Get the grand total
+            var discount = parseFloat($(this).val()) || 0; // Get discount or set to 0 if empty
 
-
-  <script>
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("quotationAudienceType").addEventListener("change", handleUserTypeChange);
-    document.getElementById("contactMethod").addEventListener("change", handleContactChange);
-    document.querySelector("form").addEventListener("submit", validateForm);
-
-    function validateForm(event) {
-        var userType = document.getElementById("quotationAudienceType").value;
-        var contactMethod = document.getElementById("contactMethod").value;
-        var mobile = document.getElementById("mobile").value.trim();
-        var email = document.getElementById("email").value.trim();
-        var isValid = true;
-
-        if (userType === "3") { // If "Unregistered" is selected
-            if (!contactMethod) {
-                alert("Please select a contact method (Mobile, Email, or Both).");
-                isValid = false;
+            // Check if discount exceeds grand total
+            if (discount > grandTotal) {
+                $("#errorMessage").text("Discount cannot exceed the grand total!").css("color", "red");
+                $("#discount").val(grandTotal); // Reset discount input to max allowed
+                discount = grandTotal; // Set discount to grand total
+            } else {
+                $("#errorMessage").text(""); // Clear error message
             }
 
-            if (contactMethod === "mobile" || contactMethod === "both") {
-                if (!mobile) {
-                    alert("Mobile number is required.");
-                    isValid = false;
-                } else if (!/^\d{10}$/.test(mobile)) {
-                    alert("Please enter a valid 10-digit mobile number.");
-                    isValid = false;
-                }
-            }
-
-            if (contactMethod === "email" || contactMethod === "both") {
-                if (!email) {
-                    alert("Email is required.");
-                    isValid = false;
-                } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-                    alert("Please enter a valid email address.");
-                    isValid = false;
-                }
-            }
-        }
-
-        if (!isValid) {
-            event.preventDefault(); // Prevent form submission if validation fails
-        }
-    }
-});
-
-function addRoom() {
-    let tableBody = document.querySelector("#roomsTable tbody");
-    let rowCount = tableBody.rows.length; // Get the row index for naming
-    let newRow = document.createElement("tr");
-    newRow.innerHTML = `
-        <td>
-            <select name="roomDetails[\${rowCount}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
-                    <option value="${entry.key}">${entry.value}</option>
-                </c:forEach>
-            </select>
-        </td>
-        <td>
-            <select name="roomDetails[\${rowCount}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                <c:forEach var="entry" items="${MEAL_PLAN_MAP}">
-                    <option value="${entry.key}">${entry.value}</option>
-                </c:forEach>
-            </select>
-        </td>
-        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" required /></td>
-        <td><input type="date" name="roomDetails[\${rowCount}].checkInDate"  style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"  required /></td>
-        <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required  /></td>
-        <td>
-            <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
-        </td>
-    `;
-    tableBody.appendChild(newRow);
-
-}
-
-function removeRoom(button) {
-    let row = button.parentNode.parentNode;
-    row.parentNode.removeChild(row);
-}
+            var finalPrice = grandTotal - discount; // Calculate final price
+            $("#finalPrice").html(finalPrice.toFixed(2)); // Update final price label
+        });
+    });
+</script>
 
 
-
-
-
-
-    </script>
 
 </form:form>
 

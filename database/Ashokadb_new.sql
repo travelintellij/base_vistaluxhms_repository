@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,7 +142,7 @@ CREATE TABLE `client` (
   KEY `salesPartnerId` (`salesPartnerId`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
   CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +151,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@udanchoo.com','direct ',2,'amazing growth. ',1),(3,'Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,0,9898989898,'mohit@bi.com','direct',5,'lets see',1),(6,'Rohit Kumar',12,0,9999999999,'ROHIT@janjaesgroup.com','Direct',11,'direct',1);
+INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@udanchoo.com','direct ',2,'amazing growth. ',1),(3,'Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,0,9898989898,'mohit@bi.com','direct',5,'lets see',1),(6,'Rohit Kumar',12,0,9999999999,'ROHIT@janjaesgroup.com','Direct',11,'direct',1),(7,'Hitesh Kumar',3,1,9582634445,'holidaysguide22@gmail.com','Direct',2,'good man. ',1);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +212,7 @@ CREATE TABLE `lead_master` (
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +221,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL),(20,7,2,0,0,0,'need it for holi. ','bahut chalu aadmi hai. ','2025-03-21','2025-03-22',101,NULL,1,1,1,0,0,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -420,7 +420,7 @@ CREATE TABLE `session` (
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`sessionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -429,7 +429,7 @@ CREATE TABLE `session` (
 
 LOCK TABLES `session` WRITE;
 /*!40000 ALTER TABLE `session` DISABLE KEYS */;
-INSERT INTO `session` VALUES (8,'Holi_Package_2026','Holi is on. ','2025-03-08 18:47:56','2025-03-12 14:49:15',1),(9,'Standard_Session_Valid_March_2025','This is the standard valid session for march 2026','2025-03-10 09:12:54','2025-03-12 14:49:28',1),(10,'B2C_New_Year_Package_2025','New Year Coming. Packages rolled out. ','2025-03-10 12:45:33','2025-03-10 14:16:09',1),(11,'B2C_Peak_Season_Qtr_2','These are the B2C rates for peak season. ','2025-03-12 14:38:03','2025-03-12 14:49:42',1),(12,'New Session For Kids Break','this is the peak season session. ','2025-03-12 14:47:39','2025-03-12 14:47:39',1),(13,'Diwali Break','This is the Diwali Season. ','2025-03-12 14:48:51','2025-03-12 14:48:51',1);
+INSERT INTO `session` VALUES (8,'Holi_Package_2026','Holi is on. ','2025-03-08 18:47:56','2025-03-12 14:49:15',1),(9,'Standard_Session_Valid_March_2025','This is the standard valid session for march 2026','2025-03-10 09:12:54','2025-03-12 14:49:28',1),(10,'B2C_New_Year_Package_2025','New Year Coming. Packages rolled out. ','2025-03-10 12:45:33','2025-03-10 14:16:09',1),(11,'B2C_Peak_Season_Qtr_2','These are the B2C rates for peak season. ','2025-03-12 14:38:03','2025-03-12 14:49:42',1),(12,'New Session For Kids Break','this is the peak season session. ','2025-03-12 14:47:39','2025-03-12 14:47:39',1),(13,'Diwali Break','This is the Diwali Season. ','2025-03-12 14:48:51','2025-03-12 14:48:51',1),(14,'B2C_DIWALI_GREETING_PROMOTION_OUT','done done done','2025-03-17 07:28:37','2025-03-17 07:28:37',1);
 /*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -454,7 +454,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -463,7 +463,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
-INSERT INTO `session_rate_mapping` VALUES (9,9,1,'2025-03-01','2025-03-03',0,'2025-03-15 12:35:52','2025-03-15 13:20:12'),(10,9,1,'2025-03-02','2025-03-04',0,'2025-03-15 13:20:28','2025-03-15 13:35:37'),(11,9,1,'2025-03-05','2025-03-06',1,'2025-03-15 13:24:31','2025-03-15 13:24:31'),(12,9,1,'2025-03-07','2025-03-08',0,'2025-03-15 13:35:15','2025-03-15 13:35:29'),(13,9,1,'2025-03-20','2025-03-16',0,'2025-03-15 13:52:12','2025-03-15 13:52:28'),(14,9,1,'2025-03-20','2025-03-18',1,'2025-03-15 13:54:31','2025-03-15 13:54:31'),(15,9,1,'2025-03-21','2025-03-21',0,'2025-03-15 14:28:08','2025-03-16 03:46:31'),(16,8,4,'2025-06-05','2025-07-22',1,'2025-03-16 17:33:44','2025-03-16 17:33:44');
+INSERT INTO `session_rate_mapping` VALUES (9,9,1,'2025-03-01','2025-03-03',0,'2025-03-15 12:35:52','2025-03-15 13:20:12'),(10,9,1,'2025-03-02','2025-03-04',0,'2025-03-15 13:20:28','2025-03-15 13:35:37'),(11,9,1,'2025-03-05','2025-03-06',1,'2025-03-15 13:24:31','2025-03-15 13:24:31'),(12,9,1,'2025-03-07','2025-03-08',0,'2025-03-15 13:35:15','2025-03-15 13:35:29'),(13,9,1,'2025-03-20','2025-03-16',0,'2025-03-15 13:52:12','2025-03-15 13:52:28'),(14,9,1,'2025-03-20','2025-03-18',1,'2025-03-15 13:54:31','2025-03-15 13:54:31'),(15,9,1,'2025-03-21','2025-03-21',0,'2025-03-15 14:28:08','2025-03-16 03:46:31'),(16,8,4,'2025-06-05','2025-07-22',1,'2025-03-16 17:33:44','2025-03-16 17:33:44'),(17,14,4,'2025-07-23','2025-07-29',1,'2025-03-18 09:42:13','2025-03-18 09:42:13'),(18,11,1,'2025-03-07','2025-03-08',1,'2025-03-20 14:19:15','2025-03-20 14:19:15'),(19,9,1,'2025-03-20','2025-03-21',0,'2025-03-20 14:24:17','2025-03-21 14:29:18'),(20,11,1,'2025-03-22','2025-03-23',0,'2025-03-20 14:24:31','2025-03-21 14:27:57'),(21,11,1,'2025-03-22','2025-03-31',1,'2025-03-21 14:28:08','2025-03-21 14:28:08'),(22,9,1,'2025-03-20','2025-03-21',1,'2025-03-21 14:29:47','2025-03-21 14:29:47');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -505,7 +505,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (8,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-16 17:32:53'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(9,1,3,4500,5000,0,0,0,0,0,NULL,1,'2025-03-15 13:45:55','2025-03-15 13:45:55'),(11,1,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-13 16:46:32'),(11,2,1,0,0,0,0,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-13 16:46:46');
+INSERT INTO `sessiondetail` VALUES (8,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 07:44:32','2025-03-16 17:32:53'),(8,1,2,3500,0,0,0,0,0,0,NULL,1,'2025-03-18 09:39:03','2025-03-18 09:39:33'),(9,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-13 15:26:16','2025-03-13 17:01:15'),(9,1,2,3500,4000,0,0,0,0,0,NULL,1,'2025-03-13 17:01:24','2025-03-13 17:01:24'),(9,1,3,4500,5000,0,0,0,0,0,NULL,1,'2025-03-15 13:45:55','2025-03-15 13:45:55'),(9,1,4,5000,5500,0,0,0,0,0,NULL,1,'2025-03-21 14:30:07','2025-03-21 14:30:07'),(11,1,1,5000,5200,0,0,0,0,0,NULL,1,'2025-03-13 16:46:22','2025-03-20 14:19:32'),(11,1,2,6000,6200,0,0,0,0,0,NULL,1,'2025-03-20 14:19:40','2025-03-20 14:19:40'),(11,1,3,7000,7000,0,0,0,0,0,NULL,1,'2025-03-20 16:22:19','2025-03-20 16:22:19'),(11,1,4,7200,7400,0,0,0,0,0,NULL,1,'2025-03-21 14:27:24','2025-03-21 14:27:24'),(11,2,1,6000,6200,6400,6600,0,0,0,NULL,1,'2025-03-13 16:46:39','2025-03-20 14:40:24'),(11,2,2,6200,6400,6600,6800,0,0,0,NULL,1,'2025-03-21 14:27:04','2025-03-21 14:27:04'),(11,2,4,7000,7500,8000,8500,0,0,0,NULL,1,'2025-03-21 13:05:53','2025-03-21 13:05:53'),(14,1,1,4000,4200,0,0,0,0,0,NULL,1,'2025-03-17 07:29:01','2025-03-20 07:54:24'),(14,1,2,4500,5000,0,0,0,0,0,NULL,1,'2025-03-20 07:54:32','2025-03-20 07:54:32'),(14,2,1,4000,4500,5000,5500,0,0,0,NULL,1,'2025-03-20 07:55:09','2025-03-20 07:55:09');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -547,4 +547,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-17 10:30:37
+-- Dump completed on 2025-03-21 20:06:28

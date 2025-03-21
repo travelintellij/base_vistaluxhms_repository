@@ -189,7 +189,7 @@ h2, h3 {
 <div class="container">
     <h2>Create Quotation</h2>
 
-    <form:form method="post" action="create_create_quotation" modelAttribute="QUOTATION_OBJ">
+    <form:form method="post" action="review_process_create_quotation" modelAttribute="QUOTATION_OBJ">
 
         <!-- User Type Selection -->
   <div class="form-group">

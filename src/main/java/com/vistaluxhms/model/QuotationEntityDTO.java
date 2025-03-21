@@ -13,6 +13,11 @@ public class QuotationEntityDTO {
     private String mobile;
     private String email;
     private List<QuotationRoomDetailsDTO> roomDetails;
+    private String guestName = "Guest";
+    private int grandTotal;
+    private int discount;
+    private boolean showCostBreakup;
+
 
     public int getRateTypeId() {
         return rateTypeId;
@@ -76,5 +81,29 @@ public class QuotationEntityDTO {
 
     public void setRoomDetails(List<QuotationRoomDetailsDTO> roomDetails) {
         this.roomDetails = roomDetails;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public void setGuestName(String guestName) {
+        this.guestName = guestName;
+    }
+
+    public int getGrandTotal() {
+        return grandTotal;
+    }
+
+    public void setGrandTotal(int grandTotal) {
+        this.grandTotal = grandTotal;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 }
