@@ -122,9 +122,7 @@ public class QuotationController {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");  // Return to the same JSP
 
-        /*for (QuotationRoomDetailsDTO emp : quotationEntityDTO.getRoomDetails()) {
-            System.out.println(emp); // Calls toString() implicitly
-        }*/
+
 
         // Initialize roomDetails list if null
         if (quotationEntityDTO.getRoomDetails() == null) {
