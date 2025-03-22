@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@SessionAttributes("QUOTATION_OBJ")
 public class QuotationController {
 
     @Autowired
@@ -66,6 +68,8 @@ public class QuotationController {
     @Value("${ANY_ROOM_STANDARD_OCCUPANCY_INCREASE_PERCENTAGE}")
     private int ANY_ROOM_STANDARD_OCCUPANCY_INCREASE_PERCENTAGE;
 
+    @Value("${all.email.notify.communication.active}")
+    private boolean emailNotifyActive;
 
     @Autowired
     QuotationValidator quotationValidator;
@@ -75,6 +79,13 @@ public class QuotationController {
 
     @Value("${ANY_ROOM_CHILD_NO_BED_ALLOWED}")
     private int ANY_ROOM_CHILD_NO_BED_ALLOWED;
+
+    @ModelAttribute("QUOTATION_OBJ")
+    public QuotationEntityDTO getQuotationFromSession(HttpSession session) {
+        QuotationEntityDTO quotation = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ");
+        return (quotation != null) ? quotation : new QuotationEntityDTO(); // Ensure a non-null object
+    }
+
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -117,6 +128,127 @@ public class QuotationController {
         return modelView;
     }
 
+
+    @PostMapping(value = "review_process_create_quotation")
+    public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result, HttpSession session,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
+
+        if (quotationEntityDTO.getRoomDetails() == null) {
+            quotationEntityDTO.setRoomDetails(new ArrayList<>());
+        }
+
+        List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
+                .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
+                .collect(Collectors.toList());
+
+        quotationEntityDTO.setRoomDetails(validRooms);
+
+        quotationValidator.validate(quotationEntityDTO, result);
+        if (result.hasErrors()) {
+            return view_add_quotation_form(quotationEntityDTO, result);
+        } else {
+            int grandTotalSum = 0;
+
+            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
+
+            for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
+                quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+
+                LocalDate checkIn = quotationRoomDTO.getCheckInDate();
+                LocalDate checkOut = quotationRoomDTO.getCheckOutDate();
+
+                int totalAdultPrice = 0;
+                int totalChildWithBedPrice = 0;
+                int totalChildNoBedPrice = 0;
+                int totalExtraBedPrice = 0;
+
+                while (!checkIn.isAfter(checkOut.minusDays(1))) { // Loop from check-in to checkout - 1 day
+                    SessionDetailsEntity sessionDetailsEntity = sessionService.getSessionDetails_Rate_And_Date_and_MealPlan(
+                            sessionRateMappingEntities, checkIn, quotationRoomDTO.getRoomCategoryId(), quotationRoomDTO.getMealPlanId()
+                    );
+
+                    if (sessionDetailsEntity != null) {
+                        int dayPrice = processTotalPrice(quotationRoomDTO, sessionDetailsEntity);
+                        grandTotalSum += dayPrice;
+
+                        totalAdultPrice += quotationRoomDTO.getAdultPrice();
+                        totalChildWithBedPrice += quotationRoomDTO.getChildWithBedPrice();
+                        totalChildNoBedPrice += quotationRoomDTO.getChildNoBedPrice();
+                        totalExtraBedPrice += quotationRoomDTO.getExtraBedPrice();
+                    }
+
+                    checkIn = checkIn.plusDays(1);
+                }
+
+                quotationRoomDTO.setAdultPrice(totalAdultPrice);
+                quotationRoomDTO.setChildWithBedPrice(totalChildWithBedPrice);
+                quotationRoomDTO.setChildNoBedPrice(totalChildNoBedPrice);
+                quotationRoomDTO.setExtraBedPrice(totalExtraBedPrice);
+                quotationRoomDTO.setTotalPrice(totalAdultPrice + totalChildWithBedPrice + totalChildNoBedPrice + totalExtraBedPrice);
+            }
+
+            quotationEntityDTO.setGrandTotal(grandTotalSum);
+        }
+
+        //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+        modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+        modelView.setViewName("quotation/reviewQuotation");
+        return modelView;
+    }
+
+    private int processTotalPrice(QuotationRoomDetailsDTO quotationRoomDTO, SessionDetailsEntity sessionDetailsEntity) {
+        int totalPrice = 0;
+        int childWithBedPrice = 0;
+        int childNoBedPrice = 0;
+        int extraBedPrice = 0;
+
+        if (quotationRoomDTO.getAdults() == 1) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson1());
+            totalPrice += sessionDetailsEntity.getPerson1();
+        } else if (quotationRoomDTO.getAdults() == 2) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson2());
+            totalPrice += sessionDetailsEntity.getPerson2();
+        } else if (quotationRoomDTO.getAdults() == 3) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson3());
+            totalPrice += sessionDetailsEntity.getPerson3();
+        } else if (quotationRoomDTO.getAdults() == 4) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson4());
+            totalPrice += sessionDetailsEntity.getPerson4();
+        } else if (quotationRoomDTO.getAdults() == 5) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson5());
+            totalPrice += sessionDetailsEntity.getPerson5();
+        } else if (quotationRoomDTO.getAdults() == 6) {
+            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson6());
+            totalPrice += sessionDetailsEntity.getPerson6();
+        }
+
+        if (quotationRoomDTO.getChildWithBed() > 0) {
+            childWithBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_CHILD_PERCENTAGE / 100) * quotationRoomDTO.getChildWithBed();
+            totalPrice += childWithBedPrice;
+            quotationRoomDTO.setChildWithBedPrice(childWithBedPrice);
+        }
+
+        if (quotationRoomDTO.getChildNoBed() > 0) {
+            childNoBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_CHILD_NO_BED_PERCENTAGE / 100) * quotationRoomDTO.getChildNoBed();
+            totalPrice += childNoBedPrice;
+            quotationRoomDTO.setChildNoBedPrice(childNoBedPrice);
+        }
+
+        if (quotationRoomDTO.getExtraBed() > 0) {
+            extraBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_ADULT_PERCENTAGE / 100) * quotationRoomDTO.getExtraBed();
+            totalPrice += extraBedPrice;
+            quotationRoomDTO.setExtraBedPrice(extraBedPrice);
+        }
+
+        return totalPrice;
+    }
+
+
+    /*
     @PostMapping(value="review_process_create_quotation")
     public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
@@ -147,6 +279,8 @@ public class QuotationController {
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
                 quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
                 quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+
+
 
                 SessionDetailsEntity sessionDetailsEntity = sessionService.getSessionDetails_Rate_And_Date_and_MealPlan(sessionRateMappingEntities, quotationRoomDTO.getCheckInDate(),quotationRoomDTO.getRoomCategoryId(),quotationRoomDTO.getMealPlanId());
                 if(sessionDetailsEntity!=null) {
@@ -213,5 +347,56 @@ public class QuotationController {
         quotationRoomDTO.setTotalPrice(totalPrice);
         return totalPrice;
     }
+ */
 
+
+    private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, String templateName) {
+
+        if(emailNotifyActive) {
+            Mail mail = new Mail();
+            //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
+            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
+            mail.setSubject(emailSubject);
+            AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
+            mail.setTo(quotationEntityDTO.getEmail());
+            mail.setCc(userObj.getEmail());
+            try {
+                Map<String, Object> model = new HashMap<String, Object>();
+                //model.put("leadId", leadReferenceNumber);
+                model.put("contactName",quotationEntityDTO.getGuestName());
+                model.put("remarks", quotationEntityDTO.getRemarks());
+                model.put("roomDetails", quotationEntityDTO.getRoomDetails());
+                System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
+                System.out.println("Map Value " + model.get("roomDetails"));
+                model.put("quotationAdvisor", userObj.getName());
+                model.put("contactNumber", userObj.getMobile());
+                mail.setModel(model);
+                emailService.sendEmailMessageUsingTemplate(mail,templateName);
+            } catch (MessagingException | IOException | TemplateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Email Notification DISABLE. ");
+        }
+    }
+
+    @PostMapping(value = "process_quotation")
+    public ModelAndView process_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("quotation/reviewQuotation");
+        notifyQuotationReceiverByEmail(quotationEntityDTO,"FITQuotation.ftl");
+        System.out.println("Quotation Sent Successfully!! ");
+        session.removeAttribute(sessionKey);
+        return modelView;
+    }
 }

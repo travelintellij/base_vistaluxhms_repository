@@ -17,6 +17,7 @@ public class QuotationEntityDTO {
     private int grandTotal;
     private int discount;
     private boolean showCostBreakup;
+    private String remarks;
 
 
     public int getRateTypeId() {
@@ -105,5 +106,21 @@ public class QuotationEntityDTO {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public boolean isShowCostBreakup() {
+        return showCostBreakup;
+    }
+
+    public void setShowCostBreakup(boolean showCostBreakup) {
+        this.showCostBreakup = showCostBreakup;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
