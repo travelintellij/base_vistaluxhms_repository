@@ -10,19 +10,19 @@ import com.vistaluxhms.validator.QuotationValidator;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -132,37 +132,33 @@ public class QuotationController {
     }
 
 
-    @PostMapping(value = "review_process_create_quotation")
-    public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                        BindingResult result, HttpSession session,final RedirectAttributes redirectAttrib) {
+    //@PostMapping(value = "review_process_create_quotation")
+    @RequestMapping(value="review_process_create_quotation",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
         if (quotationEntityDTO.getRoomDetails() == null) {
-            quotationEntityDTO.setRoomDetails(new ArrayList<>());
+            quotationEntityDTO = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+            if (quotationEntityDTO.getRoomDetails() == null) {
+                quotationEntityDTO.setRoomDetails(new ArrayList<>());
+            }
         }
-
         List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
                 .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
                 .collect(Collectors.toList());
-
         quotationEntityDTO.setRoomDetails(validRooms);
-
         quotationValidator.validate(quotationEntityDTO, result);
         if (result.hasErrors()) {
             return view_add_quotation_form(quotationEntityDTO, session,result);
         } else {
             int grandTotalSum = 0;
-
             List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
-
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
                 quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
                 quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
-
                 LocalDate checkIn = quotationRoomDTO.getCheckInDate();
                 LocalDate checkOut = quotationRoomDTO.getCheckOutDate();
-
                 int totalAdultPrice = 0;
                 int totalChildWithBedPrice = 0;
                 int totalChildNoBedPrice = 0;
@@ -182,24 +178,21 @@ public class QuotationController {
                         totalChildNoBedPrice += quotationRoomDTO.getChildNoBedPrice();
                         totalExtraBedPrice += quotationRoomDTO.getExtraBedPrice();
                     }
-
                     checkIn = checkIn.plusDays(1);
                 }
-
                 quotationRoomDTO.setAdultPrice(totalAdultPrice);
                 quotationRoomDTO.setChildWithBedPrice(totalChildWithBedPrice);
                 quotationRoomDTO.setChildNoBedPrice(totalChildNoBedPrice);
                 quotationRoomDTO.setExtraBedPrice(totalExtraBedPrice);
                 quotationRoomDTO.setTotalPrice(totalAdultPrice + totalChildWithBedPrice + totalChildNoBedPrice + totalExtraBedPrice);
             }
-
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
 
         //session.
         //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
         //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
-        //session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
         modelView.setViewName("quotation/reviewQuotation");
         return modelView;
@@ -252,35 +245,83 @@ public class QuotationController {
         return totalPrice;
     }
 
-    @PostMapping(value = "process_quotation")
-    public ModelAndView process_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+    @RequestMapping(value="process_quotation",params = "Email",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView process_quotation_email(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
                                                         BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
         //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
-        /*String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
         QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
         if (sessionQuotation != null) {
             quotationEntityDTO = sessionQuotation;
-        }*/
-        modelView.setViewName("quotation/reviewQuotation");
-        notifyQuotationReceiverByEmail(quotationEntityDTO,"FITQuotation.ftl");
+        }
+        modelView.setViewName("redirect:review_process_create_quotation");
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        if (result.hasErrors()) {
+            modelView = review_process_create_quotation(quotationEntityDTO,result,session,redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+
+        notifyQuotationReceiverByEmail(quotationEntityDTO,recipientEmails,"FITQuotation.ftl");
         System.out.println("Quotation Sent Successfully!! ");
+        redirectAttrib.addFlashAttribute("Success","Quotation is sent successfully !! ");
         //session.removeAttribute(sessionKey);
         return modelView;
     }
 
+    @RequestMapping(value="process_quotation",params = "Back",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView process_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                          BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("quotation/createQuotation");
+        Map<Long, String> mapSalesPartner =  salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        Map<Integer, String> rateTypeMap = listRateType.stream()
+                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        Map<Integer, String> roomTypeMap = listRoomType.stream()
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP",VistaluxConstants.MEAL_PLANS_MAP);
+        modelView.addObject("userName", userObj.getUsername());
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+
+        modelView.addObject("QUOTATION_OBJ",sessionQuotation);
+        return modelView;
+    }
 
 
-    private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, String templateName) {
-
+    private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, List<String> recipientEmails,String templateName) {
         if(emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
             String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
-            mail.setTo(quotationEntityDTO.getEmail());
+            //mail.setTo(quotationEntityDTO.getEmail());
+            InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
+            for (int i = 0; i < recipientEmails.size(); i++) {
+                try {
+                    emailAddresses[i] = new InternetAddress(recipientEmails.get(i).trim());
+                } catch (AddressException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            mail.setToList(emailAddresses);
             mail.setCc(userObj.getEmail());
             try {
                 Map<String, Object> model = new HashMap<String, Object>();
@@ -291,10 +332,14 @@ public class QuotationController {
                 System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
                 System.out.println("Map Value " + model.get("roomDetails"));
                 model.put("quotationAdvisor", userObj.getName());
+                model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
+                model.put("discount", quotationEntityDTO.getDiscount());
+                model.put("finalPrice", quotationEntityDTO.getGrandTotal()-quotationEntityDTO.getDiscount());
                 model.put("serviceAdvisorMobile", userObj.getMobile());
 
                 mail.setModel(model);
-                emailService.sendEmailMessageUsingTemplate(mail,templateName);
+                //emailService.sendEmailMessageUsingTemplate(mail,templateName);
+                emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail,templateName);
             } catch (MessagingException | IOException | TemplateException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -304,4 +349,30 @@ public class QuotationController {
             System.out.println("Email Notification DISABLE. ");
         }
     }
+
+    private List<String> validateAndExtractEmails(String emailInput, Errors errors) {
+        List<String> emailList = new ArrayList<>();
+        if (emailInput != null && !emailInput.trim().isEmpty()) {
+            // Split input using comma ',' or semicolon ';' as delimiter
+            String[] emails = emailInput.split("[,;]");
+            for (String email : emails) {
+                email = email.trim(); // Remove spaces
+                if (!isValidEmail(email)) {
+                    errors.rejectValue("email", "error.email", "Invalid email format: " + email);
+                } else {
+                    emailList.add(email);
+                }
+            }
+        }
+        if (emailList.isEmpty()) {
+            errors.rejectValue("email", "error.email", "At least one valid email is required.");
+        }
+        return emailList;
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
+    }
+
 }

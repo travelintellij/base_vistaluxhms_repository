@@ -177,27 +177,36 @@ h2, h3 {
     <h2>Review Quotation</h2>
 
     <form:form method="post" action="process_quotation" modelAttribute="QUOTATION_OBJ">
-
         <!-- User Type Selection -->
             <div class="container">
             <div class="form-group">
               <label for="quotationAudienceType">Guest:</label>
-                <form:input path="guestName" id="guestName" name="guestName"  class= "input-field" style="height:50px;"/>
+                <form:input path="guestName" id="guestName" name="guestName"  class= "input-field" style="height:50px;" required="required"/>
             </div>
 
           <div id="clientBox" style="width: 700px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
               <label for="clientName">Mobile:</label>
               <form:input path="mobile" type="number" id="mobile" name="mobile"  class= "input-field"/>
-               <label for="quotationAudienceType">Email:</label>
-              <form:input path="email" id="email" name="email"  type="email" class= "input-field" style="width:250px;"/>
+
+                <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
+                <label for="Email">Email:</label>
+                    <form:input path="email" id="email" name="email"  class= "input-field" style="width:250px;"/>
+                </c:if>
+                <font color="red"><form:errors path="email" cssClass="error"  /></font>
           </div>
           </div>
-<br>
+          <br>
+<button type="submit" class="btn" name="Back" id="Back" value="Back" style="float: right;" >Back</button>
 <hr/>
         <!-- Room Details (Dynamically Added Rows) -->
         <div id="roomsContainer">
-            <h3>Pricing Details</h3>
-
+                <h3>Pricing Details</h3>
+                <div align="center" style="margin: 10px 0;">
+                   <b>
+                       <font color="green">${Success}</font>
+                       <font color="red">${Error}</font>
+                   </b>
+               </div>
             <table id="roomsTable">
                 <thead>
                     <tr>
@@ -237,12 +246,14 @@ h2, h3 {
                          <th style=" background-color: red;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Discount :</th>
                         <td>&#8377; <form:input path="discount" type="number" id="discount" name="discount"  style="width:70px;padding: 0px 0px;height:25px;"/> </td>
                         <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
-                         <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${QUOTATION_OBJ.grandTotal}</span></td>
+                         <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${QUOTATION_OBJ.grandTotal - QUOTATION_OBJ.discount }</span></td>
                      </tr>
             </table>
         </div>
         <div class="button-container">
-            <button type="submit" class="btn">Email Quotation</button> |
+            <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
+                <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
+            </c:if>
             <button type="submit" class="btn" style="background-color: green;" disabled>WhatsApp Quotation</button> |
             <button type="submit" class="btn" disabled>Email & WhatsApp Quotation</button> |
             <button type="submit" class="btn" disabled>Save Quotation</button>

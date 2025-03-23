@@ -257,11 +257,10 @@ public class EmailServiceImpl {
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getToList());
-	        helper.setCc(mail.getCcList());
-	        
+	        /*helper.setCc(mail.getCcList());
 	        if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
 	        	helper.setBcc(emailNotifyBcc);
-	        }
+	        }*/
 	        helper.setText(html, true);
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());

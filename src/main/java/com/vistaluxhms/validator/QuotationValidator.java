@@ -73,6 +73,9 @@ public class QuotationValidator implements Validator {
 
 			if (masterRoomEntity.isPresent()) {
 				MasterRoomDetailsEntity masterRoomDetailsEntity = masterRoomEntity.get();
+				if(quotationRoomDetailsDTO.getAdults()>masterRoomDetailsEntity.getStandardOccupancy()){
+					errors.rejectValue("roomDetails[" + i + "].roomCategoryId", "error.roomDetails", "Standard Occupancy Exceeded.");
+				}
 				int quotationOccupancy = quotationRoomDetailsDTO.getAdults() + quotationRoomDetailsDTO.getExtraBed() + quotationRoomDetailsDTO.getChildWithBed();
 				int childNoBed = quotationRoomDetailsDTO.getChildNoBed();
 				if(quotationOccupancy>masterRoomDetailsEntity.getMaxOccupancy()){

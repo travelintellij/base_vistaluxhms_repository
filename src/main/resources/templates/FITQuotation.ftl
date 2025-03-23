@@ -121,7 +121,21 @@
                 <td>${room.checkOutDate}</td>
                 <td>INR ${room.totalPrice?string(",##0.00")}</td>
             </tr>
-        </#list>
+            </#list>
+              <tr>
+                  <td colspan="6">&nbsp;</td>
+                  <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
+                    <td><font color="blue"><b> &#8377; ${grandTotalSum} </b></font></td>
+               </tr>
+               <#if discount?number gt 0>
+               <tr>
+                   <td colspan="3">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
+                   <th style="background-color: #1E90FF; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;" colspan="2"> Discount :</th>
+                  <td>&#8377; ${discount} </td>
+                  <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
+                   <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${finalPrice}</span></td>
+               </tr>
+               </#if>
         </table>
 
         <h3>Terms & Conditions:</h3>

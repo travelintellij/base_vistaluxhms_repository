@@ -49,14 +49,17 @@
 
     </style>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            handleUserTypeChange();  // Ensure user type selection is preserved
+            handleContactChange();  // Ensure contact method selection is preserved
+        });
+
+        // Function to Show/Hide Sections Based on User Type
         function handleUserTypeChange() {
             var userType = document.getElementById("quotationAudienceType").value;
             document.getElementById("clientBox").classList.add("hidden");
             document.getElementById("salesBox").classList.add("hidden");
             document.getElementById("unregisteredBox").classList.add("hidden");
-            document.getElementById("contactMethod").value = ""; // Reset contact dropdown
-            document.getElementById("mobile").classList.add("hidden");
-            document.getElementById("email").classList.add("hidden");
 
             if (userType === "1") {
                 document.getElementById("clientBox").classList.remove("hidden");
@@ -67,6 +70,7 @@
             }
         }
 
+        // Function to Show/Hide Contact Fields Based on Contact Method Selection
         function handleContactChange() {
             var contactMethod = document.getElementById("contactMethod").value;
             document.getElementById("mobile").classList.add("hidden");
@@ -81,6 +85,7 @@
                 document.getElementById("email").classList.remove("hidden");
             }
         }
+
     </script>
 </head>
 
@@ -366,10 +371,10 @@ function addRoom() {
                 </c:forEach>
             </select>
         </td>
-        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" value="2" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkInDate"  style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"  required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required  /></td>
         <td>
