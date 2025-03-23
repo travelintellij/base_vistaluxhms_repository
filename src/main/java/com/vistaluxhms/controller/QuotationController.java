@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@SessionAttributes("QUOTATION_OBJ")
+//@SessionAttributes("QUOTATION_OBJ")
 public class QuotationController {
 
     @Autowired
@@ -103,8 +103,11 @@ public class QuotationController {
     }
 
     @RequestMapping("view_add_quotation_form")
-    public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result) {
+    public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session,BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
+        session.removeAttribute("QUOTATION_OBJ");
+        session.removeAttribute("QUOTATION_OBJ_"+ userObj.getUserId());
+
         if (quotationEntityDTO.getRoomDetails() == null || quotationEntityDTO.getRoomDetails().isEmpty()) {
             quotationEntityDTO.setRoomDetails(new ArrayList<>()); // Only initialize if it's empty
         }
@@ -147,7 +150,7 @@ public class QuotationController {
 
         quotationValidator.validate(quotationEntityDTO, result);
         if (result.hasErrors()) {
-            return view_add_quotation_form(quotationEntityDTO, result);
+            return view_add_quotation_form(quotationEntityDTO, session,result);
         } else {
             int grandTotalSum = 0;
 
@@ -193,8 +196,10 @@ public class QuotationController {
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
 
+        //session.
         //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
-        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+        //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+        //session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
         modelView.setViewName("quotation/reviewQuotation");
         return modelView;
@@ -247,107 +252,24 @@ public class QuotationController {
         return totalPrice;
     }
 
-
-    /*
-    @PostMapping(value="review_process_create_quotation")
-    public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,BindingResult result, final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");  // Return to the same JSP
-
-
-
-        // Initialize roomDetails list if null
-        if (quotationEntityDTO.getRoomDetails() == null) {
-            quotationEntityDTO.setRoomDetails(new ArrayList<>());
-        }
-
-        // Remove empty rows from roomDetails list
-        List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
-                .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
-                .collect(Collectors.toList());
-
-        quotationEntityDTO.setRoomDetails(validRooms);
-
-        quotationValidator.validate(quotationEntityDTO,result);
-        if(result.hasErrors()) {
-            modelView = view_add_quotation_form( quotationEntityDTO, result);
-            return modelView;
-        }
-        else {
-            int grandTotalSum = 0;
-            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
-            for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
-                quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
-                quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
-
-
-
-                SessionDetailsEntity sessionDetailsEntity = sessionService.getSessionDetails_Rate_And_Date_and_MealPlan(sessionRateMappingEntities, quotationRoomDTO.getCheckInDate(),quotationRoomDTO.getRoomCategoryId(),quotationRoomDTO.getMealPlanId());
-                if(sessionDetailsEntity!=null) {
-                    grandTotalSum = grandTotalSum + processTotalPrice(quotationRoomDTO,sessionDetailsEntity);
-                    System.out.println("Session Details Applicable is :  " + sessionDetailsEntity); // Calls toString() implicitly
-                }
-                else {
-                    System.out.println("Session Received is null. ");
-                }
-            }
-            quotationEntityDTO.setGrandTotal(grandTotalSum);
-        }
-        // Add object back to model so JSP can retrieve it
-        modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+    @PostMapping(value = "process_quotation")
+    public ModelAndView process_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        /*String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }*/
         modelView.setViewName("quotation/reviewQuotation");
+        notifyQuotationReceiverByEmail(quotationEntityDTO,"FITQuotation.ftl");
+        System.out.println("Quotation Sent Successfully!! ");
+        //session.removeAttribute(sessionKey);
         return modelView;
     }
 
-    private int processTotalPrice(QuotationRoomDetailsDTO quotationRoomDTO,SessionDetailsEntity sessionDetailsEntity){
-        int totalPrice=0;
-        int childWithBedPrice;
-        int childNoBedPrice;
-        int extraBedPrice;
-
-        if(quotationRoomDTO.getAdults()==1){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson1());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson1();
-        }
-        else if(quotationRoomDTO.getAdults()==2){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson2());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson2();
-        }
-        else if(quotationRoomDTO.getAdults()==3){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson3());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson3();
-        }
-        else if(quotationRoomDTO.getAdults()==4){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson4());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson4();
-        }
-        else if(quotationRoomDTO.getAdults()==5){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson5());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson5();
-        }
-        else if(quotationRoomDTO.getAdults()==6){
-            quotationRoomDTO.setAdultPrice(sessionDetailsEntity.getPerson6());
-            totalPrice = totalPrice + sessionDetailsEntity.getPerson6();
-        }
-        if(quotationRoomDTO.getChildWithBed()>0){
-            childWithBedPrice = (sessionDetailsEntity.getPerson2()*ANY_ROOM_EXTRA_BED_CHILD_PERCENTAGE/100)*quotationRoomDTO.getChildWithBed();
-            totalPrice = totalPrice + (childWithBedPrice*quotationRoomDTO.getChildWithBed());
-            quotationRoomDTO.setChildWithBedPrice(childWithBedPrice);
-        }
-        if(quotationRoomDTO.getChildNoBed()>0){
-            childNoBedPrice = (sessionDetailsEntity.getPerson2()*ANY_ROOM_CHILD_NO_BED_PERCENTAGE/100)*quotationRoomDTO.getChildNoBed();
-            totalPrice = totalPrice + (childNoBedPrice*quotationRoomDTO.getChildNoBed());
-            quotationRoomDTO.setChildNoBedPrice(childNoBedPrice);
-        }
-        if(quotationRoomDTO.getExtraBed()>0){
-            extraBedPrice = (sessionDetailsEntity.getPerson2()*ANY_ROOM_EXTRA_BED_ADULT_PERCENTAGE/100)*quotationRoomDTO.getExtraBed();
-            totalPrice = totalPrice + (extraBedPrice*quotationRoomDTO.getExtraBed());
-            quotationRoomDTO.setExtraBedPrice(extraBedPrice);
-        }
-        quotationRoomDTO.setTotalPrice(totalPrice);
-        return totalPrice;
-    }
- */
 
 
     private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, String templateName) {
@@ -369,7 +291,8 @@ public class QuotationController {
                 System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
                 System.out.println("Map Value " + model.get("roomDetails"));
                 model.put("quotationAdvisor", userObj.getName());
-                model.put("contactNumber", userObj.getMobile());
+                model.put("serviceAdvisorMobile", userObj.getMobile());
+
                 mail.setModel(model);
                 emailService.sendEmailMessageUsingTemplate(mail,templateName);
             } catch (MessagingException | IOException | TemplateException e) {
@@ -380,23 +303,5 @@ public class QuotationController {
         else {
             System.out.println("Email Notification DISABLE. ");
         }
-    }
-
-    @PostMapping(value = "process_quotation")
-    public ModelAndView process_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                        BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
-        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
-        ModelAndView modelView = new ModelAndView();
-        UserDetailsObj userObj = getLoggedInUser();
-        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
-        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
-        if (sessionQuotation != null) {
-            quotationEntityDTO = sessionQuotation;
-        }
-        modelView.setViewName("quotation/reviewQuotation");
-        notifyQuotationReceiverByEmail(quotationEntityDTO,"FITQuotation.ftl");
-        System.out.println("Quotation Sent Successfully!! ");
-        session.removeAttribute(sessionKey);
-        return modelView;
     }
 }

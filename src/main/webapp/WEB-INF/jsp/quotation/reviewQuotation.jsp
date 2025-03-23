@@ -46,7 +46,27 @@
             box-sizing: border-box;
         }
 
+ .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* Space between buttons */
+        margin-top: 20px;
+    }
 
+    .btn {
+        background-color: #007bff; /* Blue color */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
     </style>
 
 </head>
@@ -209,21 +229,24 @@ h2, h3 {
                      </c:forEach>
                      <tr>
                         <td colspan="6">&nbsp;</td>
-                        <th style=" background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
+                        <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
                        <td><font color="blue"><b> &#8377; ${QUOTATION_OBJ.grandTotal} </b></font></td>
                      </tr>
                      <tr>
                          <td colspan="3">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
                          <th style=" background-color: red;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Discount :</th>
-                        <td>&#8377; <form:input path="discount" type="number" id="discount" name="discount"  style="width:70px;"/> </td>
+                        <td>&#8377; <form:input path="discount" type="number" id="discount" name="discount"  style="width:70px;padding: 0px 0px;height:25px;"/> </td>
                         <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
                          <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${QUOTATION_OBJ.grandTotal}</span></td>
                      </tr>
             </table>
         </div>
-
-        <button type="submit" class="btn">Submit</button>
-
+        <div class="button-container">
+            <button type="submit" class="btn">Email Quotation</button> |
+            <button type="submit" class="btn" style="background-color: green;" disabled>WhatsApp Quotation</button> |
+            <button type="submit" class="btn" disabled>Email & WhatsApp Quotation</button> |
+            <button type="submit" class="btn" disabled>Save Quotation</button>
+        </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -244,6 +267,7 @@ h2, h3 {
             $("#finalPrice").html(finalPrice.toFixed(2)); // Update final price label
         });
     });
+
 </script>
 
 

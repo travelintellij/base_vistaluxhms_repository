@@ -50,36 +50,6 @@
             text-align: center;
             font-size: 14px;
         }
-        .social-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .social-links a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .facebook { background-color: #3b5998; }
-        .instagram { background-color: #e4405f; }
-        .linkedin { background-color: #0077b5; }
-        .email { background-color: #ff6600; }
-        .website { background-color: #000; }
-        .whatsapp-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .whatsapp-button a {
-            background-color: #25D366;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 5px;
-            display: inline-block;
-        }
         @media screen and (max-width: 600px) {
             table, th, td {
                 font-size: 12px;
@@ -146,20 +116,6 @@
         <p><strong>Phone:</strong> +91 9090762424</p>
         <p><strong>Email:</strong> sales@vistaluxhotel.com</p>
         <p><strong>GST No:</strong> 05AAYFV9284F1ZB</p>
-
-        <!-- WhatsApp Chat Button -->
-        <div class="whatsapp-button">
-            <a href="https://wa.me/${serviceAdvisorMobile}" target="_blank">Chat on WhatsApp</a>
-        </div>
-
-        <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://www.facebook.com/AshokaTigerTrail" class="facebook" target="_blank">Facebook</a>
-            <a href="https://www.instagram.com/ashoka_tiger_trail" class="instagram" target="_blank">Instagram</a>
-            <a href="https://www.linkedin.com/company/ashokastigertrailresort/" class="linkedin" target="_blank">LinkedIn</a>
-            <a href="mailto:sales@vistaluxhotel.com" class="email">Email</a>
-            <a href="https://www.ashokastigertrail.com" class="website" target="_blank">Website</a>
-        </div>
     </div>
     <div class="footer">
         <p>We look forward to hosting you at Ashoka Tiger Trail Resort!</p>
