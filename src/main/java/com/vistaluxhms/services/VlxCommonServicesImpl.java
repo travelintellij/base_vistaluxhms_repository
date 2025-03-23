@@ -1,6 +1,8 @@
 package com.vistaluxhms.services;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.itextpdf.text.DocumentException;
 import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.Workload_Status_Entity;
 import com.vistaluxhms.model.City_Obj;
@@ -35,15 +38,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
 @Service
 public class VlxCommonServicesImpl {
 
-	
-
-	
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 
@@ -138,6 +138,16 @@ public class VlxCommonServicesImpl {
 
 	public Workload_Status_Entity findWorkLoadStatusById(int statusId) {
 		return workloadStatusEntityRepository.findByWorkloadStatusId(statusId).get();
+	}
+
+	public byte[] generatePdfFromHtml(String htmlContent) throws  IOException, com.lowagie.text.DocumentException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		ITextRenderer renderer = new ITextRenderer();
+		renderer.setDocumentFromString(htmlContent);
+		renderer.layout();
+		renderer.createPDF(outputStream);
+		renderer.finishPDF();
+		return outputStream.toByteArray();
 	}
 
 }

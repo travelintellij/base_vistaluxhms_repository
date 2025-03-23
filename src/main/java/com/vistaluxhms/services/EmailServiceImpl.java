@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -17,6 +18,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -45,7 +47,7 @@ import freemarker.core.Configurable;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-
+import org.springframework.validation.Errors;
 
 
 @Service
@@ -78,9 +80,10 @@ public class EmailServiceImpl {
 
 	@Value("${email.internal.valid}")
 	private boolean internalEmailNotifyActive;
-	
-	 
-    /**
+
+
+
+	/**
      * This method will send compose and send the message 
      * */
     public void sendMail(String to, String subject, String body) 
@@ -257,18 +260,52 @@ public class EmailServiceImpl {
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getToList());
-	        /*helper.setCc(mail.getCcList());
+	        /*helper.setCc(mail.getCcList());*/
 	        if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
-	        	helper.setBcc(emailNotifyBcc);
-	        }*/
+				List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
+				InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
+				for (int i = 0; i < emailListWaterBcc.size(); i++) {
+					try {
+						emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
+					} catch (AddressException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				helper.setBcc(emailWatcherAddresses);
+	        }
 	        helper.setText(html, true);
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
-
 	       mailSender.send(message);
 	    }
-	    
-	    
+
+	private List<String> validateAndExtractEmails(String emailInput) {
+		List<String> emailList = new ArrayList<>();
+		if (emailInput != null && !emailInput.trim().isEmpty()) {
+			// Split input using comma ',' or semicolon ';' as delimiter
+			String[] emails = emailInput.split("[,;]");
+			for (String email : emails) {
+				email = email.trim(); // Remove spaces
+				if (!isValidEmail(email)) {
+					System.out.println("Invalid Email Formation Specified in Configuration File for watcher. ");
+					//errors.rejectValue("email", "error.email", "Invalid email format: " + email);
+				} else {
+					emailList.add(email);
+				}
+			}
+		}
+		if (emailList.isEmpty()) {
+			System.out.println("Watcher Not Defined in Configuration. ");
+			//errors.rejectValue("email", "error.email", "At least one valid email is required.");
+		}
+		return emailList;
+	}
+
+	private boolean isValidEmail(String email) {
+		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+		return email.matches(emailRegex);
+	}
+
 	    /*
 	    public void sendB2bEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
 	    	freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");

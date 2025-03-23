@@ -1,5 +1,6 @@
 package com.vistaluxhms.controller;
 
+import com.lowagie.text.DocumentException;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -7,12 +8,16 @@ import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.LeadValidator;
 import com.vistaluxhms.validator.QuotationValidator;
+import freemarker.core.Configurable;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -71,6 +77,10 @@ public class QuotationController {
     @Value("${all.email.notify.communication.active}")
     private boolean emailNotifyActive;
 
+    @Value("${email.notify.communication.email}")
+    private String emailNotifyBcc;
+
+
     @Autowired
     QuotationValidator quotationValidator;
 
@@ -80,7 +90,10 @@ public class QuotationController {
     @Value("${ANY_ROOM_CHILD_NO_BED_ALLOWED}")
     private int ANY_ROOM_CHILD_NO_BED_ALLOWED;
 
-    @ModelAttribute("QUOTATION_OBJ")
+    @Autowired
+    private Configuration freemarkerConfig;
+
+   @ModelAttribute("QUOTATION_OBJ")
     public QuotationEntityDTO getQuotationFromSession(HttpSession session) {
         QuotationEntityDTO quotation = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ");
         return (quotation != null) ? quotation : new QuotationEntityDTO(); // Ensure a non-null object
@@ -323,6 +336,7 @@ public class QuotationController {
             }
             mail.setToList(emailAddresses);
             mail.setCc(userObj.getEmail());
+
             try {
                 Map<String, Object> model = new HashMap<String, Object>();
                 //model.put("leadId", leadReferenceNumber);
@@ -373,6 +387,59 @@ public class QuotationController {
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
+    }
+
+
+    @RequestMapping(value="process_quotation",params = "Download",method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public void downloadQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
+
+        // Prepare data for the template
+        Map<String, Object> model = new HashMap<>();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        model.put("contactName", quotationEntityDTO.getGuestName());
+        model.put("roomDetails", quotationEntityDTO.getRoomDetails()); // Fetch dynamically as per your application
+        model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
+        model.put("discount", quotationEntityDTO.getDiscount());
+        model.put("finalPrice", quotationEntityDTO.getGrandTotal()-quotationEntityDTO.getDiscount());
+        model.put("serviceAdvisorMobile", userObj.getMobile());
+
+        // Load the Freemarker template
+        freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+        //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
+        freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
+        freemarkerConfig.setAPIBuiltinEnabled(true);
+        freemarkerConfig.setTemplateUpdateDelay(0);
+        Template template = freemarkerConfig.getTemplate("PDFQuotation.ftl");
+        String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+        // Generate PDF
+        byte[] pdfBytes = new byte[0];
+        try {
+            pdfBytes = commonService.generatePdfFromHtml(htmlContent);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Set response headers
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=Quotation.pdf");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
     }
 
 }

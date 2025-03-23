@@ -257,6 +257,7 @@ h2, h3 {
             <button type="submit" class="btn" style="background-color: green;" disabled>WhatsApp Quotation</button> |
             <button type="submit" class="btn" disabled>Email & WhatsApp Quotation</button> |
             <button type="submit" class="btn" disabled>Save Quotation</button>
+            <button type="submit" class="btn" name="Download" id="Download" value="Download">Download Quotation</button>
         </div>
 </div>
 <script>

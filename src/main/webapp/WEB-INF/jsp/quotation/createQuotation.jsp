@@ -195,7 +195,8 @@ h2, h3 {
     <h2>Create Quotation</h2>
 
     <form:form method="post" action="review_process_create_quotation" modelAttribute="QUOTATION_OBJ">
-
+        <form:hidden path="guestName" />
+        <form:hidden path="discount" />
         <!-- User Type Selection -->
   <div class="form-group">
               <label for="quotationAudienceType">User Type:</label>
