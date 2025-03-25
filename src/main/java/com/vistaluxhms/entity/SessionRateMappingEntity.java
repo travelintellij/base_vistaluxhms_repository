@@ -40,6 +40,10 @@ public class SessionRateMappingEntity {
 
     protected boolean active = true;
 
+    // Transient fields (not stored in the database)
+    private transient String formattedStartDate;
+    private transient String formattedEndDate;
+
     // Constructors
     public SessionRateMappingEntity() {}
 
@@ -107,5 +111,21 @@ public class SessionRateMappingEntity {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getFormattedStartDate() {
+        return formattedStartDate;
+    }
+
+    public void setFormattedStartDate(String formattedStartDate) {
+        this.formattedStartDate = formattedStartDate;
+    }
+
+    public String getFormattedEndDate() {
+        return formattedEndDate;
+    }
+
+    public void setFormattedEndDate(String formattedEndDate) {
+        this.formattedEndDate = formattedEndDate;
     }
 }

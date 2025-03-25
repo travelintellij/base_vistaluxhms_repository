@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -286,5 +287,24 @@ public class SalesServiceController {
         modelView.setViewName("redirect:view_rooms_list");
         return modelView;
     }
+
+    @PostMapping("view_rate_type_sessionwise")
+    public ModelAndView view_rate_type_sessionwise(@ModelAttribute("RATE_TYPE_OBJ") RateType_Obj rateTypeObj, BindingResult result ) {
+        ModelAndView modelView = new ModelAndView("admin/viewRateSessionMappingList");
+        // Adding user details to the model
+        // Filtering sales partners based on the search criteria
+        List<SessionRateMappingEntity> rateSessionMappingList = salesService.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeObj.getRateTypeId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy");
+
+        // Format startDate and endDate and store them as new attributes
+        for (SessionRateMappingEntity entity : rateSessionMappingList) {
+            entity.setFormattedStartDate(entity.getStartDate().format(formatter));
+            entity.setFormattedEndDate(entity.getEndDate().format(formatter));
+        }
+
+        modelView.addObject("RATE_SESSION_MAPPING_LIST", rateSessionMappingList);
+        return modelView;
+    }
+
 
 }

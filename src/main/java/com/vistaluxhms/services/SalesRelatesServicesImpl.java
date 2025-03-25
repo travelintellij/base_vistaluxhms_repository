@@ -1,15 +1,9 @@
 package com.vistaluxhms.services;
-import com.vistaluxhms.entity.City_Entity;
-import com.vistaluxhms.entity.MasterRoomDetailsEntity;
-import com.vistaluxhms.entity.RateTypeEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
+import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.RateType_Obj;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
-import com.vistaluxhms.repository.MasterRoomDetailsEntityRepository;
-import com.vistaluxhms.repository.RateTypeRepository;
-import com.vistaluxhms.repository.SalesPartnerEntityRepository;
-import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.repository.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +35,9 @@ public class SalesRelatesServicesImpl {
 
 	@Autowired
 	MasterRoomDetailsEntityRepository masterRoomDetailsEntityRepository;
+
+	@Autowired
+	private SessionRateMappingEntityRepository sessionRateMappingEntityRepository;
 
 	public RateTypeEntity saveRateType(RateTypeEntity rateTypeEntity) {
 		rateTypeRepository.save(rateTypeEntity);
@@ -137,5 +134,9 @@ public class SalesRelatesServicesImpl {
 
 	public List<RateTypeEntity> findAllActiveRateTypes(boolean activeFlag){
 		return rateTypeRepository.findByActive(activeFlag);
+	}
+
+	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId){
+		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeId);
 	}
 }
