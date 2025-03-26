@@ -121,7 +121,7 @@ public class LeadController {
             leadService.saveLead(leadEntity);
             leadRecorderObj.setLeadId(leadEntity.getLeadId());
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
-            modelView.setViewName("redirect:view_add_lead_form?leadId="+leadEntity.getLeadId());
+            modelView.setViewName("redirect:view_filter_leads");
             if(leadRecorderObj.isLeadCreationClientInformed()) {
                 System.out.println("Lead Creation Client Informed");
                 if(leadRecorderObj.isNotifyEmail()) {
