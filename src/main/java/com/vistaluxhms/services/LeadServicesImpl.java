@@ -35,7 +35,9 @@ public class LeadServicesImpl {
 
 
 	public Page<LeadEntity>  filterLeads(int pageNo, int pageSize, long leadOwner, String sorting, FilterLeadObj filterLeadObj, boolean isAdmin ) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sorting));
+		//Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sorting));
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, sorting));
+
 		Date currentDate = Date.from(java.time.ZonedDateTime.now().toInstant());
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(currentDate);

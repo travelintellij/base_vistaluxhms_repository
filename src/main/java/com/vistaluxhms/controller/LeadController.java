@@ -213,7 +213,7 @@ public class LeadController {
 */
 
     @RequestMapping(value="view_filter_leads",method= {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView view_filter_leads( @RequestParam(defaultValue = "0") String page,@RequestParam(defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) Integer pageSize, @RequestParam(defaultValue = "CreatedAt") String sortBy,@ModelAttribute("FILTER_LEAD_WL") FilterLeadObj filterObj,BindingResult result) {
+    public ModelAndView view_filter_leads( @RequestParam(defaultValue = "0") String page,@RequestParam(defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) Integer pageSize, @RequestParam(defaultValue = "leadId") String sortBy,@ModelAttribute("FILTER_LEAD_WL") FilterLeadObj filterObj,BindingResult result) {
 
         ModelAndView modelView = new ModelAndView("leads/view_filterLeads");
         //System.out.println(filterObj);

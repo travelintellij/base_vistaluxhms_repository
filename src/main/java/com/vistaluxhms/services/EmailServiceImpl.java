@@ -223,9 +223,18 @@ public class EmailServiceImpl {
 	        if(mail.getCc()!=null && mail.getCc().trim().length()>0) {
 	        	helper.setCc(mail.getCc());
 	        }
-	        if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
-	        	helper.setBcc(emailNotifyBcc);
-	        }
+			if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
+				List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
+				InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
+				for (int i = 0; i < emailListWaterBcc.size(); i++) {
+					try {
+						emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
+					} catch (AddressException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				helper.setBcc(emailWatcherAddresses);
+			}
 	        helper.setText(html, true);
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
