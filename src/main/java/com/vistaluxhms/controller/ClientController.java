@@ -85,6 +85,7 @@ public class ClientController {
             ClientEntity clientEntity = new ClientEntity(clientEntityDto);
             clientEntity.setCity(cityEntity);
             clientEntity.setSalesPartner(salesPartnerEntity);
+            clientEntity.setSalesPartnerFlag(false);
             clientService.saveClient(clientEntity);
             redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
@@ -239,6 +240,8 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
             clientEntity.setCity(cityEntity);
             clientEntity.setSalesPartner(salesPartnerEntity);
             clientService.saveClient(clientEntity);
+
+
             redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
         }

@@ -48,6 +48,10 @@ public class ClientEntity {
     @Column(name = "b2b", nullable = false)
     protected Boolean b2b; // Active Status
 
+    @Column(name = "isSalesPartner", nullable = false)
+    protected Boolean salesPartnerFlag = false; // Active Status
+
+
 
     public ClientEntity(){}
     public ClientEntity(ClientEntityDTO clientEntityDto) {
@@ -61,6 +65,7 @@ public class ClientEntity {
         this.salesPartner=clientEntityDto.getSalesPartner();
         this.active=clientEntityDto.getActive();
         this.b2b=clientEntityDto.getB2b();
+        this.salesPartnerFlag = clientEntityDto.getSalesPartnerFlag();
     }
 
     // Getters and Setters
@@ -177,5 +182,13 @@ public class ClientEntity {
                 ", active=" + active +
                 ", b2b=" + b2b +
                 '}';
+    }
+
+    public Boolean getSalesPartnerFlag() {
+        return salesPartnerFlag;
+    }
+
+    public void setSalesPartnerFlag(Boolean salesPartnerFlag) {
+        this.salesPartnerFlag = salesPartnerFlag;
     }
 }

@@ -136,13 +136,16 @@ CREATE TABLE `client` (
   `reference` varchar(255) DEFAULT NULL,
   `salesPartnerId` bigint DEFAULT NULL,
   `remarks` text,
+  `isSalesPartner` tinyint DEFAULT NULL,
   `active` tinyint DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` varchar(45) DEFAULT 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
   PRIMARY KEY (`clientId`),
   KEY `cityId` (`cityId`),
   KEY `salesPartnerId` (`salesPartnerId`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
   CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +154,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@udanchoo.com','direct ',2,'amazing growth. ',1),(3,'Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',1),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',1),(5,'Mohit',1,0,9898989898,'mohit@bi.com','direct',5,'lets see',1),(6,'Rohit Kumar',12,0,9999999999,'ROHIT@janjaesgroup.com','Direct',11,'direct',1),(7,'Hitesh Kumar',3,1,9582634445,'holidaysguide22@gmail.com','Direct',2,'good man. ',1);
+INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@udanchoo.com','direct ',2,'amazing growth. ',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(3,'Vikash Kumar',3,1,9898989898,'sales@udanchoo.com','bali and singapore',5,'need to plan meeting. ',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(5,'Mohit',1,0,9898989898,'mohit@bi.com','direct',5,'lets see',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(6,'Rohit Kumar',12,0,9999999999,'ROHIT@janjaesgroup.com','Direct',11,'direct',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(7,'Hitesh Kumar',3,1,9582634445,'holidaysguide22@gmail.com','Direct',2,'good man. ',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(8,'Prashant Thanku',3,1,9690735777,'kumar.prashant461@gmail.com','Direct',5,'Part of Ashoka',NULL,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +215,7 @@ CREATE TABLE `lead_master` (
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +224,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL),(20,7,2,0,0,0,'need it for holi. ','bahut chalu aadmi hai. ','2025-03-21','2025-03-22',101,NULL,1,1,1,0,0,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(13,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',102,NULL,1,0,1,0,1,0,1,1,'2025-01-25 07:13:35','2025-01-28 20:04:04'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(15,3,2,2,1,0,'Meal Plan : APAI ','internally good. ','2025-01-28','2025-01-29',102,NULL,0,0,1,0,0,0,1,1,'2025-01-25 07:28:16','2025-01-28 20:04:04'),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(17,6,2,2,1,1,'* Meal Plan : APAI\r\n* Safari Needs to be included for all pax','this is internal','2025-01-27','2025-01-29',103,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:34:08','2025-01-28 20:04:04'),(18,5,1,1,1,1,'client remarks now. ','','2025-01-28','2025-01-30',101,NULL,1,1,1,1,1,0,1,1,NULL,NULL),(19,3,2,4,6,6,'client remarks now. Thsi is great initiative that you are updating client remarks. client need APAI meal plan and flexible on dates as well. provided cheaper ticket is availabl.e','Client is money oriented and not ready to pay. we need to ensure that client living style is mantained and ask mroe payment, if client services then payment will be required. inform in advance .  ','2025-01-28','2025-01-31',101,NULL,1,0,0,0,1,0,1,1,NULL,NULL),(20,7,2,0,0,0,'need it for holi. ','bahut chalu aadmi hai. ','2025-03-21','2025-03-22',101,NULL,1,1,1,0,0,0,1,1,NULL,NULL),(21,8,2,0,0,0,'need map plan. ','need to close this asp. ','2025-03-26','2025-03-29',101,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(22,8,2,1,0,0,'Meal plan MAP , early checkin needed .','client is very sensitive about cost and aggressive. ','2025-03-27','2025-03-31',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(23,2,2,0,0,0,'asdg','ag','2025-03-24','2025-03-28',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(24,2,2,0,0,0,'','','2025-03-27','2025-03-29',102,NULL,0,0,1,0,0,0,1,19,NULL,NULL),(25,2,2,0,0,0,'asdghashsah','asgd','2025-03-30','2025-03-31',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(26,2,2,0,0,0,'asghashasgag','asgasgaga','2025-03-30','2025-04-01',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,7 +340,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
-INSERT INTO `ratetype` VALUES (1,'OTA | B2C','These are the rates published for OTAs online. ',1,'2025-01-03 07:47:10','2025-02-21 15:54:54'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-03-16 17:30:48'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
+INSERT INTO `ratetype` VALUES (1,'OTA | B2C','Great earning. ',1,'2025-01-03 07:47:10','2025-03-25 15:45:09'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-03-16 17:30:48'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -505,7 +508,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (15,1,1,3000,3200,0,0,0,0,0,NULL,1,'2025-03-22 07:44:39','2025-03-22 07:44:39'),(15,1,2,3400,3600,0,0,0,0,0,NULL,1,'2025-03-22 07:44:46','2025-03-22 07:44:46'),(15,1,3,3800,4000,0,0,0,0,0,NULL,1,'2025-03-22 07:44:52','2025-03-22 07:44:52'),(15,1,4,4200,4400,0,0,0,0,0,NULL,1,'2025-03-22 07:44:58','2025-03-22 07:44:58'),(15,2,1,5000,5200,5400,5600,0,0,0,NULL,1,'2025-03-22 07:45:08','2025-03-22 07:45:08'),(15,2,2,5800,6000,6200,6400,0,0,0,NULL,1,'2025-03-22 07:45:17','2025-03-22 07:45:17'),(15,2,3,6600,6800,7000,7200,0,0,0,NULL,1,'2025-03-22 07:45:28','2025-03-22 07:45:28'),(15,2,4,7400,7600,7800,8000,0,0,0,NULL,1,'2025-03-22 07:45:38','2025-03-22 07:45:38'),(15,3,1,8200,8400,0,0,0,0,0,NULL,1,'2025-03-22 07:45:47','2025-03-22 07:45:47'),(15,3,2,8600,8800,0,0,0,0,0,NULL,1,'2025-03-22 07:46:01','2025-03-22 07:46:01'),(15,3,3,9000,9200,0,0,0,0,0,NULL,1,'2025-03-22 07:46:07','2025-03-22 07:46:07'),(15,3,4,9400,9600,0,0,0,0,0,NULL,1,'2025-03-22 07:46:14','2025-03-22 07:46:14'),(16,1,1,8000,8200,0,0,0,0,0,NULL,1,'2025-03-22 09:54:04','2025-03-22 09:54:04'),(16,1,2,8400,8600,0,0,0,0,0,NULL,1,'2025-03-22 09:54:10','2025-03-22 09:54:10'),(16,1,3,8800,9000,0,0,0,0,0,NULL,1,'2025-03-22 09:54:16','2025-03-22 09:54:16'),(16,1,4,9200,9400,0,0,0,0,0,NULL,1,'2025-03-22 09:54:21','2025-03-22 09:54:21'),(16,2,1,9600,9800,10000,10200,0,0,0,NULL,1,'2025-03-22 09:54:37','2025-03-22 09:54:37'),(16,2,2,10400,10600,10800,11000,0,0,0,NULL,1,'2025-03-22 09:54:49','2025-03-22 09:54:49'),(16,2,3,11200,11400,11600,11800,0,0,0,NULL,1,'2025-03-22 09:54:58','2025-03-22 09:54:58'),(16,2,4,12000,12200,12400,12600,0,0,0,NULL,1,'2025-03-22 09:55:08','2025-03-22 09:55:08'),(16,3,1,12800,13000,0,0,0,0,0,NULL,1,'2025-03-22 09:55:15','2025-03-22 09:55:15'),(16,3,2,13200,13400,0,0,0,0,0,NULL,1,'2025-03-22 09:55:22','2025-03-22 09:55:22'),(16,3,3,13600,13800,0,0,0,0,0,NULL,1,'2025-03-22 09:55:30','2025-03-22 09:55:30'),(16,3,4,14000,14200,0,0,0,0,0,NULL,1,'2025-03-22 09:55:36','2025-03-22 09:55:36');
+INSERT INTO `sessiondetail` VALUES (15,1,1,3200,3400,0,0,0,0,0,NULL,1,'2025-03-22 07:44:39','2025-03-25 09:06:38'),(15,1,2,3400,3600,0,0,0,0,0,NULL,1,'2025-03-22 07:44:46','2025-03-22 07:44:46'),(15,1,3,3800,4000,0,0,0,0,0,NULL,1,'2025-03-22 07:44:52','2025-03-22 07:44:52'),(15,1,4,4200,4400,0,0,0,0,0,NULL,1,'2025-03-22 07:44:58','2025-03-22 07:44:58'),(15,2,1,5000,5200,5400,5600,0,0,0,NULL,1,'2025-03-22 07:45:08','2025-03-22 07:45:08'),(15,2,2,5800,6000,6200,6400,0,0,0,NULL,1,'2025-03-22 07:45:17','2025-03-22 07:45:17'),(15,2,3,6600,6800,7000,7200,0,0,0,NULL,1,'2025-03-22 07:45:28','2025-03-22 07:45:28'),(15,2,4,7400,7600,7800,8000,0,0,0,NULL,1,'2025-03-22 07:45:38','2025-03-22 07:45:38'),(15,3,1,8200,8400,0,0,0,0,0,NULL,1,'2025-03-22 07:45:47','2025-03-22 07:45:47'),(15,3,2,8600,8800,0,0,0,0,0,NULL,1,'2025-03-22 07:46:01','2025-03-22 07:46:01'),(15,3,3,9000,9200,0,0,0,0,0,NULL,1,'2025-03-22 07:46:07','2025-03-22 07:46:07'),(15,3,4,9400,9600,0,0,0,0,0,NULL,1,'2025-03-22 07:46:14','2025-03-22 07:46:14'),(16,1,1,8000,8200,0,0,0,0,0,NULL,1,'2025-03-22 09:54:04','2025-03-22 09:54:04'),(16,1,2,8400,8600,0,0,0,0,0,NULL,1,'2025-03-22 09:54:10','2025-03-22 09:54:10'),(16,1,3,8800,9000,0,0,0,0,0,NULL,1,'2025-03-22 09:54:16','2025-03-22 09:54:16'),(16,1,4,9200,9400,0,0,0,0,0,NULL,1,'2025-03-22 09:54:21','2025-03-22 09:54:21'),(16,2,1,9600,9800,10000,10200,0,0,0,NULL,1,'2025-03-22 09:54:37','2025-03-22 09:54:37'),(16,2,2,10400,10600,10800,11000,0,0,0,NULL,1,'2025-03-22 09:54:49','2025-03-22 09:54:49'),(16,2,3,11200,11400,11600,11800,0,0,0,NULL,1,'2025-03-22 09:54:58','2025-03-22 09:54:58'),(16,2,4,12000,12200,12400,12600,0,0,0,NULL,1,'2025-03-22 09:55:08','2025-03-22 09:55:08'),(16,3,1,12800,13000,0,0,0,0,0,NULL,1,'2025-03-22 09:55:15','2025-03-22 09:55:15'),(16,3,2,13200,13400,0,0,0,0,0,NULL,1,'2025-03-22 09:55:22','2025-03-22 09:55:22'),(16,3,3,13600,13800,0,0,0,0,0,NULL,1,'2025-03-22 09:55:30','2025-03-22 09:55:30'),(16,3,4,14000,14200,0,0,0,0,0,NULL,1,'2025-03-22 09:55:36','2025-03-22 09:55:36');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -547,4 +550,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-22 21:18:11
+-- Dump completed on 2025-03-28 20:56:57

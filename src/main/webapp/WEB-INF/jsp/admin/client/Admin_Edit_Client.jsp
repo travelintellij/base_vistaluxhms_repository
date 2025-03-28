@@ -44,6 +44,7 @@
         <h2>Edit Client</h2> <!-- Bold Header -->
         <form:form method="post" action="edit_edit_client" modelAttribute="CLIENT_OBJ">
             <form:hidden path="clientId" />
+            <form:hidden path="salesPartnerFlag" />
             <!-- First Row -->
             <div class="form-row">
                 <label for="client-id">Client Id:</label>

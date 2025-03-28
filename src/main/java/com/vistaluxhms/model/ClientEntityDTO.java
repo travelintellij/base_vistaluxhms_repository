@@ -24,6 +24,7 @@ public class ClientEntityDTO extends ClientEntity {
         this.salesPartner=clientEntity.getSalesPartner();
         this.active=clientEntity.getActive();
         this.b2b = clientEntity.getB2b();
+        this.salesPartnerFlag =clientEntity.getSalesPartnerFlag();
     }
 
     public ClientEntityDTO(){
@@ -40,6 +41,7 @@ public class ClientEntityDTO extends ClientEntity {
         this.salesPartner=clientEntity.getSalesPartner();
         this.active=clientEntity.getActive();
         this.b2b = clientEntity.getB2b();
+        this.salesPartnerFlag=clientEntity.getSalesPartnerFlag();
     }
 
     public String getCityName() {
