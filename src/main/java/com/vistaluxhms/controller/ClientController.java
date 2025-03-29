@@ -238,10 +238,16 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
             ClientEntity clientEntity = new ClientEntity(clientEntityDto);
             clientEntity.setClientId(clientEntityDto.getClientId());
             clientEntity.setCity(cityEntity);
+            if(clientEntity.getSalesPartnerFlag()){
+                salesPartnerEntity.setSalesPartnerShortName(clientEntity.getClientName());
+                salesPartnerEntity.setSalesPartnerName(clientEntity.getClientName());
+                salesPartnerEntity.setCityId(clientEntity.getCity().getDestinationId());
+                salesPartnerEntity.setReference(clientEntity.getReference());
+                salesPartnerEntity.setMobile(clientEntity.getMobile());
+                salesPartnerEntity.setEmailId(clientEntity.getEmailId());
+            }
             clientEntity.setSalesPartner(salesPartnerEntity);
             clientService.saveClient(clientEntity);
-
-
             redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
         }
