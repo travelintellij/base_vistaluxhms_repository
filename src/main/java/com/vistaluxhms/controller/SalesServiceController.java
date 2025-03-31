@@ -1,8 +1,10 @@
 package com.vistaluxhms.controller;
 
+import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
@@ -20,11 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class SalesServiceController {
@@ -40,6 +40,9 @@ public class SalesServiceController {
 
     @Autowired
     VlxCommonServicesImpl commonService;
+
+    @Autowired
+    ClientServicesImpl clientService;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -115,7 +118,7 @@ public class SalesServiceController {
         return modelView;
     }
 
-
+    @Transactional
     @PostMapping(value="create_create_sales_partner")
     public ModelAndView createEditSalesPartner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
@@ -131,11 +134,33 @@ public class SalesServiceController {
             RateTypeEntity rateTypeEntity = salesService.findById(salesPartnerDto.getRateTypeId());
             salesPartnerEntity.setRateTypeEntity(rateTypeEntity);
             salesService.saveSalesPartner(salesPartnerEntity);
+
+            ClientEntityDTO clientEntityDTO = new ClientEntityDTO();
+            clientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
+            ClientEntity clientEntity = new ClientEntity(clientEntityDTO);
+            clientService.saveClient(clientEntity);
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
         }
 
         return modelView;
+    }
+
+
+    private ClientEntityDTO getSalesPartnerMappedClientDTO(SalesPartnerEntity salesPartnerEntity,ClientEntityDTO clientEntityDTO){
+        City_Entity cityEntity = cityRepository.findDestinationById(salesPartnerEntity.getCityId());
+        clientEntityDTO.setCity(cityEntity);
+        clientEntityDTO.setSalesPartner(salesPartnerEntity);
+        clientEntityDTO.setMobile(salesPartnerEntity.getMobile());
+        clientEntityDTO.setClientName(salesPartnerEntity.getSalesPartnerName());
+        clientEntityDTO.setSalesPartnerName(salesPartnerEntity.getSalesPartnerName());
+        clientEntityDTO.setReference(salesPartnerEntity.getReference());
+        clientEntityDTO.setEmailId(salesPartnerEntity.getEmailId());
+        clientEntityDTO.setActive(salesPartnerEntity.getActive());
+        clientEntityDTO.setB2b(true);
+        clientEntityDTO.setSalesPartnerFlag(true);
+        return clientEntityDTO;
+
     }
 
     @RequestMapping("view_add_sales_partner_form")
@@ -209,6 +234,7 @@ public class SalesServiceController {
         return modelView;
     }
 
+    @Transactional
     @PostMapping(value="edit_edit_sales_partner")
     public ModelAndView edit_edit_sales_partner(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerDto,BindingResult result,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
@@ -225,8 +251,19 @@ public class SalesServiceController {
             salesPartnerEntity.setRateTypeEntity(rateTypeEntity);
             salesPartnerEntity.setSalesPartnerId(salesPartnerDto.getSalesPartnerId());
             salesService.saveSalesPartner(salesPartnerEntity);
-            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
-            modelView.setViewName("redirect:view_sales_partner_list");
+
+            ClientEntity clientEntity = clientService.findClientEntityForSalesPartnerId(salesPartnerEntity.getSalesPartnerId());
+            if(clientEntity==null){
+                redirectAttrib.addFlashAttribute("E", "Sales Partner record updated successfully.");
+                modelView = view_edit_sales_partner_form(salesPartnerDto, result);
+            }else{
+                ClientEntityDTO clientEntityDTO = new ClientEntityDTO(clientEntity);
+                ClientEntityDTO updatedClientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
+                clientEntity = new ClientEntity(updatedClientEntityDTO);
+                clientService.saveClient(clientEntity);
+                redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+                modelView.setViewName("redirect:view_sales_partner_list");
+            }
         }
 
         return modelView;

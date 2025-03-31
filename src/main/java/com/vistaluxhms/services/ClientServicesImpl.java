@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -147,6 +149,10 @@ public class ClientServicesImpl {
 
 	public boolean existsByClientIdAndClientName(long clientId, String clientName) {
 		return clientRepository.existsByclientIdAndClientName(clientId, clientName);
+	}
+
+	public ClientEntity findClientEntityForSalesPartnerId(Long salesPartnerId){
+		return clientRepository.findFirstBySalesPartner_salesPartnerIdAndSalesPartnerFlag(salesPartnerId,true);
 	}
 
 }
