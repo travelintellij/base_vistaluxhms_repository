@@ -18,6 +18,7 @@ public class QuotationEntityDTO {
     private int discount;
     private boolean showCostBreakup;
     private String remarks;
+    private long guestId;
 
 
     public int getRateTypeId() {
@@ -122,5 +123,13 @@ public class QuotationEntityDTO {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public long getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(long guestId) {
+        this.guestId = guestId;
     }
 }

@@ -1,5 +1,6 @@
 package com.vistaluxhms.validator;
 
+import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.MasterRoomDetailsEntity;
 import com.vistaluxhms.model.LeadEntityDTO;
 import com.vistaluxhms.model.QuotationEntityDTO;
@@ -27,6 +28,11 @@ public class QuotationValidator implements Validator {
 	@Autowired
 	SalesRelatesServicesImpl salesService;
 
+
+	@Autowired
+	ClientServicesImpl clientService;
+
+
 	@Value("${ANY_ROOM_CHILD_NO_BED_ALLOWED}")
 	private int ANY_ROOM_CHILD_NO_BED_ALLOWED;
 	
@@ -40,7 +46,7 @@ public class QuotationValidator implements Validator {
 		QuotationEntityDTO quotationEntityDTO = (QuotationEntityDTO)target;
 		isValidRoomDetails(quotationEntityDTO.getRoomDetails(),errors);
 		validateOccupancy(quotationEntityDTO.getRoomDetails(),errors);
-
+		validateClient(quotationEntityDTO,errors);
 		/*
 		if((leadRecorderVO.getClient()==null) || (!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName()))) {
 			errors.rejectValue("clientName", "contact.error");
@@ -136,7 +142,23 @@ public class QuotationValidator implements Validator {
 		return isValid;
 	}
 
-
+	private boolean validateClient(QuotationEntityDTO quotationEntityDTO,Errors errors){
+		if(quotationEntityDTO.getQuotationAudienceType()==1){
+			if(quotationEntityDTO.getGuestId()==0){
+				errors.rejectValue("guestName", "contact.error");
+				return false;
+			}
+			else {
+				ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
+				if (!clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
+					System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is " + quotationEntityDTO.getGuestName() );
+					errors.rejectValue("guestName", "contact.error");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 
 }

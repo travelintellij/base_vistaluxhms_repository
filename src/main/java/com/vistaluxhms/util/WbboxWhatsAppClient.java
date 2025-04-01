@@ -4,11 +4,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+
+import okhttp3.*;
 import org.json.JSONObject;
 
 public class WbboxWhatsAppClient {
 
-    private static final String AUTH_URL = "https://cloudapi.wbbox.com/api/v1.0/authenticate";
+    private static final String AUTH_URL = "https://wbbox.in/api/v1.0/authenticate/";
 
     private static final String MESSAGE_API_URL = "https://cloudapi.wbbox.com/api/v1.0/send-message";
 
@@ -16,7 +18,155 @@ public class WbboxWhatsAppClient {
     private static final String PASSWORD = "Ind@2025";
     private static final String TEMPLATE_ID = "registration"; // WhatsApp-approved template ID
 
+    public static void sendQuery(){
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            // JSON body with placeholders
+            String jsonBody = "{\r\n" +
+                    "  \"messaging_product\": \"whatsapp\",\r\n" +
+                    "  \"recipient_type\": \"individual\",\r\n" +
+                    "  \"to\": \"{{recipient_number}}\",\r\n" +
+                    "  \"type\": \"template\",\r\n" +
+                    "  \"template\": {\r\n" +
+                    "    \"name\": \"queryregistration\",\r\n" +
+                    "    \"language\": {\r\n" +
+                    "      \"code\": \"en\"\r\n" +
+                    "    },\r\n" +
+                    "    \"components\": [\r\n" +
+                    "      {\r\n" +
+                    "        \"type\": \"body\",\r\n" +
+                    "        \"parameters\": [\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{name}}\"\r\n" +
+                    "          },\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{query_id}}\"\r\n" +
+                    "          },\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{query_owner}}\"\r\n" +
+                    "          },\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{mobile}}\"\r\n" +
+                    "          },\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{email}}\"\r\n" +
+                    "          }\r\n" +
+                    "        ]\r\n" +
+                    "      }\r\n" +
+                    "    ]\r\n" +
+                    "  }\r\n" +
+                    "}";
+
+            // Replace placeholders with actual values
+            jsonBody = jsonBody.replace("{{recipient_number}}", "919999449267")
+                    .replace("{{name}}", "Sushil Chugh")
+                    .replace("{{query_id}}", "ATT-2025")
+                    .replace("{{query_owner}}", "Kashish")
+                    .replace("{{mobile}}", "+918810306997")
+                    .replace("{{email}}", "sales@vistaluxhotel.com");
+
+            RequestBody body = RequestBody.create(mediaType, jsonBody);
+
+            // API URL & API Key placeholders
+            String apiUrl = "https://cloudapi.wbbox.in/api/v1.0/messages/send-template/919354076156";
+            String apiKey = "MvV6mMDct0uQxI2Y55eJzQ";
+
+            Request request = new Request.Builder()
+                    .url(apiUrl)
+                    .method("POST", body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer " + apiKey)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            System.out.println("Response is " + response.body().string()); // Print API response
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
+
+        sendQuery();
+
+        /*
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            // JSON body with placeholders
+            String jsonBody = "{\r\n" +
+                    "  \"messaging_product\": \"whatsapp\",\r\n" +
+                    "  \"recipient_type\": \"individual\",\r\n" +
+                    "  \"to\": \"{{recipient_number}}\",\r\n" +
+                    "  \"type\": \"template\",\r\n" +
+                    "  \"template\": {\r\n" +
+                    "    \"name\": \"{{template_name}}\",\r\n" +
+                    "    \"language\": {\r\n" +
+                    "      \"code\": \"en\"\r\n" +
+                    "    },\r\n" +
+                    "    \"components\": [\r\n" +
+                    "      {\r\n" +
+                    "        \"type\": \"body\",\r\n" +
+                    "        \"parameters\": [\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{placeholder_value}}\"\r\n" +
+                    "          }\r\n" +
+                    "        ]\r\n" +
+                    "      },\r\n" +
+                    "      {\r\n" +
+                    "        \"type\": \"button\",\r\n" +
+                    "        \"parameters\": [\r\n" +
+                    "          {\r\n" +
+                    "            \"type\": \"text\",\r\n" +
+                    "            \"text\": \"{{placeholder_value}}\"\r\n" +
+                    "          }\r\n" +
+                    "        ],\r\n" +
+                    "        \"sub_type\": \"url\",\r\n" +
+                    "        \"index\": \"0\"\r\n" +
+                    "      }\r\n" +
+                    "    ]\r\n" +
+                    "  }\r\n" +
+                    "}";
+
+            // Replace placeholders with actual values
+            jsonBody = jsonBody.replace("{{recipient_number}}", "919310010096") // Replace with recipient's phone number
+                    .replace("{{template_name}}", "verificationcode") // Replace with template name
+                    .replace("{{placeholder_value}}", "123"); // Replace with dynamic value
+
+            RequestBody body = RequestBody.create(mediaType, jsonBody);
+
+            // API URL & API Key placeholders
+            String apiUrl = "https://cloudapi.wbbox.in/api/v1.0/messages/send-template/919354076156";
+            String apiKey = "MvV6mMDct0uQxI2Y55eJzQ";
+
+            Request request = new Request.Builder()
+                    .url(apiUrl)
+                    .method("POST", body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer " + apiKey)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            System.out.println("Response is " + response.body().string()); // Print API response
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+       /*
         try {
             // Step 1: Authenticate and get the access token
             String accessToken = getAccessToken();
@@ -32,7 +182,7 @@ public class WbboxWhatsAppClient {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static String getAccessToken() {

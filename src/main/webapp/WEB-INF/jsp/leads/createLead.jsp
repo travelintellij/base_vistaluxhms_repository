@@ -194,7 +194,6 @@
                <label for="">Internal Remarks</label> <br>
                <form:textarea path = "internalRemarks" rows="6"  maxlength="1000" style="width: 100%; box-sizing: border-box;"/>
            </div>
-
            <div class="form-cell">
 
                                 <label for="b2b-client">Notify Client:</label>
@@ -220,7 +219,7 @@
                         <label for="notifySMS" style="color: gray; cursor: not-allowed;">SMS</label>
                     </div>
                     <div class="checkbox-item">
-                        <form:checkbox path="notifyWhatsapp" id="notifyWhatsapp" disabled="true" />
+                        <form:checkbox path="notifyWhatsapp" id="notifyWhatsapp" />
                         <label for="notifyWhatsapp" style="color: gray; cursor: not-allowed;">Whats App</label>
                     </div>
                 </div>

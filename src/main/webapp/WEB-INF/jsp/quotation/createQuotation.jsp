@@ -46,6 +46,9 @@
             box-sizing: border-box;
         }
 
+  .autocomplete-suggestions {
+        width: 300px !important; /* Adjust the width as needed */
+    }
 
     </style>
     <script>
@@ -63,9 +66,9 @@
 
             if (userType === "1") {
                 document.getElementById("clientBox").classList.remove("hidden");
-            } else if (userType === "2") {
+            } /*else if (userType === "2") {
                 document.getElementById("salesBox").classList.remove("hidden");
-            } else if (userType === "3") {
+            } */else if (userType === "2") {
                 document.getElementById("unregisteredBox").classList.remove("hidden");
             }
         }
@@ -195,7 +198,7 @@ h2, h3 {
     <h2>Create Quotation</h2>
 
     <form:form method="post" action="review_process_create_quotation" modelAttribute="QUOTATION_OBJ">
-        <form:hidden path="guestName" />
+        <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->
   <div class="form-group">
@@ -204,14 +207,16 @@ h2, h3 {
               <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 600px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                     <form:option value="0">Select</form:option>
                  <form:option value="1">Client</form:option>
-                 <form:option value="2">Sales Partner</form:option>
-                 <form:option value="3">Unregistered</form:option>
+                 <form:option value="2">Unregistered</form:option>
               </form:select>
           </div>
 
           <div id="clientBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
               <label for="clientName">Client Name:</label>
-              <input type="text" id="clientName" name="clientName" class="input-field">
+              <form:input path="guestName" required="required" />
+              <font color="red">
+                  <form:errors path="guestName" cssClass="error"  />
+              </font>
           </div>
 
           <div id="salesBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
@@ -308,6 +313,33 @@ h2, h3 {
 
   <script>
 
+$('#guestName').autocomplete({
+     serviceUrl: '${pageContext.request.contextPath}/getClientList', // Keeping the original endpoint
+     paramName: "clientName", // Keeping original request param as expected by the backend
+     delimiter: ",",
+     onSelect: function (suggestion) {
+         // Set only guestName in the input box
+         $('#guestName').val(suggestion.value.split(" - ")[0]);
+
+         // Set guestId in the hidden input
+         guestID = suggestion.data;
+         jQuery("#guestId").val(guestID);
+         $('input[name=guestId]').val(guestID);
+         return false;
+     },
+     transformResult: function (response) {
+         return {
+             suggestions: $.map($.parseJSON(response), function (item) {
+                 return {
+                     value: item.clientName + " - " + item.salesPartnerName, // Keep clientName from API response
+                     data: item.clientId // Keep clientId for hidden input
+                 };
+             })
+         };
+     }
+ });
+
+
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("quotationAudienceType").addEventListener("change", handleUserTypeChange);
     document.getElementById("contactMethod").addEventListener("change", handleContactChange);
@@ -390,7 +422,6 @@ function removeRoom(button) {
     let row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
 }
-
 
 
 

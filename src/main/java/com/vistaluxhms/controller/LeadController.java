@@ -56,8 +56,12 @@ public class LeadController {
 
     @Autowired
     LeadServicesImpl leadService;
+
     @Autowired
     EmailServiceImpl emailService;
+
+    @Autowired
+    WhatsAppMessagingService whatsAppService;
 
     @Value("${email.client.valid}")
     private boolean emailClientNotifyActive;
@@ -128,6 +132,17 @@ public class LeadController {
                     notifyLeadCreationTargetAudience(leadRecorderObj, "LeadCreateConfirmation.ftl", true, true);
                 }else{
                     System.out.println("Inform Client Active but email disabled. ");
+                }
+                if(leadRecorderObj.isNotifyWhatsapp()){
+                    WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
+                    whatsAppMessageDTO.setQueryId("ATT-" + leadEntity.getLeadId());
+                    whatsAppMessageDTO.setRecipientName(leadEntity.getClient().getClientName());
+                    whatsAppMessageDTO.setRecipientMobile("91"+leadEntity.getClient().getMobile());
+                    AshokaTeam leadOwner = userDetailsService.findUserByID(leadRecorderObj.getLeadOwner());
+                    whatsAppMessageDTO.setQueryOwnerName(leadOwner.getUsername());
+                    whatsAppMessageDTO.setQueryOwnerMobile("+91" + leadOwner.getMobile());
+                    whatsAppMessageDTO.setQueryOwnerEmail(leadOwner.getEmail());
+                   whatsAppService.sendQueryRegistrationMessage(whatsAppMessageDTO);
                 }
                 //notifyLeadCreationSms(leadRecorderObj);
             }

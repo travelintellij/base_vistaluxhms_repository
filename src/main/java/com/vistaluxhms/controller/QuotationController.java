@@ -165,6 +165,14 @@ public class QuotationController {
         if (result.hasErrors()) {
             return view_add_quotation_form(quotationEntityDTO, session,result);
         } else {
+            System.out.println("Audient Type  selected is " + quotationEntityDTO.getQuotationAudienceType());
+            System.out.println(quotationEntityDTO.getGuestId() + "---" + quotationEntityDTO.getGuestName());
+            if(quotationEntityDTO.getQuotationAudienceType()==1){
+                ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
+                quotationEntityDTO.setMobile(clientEntity.getMobile().toString());
+                quotationEntityDTO.setEmail(clientEntity.getEmailId());
+            }
+
             int grandTotalSum = 0;
             List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
