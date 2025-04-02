@@ -32,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,9 @@ public class QuotationController {
     LeadServicesImpl leadService;
     @Autowired
     EmailServiceImpl emailService;
+
+    @Autowired
+    WhatsAppMessagingService whatsAppService;
 
     @Value("${ANY_ROOM_CHILD_NO_BED_PERCENTAGE}")
     private int ANY_ROOM_CHILD_NO_BED_PERCENTAGE;
@@ -266,6 +270,136 @@ public class QuotationController {
         return totalPrice;
     }
 
+
+    @RequestMapping(value="process_quotation",params = "whatsapp",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView process_quotation_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                                BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:review_process_create_quotation");
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        if (result.hasErrors()) {
+            modelView = review_process_create_quotation(quotationEntityDTO,result,session,redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+
+        notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+        System.out.println("Quotation Sent Successfully!! ");
+        redirectAttrib.addFlashAttribute("Success","Quotation is sent successfully !! ");
+        //session.removeAttribute(sessionKey);
+        return modelView;
+    }
+
+    private void notifyQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
+        UserDetailsObj user = getLoggedInUser();
+        System.out.println("Sharing Quotation via Whats app");
+        try {
+                WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
+                whatsAppMessageDTO.setRecipientMobile("91"+quotationEntityDTO.getMobile());
+                whatsAppMessageDTO.setRecipientName(quotationEntityDTO.getGuestName());
+                String guestDetails = generateGuestDetails(quotationEntityDTO.getRoomDetails());
+                whatsAppMessageDTO.setGuestDetails(guestDetails);
+                String roomType=getRoomCategoryName(quotationEntityDTO.getRoomDetails());
+                whatsAppMessageDTO.setRoomType(roomType);
+                String mealPlan = getMealPlanName(quotationEntityDTO.getRoomDetails());
+                whatsAppMessageDTO.setMealPlan(mealPlan);
+                String checkInDate = getFormattedDate(quotationEntityDTO.getRoomDetails(),true);
+                whatsAppMessageDTO.setCheckInDate(checkInDate);
+                String checkOutDate = getFormattedDate(quotationEntityDTO.getRoomDetails(),false);
+                whatsAppMessageDTO.setCheckOutDate(checkOutDate);
+                whatsAppMessageDTO.setQueryOwnerName(user.getUsername());
+                whatsAppMessageDTO.setQueryOwnerMobile(String.valueOf(user.getMobile()));
+                whatsAppMessageDTO.setQueryOwnerEmail(user.getEmail());
+                int nettPrice=quotationEntityDTO.getGrandTotal()-quotationEntityDTO.getDiscount();
+                whatsAppMessageDTO.setFinalPrice(nettPrice);
+                whatsAppService.sendGuestQuotationMessage(whatsAppMessageDTO);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    }
+    private String generateGuestDetails(List<QuotationRoomDetailsDTO> roomDetailsList) {
+        int totalAdults = 0;
+        int totalChildren = 0;
+
+        for (QuotationRoomDetailsDTO room : roomDetailsList) {
+            totalAdults += room.getAdults();
+            totalChildren += room.getChildWithBed() + room.getChildNoBed();
+        }
+        return totalAdults + " Adults and " + totalChildren + " Children";
+    }
+
+    private String getRoomCategoryName(List<QuotationRoomDetailsDTO> roomDetailsList) {
+        if (roomDetailsList.isEmpty()) {
+            return "No Rooms"; // Handle empty list case
+        }
+
+        String firstRoomCategoryName = roomDetailsList.get(0).getRoomCategoryName();
+        int firstRoomCategoryId = roomDetailsList.get(0).getRoomCategoryId();
+
+        for (QuotationRoomDetailsDTO room : roomDetailsList) {
+            if (room.getRoomCategoryId() != firstRoomCategoryId) {
+                return "Multiple"; // Different room categories found
+            }
+        }
+
+        return firstRoomCategoryName; // All rooms have the same category
+    }
+
+    public String getMealPlanName(List<QuotationRoomDetailsDTO> roomDetailsList) {
+        if (roomDetailsList.isEmpty()) {
+            return "No Meal Plan"; // Handle empty list case
+        }
+
+        String firstMealPlanName = roomDetailsList.get(0).getMealPlanName();
+        int firstMealPlanId = roomDetailsList.get(0).getMealPlanId();
+
+        for (QuotationRoomDetailsDTO room : roomDetailsList) {
+            if (room.getMealPlanId() != firstMealPlanId) {
+                return "Multiple"; // Different meal plans found
+            }
+        }
+
+        return firstMealPlanName; // All rooms have the same meal plan
+    }
+
+    public String getFormattedDate(List<QuotationRoomDetailsDTO> roomDetailsList, boolean isCheckInDate) {
+        if (roomDetailsList.isEmpty()) {
+            return "No Date"; // Handle empty list case
+        }
+
+        // Extract the first date based on the parameter
+        LocalDate firstDate = isCheckInDate ? roomDetailsList.get(0).getCheckInDate()
+                : roomDetailsList.get(0).getCheckOutDate();
+
+        for (QuotationRoomDetailsDTO room : roomDetailsList) {
+            LocalDate currentDate = isCheckInDate ? room.getCheckInDate() : room.getCheckOutDate();
+            if (!currentDate.equals(firstDate)) {
+                return "Multiple"; // If dates are different, return "Multiple"
+            }
+        }
+
+        // Convert the date to "DD MMM YYYY" format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        return firstDate.format(formatter);
+    }
+
     @RequestMapping(value="process_quotation",params = "Email",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView process_quotation_email(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
                                                         BindingResult result,HttpSession session,final RedirectAttributes redirectAttrib) {
@@ -449,5 +583,49 @@ public class QuotationController {
         response.getOutputStream().write(pdfBytes);
         response.getOutputStream().flush();
     }
+
+
+    @RequestMapping(value = "process_quotation", params = "EmailAndWhatsApp", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_quotation_email_and_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                                             BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        modelView.setViewName("redirect:review_process_create_quotation");
+
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        if (result.hasErrors()) {
+            modelView = review_process_create_quotation(quotationEntityDTO, result, session, redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+
+        // Sending email
+        notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FITQuotation.ftl");
+
+        // Sending WhatsApp message
+        notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+
+        System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
+
+        return modelView;
+    }
+
 
 }

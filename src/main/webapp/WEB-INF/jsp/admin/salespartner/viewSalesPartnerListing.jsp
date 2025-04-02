@@ -84,14 +84,16 @@
 </div>
 
 <!-- Sales Partner List Table Section -->
-<div class="form-container sales-partner-list-container">
+<div class="form-container sales-partner-list-container" style="width: 100%; max-width: 1400px;">
+
     <c:set value="${SALES_PARTNER_FILTERED_LIST}" var="salesPartnerList" />
     <table>
         <thead>
             <tr>
-                <th>Sales Partner ID</th>
+                <th style="width:12%;">Sales Partner ID</th>
                 <th>Short Name</th>
                 <th>Full Name</th>
+                <th>Rate Type</th>
                 <th>City</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -100,10 +102,11 @@
         <tbody>
             <c:forEach items="${salesPartnerList}" var="salesPartnerRec">
                 <tr>
-                    <td>${salesPartnerRec.salesPartnerId}</td>
-                    <td>${salesPartnerRec.salesPartnerShortName}</td>
-                    <td>${salesPartnerRec.salesPartnerName}</td>
-                    <td>${salesPartnerRec.cityName}</td>
+                    <td style="width:12%;">${salesPartnerRec.salesPartnerId}</td>
+                    <td style="text-align:left;">${salesPartnerRec.salesPartnerShortName}</td>
+                    <td style="text-align:left;">${salesPartnerRec.salesPartnerName}</td>
+                    <td style="text-align:left;">${salesPartnerRec.rateTypeEntity.rateTypeName}</td>
+                    <td style="text-align:left;">${salesPartnerRec.cityName}</td>
                     <td>
                         <c:if test="${salesPartnerRec.active eq true}">
                             <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
@@ -112,7 +115,7 @@
                             <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
                         </c:if>
                     </td>
-                    <td>
+                    <td style="text-align:left;">
                         <form action="view_sales_partner_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
@@ -121,7 +124,10 @@
                             <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>
-
+                        <form action="view_share_season_sales_partner_form" method="POST" style="display:inline;">
+                            <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Share Season Rates</button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>

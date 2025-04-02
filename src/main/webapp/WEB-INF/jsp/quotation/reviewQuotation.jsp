@@ -254,8 +254,8 @@ h2, h3 {
             <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
                 <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
             </c:if>
-            <button type="submit" class="btn" style="background-color: green;" disabled>WhatsApp Quotation</button> |
-            <button type="submit" class="btn" disabled>Email & WhatsApp Quotation</button> |
+            <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
+            <button type="submit" class="btn" name="EmailAndWhatsApp" id="EmailAndWhatsApp" value="EmailAndWhatsApp">Email & WhatsApp Quotation</button> |
             <button type="submit" class="btn" disabled>Save Quotation</button>
             <button type="submit" class="btn" name="Download" id="Download" value="Download">Download Quotation</button>
         </div>

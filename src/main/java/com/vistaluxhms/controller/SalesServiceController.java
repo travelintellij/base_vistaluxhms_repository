@@ -261,9 +261,9 @@ public class SalesServiceController {
                 ClientEntityDTO updatedClientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
                 clientEntity = new ClientEntity(updatedClientEntityDTO);
                 clientService.saveClient(clientEntity);
-                redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
-                modelView.setViewName("redirect:view_sales_partner_list");
             }
+            redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
+            modelView.setViewName("redirect:view_sales_partner_list");
         }
 
         return modelView;
@@ -343,5 +343,38 @@ public class SalesServiceController {
         return modelView;
     }
 
+    @PostMapping("view_share_season_sales_partner_form")
+    public ModelAndView view_share_season_sales_partner_form(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result ) {
+        ModelAndView modelView = new ModelAndView("admin/salespartner/viewShareRateSessionForm");
+        // Adding user details to the model
+        // Filtering sales partners based on the search criteria
+        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
+        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
+        List<SessionRateMappingEntity> rateSessionMappingList = salesService.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(salesPartnerEntityDto.getRateTypeEntity().getRateTypeId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy");
 
+        // Format startDate and endDate and store them as new attributes
+        for (SessionRateMappingEntity entity : rateSessionMappingList) {
+            entity.setFormattedStartDate(entity.getStartDate().format(formatter));
+            entity.setFormattedEndDate(entity.getEndDate().format(formatter));
+        }
+        System.out.println("Rate Type size is " + rateSessionMappingList.size());
+        modelView.addObject("RATE_SESSION_MAPPING_LIST", rateSessionMappingList);
+        return modelView;
+    }
+
+    @PostMapping("processSelectedSessions")
+    public ModelAndView processSelectedSessions(@RequestParam(value = "selectedSessions", required = false) List<Long> selectedSessions,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelAndView = new ModelAndView("redirect:view_sales_partner_list"); // Change this to your JSP page
+
+        if (selectedSessions != null && !selectedSessions.isEmpty()) {
+            // Process the selected session IDs
+            System.out.println("Selected Session IDs: " + selectedSessions);
+            redirectAttrib.addFlashAttribute("Success", "Selected Sessions processed successfully!");
+        } else {
+            redirectAttrib.addFlashAttribute("Error", "No sessions were selected!");
+        }
+
+        return modelAndView;
+    }
 }
