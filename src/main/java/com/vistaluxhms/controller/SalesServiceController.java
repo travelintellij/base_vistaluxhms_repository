@@ -4,10 +4,8 @@ import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
-import com.vistaluxhms.services.ClientServicesImpl;
-import com.vistaluxhms.services.SalesRelatesServicesImpl;
-import com.vistaluxhms.services.UserDetailsServiceImpl;
-import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.services.*;
+import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.CityManagementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +41,12 @@ public class SalesServiceController {
 
     @Autowired
     ClientServicesImpl clientService;
+
+    @Autowired
+    SessionServiceImpl sessionService;
+
+    @Autowired
+    SalesRelatesServicesImpl salesRelatedServices;
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -363,18 +367,77 @@ public class SalesServiceController {
         return modelView;
     }
 
-    @PostMapping("processSelectedSessions")
-    public ModelAndView processSelectedSessions(@RequestParam(value = "selectedSessions", required = false) List<Long> selectedSessions,final RedirectAttributes redirectAttrib) {
-        ModelAndView modelAndView = new ModelAndView("redirect:view_sales_partner_list"); // Change this to your JSP page
-
+    @PostMapping("review_sales_partner_rate_share_form")
+    public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelAndView = new ModelAndView("admin/salespartner/reviewShareRateSessionForm"); // Change this to your JSP page
         if (selectedSessions != null && !selectedSessions.isEmpty()) {
             // Process the selected session IDs
-            System.out.println("Selected Session IDs: " + selectedSessions);
+            System.out.println("Selected Session ID is : " + selectedSessions);
+
+            List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
+            for (Integer sessionRateMappingId : selectedSessions) {
+                SessionRateMappingEntity sessionRateMappingEntity = sessionService.findSessionRateMappingEntityById(sessionRateMappingId);
+                Map<String, Object> sessionDetail = getSessionDetailMap(sessionRateMappingEntity);
+                if (sessionDetail != null) {
+                    sessionDetailsList.add(sessionDetail);
+                }
+            }
+            modelAndView.addObject("SESSION_SHARE_LIST",sessionDetailsList);
             redirectAttrib.addFlashAttribute("Success", "Selected Sessions processed successfully!");
         } else {
             redirectAttrib.addFlashAttribute("Error", "No sessions were selected!");
         }
-
+        modelAndView.addObject("mealPlans", VistaluxConstants.MEAL_PLANS_MAP); // {1: "EPAI", 2: "CPAI", 3: "MAPAI", 4: "APAI"}
         return modelAndView;
     }
+
+
+    private Map getSessionDetailMap(SessionRateMappingEntity sessionRateMappingEntity) {
+        Map sessionShareData = new HashMap();
+        SessionEntity sessionEntity = sessionRateMappingEntity.getSessionEntity();
+        RateTypeEntity rateTypeEntity = sessionRateMappingEntity.getRateTypeEntity();
+        List<MasterRoomDetailsEntity> ACTIVE_ROOM_LIST = salesRelatedServices.findActiveRoomsList();
+        ModelAndView modelView = new ModelAndView("session/Admin_Edit_Session_Details");
+        modelView.addObject("ACTIVE_ROOM_LIST",ACTIVE_ROOM_LIST);
+        Map<Integer, Map<Integer, SessionDetailsEntityDTO>> sessionDetailsMap = new LinkedHashMap<>();
+        Map<Integer,MasterRoomDetailsEntity> activeRoomCategoriesMap = new HashMap<Integer,MasterRoomDetailsEntity>();
+        for (MasterRoomDetailsEntity activeRoomCategory : ACTIVE_ROOM_LIST) {
+            int roomCategoryId = activeRoomCategory.getRoomCategoryId();
+            String roomCategoryName = activeRoomCategory.getRoomCategoryName();
+            activeRoomCategoriesMap.put(roomCategoryId,activeRoomCategory);
+
+            // Create or retrieve inner map for this room category
+            Map<Integer, SessionDetailsEntityDTO> mealPlanMap = sessionDetailsMap.getOrDefault(roomCategoryId, new LinkedHashMap<>());
+
+            for (Integer mealPlanKey : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+                SessionDetailsEntityDTO newSessionDetailsEntityDTO = new SessionDetailsEntityDTO();
+
+                Optional<SessionDetailsEntity> existingSessionDetailsEntity =
+                        sessionService.findSessionDetailsEntity(sessionRateMappingEntity.getSessionEntity().getSessionId(), roomCategoryId, mealPlanKey);
+
+                if (existingSessionDetailsEntity.isPresent()) {
+                    newSessionDetailsEntityDTO.updateVOFromEntity(existingSessionDetailsEntity.get());
+                    newSessionDetailsEntityDTO.setExists(true);
+                } else {
+                    newSessionDetailsEntityDTO.setRoomCategoryId(roomCategoryId);
+                    newSessionDetailsEntityDTO.setMealPlanId(mealPlanKey);
+                    newSessionDetailsEntityDTO.setSession(sessionEntity);
+                    newSessionDetailsEntityDTO.setExists(false);
+                }
+                newSessionDetailsEntityDTO.setTempRateTypeName(rateTypeEntity.getRateTypeName());
+                newSessionDetailsEntityDTO.setSessionStartDate(sessionRateMappingEntity.getStartDate());
+                newSessionDetailsEntityDTO.setSessionEndDate(sessionRateMappingEntity.getEndDate());
+                // Store the DTO in the inner map
+                mealPlanMap.put(mealPlanKey, newSessionDetailsEntityDTO);
+            }
+            // Store the inner map in the outer map
+            sessionDetailsMap.put(roomCategoryId, mealPlanMap);
+        }
+        sessionShareData.put("sessionDetailsMap", sessionDetailsMap);
+        sessionShareData.put("roomCategoryNames", activeRoomCategoriesMap); // e.g., {1: "Deluxe", 2: "Premium"}
+
+
+        return sessionShareData;
+    }
+
 }

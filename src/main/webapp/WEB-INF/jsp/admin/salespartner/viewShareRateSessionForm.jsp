@@ -80,11 +80,15 @@
 
 <!-- City List Table Section -->
 <div class="container">
-    <h2>Available Session List for Sales Partner</h2>
-    <c:set value="${RATE_SESSION_MAPPING_LIST}" var="rateTypeSessionMapping" />
+    <form:form modelAttribute="SALES_PARTNER_OBJ" action="review_sales_partner_rate_share_form">
+    <h3 style="text-align: center; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">
+        Available Session List for
+        <span style="color: #007bff; font-size: 26px; font-weight: bold; text-transform: uppercase;">
+            ${SALES_PARTNER_OBJ.salesPartnerName}
+        </span>
+    </h3>
 
-    <!-- Form to submit selected session IDs -->
-    <form action="processSelectedSessions" method="post">
+    <c:set value="${RATE_SESSION_MAPPING_LIST}" var="rateTypeSessionMapping" />
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
@@ -100,7 +104,7 @@
                 <c:forEach items="${rateTypeSessionMapping}" var="rateTypeSessionMappingRec">
                     <tr>
                         <td class="checkbox-wrapper">
-                            <input class="form-check-input" type="checkbox" name="selectedSessions" value="${rateTypeSessionMappingRec.sessionEntity.sessionId}">
+                            <input class="form-check-input" type="checkbox" name="selectedSessions" value="${rateTypeSessionMappingRec.sessionRateTypeId}">
                         </td>
                         <td>${rateTypeSessionMappingRec.rateTypeEntity.rateTypeId}</td>
                         <td>${rateTypeSessionMappingRec.rateTypeEntity.rateTypeName }</td>
@@ -120,7 +124,7 @@
         <div class="submit-btn">
             <button type="submit" class="btn btn-primary">Process Selected Sessions</button>
         </div>
-    </form>
+    </form:form>
 </div>
 
 <jsp:include page="../../footer.jsp" />

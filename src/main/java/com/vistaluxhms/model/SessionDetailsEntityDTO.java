@@ -3,11 +3,18 @@ package com.vistaluxhms.model;
 import com.vistaluxhms.entity.SessionDetailsEntity;
 import com.vistaluxhms.entity.SessionEntity;
 
+import java.time.LocalDate;
+
 public class SessionDetailsEntityDTO extends SessionDetailsEntity {
     private boolean exists;
     private int roomCategoryId;
     protected int mealPlanId;
 
+    //Following fields are temporarily added in the system for sharing the pricing with the sales partners.
+    private String tempRateTypeName;
+    private LocalDate sessionStartDate;
+    private LocalDate sessionEndDate;
+    //**********************************
 
     public boolean isExists() {
         return exists;
@@ -46,5 +53,46 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
 
     public void setMealPlanId(int mealPlanId) {
         this.mealPlanId = mealPlanId;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionDetailsEntityDTO{" +
+                ", mealPlanId=" + mealPlanId +
+                ", sessionDetailId=" + sessionDetailId +
+                ", person1=" + person1 +
+                ", person2=" + person2 +
+                ", person3=" + person3 +
+                ", person4=" + person4 +
+                ", person5=" + person5 +
+                ", person6=" + person6 +
+                ", rateTypename=" + tempRateTypeName +
+                ", startDate=" + sessionStartDate +
+                ", EndDate=" + sessionEndDate +
+                '}';
+    }
+
+    public String getTempRateTypeName() {
+        return tempRateTypeName;
+    }
+
+    public void setTempRateTypeName(String tempRateTypeName) {
+        this.tempRateTypeName = tempRateTypeName;
+    }
+
+    public LocalDate getSessionStartDate() {
+        return sessionStartDate;
+    }
+
+    public void setSessionStartDate(LocalDate sessionStartDate) {
+        this.sessionStartDate = sessionStartDate;
+    }
+
+    public LocalDate getSessionEndDate() {
+        return sessionEndDate;
+    }
+
+    public void setSessionEndDate(LocalDate sessionEndDate) {
+        this.sessionEndDate = sessionEndDate;
     }
 }
