@@ -53,8 +53,19 @@
             font-style: italic;
             color: #343a40;
         }
+         .submit-btn {
+                margin-top: 10px;
+                display: flex;
+                justify-content: center;
+            }
     </style>
-  <h2 class="text-center mb-4">Seasonal Room Rates</h2>
+  <form:form modelAttribute="SALES_PARTNER_OBJ" action="send_send_sales_partner_rate_share">
+        <h3 style="text-align: center; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">
+                Share Season Rates with
+                <span style="color: #007bff; font-size: 26px; font-weight: bold; text-transform: uppercase;">
+                    ${SALES_PARTNER_OBJ.salesPartnerName}
+                </span>
+            </h3>
        <c:forEach var="sessionWiseRecord" items="${SESSION_SHARE_LIST}">
            <div class="session-container">
                <!-- Session Header -->
@@ -97,10 +108,9 @@
                </table>
            </div>
        </c:forEach>
+ <div class="submit-btn">
+            <button type="submit" class="btn btn-primary">Send Season Rates</button>
+        </div>
+</form:form>
 
-
-
-
-
-</body>
-</html>
+<jsp:include page="../../footer.jsp" />

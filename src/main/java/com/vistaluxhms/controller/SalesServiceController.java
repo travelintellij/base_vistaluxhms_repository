@@ -7,6 +7,7 @@ import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.CityManagementValidator;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -48,6 +52,10 @@ public class SalesServiceController {
     @Autowired
     SalesRelatesServicesImpl salesRelatedServices;
 
+    @Autowired
+    EmailServiceImpl emailService;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -368,7 +376,9 @@ public class SalesServiceController {
     }
 
     @PostMapping("review_sales_partner_rate_share_form")
-    public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,final RedirectAttributes redirectAttrib) {
+    public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
+        SalesPartnerEntity salesPartnerEntity = salesRelatedServices.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
+        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
         ModelAndView modelAndView = new ModelAndView("admin/salespartner/reviewShareRateSessionForm"); // Change this to your JSP page
         if (selectedSessions != null && !selectedSessions.isEmpty()) {
             // Process the selected session IDs
@@ -382,7 +392,24 @@ public class SalesServiceController {
                     sessionDetailsList.add(sessionDetail);
                 }
             }
+            sessionDetailsList.sort(Comparator.comparing(map -> {
+                Map<Integer, Map<Integer, SessionDetailsEntityDTO>> sessionDetailsMap =
+                        (Map<Integer, Map<Integer, SessionDetailsEntityDTO>>) map.get("sessionDetailsMap");
+
+                if (sessionDetailsMap != null && !sessionDetailsMap.isEmpty()) {
+                    for (Map<Integer, SessionDetailsEntityDTO> mealPlanMap : sessionDetailsMap.values()) {
+                        for (SessionDetailsEntityDTO dto : mealPlanMap.values()) {
+                            if (dto != null && dto.getSessionStartDate() != null) {
+                                return LocalDate.parse(dto.getSessionStartDate(), formatter);
+                            }
+                        }
+                    }
+                }
+                return LocalDate.MAX; // If no valid date found, push it to the end
+            }));
+            modelAndView.addObject("SALES_PARTNER_OBJ",salesPartnerEntityDto);
             modelAndView.addObject("SESSION_SHARE_LIST",sessionDetailsList);
+            modelAndView.addObject("selectedSessions", selectedSessions);
             redirectAttrib.addFlashAttribute("Success", "Selected Sessions processed successfully!");
         } else {
             redirectAttrib.addFlashAttribute("Error", "No sessions were selected!");
@@ -425,8 +452,8 @@ public class SalesServiceController {
                     newSessionDetailsEntityDTO.setExists(false);
                 }
                 newSessionDetailsEntityDTO.setTempRateTypeName(rateTypeEntity.getRateTypeName());
-                newSessionDetailsEntityDTO.setSessionStartDate(sessionRateMappingEntity.getStartDate());
-                newSessionDetailsEntityDTO.setSessionEndDate(sessionRateMappingEntity.getEndDate());
+                newSessionDetailsEntityDTO.setSessionStartDate(sessionRateMappingEntity.getStartDate().format(formatter));
+                newSessionDetailsEntityDTO.setSessionEndDate(sessionRateMappingEntity.getEndDate().format(formatter));
                 // Store the DTO in the inner map
                 mealPlanMap.put(mealPlanKey, newSessionDetailsEntityDTO);
             }
@@ -440,4 +467,29 @@ public class SalesServiceController {
         return sessionShareData;
     }
 
+
+    @PostMapping("send_sales_partner_rate_share")
+    public ModelAndView sendSalesPartnerRateShare(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = review_sales_partner_rate_share_form( selectedSessions,salesPartnerEntityDto, result, redirectAttrib) ;
+        salesPartnerEntityDto = (SalesPartnerEntityDto) modelView.getModel().get("SALES_PARTNER_OBJ");
+        SalesPartnerEntityDto updatedDto = (SalesPartnerEntityDto) modelView.getModel().get("SALES_PARTNER_OBJ");
+        List<Map<String, Object>> sessionDetailsList = (List<Map<String, Object>>) modelView.getModel().get("SESSION_SHARE_LIST");
+
+
+        Map<String, Object> emailData = new HashMap<>();
+        emailData.put("salesPartnerName", salesPartnerEntityDto.getSalesPartnerName());
+        emailData.put("sessionShareList", sessionDetailsList);
+        emailData.put("mealPlans", VistaluxConstants.MEAL_PLANS_MAP);
+        Mail mail = new Mail();
+        try {
+            emailService.sendEmailMessageUsingTemplate(mail,"sales_partner_rate_share.ftl");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (TemplateException e) {
+            throw new RuntimeException(e);
+        }
+        return modelView;
+    }
 }

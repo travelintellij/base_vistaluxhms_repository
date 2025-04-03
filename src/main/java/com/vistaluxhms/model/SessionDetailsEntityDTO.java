@@ -12,8 +12,8 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
 
     //Following fields are temporarily added in the system for sharing the pricing with the sales partners.
     private String tempRateTypeName;
-    private LocalDate sessionStartDate;
-    private LocalDate sessionEndDate;
+    private String sessionStartDate;
+    private String sessionEndDate;
     //**********************************
 
     public boolean isExists() {
@@ -80,19 +80,19 @@ public class SessionDetailsEntityDTO extends SessionDetailsEntity {
         this.tempRateTypeName = tempRateTypeName;
     }
 
-    public LocalDate getSessionStartDate() {
+    public String getSessionStartDate() {
         return sessionStartDate;
     }
 
-    public void setSessionStartDate(LocalDate sessionStartDate) {
+    public void setSessionStartDate(String sessionStartDate) {
         this.sessionStartDate = sessionStartDate;
     }
 
-    public LocalDate getSessionEndDate() {
+    public String getSessionEndDate() {
         return sessionEndDate;
     }
 
-    public void setSessionEndDate(LocalDate sessionEndDate) {
+    public void setSessionEndDate(String sessionEndDate) {
         this.sessionEndDate = sessionEndDate;
     }
 }

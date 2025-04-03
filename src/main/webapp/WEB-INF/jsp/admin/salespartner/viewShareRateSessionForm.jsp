@@ -81,6 +81,7 @@
 <!-- City List Table Section -->
 <div class="container">
     <form:form modelAttribute="SALES_PARTNER_OBJ" action="review_sales_partner_rate_share_form">
+    <form:hidden path="salesPartnerId" />
     <h3 style="text-align: center; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">
         Available Session List for
         <span style="color: #007bff; font-size: 26px; font-weight: bold; text-transform: uppercase;">
