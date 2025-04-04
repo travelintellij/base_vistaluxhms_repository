@@ -60,6 +60,12 @@
             }
     </style>
   <form:form modelAttribute="SALES_PARTNER_OBJ" action="send_send_sales_partner_rate_share">
+        <form:hidden path="salesPartnerId" />
+
+        <c:forEach var="ratesessionId" items="${RATE_TYPE_SESSION_MAPPING_ID_LIST}">
+            <input type="hidden" name="rateSessionMappingIds" value="${ratesessionId}" />
+        </c:forEach>
+
         <h3 style="text-align: center; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;">
                 Share Season Rates with
                 <span style="color: #007bff; font-size: 26px; font-weight: bold; text-transform: uppercase;">

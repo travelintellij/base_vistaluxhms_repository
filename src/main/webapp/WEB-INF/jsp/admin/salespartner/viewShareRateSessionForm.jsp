@@ -105,7 +105,7 @@
                 <c:forEach items="${rateTypeSessionMapping}" var="rateTypeSessionMappingRec">
                     <tr>
                         <td class="checkbox-wrapper">
-                            <input class="form-check-input" type="checkbox" name="selectedSessions" value="${rateTypeSessionMappingRec.sessionRateTypeId}">
+                            <input class="form-check-input" type="checkbox" name="rateSessionMappingIds" value="${rateTypeSessionMappingRec.sessionRateTypeId}">
                         </td>
                         <td>${rateTypeSessionMappingRec.rateTypeEntity.rateTypeId}</td>
                         <td>${rateTypeSessionMappingRec.rateTypeEntity.rateTypeName }</td>

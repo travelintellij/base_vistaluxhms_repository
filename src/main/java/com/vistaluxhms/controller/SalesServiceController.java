@@ -3,6 +3,10 @@ package com.vistaluxhms.controller;
 import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
+import com.vistaluxhms.model.ratecard.MealPlanRate;
+import com.vistaluxhms.model.ratecard.RateCard;
+import com.vistaluxhms.model.ratecard.RoomCategory;
+import com.vistaluxhms.model.ratecard.SessionRateMapHelperDTO;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -22,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -376,16 +381,16 @@ public class SalesServiceController {
     }
 
     @PostMapping("review_sales_partner_rate_share_form")
-    public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
+    public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "rateSessionMappingIds", required = true) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
         SalesPartnerEntity salesPartnerEntity = salesRelatedServices.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
         ModelAndView modelAndView = new ModelAndView("admin/salespartner/reviewShareRateSessionForm"); // Change this to your JSP page
-        if (selectedSessions != null && !selectedSessions.isEmpty()) {
+        if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
             // Process the selected session IDs
-            System.out.println("Selected Session ID is : " + selectedSessions);
+            System.out.println("Selected Session ID is : " + rateSessionMappingIds);
 
             List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
-            for (Integer sessionRateMappingId : selectedSessions) {
+            for (Integer sessionRateMappingId : rateSessionMappingIds) {
                 SessionRateMappingEntity sessionRateMappingEntity = sessionService.findSessionRateMappingEntityById(sessionRateMappingId);
                 Map<String, Object> sessionDetail = getSessionDetailMap(sessionRateMappingEntity);
                 if (sessionDetail != null) {
@@ -409,7 +414,7 @@ public class SalesServiceController {
             }));
             modelAndView.addObject("SALES_PARTNER_OBJ",salesPartnerEntityDto);
             modelAndView.addObject("SESSION_SHARE_LIST",sessionDetailsList);
-            modelAndView.addObject("selectedSessions", selectedSessions);
+            modelAndView.addObject("RATE_TYPE_SESSION_MAPPING_ID_LIST", rateSessionMappingIds);
             redirectAttrib.addFlashAttribute("Success", "Selected Sessions processed successfully!");
         } else {
             redirectAttrib.addFlashAttribute("Error", "No sessions were selected!");
@@ -467,20 +472,91 @@ public class SalesServiceController {
         return sessionShareData;
     }
 
+    @PostMapping("send_send_sales_partner_rate_share")
+    public ModelAndView send_send_sales_partner_rate_share(@RequestParam(value = "rateSessionMappingIds", required = false) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView("redirect:view_sales_partner_list");
+        UserDetailsObj userObj = getLoggedInUser();
+        SalesPartnerEntity entity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
+        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(entity);
 
-    @PostMapping("send_sales_partner_rate_share")
-    public ModelAndView sendSalesPartnerRateShare(@RequestParam(value = "selectedSessions", required = false) List<Integer> selectedSessions,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
-        ModelAndView modelView = review_sales_partner_rate_share_form( selectedSessions,salesPartnerEntityDto, result, redirectAttrib) ;
-        salesPartnerEntityDto = (SalesPartnerEntityDto) modelView.getModel().get("SALES_PARTNER_OBJ");
-        SalesPartnerEntityDto updatedDto = (SalesPartnerEntityDto) modelView.getModel().get("SALES_PARTNER_OBJ");
-        List<Map<String, Object>> sessionDetailsList = (List<Map<String, Object>>) modelView.getModel().get("SESSION_SHARE_LIST");
+        List<Map<String, Object>> sessionDetailsList = getSessionDetailsList(rateSessionMappingIds);
+        //SessionRateMapHelperDTO sessionRateMapHelperDTO = getSessionDetailsList(rateSessionMappingIds);
+        //List<Map<String, Object>> sessionDetailsList = sessionRateMapHelperDTO.getSessionDetailsList();
+        List<RateCard> listRateCard = new ArrayList<>();
+        for (Map<String, Object> sessionDetails : sessionDetailsList) {
+            Map roomCategoryMap = (Map) sessionDetails.get("roomCategoryNames");
+            Map sessionDetailsMap = (Map) sessionDetails.get("sessionDetailsMap");
+            RateCard rateCard = new RateCard();
 
+            rateCard.setSeasonStartDate((String) sessionDetails.get("seasonStartDate"));
+            rateCard.setSeasonEndDate((String) sessionDetails.get("seasonEndDate"));
+
+            //rateCard.setSeasonStartDate(sessionRateMapHelperDTO.getRateCard().getSeasonStartDate()); // set appropriate dates if available
+            //rateCard.setSeasonEndDate(sessionRateMapHelperDTO.getRateCard().getSeasonEndDate());
+
+
+
+            List<RoomCategory> roomCategories = new ArrayList<>();
+            for (Object key : roomCategoryMap.keySet()) {
+                MasterRoomDetailsEntity roomDetailsEntity = (MasterRoomDetailsEntity) roomCategoryMap.get(key);
+                RoomCategory roomCategory = new RoomCategory();
+                roomCategory.setRoomCategoryId(roomDetailsEntity.getRoomCategoryId());
+                roomCategory.setStandardOccupancy(roomDetailsEntity.getStandardOccupancy());
+                roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
+                roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
+                roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
+                //System.out.println("Key: " + key + ", Room Details Entity : " + roomDetailsEntity);
+                List<MealPlanRate> mealPlans = new ArrayList<>();
+                Map<Integer,SessionDetailsEntityDTO> mealwiseSessionDetail = (Map<Integer, SessionDetailsEntityDTO>) sessionDetailsMap.get(roomCategory.getRoomCategoryId());
+                for (Integer mealId : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+                    MealPlanRate mealPlanRate = new MealPlanRate();
+                    mealPlanRate.setMealPlanId(mealId);
+                    SessionDetailsEntityDTO sessionDetailsEntityDTO = mealwiseSessionDetail.get(mealId);
+                    Map<String,Integer> personWiseRate = new HashMap<>();
+                    for(int i=1;i<roomCategory.getMaxOccupancy();i++){
+                        if(i==1)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson1());
+                        else if(i==2)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson2());
+                        else if(i==3)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson3());
+                        else if(i==4)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson4());
+                        else if(i==5)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson5());
+                        else if(i==6)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson6());
+                    }
+                    mealPlanRate.setPersonWiseRates(personWiseRate);
+                    mealPlans.add(mealPlanRate);
+                    //System.out.println(mealId + "-- " + personWiseRate);
+                }
+                roomCategory.setMealPlans(mealPlans);
+                roomCategories.add(roomCategory);
+            }
+            rateCard.setRoomCategories(roomCategories);
+            listRateCard.add(rateCard);
+            System.out.println("***************************");
+        }
 
         Map<String, Object> emailData = new HashMap<>();
         emailData.put("salesPartnerName", salesPartnerEntityDto.getSalesPartnerName());
-        emailData.put("sessionShareList", sessionDetailsList);
-        emailData.put("mealPlans", VistaluxConstants.MEAL_PLANS_MAP);
+
+//       printRateCards(listRateCard);
+
+        emailData.put("rateCardList", listRateCard);
+
+        Map<String, String> freemarkerFriendlyMealMap = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : VistaluxConstants.MEAL_PLANS_MAP.entrySet()) {
+            freemarkerFriendlyMealMap.put(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        emailData.put("mealPlanNames", freemarkerFriendlyMealMap);
         Mail mail = new Mail();
+        String emailSubject = "Pricing Update: Ashoka Tiger Trail | " + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
+        mail.setSubject(emailSubject);
+        mail.setTo(entity.getEmailId());
+        mail.setCc(userObj.getEmail());
+        mail.setModel(emailData);
         try {
             emailService.sendEmailMessageUsingTemplate(mail,"sales_partner_rate_share.ftl");
         } catch (MessagingException e) {
@@ -492,4 +568,130 @@ public class SalesServiceController {
         }
         return modelView;
     }
+
+
+    private List<Map<String, Object>>  getSessionDetailsList(List<Integer> rateSessionMappingIds) {
+        SessionRateMapHelperDTO sessionRateMapHelperDTO = new SessionRateMapHelperDTO();
+        List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
+
+        if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
+            for (Integer sessionRateMappingId : rateSessionMappingIds) {
+                SessionRateMappingEntity sessionRateMappingEntity = sessionService.findSessionRateMappingEntityById(sessionRateMappingId);
+
+                Map<String, Object> sessionDetail = getSessionDetailMap(sessionRateMappingEntity);
+                if (sessionDetail != null) {
+                    // Add season dates to each session detail
+                    sessionDetail.put("seasonStartDate", formatter.format(sessionRateMappingEntity.getStartDate()));
+                    sessionDetail.put("seasonEndDate", formatter.format(sessionRateMappingEntity.getEndDate()));
+                    sessionDetailsList.add(sessionDetail);
+                }
+            }
+
+            sessionDetailsList.sort(Comparator.comparing(map -> {
+                Map<Integer, Map<Integer, SessionDetailsEntityDTO>> sessionDetailsMap =
+                        (Map<Integer, Map<Integer, SessionDetailsEntityDTO>>) map.get("sessionDetailsMap");
+                if (sessionDetailsMap != null && !sessionDetailsMap.isEmpty()) {
+                    for (Map<Integer, SessionDetailsEntityDTO> mealPlanMap : sessionDetailsMap.values()) {
+                        for (SessionDetailsEntityDTO dto : mealPlanMap.values()) {
+                            if (dto != null && dto.getSessionStartDate() != null) {
+                                return LocalDate.parse(dto.getSessionStartDate(), formatter);
+                            }
+                        }
+                    }
+                }
+                return LocalDate.MAX;
+            }));
+        }
+        return sessionDetailsList;
+    }
+
+/*
+    private SessionRateMapHelperDTO getSessionDetailsList(List<Integer> rateSessionMappingIds) {
+        SessionRateMapHelperDTO sessionRateMapHelperDTO = new SessionRateMapHelperDTO();
+        RateCard rateCard = new RateCard();
+        List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
+        if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
+            // Process the selected session IDs
+            System.out.println("Selected Session ID is : " + rateSessionMappingIds);
+
+            for (Integer sessionRateMappingId : rateSessionMappingIds) {
+                SessionRateMappingEntity sessionRateMappingEntity = sessionService.findSessionRateMappingEntityById(sessionRateMappingId);
+                rateCard.setSeasonStartDate(formatter.format(sessionRateMappingEntity.getStartDate()));
+                rateCard.setSeasonEndDate(formatter.format(sessionRateMappingEntity.getEndDate()));
+
+                Map<String, Object> sessionDetail = getSessionDetailMap(sessionRateMappingEntity);
+                if (sessionDetail != null) {
+                    sessionDetailsList.add(sessionDetail);
+                }
+            }
+            sessionDetailsList.sort(Comparator.comparing(map -> {
+                Map<Integer, Map<Integer, SessionDetailsEntityDTO>> sessionDetailsMap =
+                        (Map<Integer, Map<Integer, SessionDetailsEntityDTO>>) map.get("sessionDetailsMap");
+
+                if (sessionDetailsMap != null && !sessionDetailsMap.isEmpty()) {
+                    for (Map<Integer, SessionDetailsEntityDTO> mealPlanMap : sessionDetailsMap.values()) {
+                        for (SessionDetailsEntityDTO dto : mealPlanMap.values()) {
+                            if (dto != null && dto.getSessionStartDate() != null) {
+                                return LocalDate.parse(dto.getSessionStartDate(), formatter);
+                            }
+                        }
+                    }
+                }
+                return LocalDate.MAX; // If no valid date found, push it to the end
+            }));
+        }
+        sessionRateMapHelperDTO.setSessionDetailsList(sessionDetailsList);
+        sessionRateMapHelperDTO.setRateCard(rateCard);
+        return sessionRateMapHelperDTO;
+        //return sessionDetailsList;
+    }
+*/
+
+    /*
+    private void printRateCards(List<RateCard> rateCards) {
+        if (rateCards == null || rateCards.isEmpty()) {
+            System.out.println("No rate cards available.");
+            return;
+        }
+
+        for (RateCard rateCard : rateCards) {
+            System.out.println("==========================================");
+            System.out.println("Season: " + rateCard.getSeasonStartDate() + " to " + rateCard.getSeasonEndDate());
+
+            List<RoomCategory> roomCategories = rateCard.getRoomCategories();
+            if (roomCategories == null || roomCategories.isEmpty()) {
+                System.out.println("  No room categories available.");
+                continue;
+            }
+
+            for (RoomCategory roomCategory : roomCategories) {
+                System.out.println("  ----------------------------------");
+                System.out.println("  Room Category: " + roomCategory.getName());
+                System.out.println("    Max Occupancy: " + roomCategory.getMaxOccupancy());
+                System.out.println("    Extra Bed: " + roomCategory.getExtraBed());
+
+                List<MealPlanRate> mealPlans = roomCategory.getMealPlans();
+                if (mealPlans == null || mealPlans.isEmpty()) {
+                    System.out.println("    No meal plans available.");
+                    continue;
+                }
+
+                for (MealPlanRate mealPlan : mealPlans) {
+                    System.out.println("    Meal Plan ID: " + mealPlan.getMealPlanId());
+
+                    Map<String, Integer> personWiseRates = mealPlan.getPersonWiseRates();
+                    if (personWiseRates == null || personWiseRates.isEmpty()) {
+                        System.out.println("      No person-wise rates available.");
+                    } else {
+                        for (Map.Entry<String, Integer> entry : personWiseRates.entrySet()) {
+                            System.out.println("      Person " + entry.getKey() + ": ₹" + entry.getValue());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+     */
+
 }
