@@ -72,6 +72,15 @@
                     ${SALES_PARTNER_OBJ.salesPartnerName}
                 </span>
             </h3>
+
+      <!-- Back Button Row -->
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="location.href='view_share_season_sales_partner_form?salesPartnerId=${SALES_PARTNER_OBJ.salesPartnerId}'">
+              Back
+          </button>
+      </div>
+
+
        <c:forEach var="sessionWiseRecord" items="${SESSION_SHARE_LIST}">
            <div class="session-container">
                <!-- Session Header -->
@@ -114,8 +123,9 @@
                </table>
            </div>
        </c:forEach>
- <div class="submit-btn">
-            <button type="submit" class="btn btn-primary">Send Season Rates</button>
+       <div class="submit-btn">
+            <button type="submit" class="btn" name="email" id="email" value="email">Send Season Rates</button>
+            <button type="submit" class="btn" name="download" id="download" value="download">Download Pricing</button>
         </div>
 </form:form>
 

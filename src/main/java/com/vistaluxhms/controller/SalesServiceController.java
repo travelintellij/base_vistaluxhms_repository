@@ -1,5 +1,6 @@
 package com.vistaluxhms.controller;
 
+import com.lowagie.text.DocumentException;
 import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
@@ -11,22 +12,25 @@ import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.CityManagementValidator;
+import freemarker.core.Configurable;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -59,6 +63,9 @@ public class SalesServiceController {
 
     @Autowired
     EmailServiceImpl emailService;
+
+    @Autowired
+    private Configuration freemarkerConfig;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private UserDetailsObj getLoggedInUser() {
@@ -360,7 +367,8 @@ public class SalesServiceController {
         return modelView;
     }
 
-    @PostMapping("view_share_season_sales_partner_form")
+    //@PostMapping("view_share_season_sales_partner_form")
+    @RequestMapping(value="view_share_season_sales_partner_form",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view_share_season_sales_partner_form(@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result ) {
         ModelAndView modelView = new ModelAndView("admin/salespartner/viewShareRateSessionForm");
         // Adding user details to the model
@@ -472,7 +480,8 @@ public class SalesServiceController {
         return sessionShareData;
     }
 
-    @PostMapping("send_send_sales_partner_rate_share")
+    //@PostMapping("send_send_sales_partner_rate_share")
+    @RequestMapping(value="send_send_sales_partner_rate_share",params = "email",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView send_send_sales_partner_rate_share(@RequestParam(value = "rateSessionMappingIds", required = false) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
         ModelAndView modelView = new ModelAndView("redirect:view_sales_partner_list");
         UserDetailsObj userObj = getLoggedInUser();
@@ -487,15 +496,8 @@ public class SalesServiceController {
             Map roomCategoryMap = (Map) sessionDetails.get("roomCategoryNames");
             Map sessionDetailsMap = (Map) sessionDetails.get("sessionDetailsMap");
             RateCard rateCard = new RateCard();
-
             rateCard.setSeasonStartDate((String) sessionDetails.get("seasonStartDate"));
             rateCard.setSeasonEndDate((String) sessionDetails.get("seasonEndDate"));
-
-            //rateCard.setSeasonStartDate(sessionRateMapHelperDTO.getRateCard().getSeasonStartDate()); // set appropriate dates if available
-            //rateCard.setSeasonEndDate(sessionRateMapHelperDTO.getRateCard().getSeasonEndDate());
-
-
-
             List<RoomCategory> roomCategories = new ArrayList<>();
             for (Object key : roomCategoryMap.keySet()) {
                 MasterRoomDetailsEntity roomDetailsEntity = (MasterRoomDetailsEntity) roomCategoryMap.get(key);
@@ -691,7 +693,102 @@ public class SalesServiceController {
             }
         }
     }
-
      */
+
+
+    @RequestMapping(value="send_send_sales_partner_rate_share",params = "download",method= {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public void download_salesparter_rate(@RequestParam(value = "rateSessionMappingIds", required = false) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, HttpServletResponse response) throws TemplateException, IOException {
+
+        UserDetailsObj userObj = getLoggedInUser();
+        SalesPartnerEntity entity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
+        salesPartnerEntityDto.updateSalesPartnerVoFromEntity(entity);
+
+        List<Map<String, Object>> sessionDetailsList = getSessionDetailsList(rateSessionMappingIds);
+        //SessionRateMapHelperDTO sessionRateMapHelperDTO = getSessionDetailsList(rateSessionMappingIds);
+        //List<Map<String, Object>> sessionDetailsList = sessionRateMapHelperDTO.getSessionDetailsList();
+        List<RateCard> listRateCard = new ArrayList<>();
+        for (Map<String, Object> sessionDetails : sessionDetailsList) {
+            Map roomCategoryMap = (Map) sessionDetails.get("roomCategoryNames");
+            Map sessionDetailsMap = (Map) sessionDetails.get("sessionDetailsMap");
+            RateCard rateCard = new RateCard();
+            rateCard.setSeasonStartDate((String) sessionDetails.get("seasonStartDate"));
+            rateCard.setSeasonEndDate((String) sessionDetails.get("seasonEndDate"));
+            List<RoomCategory> roomCategories = new ArrayList<>();
+            for (Object key : roomCategoryMap.keySet()) {
+                MasterRoomDetailsEntity roomDetailsEntity = (MasterRoomDetailsEntity) roomCategoryMap.get(key);
+                RoomCategory roomCategory = new RoomCategory();
+                roomCategory.setRoomCategoryId(roomDetailsEntity.getRoomCategoryId());
+                roomCategory.setStandardOccupancy(roomDetailsEntity.getStandardOccupancy());
+                roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
+                roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
+                roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
+                //System.out.println("Key: " + key + ", Room Details Entity : " + roomDetailsEntity);
+                List<MealPlanRate> mealPlans = new ArrayList<>();
+                Map<Integer,SessionDetailsEntityDTO> mealwiseSessionDetail = (Map<Integer, SessionDetailsEntityDTO>) sessionDetailsMap.get(roomCategory.getRoomCategoryId());
+                for (Integer mealId : VistaluxConstants.MEAL_PLANS_MAP.keySet()) {
+                    MealPlanRate mealPlanRate = new MealPlanRate();
+                    mealPlanRate.setMealPlanId(mealId);
+                    SessionDetailsEntityDTO sessionDetailsEntityDTO = mealwiseSessionDetail.get(mealId);
+                    Map<String,Integer> personWiseRate = new HashMap<>();
+                    for(int i=1;i<roomCategory.getMaxOccupancy();i++){
+                        if(i==1)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson1());
+                        else if(i==2)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson2());
+                        else if(i==3)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson3());
+                        else if(i==4)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson4());
+                        else if(i==5)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson5());
+                        else if(i==6)
+                            personWiseRate.put(String.valueOf(i),sessionDetailsEntityDTO.getPerson6());
+                    }
+                    mealPlanRate.setPersonWiseRates(personWiseRate);
+                    mealPlans.add(mealPlanRate);
+                    //System.out.println(mealId + "-- " + personWiseRate);
+                }
+                roomCategory.setMealPlans(mealPlans);
+                roomCategories.add(roomCategory);
+            }
+            rateCard.setRoomCategories(roomCategories);
+            listRateCard.add(rateCard);
+            System.out.println("***************************");
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("salesPartnerName", salesPartnerEntityDto.getSalesPartnerName());
+        model.put("rateCardList", listRateCard);
+
+        Map<String, String> freemarkerFriendlyMealMap = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : VistaluxConstants.MEAL_PLANS_MAP.entrySet()) {
+            freemarkerFriendlyMealMap.put(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        model.put("mealPlanNames", freemarkerFriendlyMealMap);
+        // Load the Freemarker template
+        freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+        //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
+        freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
+        freemarkerConfig.setAPIBuiltinEnabled(true);
+        freemarkerConfig.setTemplateUpdateDelay(0);
+        Template template = freemarkerConfig.getTemplate("sales_partner_rate_share.ftl");
+        String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+        // Generate PDF
+        byte[] pdfBytes = new byte[0];
+        try {
+            pdfBytes = commonService.generatePdfFromHtml(htmlContent);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Set response headers
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=ATTPricing.pdf");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
+    }
+
 
 }

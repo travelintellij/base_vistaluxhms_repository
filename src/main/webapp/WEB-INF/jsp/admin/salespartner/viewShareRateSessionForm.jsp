@@ -127,5 +127,14 @@
         </div>
     </form:form>
 </div>
+<script>
+    document.querySelector("form").addEventListener("submit", function(e) {
+        const checkboxes = document.querySelectorAll("input[name='rateSessionMappingIds']:checked");
+        if (checkboxes.length === 0) {
+            e.preventDefault(); // stop form submission
+            alert("Please select at least one session to proceed.");
+        }
+    });
+</script>
 
 <jsp:include page="../../footer.jsp" />

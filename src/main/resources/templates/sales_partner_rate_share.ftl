@@ -12,14 +12,19 @@
             width: 85%;
             font-family: Arial, sans-serif;
             margin-bottom: 30px;
+             page-break-inside: avoid;
         }
         th, td {
             border: 1px solid #000;
             padding: 6px;
             text-align: center;
+             page-break-inside: avoid;
+            page-break-after: auto;
         }
         th {
             background-color: #f2f2f2;
+             page-break-inside: avoid;
+        page-break-after: auto;
         }
         .rowGroupA {
             background-color: #f9f9f9;
@@ -33,11 +38,18 @@
         .section {
             margin-top: 40px;
         }
+         thead {
+            display: table-header-group; /* Ensures header repeats if split */
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
     </style>
 </head>
 <body>
 <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka's Tiger Trail Resort" style="height: 80px;">
+    <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka's Tiger Trail Resort" style="height: 80px;" />
 </div>
 
 <p>Dear <strong>${salesPartnerName?upper_case}</strong>,</p>
@@ -45,8 +57,8 @@
 <p>Please find below the updated room category-wise person rates for the selected date range:</p>
 
 <#list rateCardList as rateCard>
+<div style="page-break-inside: avoid;">
     <h3>Rate Season: ${rateCard.seasonStartDate} to ${rateCard.seasonEndDate}</h3>
-
     <table>
         <thead>
             <tr>
@@ -91,6 +103,7 @@
             </#list>
         </tbody>
     </table>
+</div>
 </#list>
 
 <div class="section">
@@ -104,20 +117,50 @@
 </div>
 
 <div class="section">
-    <h3>Terms & Conditions</h3>
+    <h3>Property Overview &amp; Resources</h3>
+    <p>To help you better understand the property and its offerings, we’ve compiled the following resources for your reference:</p>
     <ul>
-        <li>All rates are <strong>NETT and non-commissionable</strong>.</li>
-        <li>Rates are inclusive of <strong>GST</strong>.</li>
-        <li>Rates vary according to selected <strong>meal plans</strong> (EPAI, CPAI, MAPAI, APAI).</li>
-        <li><strong>Extra Bed Charges:</strong> 35% of double occupancy rate.</li>
-        <li><strong>Child Charges (6–11 years):</strong> 25% of double occupancy rate.</li>
-        <li><strong>Advance Payment:</strong> 50% of total booking amount required to confirm reservation.</li>
-        <li><strong>Cancellation Policy:</strong> Free cancellation allowed up to 10 days prior to check-in. No refund for cancellations within 10 days of check-in.</li>
+        <li><strong>📸 Photo Gallery:</strong> Explore high-quality images of the property and its surroundings.
+            <br/>
+            <a href="https://drive.google.com/drive/folders/15Gs4A8ce2wFKjvoLxo-GSuCD4TD-ClGI?usp=sharing" target="_blank">
+                View Property Photographs
+            </a>
+        </li>
+        <li><strong>📄 Property Factsheet:</strong> For detailed specifications, amenities, room configurations, and facilities, please refer to our downloadable factsheet.
+            <br/>
+            <a href="https://drive.google.com/file/d/1K1JcF89v9YqW4QnP2XNwdfEH7Mv5cqZl/view?usp=sharing" target="_blank">
+                Download Factsheet
+            </a>
+        </li>
+        <li><strong>🎥 Introductory Video:</strong> Get a quick walkthrough of the property through our engaging introductory video.
+            <br/>
+            <a href="https://drive.google.com/file/d/1BxqTpg-X8aBSEqyEvF8UhZuag44IqPks/view?usp=sharing" target="_blank">
+                Watch Introductory Video
+            </a>
+        </li>
     </ul>
 </div>
 
 <div class="section">
-    <h3>Corporate & Group Bookings</h3>
+    <h3>Terms &amp; Conditions</h3>
+    <ul>
+        <li>All rates are <strong>NETT and non-commissionable</strong>.</li>
+        <li>Rates are inclusive of applicable <strong>GST</strong>.</li>
+        <li>Rates vary based on the selected <strong>meal plan</strong> (EPAI, CPAI, MAPAI, APAI).</li>
+        <li><strong>Extra Bed Charges:</strong> 35% of the double occupancy rate.</li>
+        <li><strong>Child Charges (6–11 years):</strong> 25% of the double occupancy rate.</li>
+        <li><strong>Advance Payment:</strong> 50% of the total booking amount is required to confirm the reservation.</li>
+        <li><strong>Cancellation Policy:</strong> Free cancellation permitted up to 10 days prior to check-in. Cancellations made within 10 days of check-in are non-refundable.</li>
+        <li><strong>Rates are subject to confirmation and availability at the time of booking.</strong></li>
+        <li>Special event surcharges, peak period rates, or package-based pricing may apply during festivals, holidays, or high-demand dates.</li>
+        <li><strong>Early check-in and late check-out</strong> are subject to availability and may incur additional charges.</li>
+        <li>Guests must present a valid government-issued ID at the time of check-in.</li>
+        <li>The management reserves the right to revise rates or policies without prior notice.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h3>Corporate &amp; Group Bookings</h3>
     <p>
         The resort is well-equipped to host <strong>corporate offsites, team retreats, wellness programs</strong>, and <strong>group getaways</strong>. Customized itineraries, curated menus, and team-building activities can be organized on request.
     </p>
