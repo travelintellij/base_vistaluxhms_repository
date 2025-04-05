@@ -26,7 +26,7 @@ public class LeadValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		LeadEntityDTO leadRecorderVO = (LeadEntityDTO)target;
 
-		if((leadRecorderVO.getClient()==null) || (!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName()))) {
+		if((leadRecorderVO.getClient()==null) || (leadRecorderVO.getClient().getClientId() ==null) ||(!clientService.existsByClientIdAndClientName(leadRecorderVO.getClient().getClientId(), leadRecorderVO.getClientName()))) {
 			errors.rejectValue("clientName", "contact.error");
 		}
 		if(leadRecorderVO.getAdults()==0) {

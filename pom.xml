@@ -3,8 +3,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.udanchoo</groupId>
-	<artifactId>TravelIntelliJ-Base</artifactId>
-	<version>0.0.17-SNAPSHOT</version>
+	<artifactId>AshokaCRM</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
 		<spring.version>5.2.1.RELEASE</spring.version>
@@ -251,7 +251,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.udanchoo.intranet.SpringBootApp</mainClass>
+					<mainClass>com.vistaluxhms.base.BaseApplication</mainClass>
 				</configuration>
 
 				<executions>
