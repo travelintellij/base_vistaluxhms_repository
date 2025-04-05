@@ -10,6 +10,7 @@ public class SalesPartnerEntityDto extends SalesPartnerEntity {
     public String cityName;
     public int rateTypeId;
     public String rateTypeName;
+    private String email;
 
     public void updateSalesPartnerVoFromEntity(SalesPartnerEntity salesPartnerEntity) {
         this.salesPartnerId=salesPartnerEntity.getSalesPartnerId();
@@ -52,5 +53,13 @@ public class SalesPartnerEntityDto extends SalesPartnerEntity {
 
     public void setRateTypeName(String rateTypeName) {
         this.rateTypeName = rateTypeName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

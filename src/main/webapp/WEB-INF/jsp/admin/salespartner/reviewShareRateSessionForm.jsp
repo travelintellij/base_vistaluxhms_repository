@@ -74,11 +74,23 @@
             </h3>
 
       <!-- Back Button Row -->
-      <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-          <button type="button" class="btn btn-secondary" onclick="location.href='view_share_season_sales_partner_form?salesPartnerId=${SALES_PARTNER_OBJ.salesPartnerId}'">
-              Back
-          </button>
-      </div>
+   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+       <div style="flex: 1; margin-right: 10px;">
+          To: <form:input path="email" id="email" name="email" class="form-control" style="height: 38px;width:500px; font-size: 20px;" /> (Comma Seperated)
+       </div>
+       <div>
+           <button type="button" class="btn btn-secondary"
+               onclick="location.href='view_share_season_sales_partner_form?salesPartnerId=${SALES_PARTNER_OBJ.salesPartnerId}'">
+               Back
+           </button>
+       </div>
+   </div>
+
+        <div align="center" style="margin:10px 0"><b>
+            <font color="green">${Success} </font>
+            <font color="red">${Error}</font>
+        </b></div>
+
 
 
        <c:forEach var="sessionWiseRecord" items="${SESSION_SHARE_LIST}">
@@ -124,9 +136,40 @@
            </div>
        </c:forEach>
        <div class="submit-btn">
-            <button type="submit" class="btn" name="email" id="email" value="email">Send Season Rates</button>
+            <button type="submit" class="btn"  id="email" value="email">Send Season Rates</button>
             <button type="submit" class="btn" name="download" id="download" value="download">Download Pricing</button>
         </div>
 </form:form>
+
+<script>
+    function isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email.trim());
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const emailInput = document.getElementById("email");
+
+        form.addEventListener("submit", function (e) {
+            const emailStr = emailInput.value;
+            const emailList = emailStr.split(",").map(email => email.trim()).filter(email => email !== "");
+
+            if (emailList.length === 0) {
+                alert("Please enter at least one email address.");
+                e.preventDefault();
+                return;
+            }
+
+            const invalidEmails = emailList.filter(email => !isValidEmail(email));
+
+            if (invalidEmails.length > 0) {
+                alert("The following email(s) are invalid:\n" + invalidEmails.join("\n"));
+                e.preventDefault();
+                return;
+            }
+        });
+    });
+</script>
 
 <jsp:include page="../../footer.jsp" />

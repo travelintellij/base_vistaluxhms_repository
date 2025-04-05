@@ -288,14 +288,14 @@ public class QuotationController {
             quotationEntityDTO = sessionQuotation;
         }
         modelView.setViewName("redirect:review_process_create_quotation");
-        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        //List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
         if (result.hasErrors()) {
             modelView = review_process_create_quotation(quotationEntityDTO,result,session,redirectAttrib);
             result.rejectValue("email", "error.email", "Invalid Email Format.");
             session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
             modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
             modelView.setViewName("quotation/reviewQuotation");
-            modelView.addObject("Error", "Invalid Email Provided.");
+            modelView.addObject("Error", "Invalid Data Provided.");
             return modelView;
         }
 
@@ -485,8 +485,8 @@ public class QuotationController {
                 model.put("contactName",quotationEntityDTO.getGuestName());
                 model.put("remarks", quotationEntityDTO.getRemarks());
                 model.put("roomDetails", quotationEntityDTO.getRoomDetails());
-                System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
-                System.out.println("Map Value " + model.get("roomDetails"));
+                //System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
+                //System.out.println("Map Value " + model.get("roomDetails"));
                 model.put("quotationAdvisor", userObj.getName());
                 model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
                 model.put("discount", quotationEntityDTO.getDiscount());

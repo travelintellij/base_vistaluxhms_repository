@@ -23,11 +23,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -383,7 +386,7 @@ public class SalesServiceController {
             entity.setFormattedStartDate(entity.getStartDate().format(formatter));
             entity.setFormattedEndDate(entity.getEndDate().format(formatter));
         }
-        System.out.println("Rate Type size is " + rateSessionMappingList.size());
+        //System.out.println("Rate Type size is " + rateSessionMappingList.size());
         modelView.addObject("RATE_SESSION_MAPPING_LIST", rateSessionMappingList);
         return modelView;
     }
@@ -392,10 +395,11 @@ public class SalesServiceController {
     public ModelAndView review_sales_partner_rate_share_form(@RequestParam(value = "rateSessionMappingIds", required = true) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
         SalesPartnerEntity salesPartnerEntity = salesRelatedServices.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
+        salesPartnerEntityDto.setEmail(salesPartnerEntity.getEmailId());
         ModelAndView modelAndView = new ModelAndView("admin/salespartner/reviewShareRateSessionForm"); // Change this to your JSP page
         if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
             // Process the selected session IDs
-            System.out.println("Selected Session ID is : " + rateSessionMappingIds);
+            //System.out.println("Selected Session ID is : " + rateSessionMappingIds);
 
             List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
             for (Integer sessionRateMappingId : rateSessionMappingIds) {
@@ -481,13 +485,13 @@ public class SalesServiceController {
     }
 
     //@PostMapping("send_send_sales_partner_rate_share")
-    @RequestMapping(value="send_send_sales_partner_rate_share",params = "email",method= {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value="send_send_sales_partner_rate_share",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView send_send_sales_partner_rate_share(@RequestParam(value = "rateSessionMappingIds", required = false) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, BindingResult result,final RedirectAttributes redirectAttrib) {
         ModelAndView modelView = new ModelAndView("redirect:view_sales_partner_list");
         UserDetailsObj userObj = getLoggedInUser();
         SalesPartnerEntity entity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(entity);
-
+        List<String> recipientEmails = extractEmails(salesPartnerEntityDto.getEmail());
         List<Map<String, Object>> sessionDetailsList = getSessionDetailsList(rateSessionMappingIds);
         //SessionRateMapHelperDTO sessionRateMapHelperDTO = getSessionDetailsList(rateSessionMappingIds);
         //List<Map<String, Object>> sessionDetailsList = sessionRateMapHelperDTO.getSessionDetailsList();
@@ -556,16 +560,30 @@ public class SalesServiceController {
         Mail mail = new Mail();
         String emailSubject = "Pricing Update: Ashoka Tiger Trail | " + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
         mail.setSubject(emailSubject);
-        mail.setTo(entity.getEmailId());
+
+        InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
+        for (int i = 0; i < recipientEmails.size(); i++) {
+            try {
+                emailAddresses[i] = new InternetAddress(recipientEmails.get(i).trim());
+            } catch (AddressException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        mail.setToList(emailAddresses);
+
         mail.setCc(userObj.getEmail());
         mail.setModel(emailData);
         try {
-            emailService.sendEmailMessageUsingTemplate(mail,"sales_partner_rate_share.ftl");
+            emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail,"sales_partner_rate_share.ftl");
+            redirectAttrib.addFlashAttribute("Success", "Sales Partner rates are sent successfully.");
         } catch (MessagingException e) {
+            redirectAttrib.addFlashAttribute("Error", "Error While Sending Email. Please contact Admin");
             throw new RuntimeException(e);
         } catch (IOException e) {
+            redirectAttrib.addFlashAttribute("Error", "Error While Sending Email. Please contact Admin");
             throw new RuntimeException(e);
         } catch (TemplateException e) {
+            redirectAttrib.addFlashAttribute("Error", "Error While Sending Email. Please contact Admin");
             throw new RuntimeException(e);
         }
         return modelView;
@@ -607,6 +625,18 @@ public class SalesServiceController {
         return sessionDetailsList;
     }
 
+    private List<String> extractEmails(String emailInput) {
+        List<String> emailList = new ArrayList<>();
+        if (emailInput != null && !emailInput.trim().isEmpty()) {
+            // Split input using comma ',' or semicolon ';' as delimiter
+            String[] emails = emailInput.split("[,]");
+            for (String email : emails) {
+                email = email.trim(); // Remove spaces
+                emailList.add(email);
+            }
+        }
+        return emailList;
+    }
 /*
     private SessionRateMapHelperDTO getSessionDetailsList(List<Integer> rateSessionMappingIds) {
         SessionRateMapHelperDTO sessionRateMapHelperDTO = new SessionRateMapHelperDTO();

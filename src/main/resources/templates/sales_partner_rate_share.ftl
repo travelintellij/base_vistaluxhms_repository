@@ -49,8 +49,14 @@
 </head>
 <body>
 <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka's Tiger Trail Resort" style="height: 80px;" />
+    <img
+            src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png"
+            alt="Ashoka's Tiger Trail Resort"
+            width="200" height="200"
+            style="display: block; margin: 0 auto; width: 200px; height: 200px;"
+    />
 </div>
+
 
 <p>Dear <strong>${salesPartnerName?upper_case}</strong>,</p>
 
