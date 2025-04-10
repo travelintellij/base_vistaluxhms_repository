@@ -137,7 +137,7 @@ username = "Guest";
                  <ul class="submenu">
                      <li><a href="view_add_quotation_form">New Quotation</a></li>
                      <li>
-                         <a href="view_filter_quotations">Quotation Management</a>
+                         <a href="#">Quotation Management</a>
                      </li>
                  </ul>
              </li>
