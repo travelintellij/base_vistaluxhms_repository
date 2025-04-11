@@ -31,6 +31,9 @@ public class QuotationRoomDetailsDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
 
+    private String formattedCheckInDate;
+    private String formattedCheckOutDate;
+
 
     public int getRoomCategoryId() {
         return roomCategoryId;
@@ -193,5 +196,21 @@ public class QuotationRoomDetailsDTO {
 
     public void setAdultPrice(int adultPrice) {
         this.adultPrice = adultPrice;
+    }
+
+    public String getFormattedCheckInDate() {
+        return formattedCheckInDate;
+    }
+
+    public void setFormattedCheckInDate(String formattedCheckInDate) {
+        this.formattedCheckInDate = formattedCheckInDate;
+    }
+
+    public String getFormattedCheckOutDate() {
+        return formattedCheckOutDate;
+    }
+
+    public void setFormattedCheckOutDate(String formattedCheckOutDate) {
+        this.formattedCheckOutDate = formattedCheckOutDate;
     }
 }

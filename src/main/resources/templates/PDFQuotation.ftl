@@ -104,8 +104,8 @@
                 <td>${room.childWithBed}</td>
                 <td>${room.childNoBed}</td>
                 <td>${room.extraBed}</td>
-                <td>${room.checkInDate}</td>
-                <td>${room.checkOutDate}</td>
+                <td>${room.formattedCheckInDate}</td>
+                <td>${room.formattedCheckOutDate}</td>
                 <td>INR ${room.totalPrice?string(",##0.00")}</td>
             </tr>
         </#list>

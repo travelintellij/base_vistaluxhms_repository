@@ -231,8 +231,8 @@ h2, h3 {
                         <td><font size="2">${room.childWithBed} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.childWithBedPrice}</b></font></td>
                         <td><font size="2">${room.childNoBed} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.childNoBedPrice}</b></font></td>
                         <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedPrice}</b></font></td>
-                        <td>${room.checkInDate}</td>
-                        <td>${room.checkOutDate}</td>
+                        <td>${room.formattedCheckInDate}</td>
+                        <td>${room.formattedCheckOutDate}</td>
                         <td><font color="#503732" size="4"> <b>&#8377; ${room.totalPrice} </b></font></td>
                     </tr>
                      </c:forEach>

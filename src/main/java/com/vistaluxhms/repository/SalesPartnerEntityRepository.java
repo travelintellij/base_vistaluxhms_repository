@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SalesPartnerEntityRepository extends JpaRepository<SalesPartnerEntity, Long>, JpaSpecificationExecutor<SalesPartnerEntity> {
     List<SalesPartnerEntity> findByActive(boolean active);
+    List<SalesPartnerEntity> findByActiveOrderBySalesPartnerShortNameAsc(boolean active);
 }

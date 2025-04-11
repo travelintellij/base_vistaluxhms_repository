@@ -13,7 +13,7 @@ public class WhatsAppMessageDTO {
     String checkInDate;
     String checkOutDate;
     int finalPrice;
-
+    int noOfRooms;
 
 
 
@@ -130,5 +130,13 @@ public class WhatsAppMessageDTO {
                 ", checkOutDate='" + checkOutDate + '\'' +
                 ", finalPrice=" + finalPrice +
                 '}';
+    }
+
+    public int getNoOfRooms() {
+        return noOfRooms;
+    }
+
+    public void setNoOfRooms(int noOfRooms) {
+        this.noOfRooms = noOfRooms;
     }
 }

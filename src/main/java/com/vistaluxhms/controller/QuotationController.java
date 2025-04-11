@@ -84,6 +84,7 @@ public class QuotationController {
     @Value("${email.notify.communication.email}")
     private String emailNotifyBcc;
 
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     @Autowired
     QuotationValidator quotationValidator;
@@ -175,6 +176,7 @@ public class QuotationController {
                 ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
                 quotationEntityDTO.setMobile(clientEntity.getMobile().toString());
                 quotationEntityDTO.setEmail(clientEntity.getEmailId());
+                quotationEntityDTO.setRateTypeId(clientEntity.getSalesPartner().getRateTypeEntity().getRateTypeId());
             }
 
             int grandTotalSum = 0;
@@ -213,11 +215,12 @@ public class QuotationController {
             }
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
-
+        formatRoomDates(quotationEntityDTO);
         //session.
         //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
         //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
         modelView.setViewName("quotation/reviewQuotation");
         return modelView;
@@ -328,7 +331,8 @@ public class QuotationController {
                 whatsAppMessageDTO.setQueryOwnerEmail(user.getEmail());
                 int nettPrice=quotationEntityDTO.getGrandTotal()-quotationEntityDTO.getDiscount();
                 whatsAppMessageDTO.setFinalPrice(nettPrice);
-                whatsAppService.sendGuestQuotationMessage(whatsAppMessageDTO);
+                whatsAppMessageDTO.setNoOfRooms(quotationEntityDTO.getRoomDetails().size());
+                whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -554,6 +558,7 @@ public class QuotationController {
         }
 
         model.put("contactName", quotationEntityDTO.getGuestName());
+        formatRoomDates(quotationEntityDTO);
         model.put("roomDetails", quotationEntityDTO.getRoomDetails()); // Fetch dynamically as per your application
         model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
         model.put("discount", quotationEntityDTO.getDiscount());
@@ -584,7 +589,21 @@ public class QuotationController {
         response.getOutputStream().flush();
     }
 
+    public void formatRoomDates(QuotationEntityDTO quotation) {
+        if (quotation != null && quotation.getRoomDetails() != null) {
+            for (QuotationRoomDetailsDTO room : quotation.getRoomDetails()) {
+                LocalDate checkIn = room.getCheckInDate();
+                LocalDate checkOut = room.getCheckOutDate();
 
+                if (checkIn != null) {
+                    room.setFormattedCheckInDate(checkIn.format(OUTPUT_FORMAT));
+                }
+                if (checkOut != null) {
+                    room.setFormattedCheckOutDate(checkOut.format(OUTPUT_FORMAT));
+                }
+            }
+        }
+    }
     @RequestMapping(value = "process_quotation", params = "EmailAndWhatsApp", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_quotation_email_and_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
                                                              BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {

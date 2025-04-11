@@ -95,20 +95,18 @@ public class WhatsAppMessagingService {
     }
 
 
-    public void sendQuotationMessage(WhatsAppMessageDTO messageDetails) {
+    public void sendStayQuotationMessage(WhatsAppMessageDTO messageDetails) {
         try {
             OkHttpClient client = new OkHttpClient().newBuilder().build();
+            MediaType mediaType = MediaType.parse("application/json");
 
-            okhttp3.MediaType mediaType = MediaType.parse("application/json");
-
-            // JSON body with placeholders
             String jsonBody = "{\r\n" +
                     "  \"messaging_product\": \"whatsapp\",\r\n" +
                     "  \"recipient_type\": \"individual\",\r\n" +
                     "  \"to\": \"{{recipient_number}}\",\r\n" +
                     "  \"type\": \"template\",\r\n" +
                     "  \"template\": {\r\n" +
-                    "    \"name\": \"quotation\",\r\n" +
+                    "    \"name\": \"stayquotation\",\r\n" +
                     "    \"language\": {\r\n" +
                     "      \"code\": \"en\"\r\n" +
                     "    },\r\n" +
@@ -116,15 +114,17 @@ public class WhatsAppMessagingService {
                     "      {\r\n" +
                     "        \"type\": \"body\",\r\n" +
                     "        \"parameters\": [\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{guest_name}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{guest_details}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{room_type}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{meal_plan}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{check_in}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{check_out}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{sender_name}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{sender_mobile}}\"},\r\n" +
-                    "          {\"type\": \"text\", \"text\": \"{{sender_email}}\"}\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{recipient_name}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{guest_details}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{room_type}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{no_of_rooms}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{meal_plan}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{check_in}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{check_out}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{nett_price}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{sender_name}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{sender_mobile}}\" },\r\n" +
+                    "          { \"type\": \"text\", \"text\": \"{{sender_email}}\" }\r\n" +
                     "        ]\r\n" +
                     "      }\r\n" +
                     "    ]\r\n" +
@@ -133,18 +133,19 @@ public class WhatsAppMessagingService {
 
             // Replace placeholders with actual values
             jsonBody = jsonBody.replace("{{recipient_number}}", messageDetails.getRecipientMobile())
-                    .replace("{{guest_name}}", messageDetails.getRecipientName())
+                    .replace("{{recipient_name}}", messageDetails.getRecipientName())
                     .replace("{{guest_details}}", messageDetails.getGuestDetails())
                     .replace("{{room_type}}", messageDetails.getRoomType())
+                    .replace("{{no_of_rooms}}", String.valueOf(messageDetails.getNoOfRooms()))
                     .replace("{{meal_plan}}", messageDetails.getMealPlan())
                     .replace("{{check_in}}", messageDetails.getCheckInDate())
                     .replace("{{check_out}}", messageDetails.getCheckOutDate())
+                    .replace("{{nett_price}}", String.valueOf(messageDetails.getFinalPrice()))
                     .replace("{{sender_name}}", messageDetails.getQueryOwnerName())
                     .replace("{{sender_mobile}}", messageDetails.getQueryOwnerMobile())
                     .replace("{{sender_email}}", messageDetails.getQueryOwnerEmail());
 
             RequestBody body = RequestBody.create(mediaType, jsonBody);
-
             Request request = new Request.Builder()
                     .url(whatsAppApiUrl)
                     .method("POST", body)
@@ -153,12 +154,13 @@ public class WhatsAppMessagingService {
                     .build();
 
             Response response = client.newCall(request).execute();
-            System.out.println("Response is " + response.body().string()); // Print API response
+            System.out.println("Response is " + response.body().string());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 
 

@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -111,9 +112,14 @@ public class SalesRelatesServicesImpl {
 	}
 
 	public Map<Long, String> getActiveSalesPartnerMap(boolean activeFlag) {
-		return salesPartnerRepository.findByActive(activeFlag)
+		return salesPartnerRepository.findByActiveOrderBySalesPartnerShortNameAsc(activeFlag)
 				.stream()
-				.collect(Collectors.toMap(SalesPartnerEntity::getSalesPartnerId, SalesPartnerEntity::getSalesPartnerShortName));
+				.collect(Collectors.toMap(
+						SalesPartnerEntity::getSalesPartnerId,
+						SalesPartnerEntity::getSalesPartnerShortName,
+						(e1, e2) -> e1, // in case of duplicate keys
+						LinkedHashMap::new
+				));
 	}
 
 	public List<MasterRoomDetailsEntity> findRoomsList(){
