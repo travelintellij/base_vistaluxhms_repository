@@ -558,7 +558,7 @@ public class SalesServiceController {
         }
         emailData.put("mealPlanNames", freemarkerFriendlyMealMap);
         Mail mail = new Mail();
-        String emailSubject = "Pricing Update: Ashoka Tiger Trail | " + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
+        String emailSubject = "Special B2B Seasonal Rates : Ashoka Tiger Trail | " + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
         mail.setSubject(emailSubject);
 
         InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
