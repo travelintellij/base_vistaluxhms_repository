@@ -27,6 +27,9 @@ public class LeadEntityDTO extends LeadEntity {
     public String statusName;
     public String leadOwnerName;
 
+    public String formattedCheckInDate;
+    public String formattedCheckOutDate;
+
     public List<Integer> leadContributors;
 
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
@@ -184,5 +187,21 @@ public class LeadEntityDTO extends LeadEntity {
 
     public void setLeadContributors(List<Integer> leadContributors) {
         this.leadContributors = leadContributors;
+    }
+
+    public String getFormattedCheckInDate() {
+        return formattedCheckInDate;
+    }
+
+    public void setFormattedCheckInDate(String formattedCheckInDate) {
+        this.formattedCheckInDate = formattedCheckInDate;
+    }
+
+    public String getFormattedCheckOutDate() {
+        return formattedCheckOutDate;
+    }
+
+    public void setFormattedCheckOutDate(String formattedCheckOutDate) {
+        this.formattedCheckOutDate = formattedCheckOutDate;
     }
 }

@@ -1,5 +1,6 @@
 package com.vistaluxhms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vistaluxhms.model.LeadEntityDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,6 +32,13 @@ public class LeadEntity extends AuditModel{
             joinColumns = {@JoinColumn(name="leadId")},
             inverseJoinColumns = {@JoinColumn(name="userId")})
     protected Set<AshokaTeam> team = new HashSet<AshokaTeam>();
+
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "leadEntity")
+    @OrderBy("created_At DESC")
+    @JsonBackReference
+    private Set<Leads_Followup_Entity> leadFollowupEntityList = new HashSet<Leads_Followup_Entity>();
+
 
     @Column(name = "adults", nullable = false)
     protected int adults;
@@ -296,5 +304,13 @@ public class LeadEntity extends AuditModel{
 
     public void setLeadOwner(int leadOwner) {
         this.leadOwner = leadOwner;
+    }
+
+
+    public Set<Leads_Followup_Entity> getLeadFollowupEntityList() {
+        return leadFollowupEntityList;
+    }
+    public void setLeadFollowupEntityList(Set<Leads_Followup_Entity> leadFollowupEntityList) {
+        this.leadFollowupEntityList = leadFollowupEntityList;
     }
 }

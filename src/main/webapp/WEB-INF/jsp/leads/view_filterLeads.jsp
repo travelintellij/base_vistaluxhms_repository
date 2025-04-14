@@ -287,6 +287,8 @@
                             <input type="hidden" name="leadId" value="${leadRec.leadId}" />
                             <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
                         </form>
+                         <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}" class="pop-up"><button type="button" class="edit-btn" style="height: 25px; padding: 5px 10px;">Follow-Up</button></a>
+
 
                     </td>
                 </tr>

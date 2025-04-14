@@ -98,7 +98,8 @@
         />
     </div>
     <div class="content">
-        <h2>Quotation for Your Stay at Ashoka Tiger Trail Resort</h2>
+        <h2 style="text-align:center">Exclusive Stay Quotation – Ashoka Tiger Trail Resort, Corbett</h2>
+
         <p>Dear ${contactName},</p>
         <p>We are pleased to share the quotation for your stay at Ashoka's Tiger Trail Resort, a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids' zone, and restaurant.</p>
 

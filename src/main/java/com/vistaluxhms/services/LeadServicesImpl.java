@@ -3,10 +3,7 @@ package com.vistaluxhms.services;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.FilterLeadObj;
-import com.vistaluxhms.repository.ClientEntityRepository;
-import com.vistaluxhms.repository.LeadEntityRepository;
-import com.vistaluxhms.repository.SalesPartnerEntityRepository;
-import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.repository.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +25,14 @@ public class LeadServicesImpl {
 
 	@Autowired
 	LeadEntityRepository leadRepository;
+
+	@Autowired
+	Leads_Followup_Repository leadFollowupRepository;
+
+
+	public List<Leads_Followup_Entity> findLeadFollowupByLeadIdDesc(Long leadId){
+		return leadFollowupRepository.findByLeadEntity_leadIdOrderByNextfollowuptimeDesc(leadId);
+	}
 
 	public void saveLead(LeadEntity leadEntity) {
 		leadRepository.save(leadEntity);

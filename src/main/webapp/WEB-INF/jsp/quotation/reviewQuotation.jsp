@@ -185,9 +185,11 @@ h2, h3 {
             </div>
 
           <div id="clientBox" style="width: 700px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-              <label for="clientName">Mobile:</label>
-              <form:input path="mobile" type="number" id="mobile" name="mobile"  class= "input-field"/>
+              <c:if test="${QUOTATION_OBJ.contactMethod ne 'email'}">
+                  <label for="clientName">Mobile:</label>
+                  <form:input path="mobile" type="text" id="mobile" name="mobile" class="input-field" minlength="10" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'');"/>
 
+                </c:if>
                 <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
                 <label for="Email">Email:</label>
                     <form:input path="email" id="email" name="email"  class= "input-field" style="width:250px;"/>
@@ -254,8 +256,10 @@ h2, h3 {
             <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
                 <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
             </c:if>
-            <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
-            <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">
+            <c:if test="${QUOTATION_OBJ.contactMethod ne 'email'}">
+                <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
+            </c:if>
+            <c:if test="${QUOTATION_OBJ.contactMethod eq 'both'}">
                 <button type="submit" class="btn" name="EmailAndWhatsApp" id="EmailAndWhatsApp" value="EmailAndWhatsApp">Email & WhatsApp Quotation</button> |
             </c:if>
             <button type="submit" class="btn" disabled>Save Quotation</button>

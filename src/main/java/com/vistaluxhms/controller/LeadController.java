@@ -1,6 +1,5 @@
 package com.vistaluxhms.controller;
 
-import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -11,25 +10,22 @@ import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpSession;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,7 +62,7 @@ public class LeadController {
     @Value("${email.client.valid}")
     private boolean emailClientNotifyActive;
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -409,7 +405,90 @@ public class LeadController {
         return modelView;
     }
 
+    @RequestMapping("/form_view_lead_followup_details")
+    public ModelAndView form_view_lead_followup_details(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,@ModelAttribute("LEAD_FOLLOWUP_OBJ") Leads_Followup_VO leadFollowupVO,BindingResult result) {
+        ModelAndView modelView = new ModelAndView("leads/viewLeadFollowupDetails");
+        int DEFAULT_PAGE_NUM=leadFollowupVO.getPage();
+        LeadEntity tgLeadEntity =leadService.findLeadById(leadRecorderObj.getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(tgLeadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(tgLeadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(tgLeadEntity.getCheckOutDate()));
+        List<Leads_Followup_Entity> listFollowUpRecords = leadService.findLeadFollowupByLeadIdDesc(tgLeadEntity.getLeadId());
+        List<Leads_Followup_VO> leadsFollowUpList = generateListFollowUpVo(listFollowUpRecords);
+        modelView.addObject("LEADS_FOLLOWUP_LIST",leadsFollowUpList);
+        return modelView;
+    }
 
+
+    private List<Leads_Followup_VO> generateListFollowUpVo(List<Leads_Followup_Entity> listFollowUpRecords) {
+        List<Leads_Followup_VO> filteredLeadsFollowUpVoList = new ArrayList<Leads_Followup_VO>();
+
+        Iterator filteredLeadsFollowUpIterator = listFollowUpRecords.iterator();
+        while(filteredLeadsFollowUpIterator.hasNext()) {
+            Leads_Followup_Entity leadsFollowUpEntity = (Leads_Followup_Entity) filteredLeadsFollowUpIterator.next();
+            Leads_Followup_VO leadsFollowUpVO = new Leads_Followup_VO();
+            leadsFollowUpVO.setUserName(userDetailsService.findUserByID(leadsFollowUpEntity.getUpdatedBy()).getUsername());
+            leadsFollowUpVO.setFormattedFollowUpTime(DateTimeFormatter.ofPattern("dd/MMM/yyyy HH:mm").format(leadsFollowUpEntity.getFollowuptime()));
+            leadsFollowUpVO.setFormattedNextFollowUpTime(DateTimeFormatter.ofPattern("dd/MMM/yyyy HH:mm").format(leadsFollowUpEntity.getNextfollowuptime()));
+            leadsFollowUpVO.setResponse(leadsFollowUpEntity.getResponse());
+            leadsFollowUpVO.setNextactionplan(leadsFollowUpEntity.getNextactionplan());
+            filteredLeadsFollowUpVoList.add(leadsFollowUpVO);
+        }
+        return filteredLeadsFollowUpVoList;
+    }
+
+
+    @Transactional
+    @PostMapping("create_create_lead_followup")
+    public ModelAndView create_create_lead_followup(@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,@ModelAttribute("LEAD_FOLLOWUP_OBJ") Leads_Followup_VO leadFollowupVO,  BindingResult result,final RedirectAttributes redirectAttrib ) {
+        UserDetailsObj userObj = getLoggedInUser();
+        leadFollowupVO.setUpdatedBy (userObj.getUserId());
+        ModelAndView modelView = new ModelAndView();
+
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        Leads_Followup_Entity tiLeadFollowupEntity = new Leads_Followup_Entity(leadFollowupVO);
+        tiLeadFollowupEntity.setLeadEntity(leadEntity);
+        leadEntity.getLeadFollowupEntityList().add(tiLeadFollowupEntity);
+        leadService.saveLead(leadEntity);
+
+        //String destinationName = commonService.findDestinationById(leadEntity.getDestination()).getCityName();
+        String emailBody = "Action by:  " +  userObj.getUsername() + "\n";
+        emailBody = emailBody + "Action Time: " +  DateTimeFormatter.ofPattern("dd/MMM/yyyy HH:mm").format(leadFollowupVO.getFollowuptime()) + "\n";
+        emailBody = emailBody + "Action Taken: " + leadFollowupVO.getResponse() + "\n\n";
+        emailBody = emailBody + "Next Action Time: " +  DateTimeFormatter.ofPattern("dd/MMM/yyyy HH:mm").format(leadFollowupVO.getNextfollowuptime()) + "\n";
+        emailBody = emailBody + "Action To Be Taken: " + leadFollowupVO.getNextactionplan() + "\n";
+        Mail mail = new Mail();
+        mail.setSubject("Lead Followup Update: " + " Lead ID: " +leadRecorderObj.getLeadId() + " | Client : " + leadEntity.getClient().getClientName() + " | CheckIn : " + formatter.format(leadEntity.getCheckInDate()) + " | Check Out: " + formatter.format(leadEntity.getCheckOutDate()));
+        ArrayList<String> notifierList = leadEntity.getTeam().stream()
+                .map(obj -> obj.getEmail()) // Replace with the actual method to get the string attribute
+                .collect(Collectors.toCollection(ArrayList::new));
+        EmailMessageVO emailMessageVo = new EmailMessageVO();
+        notifierList.add(userDetailsService.findUserByID(leadEntity.getLeadOwner()).getEmail());
+        emailMessageVo.setEmailToValidatedList(notifierList);
+        InternetAddress[] emailToList = new InternetAddress[emailMessageVo.getEmailToValidatedList().size()];
+        try {
+            for (int i = 0; i < emailMessageVo.getEmailToValidatedList().size(); i++) {
+                emailToList[i] = new InternetAddress((String) emailMessageVo.getEmailToValidatedList().get(i));
+                //redirectAttrib.addFlashAttribute("Error","Error: While sending email. Recipients setting error.<br> Please send individually or contact adminstrator.");
+            }
+        }
+        catch(AddressException ae) {
+            ae.printStackTrace();
+        }
+        mail.setToList(emailToList);
+        try {
+            emailService.sendEmailMessage_Notification1_MultipleRecipients_from_loggedInUser(mail, emailBody, userObj.getEmail());
+
+        } catch (MessagingException | IOException | TemplateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        redirectAttrib.addFlashAttribute("Success", "Lead Followup Status is updated Successfully..");
+        modelView.setViewName("redirect:form_view_lead_followup_details?leadId="+leadRecorderObj.getLeadId());
+        return modelView;
+    }
 
 
 }

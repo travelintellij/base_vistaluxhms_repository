@@ -380,7 +380,7 @@ public class EmailServiceImpl {
 
 	    /*
 	    public void sendEmailMessage_Notification1_MultipleRecipients_from_loggedInUser(Mail mail,String emailBody,String emailFrom) throws MessagingException, IOException, TemplateException {
-	    	
+
 	    	if(emailNotifyActive && internalEmailNotifyActive) {
 	    		Session session = emailConfig.getNotification1EmailSessionSender();
 	    		MimeMessage message = new MimeMessage(session);
@@ -395,5 +395,21 @@ public class EmailServiceImpl {
 	    	}
 	    }
 	    */
-	    
+
+	public void sendEmailMessage_Notification1_MultipleRecipients_from_loggedInUser(Mail mail,String emailBody,String emailFrom) throws MessagingException, IOException, TemplateException {
+
+		if(emailNotifyActive && internalEmailNotifyActive) {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message);
+			message.setFrom(new InternetAddress(emailFrom));
+			message.setRecipients(Message.RecipientType.TO, mail.getToList());
+			if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
+				message.setRecipients(Message.RecipientType.BCC, emailNotifyBcc);
+			}
+			message.setSubject(mail.getSubject());
+			message.setText(emailBody);
+			mailSender.send(message);
+		}
+	}
+
 }
