@@ -1,3 +1,9 @@
+
+
+
+#########################################################################################
+#Created on 14th April
+#Updated ubuntu on 14th April
 CREATE TABLE `leads_followup` (
   `leadFollowupId` bigint NOT NULL AUTO_INCREMENT,
   `leadId` bigint DEFAULT NULL,
