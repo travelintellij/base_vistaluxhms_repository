@@ -174,9 +174,9 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Review Quotation</h2>
+    <h2>Review Free Hand Quotation</h2>
 
-    <form:form method="post" action="process_quotation" modelAttribute="QUOTATION_OBJ">
+    <form:form method="post" action="process_fh_quotation" modelAttribute="QUOTATION_OBJ">
         <!-- User Type Selection -->
             <div class="container">
             <div class="form-group">
@@ -214,10 +214,9 @@ h2, h3 {
                     <tr>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Room Category</th>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Meal Plan</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Number of Rooms</th>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Adults</th>
-                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Child with bed</th>
-                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Child no bed</th>
-                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Extra Bed</th>
+                        <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Child(ren)</th>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Check-in</th>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Check-out</th>
                         <th style=" background-color: #4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;">Total</th>
@@ -229,22 +228,21 @@ h2, h3 {
                     <tr>
                         <td>${room.roomCategoryName}</td>
                         <td>${room.mealPlanName}</td>
-                        <td><font size="2">${room.adults} Adult(s)</font> | <font color="blue" size="4"><b> &#8377; ${room.adultPrice} </b></font></td>
-                        <td><font size="2">${room.childWithBed} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.childWithBedPrice}</b></font></td>
-                        <td><font size="2">${room.childNoBed} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.childNoBedPrice}</b></font></td>
-                        <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedPrice}</b></font></td>
+                        <td>${room.noOfRooms}</td>
+                        <td>${room.adults} Adult(s)</td>
+                        <td>${room.noOfChild}</td>
                         <td>${room.formattedCheckInDate}</td>
                         <td>${room.formattedCheckOutDate}</td>
                         <td><font color="#503732" size="4"> <b>&#8377; ${room.totalPrice} </b></font></td>
                     </tr>
                      </c:forEach>
                      <tr>
-                        <td colspan="6">&nbsp;</td>
+                        <td colspan="5">&nbsp;</td>
                         <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
                        <td><font color="blue"><b> &#8377; ${QUOTATION_OBJ.grandTotal} </b></font></td>
                      </tr>
                      <tr>
-                         <td colspan="3">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
+                         <td colspan="2">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
                          <th style=" background-color: red;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Discount :</th>
                         <td>&#8377; <form:input path="discount" type="number" id="discount" name="discount"  style="width:70px;padding: 0px 0px;height:25px;"/> </td>
                         <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
@@ -253,13 +251,13 @@ h2, h3 {
             </table>
         </div>
 
+
         <form:textarea
                 path="remarks"
                 name="remarks"
                 style="width: 100%; height: 100px; padding: 10px; font-size: 16px; border: 2px solid #4CAF50; border-radius: 8px; background: linear-gradient(white, #f1f1f1); color: #333; outline: none; transition: all 0.3s ease-in-out;"
                 readonly="true"
             />
-
 
         <div class="button-container">
             <c:if test="${QUOTATION_OBJ.contactMethod ne 'mobile'}">

@@ -86,12 +86,11 @@
 
         <table>
             <tr>
-                <th>Room Category</th>
+                <th>Room Details</th>
                 <th>Meal Plan</th>
+                <th>No. of Rooms</th>
                 <th>Adults</th>
-                <th>Children (with bed)</th>
-                <th>Children (no bed)</th>
-                <th>Extra Bed (Adult)</th>
+                <th>Child(ren)</th>
                 <th>Check-in</th>
                 <th>Check-out</th>
                 <th>Total Price</th>
@@ -100,10 +99,9 @@
             <tr>
                 <td>${room.roomCategoryName}</td>
                 <td>${room.mealPlanName}</td>
+                <td>${room.noOfRooms}</td>
                 <td>${room.adults}</td>
-                <td>${room.childWithBed}</td>
-                <td>${room.childNoBed}</td>
-                <td>${room.extraBed}</td>
+                <td>${room.noOfChild}</td>
                 <td>${room.formattedCheckInDate}</td>
                 <td>${room.formattedCheckOutDate}</td>
                 <td>INR ${room.totalPrice?string(",##0.00")}</td>
@@ -157,11 +155,11 @@
     <tbody>
     <!-- First Row: Bank Details -->
     <tr>
-        <td><strong>Bank Name:</strong> <br/> Yes Bank</td>
-        <td><strong>Account Name:</strong> <br/> VISTALUX</td>
-        <td><strong>Account Number:</strong> <br/> 1058-2690-0000-144</td>
-        <td><strong>IFSC Code:</strong> <br/> YESB0001058</td>
-        <td><strong>Branch Name:</strong> <br/> Vishvas Nagar</td>
+        <td><strong>Bank Name:</strong> <br/>Yes Bank</td>
+        <td><strong>Account Name:</strong> <br/>VISTALUX</td>
+        <td><strong>Account Number:</strong> <br/>1058-2690-0000-144</td>
+        <td><strong>IFSC Code:</strong> <br/>YESB0001058</td>
+        <td><strong>Branch Name:</strong> <br/>Vishvas Nagar</td>
     </tr>
     <!-- Second Row: Contact Details -->
     <tr>

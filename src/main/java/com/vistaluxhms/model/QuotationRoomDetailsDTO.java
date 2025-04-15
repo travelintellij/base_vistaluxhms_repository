@@ -23,7 +23,9 @@ public class QuotationRoomDetailsDTO {
     private String roomCategoryName;
     private String mealPlanName;
 
-
+    //following attributes are added for Free Hand Quotations.
+    private int noOfRooms;
+    private int noOfChild;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
@@ -212,5 +214,21 @@ public class QuotationRoomDetailsDTO {
 
     public void setFormattedCheckOutDate(String formattedCheckOutDate) {
         this.formattedCheckOutDate = formattedCheckOutDate;
+    }
+
+    public int getNoOfRooms() {
+        return noOfRooms;
+    }
+
+    public void setNoOfRooms(int noOfRooms) {
+        this.noOfRooms = noOfRooms;
+    }
+
+    public int getNoOfChild() {
+        return noOfChild;
+    }
+
+    public void setNoOfChild(int noOfChild) {
+        this.noOfChild = noOfChild;
     }
 }

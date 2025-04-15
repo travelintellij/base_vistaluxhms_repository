@@ -21,6 +21,7 @@ public class QuotationEntityDTO {
     private long guestId;
 
 
+
     public int getRateTypeId() {
         return rateTypeId;
     }

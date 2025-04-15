@@ -105,12 +105,11 @@
 
         <table>
             <tr>
-                <th>Room Category</th>
+                <th>Room</th>
                 <th>Meal Plan</th>
+                <th>No. of Rooms</th>
                 <th>Adults</th>
-                <th>Children (with bed)</th>
-                <th>Children (no bed)</th>
-                <th>Extra Bed (Adult)</th>
+                <th>No. of Child(ren) </th>
                 <th>Check-in</th>
                 <th>Check-out</th>
                 <th>Total Price</th>
@@ -119,29 +118,28 @@
             <tr>
                 <td>${room.roomCategoryName}</td>
                 <td>${room.mealPlanName}</td>
+                <td>${room.noOfRooms}</td>
                 <td>${room.adults}</td>
-                <td>${room.childWithBed}</td>
-                <td>${room.childNoBed}</td>
-                <td>${room.extraBed}</td>
+                <td>${room.noOfChild}</td>
                 <td>${room.formattedCheckInDate}</td>
                 <td>${room.formattedCheckOutDate}</td>
                 <td>INR ${room.totalPrice?string(",##0.00")}</td>
             </tr>
             </#list>
               <tr>
-                  <td colspan="6">&nbsp;</td>
+                  <td colspan="5">&nbsp;</td>
                   <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
                     <td><font color="blue"><b> &#8377; ${grandTotalSum} </b></font></td>
                </tr>
                <#if discount?number gt 0>
                <tr>
-                    <td colspan="6">&nbsp;</td>
+                    <td colspan="5">&nbsp;</td>
                     <th style="background-color: #1E90FF; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;" colspan="2"> Discount :</th>
                     <td>&#8377; ${discount} </td>
                </tr>
 
                <tr>
-                   <td colspan="6">&nbsp;</td>
+                   <td colspan="5">&nbsp;</td>
                   <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
                    <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${finalPrice}</span></td>
                </tr>
@@ -155,6 +153,9 @@
                 <p style="margin: 0; font-size: 14px; color: #555;">${remarks?html}</p>
             </div>
         </#if>
+
+
+
 
 
         <h3>Terms & Conditions:</h3>

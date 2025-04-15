@@ -195,9 +195,9 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Create Quotation</h2>
+    <h2>Create Free Hand Quotation</h2>
 
-    <form:form method="post" action="review_process_create_quotation" modelAttribute="QUOTATION_OBJ" id="myForm">
+    <form:form method="post" action="review_process_create_fh_quotation" modelAttribute="QUOTATION_OBJ" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->
@@ -234,10 +234,6 @@ h2, h3 {
                        <form:option value="both">Both</form:option>
                     </form:select>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <label for="rateTypes">Rate Type:</label>
-                    <form:select path="rateTypeId" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                            <form:options items="${RATE_TYPE_MAP}" />
-                    </form:select>
               </div>
               <div class="row">
                   <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
@@ -249,20 +245,17 @@ h2, h3 {
         <div id="roomsContainer">
             <h3>Room Details</h3>
             <button type="button" class="btn add-room" onclick="addRoom()">+ Add Room</button>
-           <font color="red">
-              <form:errors path="remarks" cssClass="error"  />
-          </font>
             <table id="roomsTable">
                 <thead>
                     <tr>
                         <th>Room Category</th>
                         <th>Meal Plan</th>
+                        <th>No. of Rooms</th>
                         <th>Adults</th>
-                        <th>Children (with bed)</th>
-                        <th>Children (no bed)</th>
-                        <th>Extra Bed (Adult)</th>
+                        <th>Child(ren)</th>
                         <th>Check-in</th>
                         <th>Check-out</th>
+                        <th>Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -271,12 +264,8 @@ h2, h3 {
     <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
         <tr>
             <td>
-                 <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>
-                <select name="roomDetails[${status.index}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                    <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
-                        <option value="${entry.key}" ${room.roomCategoryId == entry.key ? 'selected' : ''}>${entry.value}</option>
-                    </c:forEach>
-                </select>
+                     <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>
+                    <input type="text" name="roomDetails[${status.index}].roomCategoryName" class="input-field" value="${room.roomCategoryName}" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required />
             </td>
             <td>
                 <select name="roomDetails[${status.index}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
@@ -285,39 +274,43 @@ h2, h3 {
                     </c:forEach>
                 </select>
             </td>
-            <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
-            <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required /></td>
-            <td><input type="number" name="roomDetails[${status.index}].childWithBed" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
             <td>
-                <font color="red"><form:errors path="roomDetails[${status.index}].childNoBed" cssClass="error"  /></font>
-                <input type="number" name="roomDetails[${status.index}].childNoBed" class="input-field" value="${room.childNoBed}" min="0"  style="width:70px;" required />
+                <input type="number" name="roomDetails[${status.index}].noOfRooms" class="input-field" value="${room.adults}" min="1" style="width:70px;" required />
             </td>
-            <td><input type="number" name="roomDetails[${status.index}].extraBed" class="input-field" value="${room.extraBed}" min="0" style="width:70px;" required /></td>
+            <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
+                <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required />
+            </td>
+
+            <td><input type="number" name="roomDetails[${status.index}].noOfChild" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
             <td>
             <font color="red"><form:errors path="roomDetails[${status.index}].checkInDate" cssClass="error"  /></font>
             <input type="date" name="roomDetails[${status.index}].checkInDate" class="input-field" value="${room.checkInDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
             <td>
-            <font color="red"><form:errors path="roomDetails[${status.index}].checkOutDate" cssClass="error"  /></font>
-            <input type="date" name="roomDetails[${status.index}].checkOutDate" class="input-field" value="${room.checkOutDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
+                <font color="red"><form:errors path="roomDetails[${status.index}].checkOutDate" cssClass="error"  /></font>
+                <input type="date" name="roomDetails[${status.index}].checkOutDate" class="input-field" value="${room.checkOutDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>
+            <td>
+                <font color="red"><form:errors path="roomDetails[${status.index}].totalPrice" cssClass="error"  /></font>
+                <input type="number" name="roomDetails[${status.index}].totalPrice" class="input-field" value="${room.totalPrice}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" min="100" required />
+            </td>
+
+
             <td>
                 <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
             </td>
         </tr>
     </c:forEach>
 
+
                 </tbody>
             </table>
         </div>
-
-                <br/><br/>
-        <form:textarea
-                path="remarks"
-                name="remarks"
-                style="width: 100%; height: 100px; padding: 10px; font-size: 16px; border: 2px solid #4CAF50; border-radius: 8px; background: linear-gradient(white, #f1f1f1); color: #333; outline: none; transition: all 0.3s ease-in-out;"
-                placeholder="Enter remarks here"
-            />
-
-
+        <br/><br/>
+<form:textarea
+        path="remarks"
+        name="remarks"
+        style="width: 100%; height: 100px; padding: 10px; font-size: 16px; border: 2px solid #4CAF50; border-radius: 8px; background: linear-gradient(white, #f1f1f1); color: #333; outline: none; transition: all 0.3s ease-in-out;"
+        placeholder="Enter remarks here"
+    />
         <button type="submit" class="btn">Submit</button>
 
 </div>
@@ -397,19 +390,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
-
 function addRoom() {
     let tableBody = document.querySelector("#roomsTable tbody");
     let rowCount = tableBody.rows.length; // Get the row index for naming
     let newRow = document.createElement("tr");
     newRow.innerHTML = `
         <td>
-            <select name="roomDetails[\${rowCount}].roomCategoryId" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-                <c:forEach var="entry" items="${ROOM_TYPE_MAP}">
-                    <option value="${entry.key}">${entry.value}</option>
-                </c:forEach>
-            </select>
+          <input
+              type="text"
+              name="roomDetails[\${rowCount}].roomCategoryName"
+              class="input-field"
+              placeholder="Enter Room Category Name"
+              style="width: 200px; height: 60px; padding: 8px 12px; font-size: 16px; border: 2px solid #4CAF50; border-radius: 8px; background: linear-gradient(white, #f1f1f1); color: #333; outline: none; cursor: pointer; transition: all 0.3s ease-in-out;"
+              required
+          />
+
         </td>
         <td>
             <select name="roomDetails[\${rowCount}].mealPlanId" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
@@ -418,12 +413,12 @@ function addRoom() {
                 </c:forEach>
             </select>
         </td>
+        <td><input type="number" name="roomDetails[\${rowCount}].noOfRooms" class="input-field" min="1" style="width:70px;" min="1" value="1" required /></td>
         <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" value="2" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].noOfChild" class="input-field" min="0" style="width:70px;" value="0" required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkInDate"  style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"  required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required  /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].totalPrice" class="input-field" style="width:100px;" min="100" required /></td>
         <td>
             <button type="button" class="btn btn-danger" onclick="removeRoom(this)">Remove</button>
         </td>
@@ -442,7 +437,6 @@ function removeRoom(button) {
 
 
     </script>
-
 
 <script>
     document.getElementById("myForm").addEventListener("submit", function(event) {

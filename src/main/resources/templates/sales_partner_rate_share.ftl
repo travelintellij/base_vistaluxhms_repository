@@ -60,7 +60,7 @@
 
 <p>Dear <strong>${salesPartnerName?upper_case}</strong>,</p>
 
-<p>We are pleased to share our exclusive B2B rates for the mentioned season, curated specially for our trusted travel partners like you. <br> These rates have been designed to offer maximum value and flexibility to help you close more bookings with ease.</p>
+<p>We are pleased to share our exclusive B2B rates for the mentioned season, curated specially for our trusted travel partners like you. <br/> These rates have been designed to offer maximum value and flexibility to help you close more bookings with ease.</p>
 
 <#list rateCardList as rateCard>
 <div style="page-break-inside: avoid;">
