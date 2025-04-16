@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "event_package_service")
-public class EventPackageService {
+public class EventPackageServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +12,7 @@ public class EventPackageService {
 
     @ManyToOne
     @JoinColumn(name = "package_id")
-    private EventPackage eventPackage;
+    private EventPackageEntity eventPackage;
 
     private String serviceName;
 

@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (0,'dummy','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Dummy','Vikas',9999999999,'dummy',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,'2025-01-01','sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,NULL,0,0,0,0,0),(1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@udanchoo.com',NULL,NULL,'sushil@vistaluxhotel.com',9999441267,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0),(13,'Wasim','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puri',9999449267,'Partner',NULL,NULL,0,'1977-12-16','sushil@vistaluxhotel.com',NULL,NULL,'sushil.chugh@gmail.com',9999441267,NULL,NULL,NULL,NULL,'I am proud of you user. You rock. ',1,0,0,0,0),(14,'Sushil3','$2a$10$2mo3JX/Th08K6lpp1fkx1eimparjm.tC.Cv/eUqfGD.2fK0mTPjhO','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,1,0,0),(15,'Sushil3','$2a$10$M2sHZQ.LMqShWQe.QfcQROdG8pxfrcKXp1deTOMQGSVA/tSWIBbwq','Sushil 3 chugh','vuikas purn ',99999999,'founder',NULL,NULL,0,'1977-12-16','sushil3@gmail.com',NULL,NULL,'personal@gmail.com',9999999999,NULL,NULL,NULL,NULL,'hello. ',0,0,0,0,0),(16,'Sushil4','$2a$10$B1aJH8A5KvMXDDgKRYvr7.qK6Fp6ONzhhAZEhNHWreJ53Khw7Iyz6','sushil 4 chugh','fundu',9999999999,'founder',NULL,NULL,0,'2020-12-12','sus@gmail.com',NULL,NULL,'persna@gmail.com',9999999999,NULL,NULL,NULL,NULL,'asdgag',0,0,0,0,0),(17,'guru','$2a$10$ULQWB5xKtS/Tbu3hPzb8AeQFFmU.7JJX26/5GXF2BVfMZ7UcfReua','guru chugh','tihar',9999999999,'furu guru',NULL,NULL,0,'2009-12-12','guru@gmail.com',NULL,NULL,'persu@gmail.com',9999999999,NULL,NULL,NULL,NULL,'check it out. ',0,0,0,0,0),(18,'ndps','$2a$10$UhY8sEWIigBQCqvyRnjt3.YKO9OngtETkNEce1GvrLUv9HxdgtlES','NPPS Chugh','chalo ji',9090909090,'perfectionist',NULL,NULL,0,'2009-10-10','ndps@gmail.com',NULL,NULL,'ndps@gil.com',8989898989,NULL,NULL,NULL,NULL,'adsga',0,0,0,0,0),(19,'udanchoo','$2a$10$r4J8rLihfdPQIEQR/C7Di.2SKFytXAJtd91LeTs7Pbx6WaEGpLaRu','UdanChoo Tourism LLP','vikas puri',9999446267,'founder',NULL,NULL,0,'1977-12-16','sales@udanchoo.com','2025-12-10 00:00:00',NULL,'sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,'perfect execution. ',1,0,0,0,0),(20,'s4solvents','$2a$10$VjDvxmncS24fQZW5K9bycOshG/bh.0FHmFwS7jYOoNNnCambP0jDu','S4 Solvents Group','',9898989898,'asdg',NULL,NULL,0,'2025-01-01','sanjy@sanju.com',NULL,NULL,'sushil@sushil.com',0,NULL,NULL,NULL,NULL,'',0,0,0,0,0),(21,'kashish','$2a$10$dv6HkaDKNDihxTd4GjETfeFLtEAwcN5fx8a815JuHLEZEpOjEX3d2','Kashish','',9090762424,'Reservations',NULL,NULL,0,NULL,'sales@vistaluxhotel.com',NULL,NULL,'sub.coll@gmail.com',0,NULL,NULL,NULL,NULL,'',1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (0,'dummy','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Dummy','Vikas',9999999999,'dummy',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,'2025-01-01','sushil.chugh@gmail.com',9999999999,NULL,NULL,NULL,NULL,NULL,0,0,0,0,0),(1,'Sushil','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,NULL,'sushil@vistaluxhotel.com',9999441267,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0),(24,'Prashant Thakur','$2a$10$/eVPhoz0R9yBufCBc8z71ustQlcaKNg1WgnB4eFjgH9VyYBjk9/wa','Prashant Thakur','',9999441267,'General Manager',NULL,NULL,0,NULL,'sales@udanchoo.com',NULL,NULL,'sales@udanchoo.com',9999441267,NULL,NULL,NULL,NULL,'',1,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ CREATE TABLE `ashokateam_role` (
   KEY `FK_ROLE_ID_idx` (`roleId`),
   CONSTRAINT `FK_ROLE_ID` FOREIGN KEY (`roleId`) REFERENCES `role` (`roleId`),
   CONSTRAINT `FK_USR_ID_RL_MAP` FOREIGN KEY (`userId`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `ashokateam_role` (
 
 LOCK TABLES `ashokateam_role` WRITE;
 /*!40000 ALTER TABLE `ashokateam_role` DISABLE KEYS */;
-INSERT INTO `ashokateam_role` VALUES (1,1,1),(269,14,1),(271,15,2),(272,16,1),(273,17,1),(274,18,1),(276,13,2),(277,20,2),(278,19,2),(282,21,2);
+INSERT INTO `ashokateam_role` VALUES (1,1,1),(283,24,2);
 /*!40000 ALTER TABLE `ashokateam_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +115,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Corbett2','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Murabadab','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Corbett3','IND','India',1),(12,'Unknown','IND','India',1),(22,'Noida','IND','India',1);
+INSERT INTO `cities` VALUES (1,'Corbett2','IND','India',1),(2,'New York','USA','United States of America',1),(3,'Murabadab','IND','India',1),(4,'Corbett','IND','India',1),(8,'New Jersy','USA','United States of America',1),(9,'Chicago','USA','United States of America',1),(11,'Corbett3','IND','India',1),(12,'Unknown','IND','India',1),(22,'Noida','IND','India',1),(23,'Delhi','IND','India',1);
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +145,7 @@ CREATE TABLE `client` (
   KEY `salesPartnerId` (`salesPartnerId`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
   CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,8 +154,128 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (2,'Sushil Chugh',1,0,9999449267,'sushil@udanchoo.com','direct ',2,'amazing growth. ',0,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(4,'TBO,TBO',1,1,9898989898,'tbo@tbo.com','asdg',2,'adsg',0,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(7,'Hitesh Kumar',3,1,9582634445,'holidaysguide22@gmail.com','Direct',2,'good man. ',0,1,'2025-03-28 15:12:35','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(9,'NSPL ',2,1,9999449267,'digitalintellij@gmail.com','Pankaj Man is young. ',13,'',1,1,'2025-03-31 12:33:49','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(10,'Ajay Thukral',8,0,9898989898,'ajay@ajay.com','Direct ',2,'Changed man. ',0,1,'2025-03-31 12:46:01','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+INSERT INTO `client` VALUES (12,'03_Lowest_B2b_Rates',23,1,9999449267,'sales@udanchoo.com','Direct',14,NULL,1,1,'2025-04-10 15:01:25','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(13,'01_B2C_Direct_Clients',23,1,9999441267,'sushil@vistaluxhotel.com','Direct',15,NULL,1,1,'2025-04-10 15:07:37','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(14,'02_Standard_B2b_Rates',23,1,9999449267,'sushil@vistaluxhotel.com','direct',16,NULL,1,1,'2025-04-10 15:08:41','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(15,'Sushil Chugh',23,0,9999449267,'sushil@udanchoo.com','Direct',15,'Direct',0,1,'2025-04-10 15:09:26','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(16,'Rohit Kumar',23,0,8001580015,'info@vistaluxhotel.cm','Direct',15,'Direct',0,1,'2025-04-10 15:27:20','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(17,'UdanChoo Tourism',23,1,9999449267,'sales@udanchoo.com','direct',17,NULL,1,1,'2025-04-10 15:30:51','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_master_service`
+--
+
+DROP TABLE IF EXISTS `event_master_service`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_master_service` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(300) DEFAULT NULL,
+  `type` enum('PER_ROOM','PER_GUEST','ONE_TIME','PER_DAY') NOT NULL,
+  `baseCost` int NOT NULL,
+  `eventTypeId` int NOT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_event_type` (`eventTypeId`),
+  CONSTRAINT `fk_event_type` FOREIGN KEY (`eventTypeId`) REFERENCES `eventtype` (`eventTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_master_service`
+--
+
+LOCK TABLES `event_master_service` WRITE;
+/*!40000 ALTER TABLE `event_master_service` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_master_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_package`
+--
+
+DROP TABLE IF EXISTS `event_package`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_package` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `package_name` varchar(255) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `base_guest_count` int DEFAULT NULL,
+  `package_type` int NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_ep_created_by` (`created_by`),
+  KEY `fk_ep_event_type` (`package_type`),
+  CONSTRAINT `fk_ep_created_by` FOREIGN KEY (`created_by`) REFERENCES `ashokateam` (`userId`),
+  CONSTRAINT `fk_ep_event_type` FOREIGN KEY (`package_type`) REFERENCES `eventtype` (`eventTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_package`
+--
+
+LOCK TABLES `event_package` WRITE;
+/*!40000 ALTER TABLE `event_package` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_package` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_package_service`
+--
+
+DROP TABLE IF EXISTS `event_package_service`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_package_service` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `package_id` bigint DEFAULT NULL,
+  `service_name` varchar(255) DEFAULT NULL,
+  `service_type` enum('PER_ROOM','PER_GUEST','ONE_TIME','PER_DAY') DEFAULT NULL,
+  `cost_per_unit` int DEFAULT NULL,
+  `quantity` int DEFAULT '1',
+  `total_cost` int DEFAULT NULL,
+  `is_custom` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `package_id` (`package_id`),
+  CONSTRAINT `event_package_service_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `event_package` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_package_service`
+--
+
+LOCK TABLES `event_package_service` WRITE;
+/*!40000 ALTER TABLE `event_package_service` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_package_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `eventtype`
+--
+
+DROP TABLE IF EXISTS `eventtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `eventtype` (
+  `eventTypeId` int NOT NULL,
+  `eventTypeName` varchar(500) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `active` tinyint DEFAULT NULL,
+  PRIMARY KEY (`eventTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eventtype`
+--
+
+LOCK TABLES `eventtype` WRITE;
+/*!40000 ALTER TABLE `eventtype` DISABLE KEYS */;
+INSERT INTO `eventtype` VALUES (1,'Wedding','Wedding Event',1),(2,'Corporate Event','Corporate Event management',1);
+/*!40000 ALTER TABLE `eventtype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -176,7 +296,7 @@ CREATE TABLE `hibernate_sequence` (
 
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (23);
+INSERT INTO `hibernate_sequence` VALUES (30);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +335,7 @@ CREATE TABLE `lead_master` (
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,8 +344,43 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (12,2,2,3,4,5,'Client Perfect','','2025-01-20','2025-01-26',101,NULL,0,0,1,0,1,0,1,1,'2025-01-25 06:59:20','2025-01-25 06:59:20'),(14,2,2,3,5,7,'Client is superb. ','','2025-01-22','2025-01-28',101,NULL,0,0,1,1,1,1,1,1,'2025-01-25 07:20:07',NULL),(16,2,2,2,1,1,'Meal Plan APAI','','2025-01-27','2025-01-29',101,NULL,0,0,1,0,0,0,1,21,'2025-01-25 07:31:43','2025-01-25 07:31:43'),(20,7,2,0,0,0,'need it for holi. ','bahut chalu aadmi hai. ','2025-03-21','2025-03-22',101,NULL,1,1,1,0,0,0,1,1,NULL,NULL),(23,2,2,0,0,0,'asdg','ag','2025-03-24','2025-03-28',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(24,2,2,0,0,0,'','','2025-03-27','2025-03-29',102,NULL,0,0,1,0,0,0,1,19,NULL,NULL),(25,2,2,0,0,0,'asdghashsah','asgd','2025-03-30','2025-03-31',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(26,2,2,0,0,0,'asghashasgag','asgasgaga','2025-03-30','2025-04-01',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(27,2,2,1,1,0,'hello','','2025-04-03','2025-04-03',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(28,2,2,0,0,0,'Great to get this.','','2025-04-03','2025-04-04',101,NULL,0,0,1,0,0,0,1,21,NULL,NULL),(29,2,2,0,0,0,'asdg','','2025-04-04','2025-04-05',101,NULL,0,0,1,0,0,0,1,21,NULL,NULL),(31,2,2,0,0,0,'','','2025-04-03','2025-04-05',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(32,2,3,0,0,0,'asdgag','','2025-04-04','2025-04-11',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (34,15,2,3,4,0,'sdgasgadgs This isclient remarks. ','','2025-04-15','2025-04-17',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `leads_followup`
+--
+
+DROP TABLE IF EXISTS `leads_followup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `leads_followup` (
+  `leadFollowupId` bigint NOT NULL AUTO_INCREMENT,
+  `leadId` bigint DEFAULT NULL,
+  `followuptime` datetime DEFAULT NULL,
+  `response` varchar(2000) DEFAULT NULL,
+  `nextfollowuptime` datetime DEFAULT NULL,
+  `nextactionplan` varchar(2000) DEFAULT NULL,
+  `updatedBy` int DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`leadFollowupId`),
+  KEY `Lead_Followup_ID_idx` (`leadId`),
+  KEY `Lead_Followup_USR_idx` (`updatedBy`),
+  CONSTRAINT `Lead_Followup_ID` FOREIGN KEY (`leadId`) REFERENCES `lead_master` (`leadId`),
+  CONSTRAINT `Lead_Followup_USR` FOREIGN KEY (`updatedBy`) REFERENCES `ashokateam` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=20869 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `leads_followup`
+--
+
+LOCK TABLES `leads_followup` WRITE;
+/*!40000 ALTER TABLE `leads_followup` DISABLE KEYS */;
+INSERT INTO `leads_followup` VALUES (28,34,'2025-04-14 19:00:00','asdg','2025-04-15 20:00:00','sdagadg',1,'2025-04-14 18:38:13','2025-04-14 18:38:13'),(29,34,'2025-04-15 21:00:00','called up but no response','2025-04-16 20:00:00','will call again. ',1,'2025-04-14 19:27:07','2025-04-14 19:27:07');
+/*!40000 ALTER TABLE `leads_followup` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -250,7 +405,7 @@ CREATE TABLE `leads_team_map` (
 
 LOCK TABLES `leads_team_map` WRITE;
 /*!40000 ALTER TABLE `leads_team_map` DISABLE KEYS */;
-INSERT INTO `leads_team_map` VALUES (12,0);
+INSERT INTO `leads_team_map` VALUES (34,24);
 /*!40000 ALTER TABLE `leads_team_map` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +431,7 @@ CREATE TABLE `master_room_details` (
   `extraBedPercentage` int DEFAULT '0',
   `cnbPercentage` int DEFAULT '0',
   PRIMARY KEY (`roomCategoryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +440,7 @@ CREATE TABLE `master_room_details` (
 
 LOCK TABLES `master_room_details` WRITE;
 /*!40000 ALTER TABLE `master_room_details` DISABLE KEYS */;
-INSERT INTO `master_room_details` VALUES (1,'Deluxe Room Pool Front','this is the first level of room category. ','500 ',2,3,1,1,2,1,1,35,20),(2,'Super Deluxe With Garden','this is uper deluxe garden room. ','700',4,5,1,2,2,2,1,0,0),(3,'Tiger Den','','200',2,3,1,1,1,2,1,35,15);
+INSERT INTO `master_room_details` VALUES (4,'Deluxe Room','','',2,3,1,1,2,1,1,35,20),(5,'Super Deluxe Room','','',4,5,1,1,2,2,1,35,20),(6,'Victoria Cottages','','',4,5,1,1,2,3,1,35,20),(7,'Mud Cottage','','',2,3,1,1,1,3,1,35,20);
 /*!40000 ALTER TABLE `master_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +486,7 @@ CREATE TABLE `ratetype` (
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`rateTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +495,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
-INSERT INTO `ratetype` VALUES (1,'OTA | B2C','Great earning. ',1,'2025-01-03 07:47:10','2025-03-25 15:45:09'),(2,'GTI Special Rate','GTI special Rates',1,'2025-01-03 07:51:15','2025-01-03 13:53:34'),(3,'B2B-Partners-Working','These are the b2bpartners man. You are right chugh, it worked. ',1,'2025-01-03 07:52:58','2025-03-16 17:30:48'),(4,'Direct-Sales-Valuable','Welcome to the world of direct sales. ',1,'2025-01-03 13:58:00','2025-01-03 18:02:54');
+INSERT INTO `ratetype` VALUES (5,'Lowest_B2B_Rates','All dates will be mapped with this rate type. ',1,'2025-04-10 14:53:24','2025-04-10 14:53:24'),(6,'Standard_B2b_Rates','Any Standard Agent B2b Rates',1,'2025-04-10 14:53:51','2025-04-10 14:53:51'),(7,'B2C_Rate_Type','Direct Customer Rate Type',1,'2025-04-10 14:54:11','2025-04-10 14:54:11');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +550,7 @@ CREATE TABLE `salespartner` (
   KEY `fk_ratetype_idx` (`rateTypeId`),
   CONSTRAINT `fk_city` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_ratetype` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +559,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
-INSERT INTO `salespartner` VALUES (2,'udanchoo','udanchoo tourism',1,9999449267,'sales@udanchoo.com',3,'vikas puri','direct','perfect company and great company',1,'2025-01-03 17:52:07','2025-04-02 14:13:35'),(12,'Table 1','Table 1 Lowest Rate',3,9999449267,'sushil@udanchoo.com',1,'pata nahi','direct','this is good man. ',1,'2025-03-15 14:56:27','2025-04-02 13:57:23'),(13,'NSPL ','NSPL ',2,9999449267,'digitalintellij@gmail.com',2,'Noida ke hi hai. ','Pankaj Man is young. ','Delhi Sales Office. ',1,'2025-03-31 12:33:50','2025-04-01 14:39:23');
+INSERT INTO `salespartner` VALUES (14,'03_Lowest_B2b_Rates','03_Lowest_B2b_Rates',5,9999449267,'sales@udanchoo.com',23,'JG3 250B Vikas Puri','Direct','Sales Partner',1,'2025-04-10 15:01:25','2025-04-10 15:31:41'),(15,'01_B2C_Direct_Clients','01_B2C_Direct_Clients',7,9999441267,'sushil@vistaluxhotel.com',23,'JG3 250B First Floor \r\nVikas Puri','Direct','Direct',1,'2025-04-10 15:07:38','2025-04-10 15:31:23'),(16,'02_Standard_B2b_Rates','02_Standard_B2b_Rates',6,9999449267,'sushil@vistaluxhotel.com',23,'JG3 250B First Floor `\r\nVikas Puri','direct','Direct',1,'2025-04-10 15:08:42','2025-04-10 15:31:33'),(17,'UdanChoo','UdanChoo Tourism',5,9999449267,'sales@udanchoo.com',23,'JG3 250B First Floor `\r\nVikas Puri','direct','Direct',1,'2025-04-10 15:30:52',NULL);
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -423,7 +578,7 @@ CREATE TABLE `session` (
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`sessionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -432,7 +587,7 @@ CREATE TABLE `session` (
 
 LOCK TABLES `session` WRITE;
 /*!40000 ALTER TABLE `session` DISABLE KEYS */;
-INSERT INTO `session` VALUES (15,'B2C_Session_Standard_CY_2025','This is the calendar Year session for 2025 Valid Jan to Dec ','2025-03-22 07:44:19','2025-03-22 07:44:19',1),(16,'B2C_Diwali_Session','Diwali Session','2025-03-22 09:53:21','2025-03-22 09:53:21',1);
+INSERT INTO `session` VALUES (17,'B2C_Main_Season_1st_April_30th_June','Main Season Rates for B2C','2025-04-10 07:01:52','2025-04-10 13:41:11',1),(18,'Standard_B2b_Main_Season_1st_April_30th_June','This is the main season for corbett. ','2025-04-10 07:03:17','2025-04-10 07:03:17',1),(19,'Standard_B2b_Monsoon_Off_1st_July_14th_Oct','this includes off season and monsoon season. ','2025-04-10 07:04:08','2025-04-10 07:04:08',1),(20,'Standard_B2b_Peak_Diwali_15th_Oct_25th_Oct','this is the peak diwali season. ','2025-04-10 07:04:47','2025-04-10 12:55:20',1),(21,'Standard_B2b_Normal_26th_Oct_19th_Dec','This is the normal season. ','2025-04-10 07:06:00','2025-04-10 07:06:00',1),(22,'B2C_Monsoon_Off_1st_July_14th_Oct','B2c Off Season','2025-04-10 13:42:02','2025-04-10 13:42:02',1),(23,'B2C_Peak_Diwali_15th_Oct_25th_Oct','Peak Season B2C','2025-04-10 13:42:34','2025-04-10 13:42:34',1),(24,'B2C_Normal_26th_Oct_19th_Dec','Normal Season','2025-04-10 13:42:56','2025-04-10 13:42:56',1),(25,'Lowest_B2b_Main_Season_1st_April_30th_June','this is lowest','2025-04-10 14:14:06','2025-04-10 14:14:06',1),(26,'Lowest_B2b_Monsoon_Off_1st_July_14th_Oct','','2025-04-10 14:14:28','2025-04-10 14:14:28',1),(27,'Lowest_B2b_Peak_Diwali_15th_Oct_25th_Oct','','2025-04-10 14:14:49','2025-04-10 14:14:49',1),(28,'Lowest_B2b_Normal_26th_Oct_19th_Dec','','2025-04-10 14:15:10','2025-04-10 14:15:10',1);
 /*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,7 +612,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,7 +621,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
-INSERT INTO `session_rate_mapping` VALUES (23,15,1,'2025-03-22','2025-12-16',1,'2025-03-22 07:46:34','2025-03-22 07:46:34'),(24,16,1,'2025-12-17','2025-12-18',1,'2025-03-22 09:56:15','2025-03-22 09:56:15'),(25,15,1,'2025-12-19','2025-12-31',1,'2025-03-22 09:56:47','2025-03-22 09:56:47');
+INSERT INTO `session_rate_mapping` VALUES (26,25,5,'2025-04-01','2025-06-30',1,'2025-04-10 14:54:50','2025-04-10 14:54:50'),(27,26,5,'2025-07-01','2025-10-14',1,'2025-04-10 14:55:42','2025-04-10 14:55:42'),(28,27,5,'2025-10-15','2025-10-25',1,'2025-04-10 14:56:10','2025-04-10 14:56:10'),(29,28,5,'2025-10-26','2025-12-19',1,'2025-04-10 14:56:27','2025-04-10 14:56:27'),(30,17,7,'2025-04-01','2025-06-30',1,'2025-04-10 14:56:52','2025-04-10 14:56:52'),(31,22,7,'2025-07-01','2025-10-14',1,'2025-04-10 14:57:09','2025-04-10 14:57:09'),(32,23,7,'2025-10-15','2025-10-25',1,'2025-04-10 14:57:34','2025-04-10 14:57:34'),(33,24,7,'2025-10-26','2025-12-19',1,'2025-04-10 14:58:02','2025-04-10 14:58:02'),(34,18,6,'2025-04-01','2025-06-30',1,'2025-04-10 14:58:22','2025-04-10 14:58:22'),(35,19,6,'2025-07-01','2025-10-14',1,'2025-04-10 14:58:38','2025-04-10 14:58:38'),(36,20,6,'2025-10-15','2025-10-25',1,'2025-04-10 14:58:59','2025-04-10 14:58:59'),(37,21,6,'2025-10-26','2025-12-19',1,'2025-04-10 14:59:24','2025-04-10 14:59:24');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,7 +663,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
-INSERT INTO `sessiondetail` VALUES (15,1,1,3200,3400,0,0,0,0,0,NULL,1,'2025-03-22 07:44:39','2025-03-25 09:06:38'),(15,1,2,3400,3600,0,0,0,0,0,NULL,1,'2025-03-22 07:44:46','2025-03-22 07:44:46'),(15,1,3,3800,4000,0,0,0,0,0,NULL,1,'2025-03-22 07:44:52','2025-03-22 07:44:52'),(15,1,4,4200,4400,0,0,0,0,0,NULL,1,'2025-03-22 07:44:58','2025-03-22 07:44:58'),(15,2,1,5000,5200,5400,5600,0,0,0,NULL,1,'2025-03-22 07:45:08','2025-03-22 07:45:08'),(15,2,2,5800,6000,6200,6400,0,0,0,NULL,1,'2025-03-22 07:45:17','2025-03-22 07:45:17'),(15,2,3,6600,6800,7000,7200,0,0,0,NULL,1,'2025-03-22 07:45:28','2025-03-22 07:45:28'),(15,2,4,7400,7600,7800,8000,0,0,0,NULL,1,'2025-03-22 07:45:38','2025-03-22 07:45:38'),(15,3,1,8200,8400,0,0,0,0,0,NULL,1,'2025-03-22 07:45:47','2025-03-22 07:45:47'),(15,3,2,8600,8800,0,0,0,0,0,NULL,1,'2025-03-22 07:46:01','2025-03-22 07:46:01'),(15,3,3,9000,9200,0,0,0,0,0,NULL,1,'2025-03-22 07:46:07','2025-03-22 07:46:07'),(15,3,4,9400,9600,0,0,0,0,0,NULL,1,'2025-03-22 07:46:14','2025-03-22 07:46:14'),(16,1,1,8000,8200,0,0,0,0,0,NULL,1,'2025-03-22 09:54:04','2025-03-22 09:54:04'),(16,1,2,8400,8600,0,0,0,0,0,NULL,1,'2025-03-22 09:54:10','2025-03-22 09:54:10'),(16,1,3,8800,9000,0,0,0,0,0,NULL,1,'2025-03-22 09:54:16','2025-03-22 09:54:16'),(16,1,4,9200,9400,0,0,0,0,0,NULL,1,'2025-03-22 09:54:21','2025-03-22 09:54:21'),(16,2,1,9600,9800,10000,10200,0,0,0,NULL,1,'2025-03-22 09:54:37','2025-03-22 09:54:37'),(16,2,2,10400,10600,10800,11000,0,0,0,NULL,1,'2025-03-22 09:54:49','2025-03-22 09:54:49'),(16,2,3,11200,11400,11600,11800,0,0,0,NULL,1,'2025-03-22 09:54:58','2025-03-22 09:54:58'),(16,2,4,12000,12200,12400,12600,0,0,0,NULL,1,'2025-03-22 09:55:08','2025-03-22 09:55:08'),(16,3,1,12800,13000,0,0,0,0,0,NULL,1,'2025-03-22 09:55:15','2025-03-22 09:55:15'),(16,3,2,13200,13400,0,0,0,0,0,NULL,1,'2025-03-22 09:55:22','2025-03-22 09:55:22'),(16,3,3,13600,13800,0,0,0,0,0,NULL,1,'2025-03-22 09:55:30','2025-03-22 09:55:30'),(16,3,4,14000,14200,0,0,0,0,0,NULL,1,'2025-03-22 09:55:36','2025-03-22 09:55:36');
+INSERT INTO `sessiondetail` VALUES (17,4,1,4800,4900,0,0,0,0,0,NULL,1,'2025-04-10 13:43:42','2025-04-10 13:43:42'),(17,4,2,5200,5400,0,0,0,0,0,NULL,1,'2025-04-10 13:43:57','2025-04-10 13:43:57'),(17,4,3,5500,5900,0,0,0,0,0,NULL,1,'2025-04-10 13:44:15','2025-04-10 13:44:15'),(17,4,4,5800,6400,0,0,0,0,0,NULL,1,'2025-04-10 13:44:29','2025-04-10 13:44:29'),(17,5,1,5220,5320,6118,6916,0,0,0,NULL,1,'2025-04-10 13:45:13','2025-04-10 13:45:13'),(17,5,2,5620,5820,6693,7566,0,0,0,NULL,1,'2025-04-10 13:45:53','2025-04-10 13:45:53'),(17,5,3,5920,6320,7268,8216,0,0,0,NULL,1,'2025-04-10 13:46:31','2025-04-10 13:46:31'),(17,5,4,6220,6820,7843,8866,0,0,0,NULL,1,'2025-04-10 13:47:10','2025-04-10 13:47:10'),(17,6,1,6620,6720,7728,8736,0,0,0,NULL,1,'2025-04-10 13:47:47','2025-04-10 13:47:47'),(17,6,2,7020,7220,8303,9386,0,0,0,NULL,1,'2025-04-10 13:48:28','2025-04-10 13:48:28'),(17,6,3,7320,7720,8878,10036,0,0,0,NULL,1,'2025-04-10 13:49:20','2025-04-10 13:49:20'),(17,6,4,7620,8220,9453,10686,0,0,0,NULL,1,'2025-04-10 13:50:04','2025-04-10 13:50:04'),(17,7,1,6620,6720,0,0,0,0,0,NULL,1,'2025-04-10 13:50:13','2025-04-10 13:50:13'),(17,7,2,7020,7220,0,0,0,0,0,NULL,1,'2025-04-10 13:50:25','2025-04-10 13:50:25'),(17,7,3,7320,7720,0,0,0,0,0,NULL,1,'2025-04-10 13:50:36','2025-04-10 13:50:36'),(17,7,4,7620,8220,0,0,0,0,0,NULL,1,'2025-04-10 13:50:46','2025-04-10 13:50:46'),(18,4,1,3400,3500,0,0,0,0,0,NULL,1,'2025-04-10 12:36:47','2025-04-10 12:36:47'),(18,4,2,3800,4000,0,0,0,0,0,NULL,1,'2025-04-10 12:37:13','2025-04-10 12:37:13'),(18,4,3,4100,4500,0,0,0,0,0,NULL,1,'2025-04-10 12:37:29','2025-04-10 12:37:29'),(18,4,4,4400,5000,0,0,0,0,0,NULL,1,'2025-04-10 12:37:49','2025-04-10 12:37:49'),(18,5,1,3700,3800,4370,4940,0,0,0,NULL,1,'2025-04-10 12:39:13','2025-04-10 12:39:13'),(18,5,2,4100,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 12:40:50','2025-04-10 12:40:50'),(18,5,3,4400,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 12:41:37','2025-04-10 12:41:37'),(18,5,4,4700,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 12:42:14','2025-04-10 12:42:14'),(18,6,1,4700,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 12:43:22','2025-04-10 12:43:22'),(18,6,2,5100,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 12:44:04','2025-04-10 12:44:04'),(18,6,3,5400,5800,6670,7540,0,0,0,NULL,1,'2025-04-10 12:44:47','2025-04-10 12:44:47'),(18,6,4,5700,6300,7245,8190,0,0,0,NULL,1,'2025-04-10 12:45:30','2025-04-10 12:45:30'),(18,7,1,4700,4800,0,0,0,0,0,NULL,1,'2025-04-10 12:45:44','2025-04-10 12:45:44'),(18,7,2,5100,5300,0,0,0,0,0,NULL,1,'2025-04-10 12:45:53','2025-04-10 12:45:53'),(18,7,3,5400,5800,0,0,0,0,0,NULL,1,'2025-04-10 12:46:04','2025-04-10 12:46:04'),(18,7,4,5700,6300,0,0,0,0,0,NULL,1,'2025-04-10 12:46:14','2025-04-10 12:46:14'),(19,4,1,3200,3300,0,0,0,0,0,NULL,1,'2025-04-10 12:56:32','2025-04-10 12:58:40'),(19,4,2,3600,3800,0,0,0,0,0,NULL,1,'2025-04-10 12:58:54','2025-04-10 12:58:54'),(19,4,3,3900,4300,0,0,0,0,0,NULL,1,'2025-04-10 12:59:06','2025-04-10 12:59:06'),(19,4,4,4200,4800,0,0,0,0,0,NULL,1,'2025-04-10 12:59:18','2025-04-10 12:59:18'),(19,5,1,3500,3600,4140,4680,0,0,0,NULL,1,'2025-04-10 13:07:50','2025-04-10 13:07:50'),(19,5,2,3900,4100,4715,5330,0,0,0,NULL,1,'2025-04-10 13:08:22','2025-04-10 13:08:22'),(19,5,3,4200,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 13:09:12','2025-04-10 13:09:12'),(19,5,4,4500,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 13:09:46','2025-04-10 13:09:46'),(19,6,1,4500,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 13:10:40','2025-04-10 13:10:40'),(19,6,2,4900,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 13:11:24','2025-04-10 13:11:24'),(19,6,3,5200,5600,6440,7280,0,0,0,NULL,1,'2025-04-10 13:12:07','2025-04-10 13:12:07'),(19,6,4,5500,6100,7015,7930,0,0,0,NULL,1,'2025-04-10 13:12:45','2025-04-10 13:12:45'),(19,7,1,4500,4600,0,0,0,0,0,NULL,1,'2025-04-10 13:12:59','2025-04-10 13:12:59'),(19,7,2,4900,5100,0,0,0,0,0,NULL,1,'2025-04-10 13:13:08','2025-04-10 13:13:08'),(19,7,3,5200,5600,0,0,0,0,0,NULL,1,'2025-04-10 13:13:17','2025-04-10 13:13:17'),(19,7,4,5500,6100,0,0,0,0,0,NULL,1,'2025-04-10 13:13:26','2025-04-10 13:13:26'),(20,4,1,3400,3500,0,0,0,0,0,NULL,1,'2025-04-10 13:14:59','2025-04-10 13:14:59'),(20,4,2,3800,4000,0,0,0,0,0,NULL,1,'2025-04-10 13:15:08','2025-04-10 13:15:08'),(20,4,3,4100,4500,0,0,0,0,0,NULL,1,'2025-04-10 13:15:17','2025-04-10 13:15:17'),(20,4,4,4400,5000,0,0,0,0,0,NULL,1,'2025-04-10 13:15:26','2025-04-10 13:15:26'),(20,5,1,3700,3800,4370,4940,0,0,0,NULL,1,'2025-04-10 13:15:51','2025-04-10 13:15:51'),(20,5,2,4100,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 13:16:21','2025-04-10 13:16:21'),(20,5,3,4400,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 13:16:44','2025-04-10 13:16:44'),(20,5,4,4700,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 13:17:10','2025-04-10 13:17:10'),(20,6,1,4700,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 13:17:36','2025-04-10 13:17:36'),(20,6,2,5100,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 13:18:02','2025-04-10 13:18:02'),(20,6,3,5400,5800,6670,7540,0,0,0,NULL,1,'2025-04-10 13:18:27','2025-04-10 13:18:27'),(20,6,4,5700,6300,7245,8190,0,0,0,NULL,1,'2025-04-10 13:18:50','2025-04-10 13:18:50'),(20,7,1,4700,4800,0,0,0,0,0,NULL,1,'2025-04-10 13:18:59','2025-04-10 13:18:59'),(20,7,2,5100,5300,0,0,0,0,0,NULL,1,'2025-04-10 13:19:10','2025-04-10 13:19:10'),(20,7,3,5400,5800,0,0,0,0,0,NULL,1,'2025-04-10 13:19:18','2025-04-10 13:19:18'),(20,7,4,5700,6300,0,0,0,0,0,NULL,1,'2025-04-10 13:19:28','2025-04-10 13:19:28'),(21,4,1,3200,3300,0,0,0,0,0,NULL,1,'2025-04-10 13:20:29','2025-04-10 13:20:29'),(21,4,2,3600,3800,0,0,0,0,0,NULL,1,'2025-04-10 13:20:37','2025-04-10 13:20:37'),(21,4,3,3900,4300,0,0,0,0,0,NULL,1,'2025-04-10 13:20:47','2025-04-10 13:20:47'),(21,4,4,4200,4800,0,0,0,0,0,NULL,1,'2025-04-10 13:20:57','2025-04-10 13:20:57'),(21,5,1,3500,3600,4140,4680,0,0,0,NULL,1,'2025-04-10 13:21:19','2025-04-10 13:21:19'),(21,5,2,3900,4100,4715,5330,0,0,0,NULL,1,'2025-04-10 13:21:41','2025-04-10 13:21:41'),(21,5,3,4200,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 13:32:19','2025-04-10 13:32:19'),(21,5,4,4500,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 13:32:57','2025-04-10 13:32:57'),(21,6,1,4500,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 13:33:28','2025-04-10 13:33:28'),(21,6,2,4900,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 13:33:55','2025-04-10 13:33:55'),(21,6,3,5200,5600,6440,7280,0,0,0,NULL,1,'2025-04-10 13:34:20','2025-04-10 13:34:20'),(21,6,4,5500,6100,7015,7930,0,0,0,NULL,1,'2025-04-10 13:34:47','2025-04-10 13:34:47'),(21,7,1,4500,4600,0,0,0,0,0,NULL,1,'2025-04-10 13:39:21','2025-04-10 13:39:21'),(21,7,2,4900,5100,0,0,0,0,0,NULL,1,'2025-04-10 13:39:30','2025-04-10 13:39:30'),(21,7,3,5200,5600,0,0,0,0,0,NULL,1,'2025-04-10 13:39:39','2025-04-10 13:39:39'),(21,7,4,5500,6100,0,0,0,0,0,NULL,1,'2025-04-10 13:39:49','2025-04-10 13:39:49'),(22,4,1,4065,4165,0,0,0,0,0,NULL,1,'2025-04-10 14:00:09','2025-04-10 14:00:09'),(22,4,2,4390,4590,0,0,0,0,0,NULL,1,'2025-04-10 14:00:25','2025-04-10 14:00:25'),(22,4,3,4615,5015,0,0,0,0,0,NULL,1,'2025-04-10 14:00:44','2025-04-10 14:00:44'),(22,4,4,4840,5440,0,0,0,0,0,NULL,1,'2025-04-10 14:01:01','2025-04-10 14:01:01'),(22,5,1,4422,4522,5200,5878,0,0,0,NULL,1,'2025-04-10 14:01:53','2025-04-10 14:01:53'),(22,5,2,4747,4947,5689,6431,0,0,0,NULL,1,'2025-04-10 14:02:29','2025-04-10 14:02:53'),(22,5,3,4972,5372,6177,6982,0,0,0,NULL,1,'2025-04-10 14:03:29','2025-04-10 14:03:29'),(22,5,4,5197,5797,6666,7535,0,0,0,NULL,1,'2025-04-10 14:04:04','2025-04-10 14:04:04'),(22,6,1,5612,5712,6568,7424,0,0,0,NULL,1,'2025-04-10 14:04:41','2025-04-10 14:04:41'),(22,6,2,5937,6137,7057,7977,0,0,0,NULL,1,'2025-04-10 14:05:32','2025-04-10 14:05:32'),(22,6,3,6162,6562,7546,8530,0,0,0,NULL,1,'2025-04-10 14:06:14','2025-04-10 14:06:14'),(22,6,4,6387,6987,8035,9083,0,0,0,NULL,1,'2025-04-10 14:06:55','2025-04-10 14:06:55'),(22,7,1,5612,5712,0,0,0,0,0,NULL,1,'2025-04-10 14:07:04','2025-04-10 14:07:04'),(22,7,2,5937,6137,0,0,0,0,0,NULL,1,'2025-04-10 14:07:15','2025-04-10 14:07:15'),(22,7,3,6162,6562,0,0,0,0,0,NULL,1,'2025-04-10 14:07:23','2025-04-10 14:07:23'),(22,7,4,6387,6987,0,0,0,0,0,NULL,1,'2025-04-10 14:07:32','2025-04-10 14:07:32'),(23,4,1,4800,4900,0,0,0,0,0,NULL,1,'2025-04-10 13:51:19','2025-04-10 13:51:19'),(23,4,2,5200,5400,0,0,0,0,0,NULL,1,'2025-04-10 13:51:30','2025-04-10 13:51:30'),(23,4,3,5500,5900,0,0,0,0,0,NULL,1,'2025-04-10 13:51:43','2025-04-10 13:51:43'),(23,4,4,5800,6400,0,0,0,0,0,NULL,1,'2025-04-10 13:51:54','2025-04-10 13:51:54'),(23,5,1,5220,5320,6118,6916,0,0,0,NULL,1,'2025-04-10 13:52:29','2025-04-10 13:52:29'),(23,5,2,5620,5820,6693,7566,0,0,0,NULL,1,'2025-04-10 13:52:55','2025-04-10 13:52:55'),(23,5,3,5920,6320,7268,8216,0,0,0,NULL,1,'2025-04-10 13:53:24','2025-04-10 13:53:24'),(23,5,4,6220,6820,7843,8866,0,0,0,NULL,1,'2025-04-10 13:53:49','2025-04-10 13:53:49'),(23,6,1,6620,6720,7728,8736,0,0,0,NULL,1,'2025-04-10 13:54:20','2025-04-10 13:54:20'),(23,6,2,7020,7220,8303,9386,0,0,0,NULL,1,'2025-04-10 13:54:48','2025-04-10 13:54:48'),(23,6,3,7320,7720,8878,10036,0,0,0,NULL,1,'2025-04-10 13:55:19','2025-04-10 13:55:19'),(23,6,4,7620,8220,9453,10686,0,0,0,NULL,1,'2025-04-10 13:55:53','2025-04-10 13:55:53'),(23,7,1,6620,6720,0,0,0,0,0,NULL,1,'2025-04-10 13:56:02','2025-04-10 13:56:02'),(23,7,2,7020,7220,0,0,0,0,0,NULL,1,'2025-04-10 13:56:11','2025-04-10 13:56:11'),(23,7,3,7320,7720,0,0,0,0,0,NULL,1,'2025-04-10 13:56:21','2025-04-10 13:56:21'),(23,7,4,7620,8220,0,0,0,0,0,NULL,1,'2025-04-10 13:56:32','2025-04-10 13:56:32'),(24,4,1,4065,4165,0,0,0,0,0,NULL,1,'2025-04-10 14:08:11','2025-04-10 14:08:11'),(24,4,2,4390,4590,0,0,0,0,0,NULL,1,'2025-04-10 14:08:22','2025-04-10 14:08:22'),(24,4,3,4615,5015,0,0,0,0,0,NULL,1,'2025-04-10 14:08:34','2025-04-10 14:08:34'),(24,4,4,4840,5440,0,0,0,0,0,NULL,1,'2025-04-10 14:08:46','2025-04-10 14:08:46'),(24,5,1,4422,4522,5200,5878,0,0,0,NULL,1,'2025-04-10 14:09:11','2025-04-10 14:09:11'),(24,5,2,4747,4947,5689,6431,0,0,0,NULL,1,'2025-04-10 14:09:35','2025-04-10 14:09:35'),(24,5,3,4972,5372,6177,6982,0,0,0,NULL,1,'2025-04-10 14:10:01','2025-04-10 14:10:01'),(24,5,4,5197,5797,6666,7535,0,0,0,NULL,1,'2025-04-10 14:10:27','2025-04-10 14:10:27'),(24,6,1,5612,5712,6568,7424,0,0,0,NULL,1,'2025-04-10 14:10:57','2025-04-10 14:10:57'),(24,6,2,5937,6137,7057,7977,0,0,0,NULL,1,'2025-04-10 14:11:23','2025-04-10 14:11:23'),(24,6,3,6162,6562,7546,8530,0,0,0,NULL,1,'2025-04-10 14:11:49','2025-04-10 14:11:49'),(24,6,4,6387,6987,8035,9083,0,0,0,NULL,1,'2025-04-10 14:12:15','2025-04-10 14:12:15'),(24,7,1,5612,5712,0,0,0,0,0,NULL,1,'2025-04-10 14:12:25','2025-04-10 14:12:25'),(24,7,2,5937,6137,0,0,0,0,0,NULL,1,'2025-04-10 14:12:34','2025-04-10 14:12:34'),(24,7,3,6162,6562,0,0,0,0,0,NULL,1,'2025-04-10 14:12:42','2025-04-10 14:12:42'),(24,7,4,6387,6987,0,0,0,0,0,NULL,1,'2025-04-10 14:12:51','2025-04-10 14:12:51'),(25,4,1,3200,3300,0,0,0,0,0,NULL,1,'2025-04-10 14:16:07','2025-04-10 14:16:07'),(25,4,2,3600,3800,0,0,0,0,0,NULL,1,'2025-04-10 14:16:19','2025-04-10 14:16:19'),(25,4,3,3900,4300,0,0,0,0,0,NULL,1,'2025-04-10 14:16:33','2025-04-10 14:16:33'),(25,4,4,4200,4800,0,0,0,0,0,NULL,1,'2025-04-10 14:16:50','2025-04-10 14:16:50'),(25,5,1,3500,3600,4140,4680,0,0,0,NULL,1,'2025-04-10 14:29:35','2025-04-10 14:29:35'),(25,5,2,3900,4100,4715,5330,0,0,0,NULL,1,'2025-04-10 14:30:13','2025-04-10 14:30:13'),(25,5,3,4200,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 14:30:46','2025-04-10 14:30:46'),(25,5,4,4500,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 14:31:20','2025-04-10 14:31:20'),(25,6,1,4500,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 14:32:01','2025-04-10 14:32:01'),(25,6,2,4900,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 14:32:34','2025-04-10 14:32:34'),(25,6,3,5200,5600,6440,7280,0,0,0,NULL,1,'2025-04-10 14:33:15','2025-04-10 14:33:15'),(25,6,4,5500,6100,7015,7930,0,0,0,NULL,1,'2025-04-10 14:34:03','2025-04-10 14:34:03'),(25,7,1,4500,4600,0,0,0,0,0,NULL,1,'2025-04-10 14:34:17','2025-04-10 14:34:17'),(25,7,2,4900,5100,0,0,0,0,0,NULL,1,'2025-04-10 14:34:28','2025-04-10 14:34:28'),(25,7,3,5200,5600,0,0,0,0,0,NULL,1,'2025-04-10 14:34:38','2025-04-10 14:34:38'),(25,7,4,5500,6100,0,0,0,0,0,NULL,1,'2025-04-10 14:34:47','2025-04-10 14:34:47'),(26,4,1,2900,3000,0,0,0,0,0,NULL,1,'2025-04-10 14:40:30','2025-04-10 14:40:30'),(26,4,2,3200,3500,0,0,0,0,0,NULL,1,'2025-04-10 14:40:45','2025-04-10 14:40:45'),(26,4,3,3600,4000,0,0,0,0,0,NULL,1,'2025-04-10 14:41:07','2025-04-10 14:41:07'),(26,4,4,3900,4500,0,0,0,0,0,NULL,1,'2025-04-10 14:41:21','2025-04-10 14:41:21'),(26,5,1,3200,3300,3795,4290,0,0,0,NULL,1,'2025-04-10 14:42:07','2025-04-10 14:42:07'),(26,5,2,3600,3800,4370,4940,0,0,0,NULL,1,'2025-04-10 14:42:37','2025-04-10 14:42:37'),(26,5,3,3900,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 14:43:05','2025-04-10 14:43:05'),(26,5,4,4200,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 14:43:37','2025-04-10 14:43:37'),(26,6,1,4200,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 14:44:08','2025-04-10 14:44:08'),(26,6,2,4600,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 14:44:38','2025-04-10 14:44:38'),(26,6,3,4900,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 14:45:16','2025-04-10 14:45:16'),(26,6,4,5200,5800,6670,7540,0,0,0,NULL,1,'2025-04-10 14:45:51','2025-04-10 14:45:51'),(26,7,1,4200,4300,0,0,0,0,0,NULL,1,'2025-04-10 14:46:02','2025-04-10 14:46:02'),(26,7,2,4600,4800,0,0,0,0,0,NULL,1,'2025-04-10 14:46:12','2025-04-10 14:46:12'),(26,7,3,4900,5300,0,0,0,0,0,NULL,1,'2025-04-10 14:46:20','2025-04-10 14:46:20'),(26,7,4,5200,5800,0,0,0,0,0,NULL,1,'2025-04-10 14:46:30','2025-04-10 14:46:30'),(27,4,1,3200,3300,0,0,0,0,0,NULL,1,'2025-04-10 14:35:13','2025-04-10 14:35:13'),(27,4,2,3600,3800,0,0,0,0,0,NULL,1,'2025-04-10 14:35:23','2025-04-10 14:35:23'),(27,4,3,3900,4300,0,0,0,0,0,NULL,1,'2025-04-10 14:35:36','2025-04-10 14:35:36'),(27,4,4,4200,4800,0,0,0,0,0,NULL,1,'2025-04-10 14:35:46','2025-04-10 14:35:46'),(27,5,1,3500,3600,4140,4680,0,0,0,NULL,1,'2025-04-10 14:36:08','2025-04-10 14:36:08'),(27,5,2,3900,4100,4715,5330,0,0,0,NULL,1,'2025-04-10 14:36:31','2025-04-10 14:36:31'),(27,5,3,4200,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 14:36:57','2025-04-10 14:36:57'),(27,5,4,4500,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 14:37:24','2025-04-10 14:37:24'),(27,6,1,4500,4600,5290,5980,0,0,0,NULL,1,'2025-04-10 14:37:54','2025-04-10 14:37:54'),(27,6,2,4900,5100,5865,6630,0,0,0,NULL,1,'2025-04-10 14:38:18','2025-04-10 14:38:18'),(27,6,3,5200,5600,6440,7280,0,0,0,NULL,1,'2025-04-10 14:38:47','2025-04-10 14:38:47'),(27,6,4,5500,6100,7015,7930,0,0,0,NULL,1,'2025-04-10 14:39:14','2025-04-10 14:39:14'),(27,7,1,4500,4600,0,0,0,0,0,NULL,1,'2025-04-10 14:39:26','2025-04-10 14:39:26'),(27,7,2,4900,5100,0,0,0,0,0,NULL,1,'2025-04-10 14:39:35','2025-04-10 14:39:35'),(27,7,3,5200,5600,0,0,0,0,0,NULL,1,'2025-04-10 14:39:50','2025-04-10 14:39:50'),(27,7,4,5500,6100,0,0,0,0,0,NULL,1,'2025-04-10 14:39:59','2025-04-10 14:39:59'),(28,4,1,2900,3000,0,0,0,0,0,NULL,1,'2025-04-10 14:47:02','2025-04-10 14:47:02'),(28,4,2,3200,3500,0,0,0,0,0,NULL,1,'2025-04-10 14:47:11','2025-04-10 14:47:11'),(28,4,3,3600,4000,0,0,0,0,0,NULL,1,'2025-04-10 14:47:21','2025-04-10 14:47:21'),(28,4,4,3900,4500,0,0,0,0,0,NULL,1,'2025-04-10 14:47:30','2025-04-10 14:47:30'),(28,5,1,3200,3300,3795,4290,0,0,0,NULL,1,'2025-04-10 14:47:51','2025-04-10 14:47:51'),(28,5,2,3600,3800,4370,4940,0,0,0,NULL,1,'2025-04-10 14:48:13','2025-04-10 14:48:13'),(28,5,3,3900,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 14:48:38','2025-04-10 14:48:38'),(28,5,4,4200,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 14:49:02','2025-04-10 14:49:02'),(28,6,1,4200,4300,4945,5590,0,0,0,NULL,1,'2025-04-10 14:49:26','2025-04-10 14:49:26'),(28,6,2,4600,4800,5520,6240,0,0,0,NULL,1,'2025-04-10 14:49:49','2025-04-10 14:49:49'),(28,6,3,4900,5300,6095,6890,0,0,0,NULL,1,'2025-04-10 14:50:18','2025-04-10 14:50:18'),(28,6,4,5200,5800,6670,7540,0,0,0,NULL,1,'2025-04-10 14:50:45','2025-04-10 14:50:45'),(28,7,1,4200,4300,0,0,0,0,0,NULL,1,'2025-04-10 14:51:04','2025-04-10 14:51:04'),(28,7,2,4600,4800,0,0,0,0,0,NULL,1,'2025-04-10 14:51:17','2025-04-10 14:51:17'),(28,7,3,4900,5300,0,0,0,0,0,NULL,1,'2025-04-10 14:51:33','2025-04-10 14:51:33'),(28,7,4,5200,5800,0,0,0,0,0,NULL,1,'2025-04-10 14:51:45','2025-04-10 14:51:45');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -550,4 +705,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 20:07:04
+-- Dump completed on 2025-04-16 21:02:09

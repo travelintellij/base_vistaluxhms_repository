@@ -52,6 +52,13 @@ ALTER TABLE `ashokadb`.`event_package_service`
 CHANGE COLUMN `cost_per_unit` `cost_per_unit` INT NULL DEFAULT NULL ,
 CHANGE COLUMN `total_cost` `total_cost` INT NULL DEFAULT NULL ;
 
+ALTER TABLE `ashokadb`.`eventtype`
+ADD COLUMN `description` VARCHAR(250) NULL AFTER `eventTypeName`;
+
+INSERT INTO `ashokadb`.`eventtype` (`eventTypeId`, `eventTypeName`, `description`, `active`) VALUES ('1', 'Wedding', 'Wedding Event', '1');
+INSERT INTO `ashokadb`.`eventtype` (`eventTypeId`, `eventTypeName`, `description`, `active`) VALUES ('2', 'Corporate Event', 'Corporate Event management', '1');
+
+
 
 #############################
 Following Done

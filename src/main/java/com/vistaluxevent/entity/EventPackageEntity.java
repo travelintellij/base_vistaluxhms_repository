@@ -1,9 +1,12 @@
 package com.vistaluxevent.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "event_package")
-public class EventPackage {
+public class EventPackageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,7 +18,7 @@ public class EventPackage {
 
 
     @OneToMany(mappedBy = "eventPackage", cascade = CascadeType.ALL)
-    private List<EventPackageService> services = new ArrayList<>();
+    private List<EventPackageServiceEntity> services = new ArrayList<>();
 
     // Getters & Setters
 }
