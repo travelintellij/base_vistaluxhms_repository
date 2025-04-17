@@ -70,31 +70,30 @@
 </head>
 <body>
 <h2>Create New Event Master Service</h2>
+
 <div class="form-container" >
-    <form action="${pageContext.request.contextPath}/admin/event-services/create" method="post">
+    <form:form method="post" action="create_create_master_service" modelAttribute="EVENT_MASTER_SERVICE" autocomplete="off">
 
         <label for="name">Service Name:</label>
-        <input type="text" id="name" name="name" required />
+        <form:input path="name" required="required" />
 
         <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="3"></textarea>
+        <form:textarea path = "description" rows="6" maxlength="1000" style="width: 100%; box-sizing: border-box;" />
 
         <label for="type">Service Type:</label>
-        <select id="type" name="type">
-            <c:forEach var="t" items="${types}">
-                <option value="${t}">${t}</option>
-            </c:forEach>
-        </select>
+        <form:select path="eventServiceCostTypeEntity.eventServiceCostTypeId" required="required" style="width:20%">
+                   <form:options items="${SERVICE_TYPE}" itemValue="eventServiceCostTypeId" itemLabel="eventServiceCostTypeName" />
+        </form:select>
+
+
 
         <label for="baseCost">Base Cost:</label>
-        <input type="number" id="baseCost" name="baseCost" step="0.01" required />
+        <form:input path="baseCost" type="number" required="required" min="1" />
 
         <label for="eventType">Event Type:</label>
-        <select id="eventType" name="eventType.id">
-            <c:forEach var="et" items="${eventTypes}">
-                <option value="${et.eventTypeId}">${et.eventTypeName}</option>
-            </c:forEach>
-        </select>
+        <form:select path="eventTypeId" required="required" style="width:20%">
+           <form:options items="${EVENT_TYPES}" itemValue="eventTypeId" itemLabel="eventTypeName" />
+       </form:select>
 
         <label>
             <input type="checkbox" name="active" checked /> Active
@@ -102,7 +101,7 @@
 
         <br/><br/>
         <button type="submit">Save Service</button>
-    </form>
+    </form:form>
 </div>
 </body>
 </html>

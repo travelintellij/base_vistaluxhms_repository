@@ -58,6 +58,23 @@ ADD COLUMN `description` VARCHAR(250) NULL AFTER `eventTypeName`;
 INSERT INTO `ashokadb`.`eventtype` (`eventTypeId`, `eventTypeName`, `description`, `active`) VALUES ('1', 'Wedding', 'Wedding Event', '1');
 INSERT INTO `ashokadb`.`eventtype` (`eventTypeId`, `eventTypeName`, `description`, `active`) VALUES ('2', 'Corporate Event', 'Corporate Event management', '1');
 
+ALTER TABLE `ashokadb`.`event_master_service`
+CHANGE COLUMN `type` `type` ENUM('PER_ROOM', 'PER_GUEST', 'ONE_TIME', 'PER_DAY', 'PER_GUEST_PER_NIGHT') NOT NULL ;
+
+CREATE TABLE `ashokadb`.`event_service_cost_type` (
+  `eventServiceCostTypeId` INT NOT NULL AUTO_INCREMENT,
+  `eventServiceCostTypeName` VARCHAR(100) NOT NULL,
+  `active` TINYINT NULL,
+  PRIMARY KEY (`eventServiceCostTypeId`));
+
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('1', 'PER_ROOM', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('2', 'PER_GUEST', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('3', 'ONE_TIME', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('4', 'PER_DAY', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('5', 'PER_GUEST_PER_NIGHT', '1');
+
+ALTER TABLE `ashokadb`.`event_master_service`
+CHANGE COLUMN `type` `eventServiceCostTypeId` INT NOT NULL ;
 
 
 #############################

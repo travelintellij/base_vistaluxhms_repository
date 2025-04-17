@@ -1,6 +1,10 @@
 package com.vistaluxevent.services;
 
+import com.vistaluxevent.entity.EventMasterServiceEntity;
+import com.vistaluxevent.entity.EventServiceCostTypeEntity;
 import com.vistaluxevent.entity.EventTypeEntity;
+import com.vistaluxevent.repository.EventMasterServiceRepository;
+import com.vistaluxevent.repository.EventServiceCostTypeRepository;
 import com.vistaluxevent.repository.EventTypeRepository;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.FilterLeadObj;
@@ -33,10 +37,37 @@ public class EventServicesImpl {
 	@Autowired
 	EventTypeRepository eventTypeRepository;
 
+	@Autowired
+	EventMasterServiceRepository eventMasterServiceRepository;
+
+	@Autowired
+	EventServiceCostTypeRepository eventServiceCostTypeRepository;
 
 	public List<EventTypeEntity> findAllEventType(){
 		return eventTypeRepository.findAll();
 	}
 
+	public EventTypeEntity findEventTypeById(int eventTypeId){
+		return eventTypeRepository.findById(eventTypeId).get();
+	}
+
+
+	public void saveEventMasterService(EventMasterServiceEntity eventMasterServiceEntity){
+		eventMasterServiceRepository.save(eventMasterServiceEntity);
+	}
+
+	public List<EventServiceCostTypeEntity> findActiveEventServiceCostType(boolean active){
+		return eventServiceCostTypeRepository.findByActive(active);
+	}
+
+	public List<EventMasterServiceEntity> findActiveEventMasterServiceList(boolean active){
+		//Sort sort = Sort.by(Sort.Order.desc("active"));
+		List<EventMasterServiceEntity> listMasterService = eventMasterServiceRepository.findByActive(active);
+		return listMasterService;
+	}
+
+	public EventMasterServiceEntity findEventMasterServiceById(Integer eventMasterServiceId){
+		return eventMasterServiceRepository.findById(eventMasterServiceId).get();
+	}
 
 }

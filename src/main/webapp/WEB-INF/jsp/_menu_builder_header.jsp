@@ -152,7 +152,7 @@ username = "Guest";
                         <a href="#">Master Service </a>
                         <ul class="second-level">
                             <li><a href="view_add_master_service_form">Add Master Service</a></li>
-                            <li><a href="view_search_city_form">Manage Services</a></li>
+                            <li><a href="view_master_service_list">Manage Services</a></li>
                         </ul>
                     </li>
                 </ul>

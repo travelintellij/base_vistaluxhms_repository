@@ -1,12 +1,15 @@
 package com.vistaluxevent.controller;
 
+import com.vistaluxevent.entity.EventMasterServiceEntity;
+import com.vistaluxevent.entity.EventServiceCostTypeEntity;
 import com.vistaluxevent.entity.EventTypeEntity;
-import com.vistaluxevent.entity.ServiceType;
 import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.repository.EventTypeRepository;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.City_Entity;
+import com.vistaluxhms.entity.MasterRoomDetailsEntity;
 import com.vistaluxhms.model.City_Obj;
+import com.vistaluxhms.model.SessionRateMappingEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
@@ -14,6 +17,7 @@ import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.CityManagementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -40,6 +44,7 @@ public class EventController {
 	@Autowired
 	EventServicesImpl eventServices;
 
+
 	//@Autowired
 	//EmailServiceImpl emailService;
 
@@ -63,11 +68,56 @@ public class EventController {
 		ModelAndView modelView = new ModelAndView("event/createMasterService");
 		//modelView.addObject("eventService", new EventMasterService());
 		List<EventTypeEntity> listEventType = eventServices.findAllEventType();
-		modelView.addObject("eventTypes", listEventType);
-		modelView.addObject("types", ServiceType.values());
+		modelView.addObject("EVENT_TYPES", listEventType);
+		List<EventServiceCostTypeEntity> eventServiceCostTypeEntities = eventServices.findActiveEventServiceCostType(true);
+		modelView.addObject("SERVICE_TYPE", eventServiceCostTypeEntities);
 		//modelView.addObject("ACTIVE_CTRYCODE_CTRYNAME_LIST", activeDistinctDestinationList);
 		return modelView;
 	}
+
+	@PostMapping(value="create_create_master_service")
+	public ModelAndView create_create_master_service(@ModelAttribute("EVENT_MASTER_SERVICE") EventMasterServiceDTO eventMasterServiceDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+		ModelAndView modelView = new ModelAndView();
+		EventMasterServiceEntity eventMasterServiceEntity = new EventMasterServiceEntity();
+		eventMasterServiceEntity.updateEntityFromDTO(eventMasterServiceDTO);
+		eventServices.saveEventMasterService(eventMasterServiceEntity);
+		redirectAttrib.addFlashAttribute("Success","Event Master Service Record is created successfully. ");
+		modelView.setViewName("redirect:view_master_service_list");
+		return modelView;
+	}
+
+	@RequestMapping("view_master_service_list")
+	public ModelAndView view_rooms_list() {
+		ModelAndView modelView = new ModelAndView("event/viewEventMasterServiceListing");
+		// Adding user details to the model
+		// Filtering sales partners based on the search criteria
+		List<EventMasterServiceEntity> listEventMasterServiceEntity = eventServices.findActiveEventMasterServiceList(true);
+		List<EventMasterServiceEntity> listEventMasterServiceDTO = new ArrayList<>();
+		for (EventMasterServiceEntity entity : listEventMasterServiceEntity) {
+			EventMasterServiceDTO eventMasterServiceDTO = new EventMasterServiceDTO();
+			eventMasterServiceDTO.updateDTOFromEntity(entity);
+			eventMasterServiceDTO.setEventTypeName(eventServices.findEventTypeById(entity.getEventTypeId()).getEventTypeName());
+			listEventMasterServiceDTO.add(eventMasterServiceDTO);
+
+		}
+		modelView.addObject("ACTIVE_MASTER_SERVICE_LIST", listEventMasterServiceDTO);
+		return modelView;
+	}
+
+	@PostMapping("view_master_service_details")
+	public ModelAndView view_master_service_details(@ModelAttribute("EVENT_MASTER_SERVICE") EventMasterServiceDTO eventMasterServiceDTO, BindingResult result) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("event/View_Event_Master_Service");
+		// Adding user details to the model
+		// Filtering sales partners based on the search criteria
+		EventMasterServiceEntity eventMasterServiceEntity= eventServices.findEventMasterServiceById(eventMasterServiceDTO.getId());
+		EventTypeEntity eventTypeEntity = eventServices.findEventTypeById(eventMasterServiceEntity.getEventTypeId());
+		eventMasterServiceDTO.setEventTypeName(eventTypeEntity.getEventTypeName());
+		eventMasterServiceDTO.updateDTOFromEntity(eventMasterServiceEntity);
+		modelView.addObject("EVENT_MASTER_SERVICE", eventMasterServiceDTO);
+		return modelView;
+	}
+
 
 
 }
