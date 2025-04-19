@@ -58,12 +58,7 @@
     }
 </style>
 <body>
-<div align="center" style="margin:10px 0">
-    <b>
-        <font color="green">${Success}</font>
-        <font color="red">${Error}</font>
-    </b>
-</div>
+
     <div class="container">
         <h2 class="text-center mb-4">Master Service List</h2>
         <div align="center" style="margin: 10px 0;">
@@ -102,8 +97,8 @@
                                 <button type="submit" class="btn btn-info btn-sm">View</button>
                              </form>
 
-                            <form action="view_edit_room_form" method="POST" style="display:inline;">
-                                <input type="hidden" name="roomCategoryId" value="${room.roomCategoryId}" />
+                            <form action="view_edit_master_service_form" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="${masterServiceRec.id}" />
                                 <button type="submit" class="btn btn-warning btn-sm">Edit</button>
                              </form>
 

@@ -1,6 +1,7 @@
 package com.vistaluxevent.controller;
 
 import com.vistaluxevent.entity.EventMasterServiceEntity;
+import com.vistaluxevent.entity.EventPackageEntity;
 import com.vistaluxevent.entity.EventServiceCostTypeEntity;
 import com.vistaluxevent.entity.EventTypeEntity;
 import com.vistaluxevent.model.EventMasterServiceDTO;
@@ -75,8 +76,8 @@ public class EventController {
 		return modelView;
 	}
 
-	@PostMapping(value="create_create_master_service")
-	public ModelAndView create_create_master_service(@ModelAttribute("EVENT_MASTER_SERVICE") EventMasterServiceDTO eventMasterServiceDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+	@PostMapping(value="create_edit_master_service")
+	public ModelAndView create_edit_master_service(@ModelAttribute("EVENT_MASTER_SERVICE") EventMasterServiceDTO eventMasterServiceDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
 		ModelAndView modelView = new ModelAndView();
 		EventMasterServiceEntity eventMasterServiceEntity = new EventMasterServiceEntity();
 		eventMasterServiceEntity.updateEntityFromDTO(eventMasterServiceDTO);
@@ -91,7 +92,7 @@ public class EventController {
 		ModelAndView modelView = new ModelAndView("event/viewEventMasterServiceListing");
 		// Adding user details to the model
 		// Filtering sales partners based on the search criteria
-		List<EventMasterServiceEntity> listEventMasterServiceEntity = eventServices.findActiveEventMasterServiceList(true);
+		List<EventMasterServiceEntity> listEventMasterServiceEntity = eventServices.findEventMasterServiceList();
 		List<EventMasterServiceEntity> listEventMasterServiceDTO = new ArrayList<>();
 		for (EventMasterServiceEntity entity : listEventMasterServiceEntity) {
 			EventMasterServiceDTO eventMasterServiceDTO = new EventMasterServiceDTO();
@@ -115,6 +116,34 @@ public class EventController {
 		eventMasterServiceDTO.setEventTypeName(eventTypeEntity.getEventTypeName());
 		eventMasterServiceDTO.updateDTOFromEntity(eventMasterServiceEntity);
 		modelView.addObject("EVENT_MASTER_SERVICE", eventMasterServiceDTO);
+		return modelView;
+	}
+
+	@PostMapping("view_edit_master_service_form")
+	public ModelAndView view_edit_master_service_form(@ModelAttribute("EVENT_MASTER_SERVICE") EventMasterServiceDTO eventMasterServiceDTO, BindingResult result) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("event/editMasterService");
+		EventMasterServiceEntity eventMasterServiceEntity= eventServices.findEventMasterServiceById(eventMasterServiceDTO.getId());
+		eventMasterServiceDTO.updateDTOFromEntity(eventMasterServiceEntity);
+		modelView.addObject("EVENT_MASTER_SERVICE", eventMasterServiceDTO);
+		List<EventTypeEntity> listEventType = eventServices.findAllEventType();
+		modelView.addObject("EVENT_TYPES", listEventType);
+		List<EventServiceCostTypeEntity> eventServiceCostTypeEntities = eventServices.findActiveEventServiceCostType(true);
+		modelView.addObject("SERVICE_TYPE", eventServiceCostTypeEntities);
+		return modelView;
+	}
+
+
+	@RequestMapping(value="view_event_quotation_form_wiz1",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_event_quotation_form_wiz1(@ModelAttribute("EVENT_PACKAGE") EventPackageEntity eventPackageEntity, BindingResult result ) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz1");
+		//modelView.addObject("eventService", new EventMasterService());
+		List<EventTypeEntity> listEventType = eventServices.findAllEventType();
+		modelView.addObject("EVENT_TYPES", listEventType);
+		List<EventServiceCostTypeEntity> eventServiceCostTypeEntities = eventServices.findActiveEventServiceCostType(true);
+		modelView.addObject("SERVICE_TYPE", eventServiceCostTypeEntities);
+		//modelView.addObject("ACTIVE_CTRYCODE_CTRYNAME_LIST", activeDistinctDestinationList);
 		return modelView;
 	}
 

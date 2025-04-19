@@ -6,7 +6,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
-    <title>Create Event Master Service</title>
+    <title>Update Event Master Service</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
     <style>
        body {
@@ -69,38 +69,43 @@
     </style>
 </head>
 <body>
-<h2>Create New Event Master Service</h2>
+<h2>Update Event Master Service</h2>
 
 <div class="form-container" >
     <form:form method="post" action="create_edit_master_service" modelAttribute="EVENT_MASTER_SERVICE" autocomplete="off">
-
-        <label for="name">Service Name:</label>
+        <form:hidden path="id" />
+        <label for="name"><b>Service Name:</b></label>
         <form:input path="name" required="required" />
 
-        <label for="description">Description:</label>
+        <label for="description"><b>Description:</b></label>
         <form:textarea path = "description" rows="6" maxlength="1000" style="width: 100%; box-sizing: border-box;" />
 
-        <label for="type">Service Type:</label>
-        <form:select path="eventServiceCostTypeEntity.eventServiceCostTypeId" required="required" style="width:20%">
+        <label for="type"><b>Service Type:</b></label>
+        <form:select path="eventServiceCostTypeEntity.eventServiceCostTypeId" required="required" style="width:50%">
                    <form:options items="${SERVICE_TYPE}" itemValue="eventServiceCostTypeId" itemLabel="eventServiceCostTypeName" />
         </form:select>
 
 
 
-        <label for="baseCost">Base Cost:</label>
+        <label for="baseCost"><b>Base Cost:</b></label>
         <form:input path="baseCost" type="number" required="required" min="1" />
 
-        <label for="eventType">Event Type:</label>
-        <form:select path="eventTypeId" required="required" style="width:20%">
+        <label for="eventType"><b>Event Type:</b></label>
+        <form:select path="eventTypeId" required="required" style="width:50%">
            <form:options items="${EVENT_TYPES}" itemValue="eventTypeId" itemLabel="eventTypeName" />
        </form:select>
 
         <label>
-            <input type="checkbox" name="active" checked /> Active
+            <form:checkbox path="active" />Active
         </label>
 
         <br/><br/>
-        <button type="submit">Save Service</button>
+
+        <div class="button-container">
+            <input type="submit" value="Save Service" class="clear-filter-btn">
+               <a href="view_master_service_list"><input type="button" class="clear-filter-btn" value="View Master Service List"></input></a>
+        </div>
+
     </form:form>
 </div>
 </body>

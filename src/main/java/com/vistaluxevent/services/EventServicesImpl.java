@@ -65,6 +65,12 @@ public class EventServicesImpl {
 		List<EventMasterServiceEntity> listMasterService = eventMasterServiceRepository.findByActive(active);
 		return listMasterService;
 	}
+	public List<EventMasterServiceEntity> findEventMasterServiceList(){
+		Sort sort = Sort.by(Sort.Order.desc("active"));
+		List<EventMasterServiceEntity> roomList = eventMasterServiceRepository.findAll(sort);
+		return roomList;
+	}
+
 
 	public EventMasterServiceEntity findEventMasterServiceById(Integer eventMasterServiceId){
 		return eventMasterServiceRepository.findById(eventMasterServiceId).get();

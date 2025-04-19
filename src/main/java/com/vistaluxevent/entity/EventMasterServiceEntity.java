@@ -21,7 +21,7 @@ public class EventMasterServiceEntity {
 
     protected int baseCost;
     protected Boolean active;
-    protected LocalDateTime created_At;
+
 
     protected int eventTypeId;
 
@@ -73,13 +73,7 @@ public class EventMasterServiceEntity {
         this.active = active;
     }
 
-    public LocalDateTime getCreated_At() {
-        return created_At;
-    }
-
-    public void setCreated_At(LocalDateTime created_At) {
-        this.created_At = created_At;
-    }
+    
 
     public void updateEntityFromDTO(EventMasterServiceDTO eventMasterServiceDTO) {
         this.id = eventMasterServiceDTO.getId();

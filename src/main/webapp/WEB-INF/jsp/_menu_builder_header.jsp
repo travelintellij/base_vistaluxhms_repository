@@ -149,6 +149,10 @@ username = "Guest";
                 <a href="#">Event Management</a>
                 <ul class="submenu">
                     <li>
+                        <a href="view_event_quotation_form_wiz1">Create Event Quotation </a>
+                    </li>
+
+                    <li>
                         <a href="#">Master Service </a>
                         <ul class="second-level">
                             <li><a href="view_add_master_service_form">Add Master Service</a></li>
