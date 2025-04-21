@@ -195,20 +195,26 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Create Free Hand Quotation</h2>
+    <h2>Create Event Quotation</h2>
 
     <form:form method="post" action="review_process_create_fh_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->
-  <div class="form-group">
+
+        <div class="form-group">
               <label for="quotationAudienceType">User Type:</label>
 
-              <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 600px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
+              <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 300px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                     <form:option value="0">Select</form:option>
                  <form:option value="1">Client</form:option>
                  <form:option value="2">Unregistered</form:option>
               </form:select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              <label for="Event Type">Event Type:</label>
+                <form:select path="eventType" style="width: 300px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
+                      <form:options items="${EVENT_TYPES}" itemValue="eventTypeId" itemLabel="eventTypeName" />
+                  </form:select>
           </div>
 
           <div id="clientBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
@@ -234,21 +240,24 @@ h2, h3 {
                        <form:option value="both">Both</form:option>
                     </form:select>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </div>
-              <div class="row">
-                  <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
-                  <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
+                     <div class="row">
+                          <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
+                          <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
+                      </div>
               </div>
           </div>
 
+            <div class="form-group">
+               <div id="eventDetails" >
+                     <label for="contactMethod">Number of Guests:</label>
+                     <div class="row">
+                       <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount"  placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"/>
+                     </div>
+                </div>
+            </div>
         <!-- Room Details (Dynamically Added Rows) -->
-
-
-
         <br/><br/>
-
-        <button type="submit" class="btn">Submit</button>
-
+        <button type="submit" class="btn">Next</button>
 </div>
 
 

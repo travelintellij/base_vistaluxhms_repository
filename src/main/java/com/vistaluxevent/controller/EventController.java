@@ -5,6 +5,7 @@ import com.vistaluxevent.entity.EventPackageEntity;
 import com.vistaluxevent.entity.EventServiceCostTypeEntity;
 import com.vistaluxevent.entity.EventTypeEntity;
 import com.vistaluxevent.model.EventMasterServiceDTO;
+import com.vistaluxevent.model.EventPackageEntityDTO;
 import com.vistaluxevent.repository.EventTypeRepository;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.City_Entity;
@@ -135,7 +136,7 @@ public class EventController {
 
 
 	@RequestMapping(value="view_event_quotation_form_wiz1",method= {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView view_event_quotation_form_wiz1(@ModelAttribute("EVENT_PACKAGE") EventPackageEntity eventPackageEntity, BindingResult result ) {
+	public ModelAndView view_event_quotation_form_wiz1(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, BindingResult result ) {
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz1");
 		//modelView.addObject("eventService", new EventMasterService());
