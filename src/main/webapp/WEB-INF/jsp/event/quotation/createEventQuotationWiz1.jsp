@@ -66,6 +66,7 @@
 
             if (userType === "1") {
                 document.getElementById("clientBox").classList.remove("hidden");
+                 guestNameInput.setAttribute('required', 'required');
             } /*else if (userType === "2") {
                 document.getElementById("salesBox").classList.remove("hidden");
             } */else if (userType === "2") {
@@ -197,7 +198,7 @@ h2, h3 {
 <div class="container">
     <h2>Create Event Quotation</h2>
 
-    <form:form method="post" action="review_process_create_fh_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
+    <form:form method="post" action="create_event_quoration_wiz_2" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->
@@ -219,7 +220,7 @@ h2, h3 {
 
           <div id="clientBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
               <label for="clientName">Client Name:</label>
-              <form:input path="guestName" required="required" />
+              <form:input path="guestName" />
               <font color="red">
                   <form:errors path="guestName" cssClass="error"  />
               </font>
@@ -230,8 +231,8 @@ h2, h3 {
               <input type="text" id="salespartner" name="salespartner" class="input-field">
           </div>
 
-          <div id="unregisteredBox" class="hidden">
-              <div class="row">
+          <div id="unregisteredBox" class="hidden" >
+              <div class="form-group">
                   <label for="contactMethod">Contact By:</label>
                     <form:select path="contactMethod" onchange="handleContactChange()" style="width: 100px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                        <form:option value="">Select</form:option>
@@ -251,7 +252,7 @@ h2, h3 {
                <div id="eventDetails" >
                      <label for="contactMethod">Number of Guests:</label>
                      <div class="row">
-                       <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount"  placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"/>
+                       <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount"  placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
                      </div>
                 </div>
             </div>
@@ -287,6 +288,8 @@ $('#guestName').autocomplete({
              })
          };
      }
+
+
  });
 
 
@@ -338,18 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     </script>
 
-<script>
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-        const roomsTable = document.getElementById("roomsTable");
-        const rowCount = roomsTable ? roomsTable.rows.length : 0;
 
-        // Skip header row and check if there's at least one data row
-        if (rowCount <= 1) {
-            alert("Please add at least one room before submitting.");
-            event.preventDefault();
-        }
-    });
-</script>
 
 
 </form:form>

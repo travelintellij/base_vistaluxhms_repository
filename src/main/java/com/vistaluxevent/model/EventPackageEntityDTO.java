@@ -1,15 +1,21 @@
 package com.vistaluxevent.model;
 
+import com.vistaluxevent.entity.EventMasterServiceEntity;
 import com.vistaluxevent.entity.EventPackageEntity;
+
+import java.util.List;
 
 public class EventPackageEntityDTO extends EventPackageEntity {
     private long guestId;
-    private String guestName;
+    private String guestName = "Guest";
     private int quotationAudienceType;
     private int discount;
     private String contactMethod;
     private String mobile;
     private String email;
+
+    //private List<EventMasterServiceEntity> eventMasterServiceEntityList;
+
 
 
     public long getGuestId() {
@@ -67,4 +73,14 @@ public class EventPackageEntityDTO extends EventPackageEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+   /* public List<EventMasterServiceEntity> getEventMasterServiceEntityList() {
+        return eventMasterServiceEntityList;
+    }
+
+    public void setEventMasterServiceEntityList(List<EventMasterServiceEntity> eventMasterServiceEntityList) {
+        this.eventMasterServiceEntityList = eventMasterServiceEntityList;
+    }
+
+    */
 }
