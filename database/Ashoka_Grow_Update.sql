@@ -94,6 +94,44 @@ CREATE TABLE `event_master_service` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+ALTER TABLE `event_package_service`
+ADD COLUMN `grand_total_cost` INT DEFAULT 0,
+ADD COLUMN `discount` INT DEFAULT 0,
+ADD COLUMN `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+ALTER TABLE `ashokadb`.`event_package_service`
+DROP COLUMN `discount`,
+DROP COLUMN `grand_total_cost`;
+
+ALTER TABLE `ashokadb`.`event_package`
+ADD COLUMN `grand_total_cost` INT NULL DEFAULT 0 AFTER `package_type`,
+ADD COLUMN `discount` INT NULL DEFAULT 0 AFTER `grand_total_cost`,
+CHANGE COLUMN `base_guest_count` `base_guest_count` INT NULL DEFAULT 0 ;
+
+
+ALTER TABLE `ashokadb`.`event_package`
+ADD COLUMN `eventStartDate` DATE NULL AFTER `discount`,
+ADD COLUMN `eventEndDate` DATE NULL AFTER `eventStartDate`;
+
+delete from event_service_cost_type;
+
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`) VALUES ('1', 'PER_GUEST_PER_NIGHT');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`) VALUES ('2', 'PER_GUEST_ONE_TIME');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('3', 'PER_GUEST_PER_DAY', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('4', 'PER_ROOM_ONE_TIME', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('5', 'PER_ROOM_PER_NIGHT', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('6', 'PER_DAY', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('7', 'PER_NIGHT', '1');
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('8', 'ONE_TIME', '1');
+
+ALTER TABLE `ashokadb`.`event_package`
+ADD COLUMN `numberOfRooms` INT NULL AFTER `package_type`;
+
+UPDATE `ashokadb`.`event_service_cost_type` SET `active` = '1' WHERE (`eventServiceCostTypeId` = '1');
+UPDATE `ashokadb`.`event_service_cost_type` SET `active` = '1' WHERE (`eventServiceCostTypeId` = '2');
+
+
 #############################
 Following Done
 #########################################################################################

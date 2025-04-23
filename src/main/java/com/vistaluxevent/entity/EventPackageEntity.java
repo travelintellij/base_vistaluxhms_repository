@@ -1,6 +1,9 @@
 package com.vistaluxevent.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +18,17 @@ public class EventPackageEntity {
     protected String description;
     protected Integer baseGuestCount;
     protected String createdBy;
+    protected int grand_total_cost;
+    protected int discount;
 
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    protected LocalDate eventStartDate;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    protected LocalDate eventEndDate;
+
+    protected int numberOfRooms;
 
     @OneToMany(mappedBy = "eventPackage", cascade = CascadeType.ALL)
     private List<EventPackageServiceEntity> services = new ArrayList<>();
@@ -78,6 +91,46 @@ public class EventPackageEntity {
 
     public void setEventType(EventTypeEntity eventType) {
         this.eventType = eventType;
+    }
+
+    public int getGrand_total_cost() {
+        return grand_total_cost;
+    }
+
+    public void setGrand_total_cost(int grand_total_cost) {
+        this.grand_total_cost = grand_total_cost;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public LocalDate getEventStartDate() {
+        return eventStartDate;
+    }
+
+    public void setEventStartDate(LocalDate eventStartDate) {
+        this.eventStartDate = eventStartDate;
+    }
+
+    public LocalDate getEventEndDate() {
+        return eventEndDate;
+    }
+
+    public void setEventEndDate(LocalDate eventEndDate) {
+        this.eventEndDate = eventEndDate;
+    }
+
+    public int getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(int numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
     }
 
     // Getters & Setters

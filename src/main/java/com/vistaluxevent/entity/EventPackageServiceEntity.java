@@ -24,7 +24,7 @@ public class EventPackageServiceEntity {
     private Integer quantity;
     private int totalCost;
     private Boolean isCustom;
-
+    //private int
     // Getters & Setters
 
     public Long getId() {
@@ -89,6 +89,20 @@ public class EventPackageServiceEntity {
 
     public void setCustom(Boolean custom) {
         isCustom = custom;
+    }
+
+    @Override
+    public String toString() {
+        return "EventPackageServiceEntity{" +
+                "id=" + id +
+                ", eventPackage=" + eventPackage +
+                ", serviceName='" + serviceName + '\'' +
+                ", eventServiceCostTypeEntity=" + eventServiceCostTypeEntity +
+                ", costPerUnit=" + costPerUnit +
+                ", quantity=" + quantity +
+                ", totalCost=" + totalCost +
+                ", isCustom=" + isCustom +
+                '}';
     }
 }
 

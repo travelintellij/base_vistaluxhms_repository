@@ -3,23 +3,14 @@ package com.vistaluxevent.controller;
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
-import com.vistaluxevent.repository.EventTypeRepository;
 import com.vistaluxevent.services.EventServicesImpl;
-import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.entity.MasterRoomDetailsEntity;
-import com.vistaluxhms.model.City_Obj;
-import com.vistaluxhms.model.QuotationEntityDTO;
-import com.vistaluxhms.model.SessionRateMappingEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
-import com.vistaluxhms.validator.CityManagementValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -29,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -157,6 +149,7 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
 		validateClient(eventPackageEntityDTO,result);
+		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
 		if (result.hasErrors()) {
 			return view_event_quotation_form_wiz1(eventPackageEntityDTO, result);
 		} else {
@@ -168,21 +161,10 @@ public class EventController {
 				System.out.println(eventPackageEntityDTO);
 			}
 			List <EventMasterServiceEntity> eventMasterServiceDTOList = eventServices.findActiveEventMasterServiceList(true);
-
 			List < EventPackageServiceEntity> eventPackageServicesEntityList = new ArrayList<EventPackageServiceEntity>();
-
-			for (EventMasterServiceEntity masterService : eventMasterServiceDTOList) {
-				EventPackageServiceEntity packageService = new EventPackageServiceEntity();
-				packageService.setServiceName(masterService.getName());
-				packageService.setEventServiceCostTypeEntity(masterService.getEventServiceCostTypeEntity());
-				packageService.setQuantity(eventPackageEntityDTO.getBaseGuestCount());
-				packageService.setCostPerUnit(masterService.getBaseCost());
-				packageService.setTotalCost(packageService.getQuantity()*packageService.getCostPerUnit());
-				eventPackageServicesEntityList.add(packageService);
-			}
-			eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
-
 			List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
+			eventPackageServicesEntityList = updateEventServicesList(eventPackageEntityDTO,eventMasterServiceDTOList,eventPackageServicesEntityList,listServiceCostType,eventPackageEntityDTO.getBaseGuestCount());
+			eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 
@@ -190,10 +172,106 @@ public class EventController {
 		return modelView;
 	}
 
+	private List < EventPackageServiceEntity>  updateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,List <EventMasterServiceEntity> eventMasterServiceDTOList,List < EventPackageServiceEntity>  eventPackageServicesEntityList,List<EventServiceCostTypeEntity> listServiceCostType,int baseGuestCount){
+		for (EventMasterServiceEntity masterService : eventMasterServiceDTOList) {
+			EventPackageServiceEntity packageService = new EventPackageServiceEntity();
+			packageService.setServiceName(masterService.getName());
+			packageService.setEventServiceCostTypeEntity(masterService.getEventServiceCostTypeEntity());
+			int totalNights = (int)getNumberOfNights(eventPackageEntityDTO.getEventStartDate(),eventPackageEntityDTO.getEventEndDate());
+			int totalDays=totalNights+1;
+
+			for (EventServiceCostTypeEntity serviceCostType : listServiceCostType) {
+				//String costTypeName = serviceCostType.getEventServiceCostTypeName(); // Assuming the getter method is `getEventServiceCostTypeName()`
+				String costTypeName =masterService.getEventServiceCostTypeEntity().getEventServiceCostTypeName();
+				int totalCost=0;
+				switch (costTypeName) {
+					case VistaluxConstants.PER_GUEST_PER_NIGHT:
+						packageService.setQuantity(baseGuestCount);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_GUEST_ONE_TIME:
+						// Perform action for TypeB
+						packageService.setQuantity(baseGuestCount);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_GUEST_PER_DAY:
+						// Perform action for TypeC
+						packageService.setQuantity(baseGuestCount);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalDays;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_ROOM_ONE_TIME:
+						packageService.setQuantity(eventPackageEntityDTO.getNumberOfRooms());
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_ROOM_PER_NIGHT:
+						packageService.setQuantity(eventPackageEntityDTO.getNumberOfRooms());
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_DAY:
+						packageService.setQuantity(1);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalDays;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.PER_NIGHT:
+						packageService.setQuantity(totalNights);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					case VistaluxConstants.ONE_TIME:
+						packageService.setQuantity(1);
+						packageService.setCostPerUnit(masterService.getBaseCost());
+						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
+						packageService.setTotalCost(totalCost);
+						break;
+
+					// Add more cases as needed
+					default:
+						// Handle the default case if the eventServiceCostTypeName doesn't match any case
+						System.out.println("Unknown cost type: " + costTypeName);
+						break;
+				}
+			}
+			eventPackageServicesEntityList.add(packageService);
+
+		}
+		return eventPackageServicesEntityList;
+	}
+
+	public static long getNumberOfNights(LocalDate startEventDate, LocalDate endEventDate) {
+		if (startEventDate == null || endEventDate == null) {
+			throw new IllegalArgumentException("Dates must not be null");
+		}
+
+		long nights = ChronoUnit.DAYS.between(startEventDate, endEventDate);
+
+		if (nights < 0) {
+			throw new IllegalArgumentException("End date must be after start date");
+		}
+
+		return nights;
+	}
 
 	private boolean validateClient(EventPackageEntityDTO eventPackageEntityDTO, Errors errors) {
 		if (eventPackageEntityDTO.getQuotationAudienceType() == 1) {
-			System.out.println("Guest ID is " + eventPackageEntityDTO.getGuestId());
 			if (eventPackageEntityDTO.getGuestId() == 0) {
 				errors.rejectValue("guestName", "contact.error");
 				return false;
@@ -208,5 +286,23 @@ public class EventController {
 		}
 		return true;
 	}
+
+	public boolean isValidEventDates(LocalDate eventStartDate, LocalDate eventEndDate,Errors errors) {
+		LocalDate today = LocalDate.now();
+
+		// Check if start date is today or in the future
+		if (eventStartDate.isBefore(today)) {
+			errors.rejectValue("eventStartDate", "error.eventStartDate", "Start date should be today or a future date.");
+			return false;
+		}
+		// Check if end date is not before start date
+		if (eventEndDate.isBefore(eventStartDate)) {
+			System.out.println("");
+			errors.rejectValue("eventEndDate", "error.eventEndDate", "End date cannot be before the start date.");
+			return false;
+		}
+		return true;
+	}
+
 
 }

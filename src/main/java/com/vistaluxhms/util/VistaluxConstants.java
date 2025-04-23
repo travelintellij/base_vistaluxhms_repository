@@ -31,4 +31,14 @@ public interface VistaluxConstants {
             put(4,"APAI");
         }
     };
+
+    public static final String PER_GUEST_PER_NIGHT = "PER_GUEST_PER_NIGHT";
+    public static final String PER_GUEST_ONE_TIME="PER_GUEST_ONE_TIME";
+    public static final String PER_GUEST_PER_DAY="PER_GUEST_PER_DAY";
+    public static final String PER_ROOM_ONE_TIME="PER_ROOM_ONE_TIME";
+    public static final String PER_ROOM_PER_NIGHT="PER_ROOM_PER_NIGHT";
+    public static final String PER_DAY="PER_DAY";
+    public static final String PER_NIGHT="PER_NIGHT";
+    public static final String ONE_TIME="ONE_TIME";
+
 }

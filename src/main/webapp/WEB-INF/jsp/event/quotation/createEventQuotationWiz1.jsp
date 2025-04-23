@@ -248,14 +248,36 @@ h2, h3 {
               </div>
           </div>
 
-            <div class="form-group">
-               <div id="eventDetails" >
-                     <label for="contactMethod">Number of Guests:</label>
-                     <div class="row">
-                       <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount"  placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
-                     </div>
+         <div class="form-group">
+           <div id="eventDetails">
+             <div class="row" style="margin-bottom: 100px;">
+               <div style="margin-right: 100px;">
+                 <label for="baseGuestCount">Number of Guests:</label><br/>
+                 <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount" placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
+               </div>
+              <div style="margin-right: 100px;">
+                <label for="baseGuestCount">Total Rooms:</label><br/>
+                <form:input path="numberOfRooms" id="numberOfRooms" name="numberOfRooms" placeholder="Total Rooms" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
+              </div>
+
+               <div style="margin-right: 100px;">
+                 <label for="eventStartDate">Event Start Date:</label><br/>
+                    <form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/>
+                    <font color="red">
+                          <form:errors path="eventStartDate" cssClass="error"  />
+                      </font>
+               </div>
+               <div>
+                 <label for="eventEndDate">Event End Date:</label><br/>
+                    <form:input path="eventEndDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/>
+                    <font color="red">
+                          <form:errors path="eventEndDate" cssClass="error"  />
+                      </font>
                 </div>
-            </div>
+           </div>
+         </div>
+
+
         <!-- Room Details (Dynamically Added Rows) -->
         <br/><br/>
         <button type="submit" class="btn">Next</button>

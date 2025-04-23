@@ -267,6 +267,21 @@ h2, h3 {
          <td>${EVENT_PACKAGE.eventType.eventTypeName}</td>
        </tr>
      </table>
+     <table class="key-value-table">
+         <tr>
+            <th>Number of Guests </th>
+            <td><form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount" placeholder="Guest Count" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
+            <th>Total Rooms</th>
+            <td><form:input path="numberOfRooms" id="numberOfRooms" name="numberOfRooms" placeholder="Total Rooms" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
+
+
+            <th>Event Start Date></th>
+            <td><form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/></td>
+            <th>Event End Date></th>
+            <td><form:input path="eventEndDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/></td>
+         </tr>
+      </table>
+
     <h3>List of Services</h3>
     <div class="table-container">
       <table class="styled-table">
@@ -301,6 +316,24 @@ h2, h3 {
           <!-- Add more rows -->
         </tbody>
       </table>
+
+     <div class="summary-container" style="margin-top: 20px;">
+       <table class="styled-table" style="width: 50%; margin-left: auto;">
+          <tr>
+            <td><strong>Grand Total</strong></td>
+            <td>20000</td>
+          </tr>
+          <tr>
+            <td><strong>Discount</strong></td>
+            <td><form:input path="discount" class="input-field" style="width:150px;" /></td>
+          </tr>
+          <tr>
+            <td><strong>Final Amount</strong></td>
+            <td>50000</td>
+          </tr>
+        </table>
+      </div>
+
     </div>
 
 
