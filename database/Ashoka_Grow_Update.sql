@@ -132,6 +132,11 @@ UPDATE `ashokadb`.`event_service_cost_type` SET `active` = '1' WHERE (`eventServ
 UPDATE `ashokadb`.`event_service_cost_type` SET `active` = '1' WHERE (`eventServiceCostTypeId` = '2');
 
 
+ALTER TABLE `ashokadb`.`event_package`
+ADD COLUMN `gstIncluded` TINYINT NULL AFTER `discount`,
+ADD COLUMN `showBreakup` TINYINT NULL AFTER `gstIncluded`;
+
+
 #############################
 Following Done
 #########################################################################################

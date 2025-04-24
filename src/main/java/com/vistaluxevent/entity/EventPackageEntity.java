@@ -20,6 +20,8 @@ public class EventPackageEntity {
     protected String createdBy;
     protected int grand_total_cost;
     protected int discount;
+    protected boolean gstIncluded=true;
+    protected boolean showBreakup=true;
 
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -133,5 +135,21 @@ public class EventPackageEntity {
         this.numberOfRooms = numberOfRooms;
     }
 
-    // Getters & Setters
+    public boolean isGstIncluded() {
+        return gstIncluded;
+    }
+
+    public void setGstIncluded(boolean gstIncluded) {
+        this.gstIncluded = gstIncluded;
+    }
+
+    public boolean isShowBreakup() {
+        return showBreakup;
+    }
+
+    public void setShowBreakup(boolean showBreakup) {
+        this.showBreakup = showBreakup;
+    }
+
+
 }

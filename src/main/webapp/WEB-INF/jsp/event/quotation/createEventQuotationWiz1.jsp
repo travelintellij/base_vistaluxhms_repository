@@ -198,7 +198,7 @@ h2, h3 {
 <div class="container">
     <h2>Create Event Quotation</h2>
 
-    <form:form method="post" action="create_event_quoration_wiz_2" modelAttribute="EVENT_PACKAGE" id="myForm">
+    <form:form method="post" action="create_event_quotation_wiz_2" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->

@@ -5,6 +5,7 @@ import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.ClientEntity;
+import com.vistaluxhms.model.QuotationEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
 import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -144,7 +146,7 @@ public class EventController {
 		return modelView;
 	}
 
-	@PostMapping("create_event_quoration_wiz_2")
+	@PostMapping("create_event_quotation_wiz_2")
 	public ModelAndView create_event_quoration_wiz_2(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, BindingResult result) {
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
@@ -161,9 +163,15 @@ public class EventController {
 				System.out.println(eventPackageEntityDTO);
 			}
 			List <EventMasterServiceEntity> eventMasterServiceDTOList = eventServices.findActiveEventMasterServiceList(true);
-			List < EventPackageServiceEntity> eventPackageServicesEntityList = new ArrayList<EventPackageServiceEntity>();
+
 			List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
-			eventPackageServicesEntityList = updateEventServicesList(eventPackageEntityDTO,eventMasterServiceDTOList,eventPackageServicesEntityList,listServiceCostType,eventPackageEntityDTO.getBaseGuestCount());
+			List < EventPackageServiceEntity> eventPackageServicesEntityList = updateEventServicesList(eventPackageEntityDTO,eventMasterServiceDTOList,listServiceCostType,eventPackageEntityDTO.getBaseGuestCount());
+			int grandTotal = 0;
+
+			for (EventPackageServiceEntity service : eventPackageServicesEntityList) {
+					grandTotal += service.getTotalCost();
+			}
+			eventPackageEntityDTO.setGrand_total_cost(grandTotal);
 			eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
@@ -172,7 +180,8 @@ public class EventController {
 		return modelView;
 	}
 
-	private List < EventPackageServiceEntity>  updateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,List <EventMasterServiceEntity> eventMasterServiceDTOList,List < EventPackageServiceEntity>  eventPackageServicesEntityList,List<EventServiceCostTypeEntity> listServiceCostType,int baseGuestCount){
+	private List < EventPackageServiceEntity>  updateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,List <EventMasterServiceEntity> eventMasterServiceDTOList,List<EventServiceCostTypeEntity> listServiceCostType,int baseGuestCount){
+		List < EventPackageServiceEntity>  eventPackageServicesEntityList = new ArrayList<EventPackageServiceEntity>();
 		for (EventMasterServiceEntity masterService : eventMasterServiceDTOList) {
 			EventPackageServiceEntity packageService = new EventPackageServiceEntity();
 			packageService.setServiceName(masterService.getName());
@@ -253,7 +262,7 @@ public class EventController {
 			eventPackageServicesEntityList.add(packageService);
 
 		}
-		return eventPackageServicesEntityList;
+			return eventPackageServicesEntityList;
 	}
 
 	public static long getNumberOfNights(LocalDate startEventDate, LocalDate endEventDate) {
@@ -303,6 +312,32 @@ public class EventController {
 		}
 		return true;
 	}
+
+	@RequestMapping(value = "create_create_event_quotation", params = "recalculate", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView handleRecalculate(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
+											 BindingResult result, final RedirectAttributes redirectAttrib) {
+		ModelAndView modelView = new ModelAndView("forward:create_event_quotation_wiz_2");
+		System.out.println("Handle REcalcualte is invoked. now work more on this. ");
+
+		List<EventPackageServiceEntity> services = eventPackageEntityDTO.getServices();
+		if (services != null && !services.isEmpty()) {
+			for (int i = 0; i < services.size(); i++) {
+				EventPackageServiceEntity service = services.get(i);
+				System.out.println("Service #" + (i + 1));
+				System.out.println("Name: " + service.getServiceName());
+				System.out.println("Cost Type ID: " + (service.getEventServiceCostTypeEntity() != null ? service.getEventServiceCostTypeEntity().getEventServiceCostTypeId() : "null"));
+				System.out.println("Cost per Unit: " + service.getCostPerUnit());
+				System.out.println("Quantity: " + service.getQuantity());
+				System.out.println("Total Cost: " + service.getTotalCost());
+				System.out.println("---------------");
+			}
+		} else {
+			System.out.println("No services submitted.");
+		}
+		return modelView;
+
+	}
+
 
 
 }

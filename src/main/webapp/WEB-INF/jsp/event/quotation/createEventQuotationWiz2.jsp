@@ -50,6 +50,50 @@
         width: 300px !important; /* Adjust the width as needed */
     }
 
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 30px auto;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-recalc {
+    background-color: #007bff;
+  }
+
+  .btn-save {
+    background-color: #28a745;
+  }
+
+  .btn-download {
+    background-color: #17a2b8;
+  }
+
+  .btn-whatsapp {
+    background-color: #25D366;
+  }
+
+  .btn-email {
+    background-color: #6f42c1;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -243,6 +287,92 @@ h2, h3 {
     padding: 10px 14px;
   }
 }
+
+ .summary-container {
+     margin-top: 30px;
+     padding: 20px;
+     border-radius: 12px;
+     width: 60%;
+     margin-left: auto;
+     background-color: #f9f9f9;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+     font-family: 'Segoe UI', sans-serif;
+   }
+
+   .styled-table {
+     width: 100%;
+     border-collapse: collapse;
+   }
+
+   .styled-table td, .styled-table th {
+     padding: 12px;
+     text-align: left;
+     vertical-align: middle;
+   }
+
+   .styled-table th {
+     color: #333;
+     font-weight: 600;
+   }
+
+   .styled-table td {
+     color: #2b2b2b;
+   }
+
+   .input-field {
+     width: 120px;
+     padding: 6px 10px;
+     border-radius: 6px;
+     border: 1px solid #ccc;
+   }
+
+   .custom-checkbox {
+     display: flex;
+     align-items: center;
+   }
+
+   .custom-checkbox input[type="checkbox"] {
+     appearance: none;
+     width: 18px;
+     height: 18px;
+     border: 2px solid #007b5e;
+     border-radius: 4px;
+     background-color: white;
+     cursor: pointer;
+     margin-right: 8px;
+     position: relative;
+   }
+
+   .custom-checkbox input[type="checkbox"]:checked {
+     background-color: #007b5e;
+   }
+
+   .custom-checkbox input[type="checkbox"]::after {
+     content: '';
+     position: absolute;
+     top: 2px;
+     left: 5px;
+     width: 5px;
+     height: 10px;
+     border: solid white;
+     border-width: 0 2px 2px 0;
+     transform: rotate(45deg);
+     display: none;
+   }
+
+   .custom-checkbox input[type="checkbox"]:checked::after {
+     display: block;
+   }
+
+   #finalAmount {
+     font-weight: bold;
+     color: #007b5e;
+     text-align: right;
+   }
+
+   #grandTotal {
+     text-align: right;
+   }
 </style>
 
 
@@ -251,7 +381,7 @@ h2, h3 {
 <div class="container">
     <h2>Create Event Quotation (Wiz 2) </h2>
 
-    <form:form method="post" action="create_create_event_quoration" modelAttribute="EVENT_PACKAGE" id="myForm">
+    <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <!-- User Type Selection -->
@@ -273,8 +403,6 @@ h2, h3 {
             <td><form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount" placeholder="Guest Count" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
             <th>Total Rooms</th>
             <td><form:input path="numberOfRooms" id="numberOfRooms" name="numberOfRooms" placeholder="Total Rooms" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
-
-
             <th>Event Start Date></th>
             <td><form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/></td>
             <th>Event End Date></th>
@@ -283,8 +411,9 @@ h2, h3 {
       </table>
 
     <h3>List of Services</h3>
+
     <div class="table-container">
-      <table class="styled-table">
+      <table class="styled-table" id="service-table">
         <thead>
           <tr>
             <th>Service Name</th>
@@ -295,7 +424,7 @@ h2, h3 {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="services-table-body">
         <c:forEach var="service" items="${eventPackageEntityDTO.services}" varStatus="status">
             <tr>
                 <td><form:input path="services[${status.index}].serviceName" class= "input-field"  style="width:450px;" /></td>
@@ -310,41 +439,158 @@ h2, h3 {
               <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" /></td>
               <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" /></td>
               <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" /></td>
-              <td><input type="button" name="update" value="update"> |<input type="button" name="Delete" value="Delete">
+              <td><input type="button" name="update" value="update"> |<input type="button" value="Delete" onclick="deleteRow(this)" /></td>
             </tr>
         </c:forEach>
           <!-- Add more rows -->
-        </tbody>
+        </tr>
+    </tbody>
       </table>
-
-     <div class="summary-container" style="margin-top: 20px;">
-       <table class="styled-table" style="width: 50%; margin-left: auto;">
-          <tr>
-            <td><strong>Grand Total</strong></td>
-            <td>20000</td>
-          </tr>
-          <tr>
-            <td><strong>Discount</strong></td>
-            <td><form:input path="discount" class="input-field" style="width:150px;" /></td>
-          </tr>
-          <tr>
-            <td><strong>Final Amount</strong></td>
-            <td>50000</td>
-          </tr>
-        </table>
-      </div>
-
-    </div>
+<!-- Template Row (completely outside of <table>) -->
 
 
 
 
+<button type="button" onclick="addServiceRow()">Add Service</button>
 
+ <div class="summary-container">
+   <table class="styled-table">
+     <tr>
+       <th>GST Included</th>
+       <td>
+         <div class="custom-checkbox">
+           <form:checkbox path="gstIncluded" id="gstIncluded" cssClass="styled-checkbox" />
+         </div>
+       </td>
+       <td><strong>Grand Total</strong></td>
+       <td id="grandTotal">${eventPackageEntityDTO.grand_total_cost}</td>
+     </tr>
+     <tr>
+       <th>Show Cost Breakup</th>
+       <td>
+         <div class="custom-checkbox">
+           <form:checkbox path="showBreakup" id="showBreakup" cssClass="styled-checkbox" />
+         </div>
+       </td>
+       <td><strong>Discount</strong></td>
+       <td>
+         <form:input path="discount" cssClass="input-field" id="discountInput" />
+         <div id="discountError" style="color:red; font-size: 12px;"></div>
+       </td>
+     </tr>
+     <tr>
+       <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
+       <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
+     </tr>
+   </table>
+ </div>
+ <div class="action-buttons">
+   <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
+   <button type="submit" class="btn btn-save">Save Quotation</button>
+   <button type="submit" class="btn btn-download">Download Quotation</button>
+   <button type="submit" class="btn btn-whatsapp">WhatsApp Quotation</button>
+   <button type="submit" class="btn btn-email">Email Quotation</button>
+ </div>
 
-        <button type="submit" class="btn">Generate</button>
 </div>
 
+<script>
+  var LIST_SERVICE_COST_TYPE = [
+     <c:forEach var="type" items="${LIST_SERVICE_COST_TYPE}" varStatus="loop">
+       {
+         id: "${type.eventServiceCostTypeId}",
+         name: "${type.eventServiceCostTypeName}"
+       }<c:if test="${!loop.last}">,</c:if>
+     </c:forEach>
+   ];
 
+   function createServiceCostTypeSelect(serviceIndex) {
+     let select = document.createElement('select');
+     select.name = `services[\${serviceIndex}].eventServiceCostTypeEntity.eventServiceCostTypeId`;
+     select.className = 'form-control';
+
+     LIST_SERVICE_COST_TYPE.forEach(type => {
+       let option = document.createElement('option');
+       option.value = type.id;
+       option.text = type.name;
+       select.appendChild(option);
+     });
+
+     return select.outerHTML; // Use this when inserting into innerHTML
+   }
+
+function addServiceRow() {
+const serviceIndex = document.querySelector("#service-table tbody").rows.length;
+
+  const tableBody = document.querySelector("#services-table-body");
+
+  const newRow = document.createElement("tr");
+
+  const selectHTML = createServiceCostTypeSelect(serviceIndex);
+
+  newRow.innerHTML = `
+    <td><input name="services[\${serviceIndex}].serviceName" class="input-field" style="width:450px;" /></td>
+    <td>\${selectHTML}</td>
+    <td><input name="services[\${serviceIndex}].costPerUnit" class="input-field" style="width:100px;" /></td>
+    <td><input name="services[\${serviceIndex}].quantity" class="input-field" style="width:100px;" /></td>
+    <td><input name="services[\${serviceIndex}].totalCost" class="input-field" style="width:100px;" /></td>
+    <td><input type="button" value="Delete" onclick="deleteRow(this)" /></td>
+  `;
+  tableBody.appendChild(newRow);
+  serviceIndex++;
+}
+
+
+function deleteRow(button) {
+  const row = button.closest('tr');
+  row.remove();  // Removes the row from the table
+
+  // Reindex all the remaining rows
+  const table = document.querySelector("#services-table tbody");
+  const rows = table.querySelectorAll("tr");
+
+  rows.forEach((row, index) => {
+    row.cells[0].innerText = index + 1;  // Update the serial number in the first cell
+
+    // Optionally, update the name attributes in the row if necessary
+    const inputs = row.querySelectorAll("input, select, textarea");
+    inputs.forEach(input => {
+      const name = input.getAttribute("name");
+      if (name) {
+        const newName = name.replace(/\[\d+\]/, `[${index}]`);  // Reindex the name attributes
+        input.setAttribute("name", newName);
+      }
+    });
+  });
+}
+
+
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const discountInput = document.getElementById("discountInput");
+    const grandTotalEl = document.getElementById("grandTotal");
+    const finalAmountEl = document.getElementById("finalAmount");
+    const errorEl = document.getElementById("discountError");
+
+    const grandTotal = parseInt(grandTotalEl.textContent.trim()) || 0;
+
+    discountInput.addEventListener("input", function () {
+      let discount = parseInt(discountInput.value.trim()) || 0;
+
+      if (discount > grandTotal) {
+        errorEl.textContent = "Discount cannot exceed Grand Total.";
+        discountInput.value = grandTotal;
+        discount = grandTotal;
+      } else {
+        errorEl.textContent = "";
+      }
+
+      const finalAmount = grandTotal - discount;
+      finalAmountEl.textContent = finalAmount;
+    });
+  });
+</script>
 
 
 </form:form>
