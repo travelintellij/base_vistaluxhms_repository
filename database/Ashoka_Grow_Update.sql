@@ -136,6 +136,8 @@ ALTER TABLE `ashokadb`.`event_package`
 ADD COLUMN `gstIncluded` TINYINT NULL AFTER `discount`,
 ADD COLUMN `showBreakup` TINYINT NULL AFTER `gstIncluded`;
 
+INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('9', 'MANUAL', '1');
+
 
 #############################
 Following Done

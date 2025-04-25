@@ -380,7 +380,6 @@ h2, h3 {
 
 <div class="container">
     <h2>Create Event Quotation (Wiz 2) </h2>
-
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
@@ -404,12 +403,23 @@ h2, h3 {
             <th>Total Rooms</th>
             <td><form:input path="numberOfRooms" id="numberOfRooms" name="numberOfRooms" placeholder="Total Rooms" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
             <th>Event Start Date></th>
-            <td><form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/></td>
+            <td>
+                <form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/>
+
+
+            </td>
             <th>Event End Date></th>
-            <td><form:input path="eventEndDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/></td>
+            <td>
+                <form:input path="eventEndDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/>
+            </td>
          </tr>
       </table>
-
+     <font color="red">
+      <form:errors path="eventStartDate" cssClass="error"  />
+    </font>
+    <font color="red">
+      <form:errors path="eventEndDate" cssClass="error"  />
+    </font>
     <h3>List of Services</h3>
 
     <div class="table-container">
@@ -542,27 +552,25 @@ const serviceIndex = document.querySelector("#service-table tbody").rows.length;
 
 
 function deleteRow(button) {
-  const row = button.closest('tr');
-  row.remove();  // Removes the row from the table
+  const row = button.closest("tr"); // Get the row containing the clicked button
+  const tableBody = document.querySelector("#services-table-body");
 
-  // Reindex all the remaining rows
-  const table = document.querySelector("#services-table tbody");
-  const rows = table.querySelectorAll("tr");
+  // Remove the selected row
+  tableBody.removeChild(row);
 
-  rows.forEach((row, index) => {
-    row.cells[0].innerText = index + 1;  // Update the serial number in the first cell
+  // Re-index the remaining rows
+  Array.from(tableBody.rows).forEach((row, index) => {
+    const inputs = row.querySelectorAll("input, select");
 
-    // Optionally, update the name attributes in the row if necessary
-    const inputs = row.querySelectorAll("input, select, textarea");
     inputs.forEach(input => {
-      const name = input.getAttribute("name");
-      if (name) {
-        const newName = name.replace(/\[\d+\]/, `[${index}]`);  // Reindex the name attributes
-        input.setAttribute("name", newName);
+      if (input.name) {
+        // Replace the index inside the name attribute
+        input.name = input.name.replace(/services\[\d+\]/, `services[\${index}]`);
       }
     });
   });
 }
+
 
 
 
