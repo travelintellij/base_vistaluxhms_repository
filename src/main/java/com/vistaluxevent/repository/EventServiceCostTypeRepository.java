@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface EventServiceCostTypeRepository extends JpaRepository<EventServiceCostTypeEntity, Integer> {
     List<EventServiceCostTypeEntity> findByActive(boolean active);
+
+    List<EventServiceCostTypeEntity> findByEventServiceCostTypeIdAndActive(Integer eventServiceCostTypeId, boolean active);
+
 }

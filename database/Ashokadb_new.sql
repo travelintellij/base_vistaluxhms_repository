@@ -169,15 +169,16 @@ CREATE TABLE `event_master_service` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(300) DEFAULT NULL,
-  `type` enum('PER_ROOM','PER_GUEST','ONE_TIME','PER_DAY') NOT NULL,
+  `eventServiceCostTypeId` int NOT NULL,
   `baseCost` int NOT NULL,
   `eventTypeId` int NOT NULL,
   `active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_event_type` (`eventTypeId`),
   CONSTRAINT `fk_event_type` FOREIGN KEY (`eventTypeId`) REFERENCES `eventtype` (`eventTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,6 +187,7 @@ CREATE TABLE `event_master_service` (
 
 LOCK TABLES `event_master_service` WRITE;
 /*!40000 ALTER TABLE `event_master_service` DISABLE KEYS */;
+INSERT INTO `event_master_service` VALUES (8,'Accomodation in well appointed rooms during the ceremony','Acccodation with food will be provided. ',1,2200,1,1,'2025-04-19 12:22:23','2025-04-23 13:04:11'),(9,'Decoration','Will do flower decoration. ',7,20000,1,1,'2025-04-22 15:22:55','2025-04-23 13:02:56'),(10,'Hi Tea','',3,400,1,1,'2025-04-23 13:04:38','2025-04-23 13:04:38'),(11,'DJ Service','',8,5000,1,1,'2025-04-23 13:04:55','2025-04-23 13:04:55'),(12,'Room Cleaning','',5,300,1,1,'2025-04-23 13:05:50','2025-04-23 13:05:50'),(13,'Projector and Stationary','',8,200,2,1,'2025-04-26 11:22:32','2025-04-26 11:22:32');
 /*!40000 ALTER TABLE `event_master_service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,8 +202,15 @@ CREATE TABLE `event_package` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `package_name` varchar(255) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
-  `base_guest_count` int DEFAULT NULL,
+  `base_guest_count` int DEFAULT '0',
   `package_type` int NOT NULL,
+  `numberOfRooms` int DEFAULT NULL,
+  `grand_total_cost` int DEFAULT '0',
+  `discount` int DEFAULT '0',
+  `gstIncluded` tinyint DEFAULT NULL,
+  `showBreakup` tinyint DEFAULT NULL,
+  `eventStartDate` date DEFAULT NULL,
+  `eventEndDate` date DEFAULT NULL,
   `created_by` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -237,6 +246,8 @@ CREATE TABLE `event_package_service` (
   `quantity` int DEFAULT '1',
   `total_cost` int DEFAULT NULL,
   `is_custom` tinyint(1) DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `package_id` (`package_id`),
   CONSTRAINT `event_package_service_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `event_package` (`id`)
@@ -250,6 +261,31 @@ CREATE TABLE `event_package_service` (
 LOCK TABLES `event_package_service` WRITE;
 /*!40000 ALTER TABLE `event_package_service` DISABLE KEYS */;
 /*!40000 ALTER TABLE `event_package_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event_service_cost_type`
+--
+
+DROP TABLE IF EXISTS `event_service_cost_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `event_service_cost_type` (
+  `eventServiceCostTypeId` int NOT NULL AUTO_INCREMENT,
+  `eventServiceCostTypeName` varchar(100) NOT NULL,
+  `active` tinyint DEFAULT NULL,
+  PRIMARY KEY (`eventServiceCostTypeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_service_cost_type`
+--
+
+LOCK TABLES `event_service_cost_type` WRITE;
+/*!40000 ALTER TABLE `event_service_cost_type` DISABLE KEYS */;
+INSERT INTO `event_service_cost_type` VALUES (1,'PER_GUEST_PER_NIGHT',1),(2,'PER_GUEST_ONE_TIME',1),(3,'PER_GUEST_PER_DAY',1),(4,'PER_ROOM_ONE_TIME',1),(5,'PER_ROOM_PER_NIGHT',1),(6,'PER_DAY',1),(7,'PER_NIGHT',1),(8,'ONE_TIME',1),(9,'MANUAL',1);
+/*!40000 ALTER TABLE `event_service_cost_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -705,4 +741,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-16 21:02:09
+-- Dump completed on 2025-04-26 20:46:49

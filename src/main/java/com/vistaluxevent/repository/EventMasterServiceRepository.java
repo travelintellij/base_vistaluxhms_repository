@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface EventMasterServiceRepository extends JpaRepository<EventMasterServiceEntity, Integer> {
     List<EventMasterServiceEntity> findByActive(boolean active);
+    List<EventMasterServiceEntity> findByEventTypeIdAndActive(Integer eventTypeId,boolean active);
 }

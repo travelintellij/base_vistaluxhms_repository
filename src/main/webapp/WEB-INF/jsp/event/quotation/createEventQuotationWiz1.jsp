@@ -250,7 +250,13 @@ h2, h3 {
 
          <div class="form-group">
            <div id="eventDetails">
-             <div class="row" style="margin-bottom: 100px;">
+           <div class="row" style="margin-bottom: 20px;">
+              <div style="margin-right: 100px;">
+                <label for="baseGuestCount">Package Name</label><br/>
+                <form:input path="packageName" id="packageName" name="packageName" placeholder="Package Name" style="width: 300px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
+              </div>
+            </div>
+             <div class="row" style="margin-bottom: 20px;">
                <div style="margin-right: 100px;">
                  <label for="baseGuestCount">Number of Guests:</label><br/>
                  <form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount" placeholder="Guest Count" style="width: 120px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
@@ -275,12 +281,10 @@ h2, h3 {
                       </font>
                 </div>
            </div>
+            <button type="submit" class="btn">Next</button>
          </div>
 
 
-        <!-- Room Details (Dynamically Added Rows) -->
-        <br/><br/>
-        <button type="submit" class="btn">Next</button>
 </div>
 
 

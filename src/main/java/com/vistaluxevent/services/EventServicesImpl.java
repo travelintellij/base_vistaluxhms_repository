@@ -60,11 +60,27 @@ public class EventServicesImpl {
 		return eventServiceCostTypeRepository.findByActive(active);
 	}
 
+	public List<EventServiceCostTypeEntity> findByEventServiceCostTypeIdAndActive(Integer eventCostTypeId, boolean active){
+		return eventServiceCostTypeRepository.findByEventServiceCostTypeIdAndActive(eventCostTypeId,active);
+	}
+
+	public EventServiceCostTypeEntity findEventServiceCostTypeByID(Integer costTypeId){
+		return eventServiceCostTypeRepository.findById(costTypeId).get();
+	}
+
+
 	public List<EventMasterServiceEntity> findActiveEventMasterServiceList(boolean active){
 		//Sort sort = Sort.by(Sort.Order.desc("active"));
 		List<EventMasterServiceEntity> listMasterService = eventMasterServiceRepository.findByActive(active);
 		return listMasterService;
 	}
+
+	public List<EventMasterServiceEntity> findByEventTypeIdAndActiveEventMasterServiceList(Integer eventTypeId, boolean active){
+		//Sort sort = Sort.by(Sort.Order.desc("active"));
+		List<EventMasterServiceEntity> listMasterService = eventMasterServiceRepository.findByEventTypeIdAndActive(eventTypeId,active);
+		return listMasterService;
+	}
+
 	public List<EventMasterServiceEntity> findEventMasterServiceList(){
 		Sort sort = Sort.by(Sort.Order.desc("active"));
 		List<EventMasterServiceEntity> roomList = eventMasterServiceRepository.findAll(sort);

@@ -162,7 +162,7 @@ public class EventController {
 				System.out.println("All Value set for mobile and email");
 				System.out.println(eventPackageEntityDTO);
 			}
-			List <EventMasterServiceEntity> eventMasterServiceDTOList = eventServices.findActiveEventMasterServiceList(true);
+			List <EventMasterServiceEntity> eventMasterServiceDTOList = eventServices.findByEventTypeIdAndActiveEventMasterServiceList(eventPackageEntityDTO.getEventType().getEventTypeId(),true);
 
 			List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
 			List < EventPackageServiceEntity> eventPackageServicesEntityList = updateEventServicesList(eventPackageEntityDTO,eventMasterServiceDTOList,listServiceCostType,eventPackageEntityDTO.getBaseGuestCount());
@@ -319,30 +319,15 @@ public class EventController {
 		//ModelAndView modelView = new ModelAndView("forward:create_event_quotation_wiz_2");
 		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
 		UserDetailsObj userObj = getLoggedInUser();
-		System.out.println("Handle REcalcualte is invoked. now work more on this. ");
-		List<EventPackageServiceEntity> services = eventPackageEntityDTO.getServices();
-		if (services != null && !services.isEmpty()) {
-			for (int i = 0; i < services.size(); i++) {
-				EventPackageServiceEntity service = services.get(i);
-				System.out.println("Service #" + (i + 1));
-				System.out.println("Name: " + service.getServiceName());
-				System.out.println("Cost Type ID: " + (service.getEventServiceCostTypeEntity() != null ? service.getEventServiceCostTypeEntity().getEventServiceCostTypeId() : "null"));
-				System.out.println("Cost per Unit: " + service.getCostPerUnit());
-				System.out.println("Quantity: " + service.getQuantity());
-				System.out.println("Total Cost: " + service.getTotalCost());
-				System.out.println("---------------");
-			}
-		} else {
-			System.out.println("No services submitted.");
-		}
 		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
+		List<EventServiceCostTypeEntity> listServiceCostType;
 		if (result.hasErrors()) {
 			modelView.setViewName("event/quotation/createEventQuotationWiz2");
 			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
 			return modelView;
-		} /*else {
+		} else {
 			listServiceCostType = eventServices.findActiveEventServiceCostType(true);
-			List < EventPackageServiceEntity> eventPackageServicesEntityList = recalcualateEventServicesList(eventPackageEntityDTO);
+			List < EventPackageServiceEntity> eventPackageServicesEntityList = recalcualateEventServicesList(eventPackageEntityDTO,listServiceCostType);
 			int grandTotal = 0;
 			for (EventPackageServiceEntity service : eventPackageServicesEntityList) {
 				grandTotal += service.getTotalCost();
@@ -350,79 +335,66 @@ public class EventController {
 			eventPackageEntityDTO.setGrand_total_cost(grandTotal);
 			eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
 		}
-
-		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);*/
+		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
-
 		return modelView;
 	}
 
-	/*
-	private List < EventPackageServiceEntity>  recalcualateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO){
+	private List < EventPackageServiceEntity>  recalcualateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,List<EventServiceCostTypeEntity> listServiceCostType ){
 		List < EventPackageServiceEntity>  eventPackageServicesEntityList = new ArrayList<EventPackageServiceEntity>();
+		for (EventPackageServiceEntity packageService : eventPackageEntityDTO.getServices()) {
 			int totalNights = (int)getNumberOfNights(eventPackageEntityDTO.getEventStartDate(),eventPackageEntityDTO.getEventEndDate());
 			int totalDays=totalNights+1;
 
 			for (EventServiceCostTypeEntity serviceCostType : listServiceCostType) {
 				//String costTypeName = serviceCostType.getEventServiceCostTypeName(); // Assuming the getter method is `getEventServiceCostTypeName()`
-				String costTypeName =masterService.getEventServiceCostTypeEntity().getEventServiceCostTypeName();
+
+				Integer serviceCostTypeId = packageService.getEventServiceCostTypeEntity().getEventServiceCostTypeId();
+				EventServiceCostTypeEntity costTypeEntity = eventServices.findEventServiceCostTypeByID(serviceCostTypeId);
+				packageService.setEventServiceCostTypeEntity(costTypeEntity);
+
+				String costTypeName =packageService.getEventServiceCostTypeEntity().getEventServiceCostTypeName();
 				int totalCost=0;
 				switch (costTypeName) {
 					case VistaluxConstants.PER_GUEST_PER_NIGHT:
-						packageService.setQuantity(baseGuestCount);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_GUEST_ONE_TIME:
 						// Perform action for TypeB
-						packageService.setQuantity(baseGuestCount);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_GUEST_PER_DAY:
 						// Perform action for TypeC
-						packageService.setQuantity(baseGuestCount);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalDays;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_ROOM_ONE_TIME:
-						packageService.setQuantity(eventPackageEntityDTO.getNumberOfRooms());
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_ROOM_PER_NIGHT:
-						packageService.setQuantity(eventPackageEntityDTO.getNumberOfRooms());
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_DAY:
-						packageService.setQuantity(1);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalDays;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.PER_NIGHT:
-						packageService.setQuantity(totalNights);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * totalNights;
 						packageService.setTotalCost(totalCost);
 						break;
 
 					case VistaluxConstants.ONE_TIME:
-						packageService.setQuantity(1);
-						packageService.setCostPerUnit(masterService.getBaseCost());
 						totalCost = packageService.getQuantity()*packageService.getCostPerUnit() * 1;
 						packageService.setTotalCost(totalCost);
 						break;
@@ -436,9 +408,31 @@ public class EventController {
 			}
 			eventPackageServicesEntityList.add(packageService);
 
-
+		}
 		return eventPackageServicesEntityList;
 	}
-*/
+
+
+	@RequestMapping(value = "create_create_event_quotation", params = "saveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView saveQuotation(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
+										  BindingResult result, final RedirectAttributes redirectAttrib) {
+		//ModelAndView modelView = new ModelAndView("forward:create_event_quotation_wiz_2");
+		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
+		UserDetailsObj userObj = getLoggedInUser();
+		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
+		List<EventServiceCostTypeEntity> listServiceCostType;
+		if (result.hasErrors()) {
+			modelView.setViewName("event/quotation/createEventQuotationWiz2");
+			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
+			return modelView;
+		} else {
+
+		}
+		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+		return modelView;
+	}
+
 
 }

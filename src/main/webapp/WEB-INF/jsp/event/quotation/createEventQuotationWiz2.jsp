@@ -383,7 +383,17 @@ h2, h3 {
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
-        <!-- User Type Selection -->
+        <form:hidden path="baseGuestCount" />
+        <form:hidden path="numberOfRooms" />
+
+        <form:hidden path="eventType.eventTypeName" />
+
+         <div class="row" style="margin-bottom: 20px;">
+          <div style="margin-right: 100px;">
+            <label for="baseGuestCount"><b>Package Name</label><b>
+            <form:input path="packageName" id="packageName" name="packageName" placeholder="Package Name" style="width: 300px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/>
+          </div>
+        </div>
      <table class="key-value-table">
        <tr>
          <th>Recipient Name</th>
@@ -399,9 +409,9 @@ h2, h3 {
      <table class="key-value-table">
          <tr>
             <th>Number of Guests </th>
-            <td><form:input path="baseGuestCount" id="baseGuestCount" name="baseGuestCount" placeholder="Guest Count" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
+            <td>${EVENT_PACKAGE.baseGuestCount}</td>
             <th>Total Rooms</th>
-            <td><form:input path="numberOfRooms" id="numberOfRooms" name="numberOfRooms" placeholder="Total Rooms" style="width: 50px; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" min="5" required="required"/></td>
+            <td>${EVENT_PACKAGE.numberOfRooms}</td>
             <th>Event Start Date></th>
             <td>
                 <form:input path="eventStartDate" type="date" style="padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 220px; background-color: #f9f9f9; color: #333; transition: all 0.3s ease-in-out;"/>
@@ -446,10 +456,13 @@ h2, h3 {
                                       cssClass="form-control"/>
               </td>
 
-              <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" /></td>
-              <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" /></td>
-              <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" /></td>
-              <td><input type="button" name="update" value="update"> |<input type="button" value="Delete" onclick="deleteRow(this)" /></td>
+              <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" min="0" type="number" required="required"/></td>
+              <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
+              <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
+              <td><button type="button" onclick="deleteRow(this)" style="background-color: #ff4d4d; border: none; color: white; padding: 8px 16px;text-align: center; text-decoration: none; display: inline-block;font-size: 14px; margin: 4px 2px; border-radius: 6px; cursor: pointer;">
+                      Delete
+                  </button>
+
             </tr>
         </c:forEach>
           <!-- Add more rows -->
@@ -465,7 +478,14 @@ h2, h3 {
 
  <div class="summary-container">
    <table class="styled-table">
-     <tr>
+    <tr>
+    <td rowspan="3" style="vertical-align: top; padding-right: 20px;">
+           <form:textarea path="description" rows="10" cols="30"
+             placeholder="Enter remarks..."
+             style="padding:8px; font-size:14px; border:1px solid #ccc; border-radius:4px; resize:vertical;" />
+         </td>
+
+
        <th>GST Included</th>
        <td>
          <div class="custom-checkbox">
@@ -493,10 +513,11 @@ h2, h3 {
        <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
      </tr>
    </table>
+
  </div>
  <div class="action-buttons">
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
-   <button type="submit" class="btn btn-save">Save Quotation</button>
+   <button type="submit" class="btn btn-save" name="saveQuotation" id="saveQuotation" value="saveQuotation">Save Quotation</button>
    <button type="submit" class="btn btn-download">Download Quotation</button>
    <button type="submit" class="btn btn-whatsapp">WhatsApp Quotation</button>
    <button type="submit" class="btn btn-email">Email Quotation</button>
@@ -541,9 +562,9 @@ const serviceIndex = document.querySelector("#service-table tbody").rows.length;
   newRow.innerHTML = `
     <td><input name="services[\${serviceIndex}].serviceName" class="input-field" style="width:450px;" /></td>
     <td>\${selectHTML}</td>
-    <td><input name="services[\${serviceIndex}].costPerUnit" class="input-field" style="width:100px;" /></td>
-    <td><input name="services[\${serviceIndex}].quantity" class="input-field" style="width:100px;" /></td>
-    <td><input name="services[\${serviceIndex}].totalCost" class="input-field" style="width:100px;" /></td>
+    <td><input name="services[\${serviceIndex}].costPerUnit" class="input-field" style="width:100px;" min="0" required="true" type="number" /></td>
+    <td><input name="services[\${serviceIndex}].quantity" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
+    <td><input name="services[\${serviceIndex}].totalCost" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
     <td><input type="button" value="Delete" onclick="deleteRow(this)" /></td>
   `;
   tableBody.appendChild(newRow);
