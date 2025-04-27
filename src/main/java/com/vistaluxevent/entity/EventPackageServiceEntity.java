@@ -17,7 +17,7 @@ public class EventPackageServiceEntity {
     private String serviceName;
 
     @ManyToOne
-    @JoinColumn(name = "type", nullable = false)
+    @JoinColumn(name = "service_type", nullable = false)
     private EventServiceCostTypeEntity eventServiceCostTypeEntity;
 
     private int costPerUnit;

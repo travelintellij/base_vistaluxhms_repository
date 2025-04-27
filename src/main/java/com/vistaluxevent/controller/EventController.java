@@ -426,7 +426,43 @@ public class EventController {
 			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
 			return modelView;
 		} else {
+			EventPackageEntity eventPackageEntity = new EventPackageEntity();
 
+			eventPackageEntity.setPackageName(eventPackageEntityDTO.getPackageName());
+			eventPackageEntity.setDescription(eventPackageEntityDTO.getDescription());
+			eventPackageEntity.setBaseGuestCount(eventPackageEntityDTO.getBaseGuestCount());
+			eventPackageEntity.setCreatedBy(userObj.getUserId());
+			eventPackageEntity.setGrand_total_cost(eventPackageEntityDTO.getGrand_total_cost());
+			eventPackageEntity.setDiscount(eventPackageEntityDTO.getDiscount());
+			eventPackageEntity.setGstIncluded(eventPackageEntityDTO.isGstIncluded());
+			eventPackageEntity.setShowBreakup(eventPackageEntityDTO.isShowBreakup());
+			eventPackageEntity.setEventStartDate(eventPackageEntityDTO.getEventStartDate());
+			eventPackageEntity.setEventEndDate(eventPackageEntityDTO.getEventEndDate());
+			eventPackageEntity.setNumberOfRooms(eventPackageEntityDTO.getNumberOfRooms());
+			eventPackageEntity.setEventType(eventPackageEntityDTO.getEventType());
+			eventPackageEntity.setGuestId(eventPackageEntityDTO.getGuestId());
+			eventPackageEntity.setGuestName(eventPackageEntityDTO.getGuestName());
+			eventPackageEntity.setQuotationAudienceType(eventPackageEntityDTO.getQuotationAudienceType());
+			eventPackageEntity.setContactMethod(eventPackageEntityDTO.getContactMethod());
+			eventPackageEntity.setMobile(eventPackageEntityDTO.getMobile());
+			eventPackageEntity.setEmail(eventPackageEntityDTO.getEmail());
+
+			// For services list you can also map if needed here
+			// Handle services list
+			if (eventPackageEntityDTO.getServices() != null && !eventPackageEntityDTO.getServices().isEmpty()) {
+				for (EventPackageServiceEntity serviceEntity : eventPackageEntityDTO.getServices()) {
+					serviceEntity.setEventPackage(eventPackageEntity); // Set the parent for each service
+				}
+				eventPackageEntity.setServices(eventPackageEntityDTO.getServices()); // Set list into entity
+			}
+			if (eventPackageEntityDTO.getEventType() != null && eventPackageEntityDTO.getEventType().getEventTypeId() != 0) {
+				EventTypeEntity eventTypeEntity = eventServices.findEventTypeById(eventPackageEntityDTO.getEventType().getEventTypeId());
+				eventPackageEntity.setEventType(eventTypeEntity);
+			}
+
+			// Save the Entity (not DTO)
+			eventServices.saveEventPackage(eventPackageEntity);
+			modelView.addObject("SUCCESS", "Event Package Record is saved successfully.");
 		}
 		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);

@@ -1,9 +1,11 @@
 package com.vistaluxevent.services;
 
 import com.vistaluxevent.entity.EventMasterServiceEntity;
+import com.vistaluxevent.entity.EventPackageEntity;
 import com.vistaluxevent.entity.EventServiceCostTypeEntity;
 import com.vistaluxevent.entity.EventTypeEntity;
 import com.vistaluxevent.repository.EventMasterServiceRepository;
+import com.vistaluxevent.repository.EventPackageRepository;
 import com.vistaluxevent.repository.EventServiceCostTypeRepository;
 import com.vistaluxevent.repository.EventTypeRepository;
 import com.vistaluxhms.entity.*;
@@ -42,6 +44,9 @@ public class EventServicesImpl {
 
 	@Autowired
 	EventServiceCostTypeRepository eventServiceCostTypeRepository;
+
+	@Autowired
+	EventPackageRepository eventPackageRepository;
 
 	public List<EventTypeEntity> findAllEventType(){
 		return eventTypeRepository.findAll();
@@ -90,6 +95,10 @@ public class EventServicesImpl {
 
 	public EventMasterServiceEntity findEventMasterServiceById(Integer eventMasterServiceId){
 		return eventMasterServiceRepository.findById(eventMasterServiceId).get();
+	}
+
+	public EventPackageEntity saveEventPackage(EventPackageEntity eventPackageEntity) {
+		return eventPackageRepository.save(eventPackageEntity);
 	}
 
 }

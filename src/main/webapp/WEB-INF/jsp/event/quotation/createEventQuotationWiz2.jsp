@@ -380,12 +380,18 @@ h2, h3 {
 
 <div class="container">
     <h2>Create Event Quotation (Wiz 2) </h2>
+     <div align="center" style="margin: 10px 0;">
+                <b>
+                    <font color="green">${Success}</font>
+                    <font color="red">${Error}</font>
+                </b>
+            </div>
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
         <form:hidden path="discount" />
         <form:hidden path="baseGuestCount" />
         <form:hidden path="numberOfRooms" />
-
+        <form:hidden path="eventType.eventTypeId" />
         <form:hidden path="eventType.eventTypeName" />
 
          <div class="row" style="margin-bottom: 20px;">

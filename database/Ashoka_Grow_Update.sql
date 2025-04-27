@@ -138,6 +138,68 @@ ADD COLUMN `showBreakup` TINYINT NULL AFTER `gstIncluded`;
 
 INSERT INTO `ashokadb`.`event_service_cost_type` (`eventServiceCostTypeId`, `eventServiceCostTypeName`, `active`) VALUES ('9', 'MANUAL', '1');
 
+ALTER TABLE `ashokadb`.`event_package`
+ADD COLUMN `guestId` INT NULL AFTER `eventEndDate`,
+ADD COLUMN `guestName` VARCHAR(250) NULL AFTER `guestId`,
+ADD COLUMN `quotationAudienceType` INT NULL AFTER `guestName`,
+ADD COLUMN `contactMethod` VARCHAR(45) NULL AFTER `quotationAudienceType`,
+ADD COLUMN `mobile` VARCHAR(45) NULL AFTER `contactMethod`,
+ADD COLUMN `email` VARCHAR(1000) NULL AFTER `mobile`,
+ADD COLUMN `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `created_at`,
+ADD INDEX `fk_client_id_idx` (`guestId` ASC) VISIBLE;
+;
+ALTER TABLE `ashokadb`.`event_package`
+ADD CONSTRAINT `fk_client_id`
+  FOREIGN KEY (`guestId`)
+  REFERENCES `ashokadb`.`client` (`clientId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `ashokadb`.`event_package`
+DROP FOREIGN KEY `fk_ep_event_type`;
+ALTER TABLE `ashokadb`.`event_package`
+CHANGE COLUMN `base_guest_count` `baseGuestCount` INT NULL DEFAULT '0' ,
+ALTER TABLE `ashokadb`.`event_package`
+ADD CONSTRAINT `fk_ep_event_type`
+  FOREIGN KEY (`package_type`)
+  REFERENCES `ashokadb`.`eventtype` (`eventTypeId`);
+
+
+  ALTER TABLE `ashokadb`.`event_package`
+  DROP FOREIGN KEY `fk_ep_created_by`;
+  ALTER TABLE `ashokadb`.`event_package`
+  CHANGE COLUMN `created_by` `createdBy` INT NULL DEFAULT NULL ;
+  ALTER TABLE `ashokadb`.`event_package`
+  ADD CONSTRAINT `fk_ep_created_by`
+    FOREIGN KEY (`createdBy`)
+    REFERENCES `ashokadb`.`ashokateam` (`userId`);
+
+ALTER TABLE `ashokadb`.`event_package`
+CHANGE COLUMN `package_name` `packageName` VARCHAR(255) NOT NULL ;
+
+
+ALTER TABLE `ashokadb`.`event_package`
+DROP FOREIGN KEY `fk_client_id`;
+ALTER TABLE `ashokadb`.`event_package`
+DROP INDEX `fk_client_id_idx` ;
+;
+
+ALTER TABLE `ashokadb`.`event_package_service`
+CHANGE COLUMN `cost_per_unit` `costPerUnit` INT NULL DEFAULT NULL ;
+
+
+ALTER TABLE `ashokadb`.`event_package_service`
+CHANGE COLUMN `is_custom` `isCustom` TINYINT(1) NULL DEFAULT '0' ;
+
+ALTER TABLE `ashokadb`.`event_package_service`
+CHANGE COLUMN `service_name` `serviceName` VARCHAR(255) NULL DEFAULT NULL ;
+
+ALTER TABLE `ashokadb`.`event_package_service`
+CHANGE COLUMN `total_cost` `totalCost` INT NULL DEFAULT NULL ;
+
+ALTER TABLE `ashokadb`.`event_package_service`
+CHANGE COLUMN `service_type` `service_type` INT NULL DEFAULT NULL ;
 
 #############################
 Following Done

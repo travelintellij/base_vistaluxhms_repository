@@ -17,7 +17,7 @@ public class EventPackageEntity {
     protected String packageName;
     protected String description;
     protected Integer baseGuestCount;
-    protected String createdBy;
+    protected int createdBy;
     protected int grand_total_cost;
     protected int discount;
     protected boolean gstIncluded=true;
@@ -38,6 +38,17 @@ public class EventPackageEntity {
     @ManyToOne
     @JoinColumn(name = "package_type", nullable = false)  // Maps to column 'package_type' which holds foreign key
     private EventTypeEntity eventType;
+
+
+    protected long guestId;
+    protected String guestName = "Guest";
+    protected int quotationAudienceType;
+
+    protected String contactMethod;
+    protected String mobile;
+    protected String email;
+
+
 
     public Long getId() {
         return id;
@@ -71,11 +82,11 @@ public class EventPackageEntity {
         this.baseGuestCount = baseGuestCount;
     }
 
-    public String getCreatedBy() {
+    public int getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -151,5 +162,51 @@ public class EventPackageEntity {
         this.showBreakup = showBreakup;
     }
 
+    public long getGuestId() {
+        return guestId;
+    }
 
+    public void setGuestId(long guestId) {
+        this.guestId = guestId;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public void setGuestName(String guestName) {
+        this.guestName = guestName;
+    }
+
+    public int getQuotationAudienceType() {
+        return quotationAudienceType;
+    }
+
+    public void setQuotationAudienceType(int quotationAudienceType) {
+        this.quotationAudienceType = quotationAudienceType;
+    }
+
+    public String getContactMethod() {
+        return contactMethod;
+    }
+
+    public void setContactMethod(String contactMethod) {
+        this.contactMethod = contactMethod;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
