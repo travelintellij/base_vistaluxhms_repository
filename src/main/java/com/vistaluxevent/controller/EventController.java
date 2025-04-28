@@ -3,15 +3,17 @@ package com.vistaluxevent.controller;
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
+import com.vistaluxevent.model.FilterEventObj;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.model.QuotationEntityDTO;
-import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.entity.LeadEntity;
+import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,8 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -469,6 +471,85 @@ public class EventController {
 		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 		return modelView;
 	}
+
+
+	@RequestMapping(value="view_filter_events",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView view_filter_events(@RequestParam(defaultValue = "0") String page, @RequestParam(defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) Integer pageSize, @RequestParam(defaultValue = "id") String sortBy, @ModelAttribute("FILTER_EVENT_OBJ") FilterEventObj filterObj, BindingResult result) {
+
+		ModelAndView modelView = new ModelAndView("event/viewEventListing");
+		//System.out.println(filterObj);
+
+		/*List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
+		// Create a LinkedHashMap to preserve the insertion order
+		Map<Integer, String> leadStatusMap = new LinkedHashMap<>();
+		// Manually put the constants first so they appear at the top
+		leadStatusMap.put(VistaluxConstants.VIEW_ALL_OPEN_LEADS_WL_STATUS, "***All Open Leads***");
+		leadStatusMap.put(VistaluxConstants.VIEW_ALL_LEADS_WL_STATUS, "***All Leads***");
+		leadStatusMap.put(VistaluxConstants.VIEW_ALL_CLOSED_LEADS_WL_STATUS, "***All Closed Leads***");
+		lead_wl_statusList.stream()
+				.sorted(Comparator.comparing(WorkLoadStatusVO::getWorkloadStatusId)) // Optional: Sort by name if needed
+				.forEach(status -> leadStatusMap.put(status.getWorkloadStatusId(), status.getWorkloadStatusName()));
+		modelView.addObject("EVENT_STATUS_MAP", leadStatusMap);
+		*/
+		List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+		Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
+				Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+		modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+
+		UserDetailsObj user = getLoggedInUser();
+		//filterObj.setLeadOwner(user.getUserId());
+		boolean isAdmin=false;
+		if(user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("LEAD_MANAGER"))) {
+			isAdmin=true;
+		}
+		if((!isAdmin) && filterObj.getLeadOwner()==0) {
+			filterObj.setLeadOwner(user.getUserId());
+		}
+
+		int pageNum = Integer.parseInt(page);
+		Page<EventPackageEntity> pageLeadsFilteredRecords = eventServices.filterEvents(pageNum, pageSize, filterObj.getLeadOwner(), sortBy, filterObj, isAdmin);
+		List<EventPackageEntityDTO> filteredEventsVoList = generateFilteredEventsVo(pageLeadsFilteredRecords);
+		modelView.addObject("FILTERED_EVENT_RECORDS",filteredEventsVoList);
+		modelView.addObject("currentPage", page);
+		modelView.addObject("totalPages", pageLeadsFilteredRecords.getTotalPages());
+		modelView.addObject("totalLeads", pageLeadsFilteredRecords.getTotalElements());
+		modelView.addObject("pageSize", pageSize);
+		modelView.addObject("maxPages", pageLeadsFilteredRecords.getTotalPages());
+		modelView.addObject("page", page);
+		modelView.addObject("sortBy", sortBy);
+		modelView.addObject("leadStatus", filterObj.getLeadStatus());
+
+		return modelView;
+	}
+
+	private List<EventPackageEntityDTO> generateFilteredEventsVo(Page<EventPackageEntity> pagedResult) {
+		List<EventPackageEntityDTO> filteredEventsVoList = new ArrayList<EventPackageEntityDTO>();
+		List<EventPackageEntity> eventEntityList = pagedResult.getContent();
+		Iterator filteredLeadsIterator = eventEntityList.iterator();
+		while(filteredLeadsIterator.hasNext()) {
+			EventPackageEntity eventPackageEntity = (EventPackageEntity) filteredLeadsIterator.next();
+			EventPackageEntityDTO packageEntityDTO =new EventPackageEntityDTO();
+			packageEntityDTO.updateDTOFromEntity(eventPackageEntity);
+
+			filteredEventsVoList.add(packageEntityDTO);
+		}
+		return filteredEventsVoList;
+	}
+
+	@PostMapping("load_event_quotation_wiz_2")
+	public ModelAndView load_event_quotation_wiz_2(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, BindingResult result) {
+		UserDetailsObj userObj = getLoggedInUser();
+		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
+		EventPackageEntity eventPackageEntity = eventServices.findEventPackageById(eventPackageEntityDTO.getId());
+		eventPackageEntityDTO.updateDTOFromEntity(eventPackageEntity);
+		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
+		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+
+
+		return modelView;
+	}
+
 
 
 }

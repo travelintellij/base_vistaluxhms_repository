@@ -158,8 +158,10 @@ ADD CONSTRAINT `fk_client_id`
 
 ALTER TABLE `ashokadb`.`event_package`
 DROP FOREIGN KEY `fk_ep_event_type`;
+
 ALTER TABLE `ashokadb`.`event_package`
-CHANGE COLUMN `base_guest_count` `baseGuestCount` INT NULL DEFAULT '0' ,
+CHANGE COLUMN `base_guest_count` `baseGuestCount` INT NULL DEFAULT '0' ;
+
 ALTER TABLE `ashokadb`.`event_package`
 ADD CONSTRAINT `fk_ep_event_type`
   FOREIGN KEY (`package_type`)
@@ -168,8 +170,10 @@ ADD CONSTRAINT `fk_ep_event_type`
 
   ALTER TABLE `ashokadb`.`event_package`
   DROP FOREIGN KEY `fk_ep_created_by`;
+
   ALTER TABLE `ashokadb`.`event_package`
   CHANGE COLUMN `created_by` `createdBy` INT NULL DEFAULT NULL ;
+
   ALTER TABLE `ashokadb`.`event_package`
   ADD CONSTRAINT `fk_ep_created_by`
     FOREIGN KEY (`createdBy`)
@@ -181,6 +185,7 @@ CHANGE COLUMN `package_name` `packageName` VARCHAR(255) NOT NULL ;
 
 ALTER TABLE `ashokadb`.`event_package`
 DROP FOREIGN KEY `fk_client_id`;
+
 ALTER TABLE `ashokadb`.`event_package`
 DROP INDEX `fk_client_id_idx` ;
 ;
@@ -200,6 +205,11 @@ CHANGE COLUMN `total_cost` `totalCost` INT NULL DEFAULT NULL ;
 
 ALTER TABLE `ashokadb`.`event_package_service`
 CHANGE COLUMN `service_type` `service_type` INT NULL DEFAULT NULL ;
+
+
+ALTER TABLE `ashokadb`.`event_package_service`
+DROP COLUMN `isCustom`;
+
 
 #############################
 Following Done

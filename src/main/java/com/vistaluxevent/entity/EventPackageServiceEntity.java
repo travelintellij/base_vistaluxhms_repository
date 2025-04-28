@@ -23,7 +23,7 @@ public class EventPackageServiceEntity {
     private int costPerUnit;
     private Integer quantity;
     private int totalCost;
-    private Boolean isCustom;
+
     //private int
     // Getters & Setters
 
@@ -83,13 +83,7 @@ public class EventPackageServiceEntity {
         this.totalCost = totalCost;
     }
 
-    public Boolean getCustom() {
-        return isCustom;
-    }
 
-    public void setCustom(Boolean custom) {
-        isCustom = custom;
-    }
 
     @Override
     public String toString() {
@@ -101,7 +95,6 @@ public class EventPackageServiceEntity {
                 ", costPerUnit=" + costPerUnit +
                 ", quantity=" + quantity +
                 ", totalCost=" + totalCost +
-                ", isCustom=" + isCustom +
                 '}';
     }
 }

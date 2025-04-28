@@ -148,9 +148,14 @@ username = "Guest";
             <li>
                 <a href="#">Event Management</a>
                 <ul class="submenu">
-                    <li>
-                        <a href="view_event_quotation_form_wiz1">Create Event Quotation </a>
+                      <li>
+                        <a href="#">Event Services </a>
+                        <ul class="second-level">
+                            <li><a href="view_event_quotation_form_wiz1">Create Event Quotation</a></li>
+                            <li><a href="view_filter_events">Manage Events</a></li>
+                        </ul>
                     </li>
+
 
                     <li>
                         <a href="#">Master Service </a>

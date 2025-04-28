@@ -388,11 +388,13 @@ h2, h3 {
             </div>
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="guestId" />
-        <form:hidden path="discount" />
         <form:hidden path="baseGuestCount" />
         <form:hidden path="numberOfRooms" />
         <form:hidden path="eventType.eventTypeId" />
         <form:hidden path="eventType.eventTypeName" />
+        <form:hidden path="grand_total_cost" />
+        <form:hidden path="quotationAudienceType" />
+        <form:hidden path="contactMethod" />
 
          <div class="row" style="margin-bottom: 20px;">
           <div style="margin-right: 100px;">
@@ -517,6 +519,7 @@ h2, h3 {
      <tr>
        <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
        <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
+
      </tr>
    </table>
 
