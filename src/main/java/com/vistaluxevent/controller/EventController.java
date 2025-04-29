@@ -419,17 +419,36 @@ public class EventController {
 	public ModelAndView saveQuotation(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
 										  BindingResult result, final RedirectAttributes redirectAttrib) {
 		//ModelAndView modelView = new ModelAndView("forward:create_event_quotation_wiz_2");
-		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
+
+
+		ModelAndView modelView = new ModelAndView("redirect:view_filter_events");
+
 		UserDetailsObj userObj = getLoggedInUser();
 		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
-		List<EventServiceCostTypeEntity> listServiceCostType;
+		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
+		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 		if (result.hasErrors()) {
 			modelView.setViewName("event/quotation/createEventQuotationWiz2");
 			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
 			return modelView;
 		} else {
-			EventPackageEntity eventPackageEntity = new EventPackageEntity();
-
+			System.out.println("Event Package Entity Id is " + eventPackageEntityDTO.getId());
+			EventPackageEntity eventPackageEntity;
+			if (eventPackageEntityDTO.getId() != null) {
+				// === Update Existing Entity ===
+				eventPackageEntity = eventServices.findEventPackageById(eventPackageEntityDTO.getId());
+				if (eventPackageEntity == null) {
+					result.reject("error.notfound", "Event package not found for update.");
+					modelView.setViewName("event/quotation/createEventQuotationWiz2");
+					return modelView;
+				}
+			} else {
+				// === New Entity ===
+				eventPackageEntity = new EventPackageEntity();
+				eventPackageEntity.setCreatedBy(userObj.getUserId());
+			}
 			eventPackageEntity.setPackageName(eventPackageEntityDTO.getPackageName());
 			eventPackageEntity.setDescription(eventPackageEntityDTO.getDescription());
 			eventPackageEntity.setBaseGuestCount(eventPackageEntityDTO.getBaseGuestCount());
@@ -467,8 +486,8 @@ public class EventController {
 			modelView.addObject("SUCCESS", "Event Package Record is saved successfully.");
 		}
 		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
-		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
-		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+		//modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+		//modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 		return modelView;
 	}
 
@@ -539,7 +558,7 @@ public class EventController {
 	@PostMapping("load_event_quotation_wiz_2")
 	public ModelAndView load_event_quotation_wiz_2(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, BindingResult result) {
 		UserDetailsObj userObj = getLoggedInUser();
-		ModelAndView modelView = new ModelAndView("event/quotation/createEventQuotationWiz2");
+		ModelAndView modelView = new ModelAndView("event/quotation/updateEventQuotation");
 		EventPackageEntity eventPackageEntity = eventServices.findEventPackageById(eventPackageEntityDTO.getId());
 		eventPackageEntityDTO.updateDTOFromEntity(eventPackageEntity);
 		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);

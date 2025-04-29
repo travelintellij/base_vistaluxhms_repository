@@ -379,7 +379,7 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Create Event Quotation (Wiz 2) </h2>
+    <h2>Update Event Quotation </h2>
      <div align="center" style="margin: 10px 0;">
                 <b>
                     <font color="green">${Success}</font>
