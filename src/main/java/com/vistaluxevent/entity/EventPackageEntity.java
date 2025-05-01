@@ -1,5 +1,6 @@
 package com.vistaluxevent.entity;
 
+import com.vistaluxevent.model.EventPackageEntityDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -48,7 +49,30 @@ public class EventPackageEntity {
     protected String mobile;
     protected String email;
 
+    public EventPackageEntity() {
+    }
 
+    //services list are not mapped in this constructor. that needs to be handled seperately.
+    public EventPackageEntity(EventPackageEntityDTO eventPackageEntityDTO) {
+        this.id = eventPackageEntityDTO.getId();
+        this.packageName = eventPackageEntityDTO.getPackageName();
+        this.description = eventPackageEntityDTO.getDescription();
+        this.baseGuestCount = eventPackageEntityDTO.getBaseGuestCount();
+        this.createdBy = eventPackageEntityDTO.getCreatedBy();
+        this.grand_total_cost = eventPackageEntityDTO.getGrand_total_cost();
+        this.discount = eventPackageEntityDTO.getDiscount();
+        this.gstIncluded = eventPackageEntityDTO.isGstIncluded();
+        this.showBreakup = eventPackageEntityDTO.isShowBreakup();
+        this.eventStartDate = eventPackageEntityDTO.getEventStartDate();
+        this.eventEndDate = eventPackageEntityDTO.getEventEndDate();
+        this.numberOfRooms = eventPackageEntityDTO.getNumberOfRooms();
+        this.guestId = eventPackageEntityDTO.getGuestId();
+        this.guestName = eventPackageEntityDTO.getGuestName();
+        this.quotationAudienceType = eventPackageEntityDTO.getQuotationAudienceType();
+        this.contactMethod = eventPackageEntityDTO.getContactMethod();
+        this.mobile = eventPackageEntityDTO.getMobile();
+        this.email = eventPackageEntityDTO.getEmail();
+    }
 
     public Long getId() {
         return id;
@@ -209,4 +233,5 @@ public class EventPackageEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

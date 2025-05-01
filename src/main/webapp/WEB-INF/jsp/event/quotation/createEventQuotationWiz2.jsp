@@ -396,6 +396,7 @@ h2, h3 {
         <form:hidden path="grand_total_cost" />
         <form:hidden path="quotationAudienceType" />
         <form:hidden path="contactMethod" />
+        <form:hidden path="update" value="false"/>
 
          <div class="row" style="margin-bottom: 20px;">
           <div style="margin-right: 100px;">

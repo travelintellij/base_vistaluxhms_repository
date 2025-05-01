@@ -396,6 +396,8 @@ h2, h3 {
         <form:hidden path="grand_total_cost" />
         <form:hidden path="quotationAudienceType" />
         <form:hidden path="contactMethod" />
+        <form:hidden path="update" value="true"/>
+
 
          <div class="row" style="margin-bottom: 20px;">
           <div style="margin-right: 100px;">
@@ -455,6 +457,7 @@ h2, h3 {
         </thead>
         <tbody id="services-table-body">
         <c:forEach var="service" items="${eventPackageEntityDTO.services}" varStatus="status">
+            <form:hidden path="services[${status.index}].id" />
             <tr>
                 <td><form:input path="services[${status.index}].serviceName" class= "input-field"  style="width:450px;" /></td>
               <td>
@@ -527,7 +530,7 @@ h2, h3 {
  </div>
  <div class="action-buttons">
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
-   <button type="submit" class="btn btn-save" name="saveQuotation" id="saveQuotation" value="saveQuotation">Save Quotation</button>
+   <button type="submit" class="btn btn-save" name="updateQuotation" id="updateQuotation" value="updateQuotation">Save Quotation</button>
    <button type="submit" class="btn btn-download">Download Quotation</button>
    <button type="submit" class="btn btn-whatsapp">WhatsApp Quotation</button>
    <button type="submit" class="btn btn-email">Email Quotation</button>

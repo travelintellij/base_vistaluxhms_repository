@@ -10,7 +10,7 @@ public class EventPackageEntityDTO extends EventPackageEntity {
 
     private String formattedStartDate;
     private String formattedEndDate;
-
+    private boolean update;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     public void updateDTOFromEntity(EventPackageEntity eventPackageEntity){
@@ -53,5 +53,13 @@ public class EventPackageEntityDTO extends EventPackageEntity {
 
     public void setFormattedEndDate(String formattedEndDate) {
         this.formattedEndDate = formattedEndDate;
+    }
+
+    public boolean isUpdate() {
+        return update;
+    }
+
+    public void setUpdate(boolean update) {
+        this.update = update;
     }
 }

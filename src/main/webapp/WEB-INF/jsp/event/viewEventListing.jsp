@@ -85,17 +85,18 @@
                     </a>
                 </div>
 </div>
-<div align="center" style="margin:10px 0">
-    <b>
-        <font color="green">${Success}</font>
-        <font color="red">${Error}</font>
-    </b>
-</div>
+
 </form:form>
 
 
     <div class="container">
         <h2 class="text-center mb-4">Event Quotations List</h2>
+        <div align="center" style="margin:10px 0">
+            <b>
+                <font color="green">${Success}</font>
+                <font color="red">${Error}</font>
+            </b>
+        </div>
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
