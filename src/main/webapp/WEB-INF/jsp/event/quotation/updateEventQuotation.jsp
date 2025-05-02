@@ -379,7 +379,7 @@ h2, h3 {
 
 
 <div class="container">
-    <h2>Update Event Quotation </h2>
+    <h2>Update Event Quotation (<font color="blue"> Event Id: ${EVENT_PACKAGE.id} </font>) </h2>
      <div align="center" style="margin: 10px 0;">
                 <b>
                     <font color="green">${Success}</font>
@@ -397,6 +397,7 @@ h2, h3 {
         <form:hidden path="quotationAudienceType" />
         <form:hidden path="contactMethod" />
         <form:hidden path="update" value="true"/>
+        <input type="hidden" name="deleteIndex" id="deleteIndex" />
 
 
          <div class="row" style="margin-bottom: 20px;">
@@ -471,9 +472,12 @@ h2, h3 {
               <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" min="0" type="number" required="required"/></td>
               <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
               <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
-              <td><button type="button" onclick="deleteRow(this)" style="background-color: #ff4d4d; border: none; color: white; padding: 8px 16px;text-align: center; text-decoration: none; display: inline-block;font-size: 14px; margin: 4px 2px; border-radius: 6px; cursor: pointer;">
+              <td>
+              <button type="button" onclick="submitTo('delete_delete_package_service',${EVENT_PACKAGE.id}, '${service.id}',this)" style="background-color: #ff4d4d; border: none; color: white; padding: 8px 16px;text-align: center; text-decoration: none; display: inline-block;font-size: 14px; margin: 4px 2px; border-radius: 6px; cursor: pointer;">
                       Delete
-                  </button>
+              </button>
+
+
 
             </tr>
         </c:forEach>
@@ -522,7 +526,7 @@ h2, h3 {
      </tr>
      <tr>
        <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
-       <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
+       <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost - eventPackageEntityDTO.discount}</td>
 
      </tr>
    </table>
@@ -603,9 +607,15 @@ function deleteRow(button) {
       }
     });
   });
+
+
+
+
 }
 
-
+function setDeleteIndex(index) {
+        document.getElementById("deleteIndex").value = index;
+}
 
 
 
@@ -632,6 +642,18 @@ function deleteRow(button) {
       finalAmountEl.textContent = finalAmount;
     });
   });
+
+
+  function submitTo(url, param1,param2,button) {
+    if (!param2 || param2 === "0" || param2 === "undefined") {
+      deleteRow(button);
+    } else {
+      document.getElementById('myForm').action = url;
+      document.getElementById('id').value = param1;
+      document.getElementById('deleteIndex').value = param2;
+      document.getElementById('myForm').submit();
+      }
+  }
 </script>
 
 

@@ -425,7 +425,8 @@ public class EventController {
 				}
 			}
 			}
-			eventPackageServicesEntityList.add(packageService);
+			if(packageService.getServiceName()!=null && (!packageService.getServiceName().isEmpty()))
+				eventPackageServicesEntityList.add(packageService);
 		}
 		return eventPackageServicesEntityList;
 	}
@@ -439,11 +440,11 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
 		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
-		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
-		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
-		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 		if (result.hasErrors()) {
 			modelView.setViewName("event/quotation/createEventQuotationWiz2");
+			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
 			return modelView;
 		} else {
@@ -486,8 +487,6 @@ public class EventController {
 		}
 		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 		modelView.setViewName("redirect:view_filter_events?id=" + eventPackageEntityDTO.getId() );
-		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
-		modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 		return modelView;
 	}
 
@@ -555,7 +554,7 @@ public class EventController {
 		return filteredEventsVoList;
 	}
 
-	@PostMapping("load_event_quotation_wiz_2")
+	@RequestMapping(value="load_event_quotation_wiz_2",method= {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView load_event_quotation_wiz_2(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, BindingResult result) {
 		UserDetailsObj userObj = getLoggedInUser();
 		ModelAndView modelView = new ModelAndView("event/quotation/updateEventQuotation");
@@ -636,6 +635,20 @@ public class EventController {
 		existingServices.clear();
 		existingServices.addAll(updatedList);
 	}
+
+
+
+
+	@RequestMapping(value="delete_delete_package_service",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView delete_delete_package_service(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
+												  BindingResult result, final RedirectAttributes redirectAttrib) {
+		ModelAndView modelAndView = new ModelAndView();
+		eventServices.deleteEventPackageService(Long.parseLong(eventPackageEntityDTO.getDeleteIndex()));
+		modelAndView.setViewName("redirect:load_event_quotation_wiz_2?update=true&id="+eventPackageEntityDTO.getId());
+		return modelAndView;
+
+	}
+
 
 
 }

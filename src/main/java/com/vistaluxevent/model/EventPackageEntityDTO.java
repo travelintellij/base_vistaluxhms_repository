@@ -11,7 +11,10 @@ public class EventPackageEntityDTO extends EventPackageEntity {
     private String formattedStartDate;
     private String formattedEndDate;
     private boolean update;
+    private String deleteIndex;
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+
 
     public void updateDTOFromEntity(EventPackageEntity eventPackageEntity){
         this.setGrand_total_cost(eventPackageEntity.getGrand_total_cost());
@@ -61,5 +64,13 @@ public class EventPackageEntityDTO extends EventPackageEntity {
 
     public void setUpdate(boolean update) {
         this.update = update;
+    }
+
+    public String getDeleteIndex() {
+        return deleteIndex;
+    }
+
+    public void setDeleteIndex(String deleteIndex) {
+        this.deleteIndex = deleteIndex;
     }
 }

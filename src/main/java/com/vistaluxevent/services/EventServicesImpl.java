@@ -1,14 +1,8 @@
 package com.vistaluxevent.services;
 
-import com.vistaluxevent.entity.EventMasterServiceEntity;
-import com.vistaluxevent.entity.EventPackageEntity;
-import com.vistaluxevent.entity.EventServiceCostTypeEntity;
-import com.vistaluxevent.entity.EventTypeEntity;
+import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.FilterEventObj;
-import com.vistaluxevent.repository.EventMasterServiceRepository;
-import com.vistaluxevent.repository.EventPackageRepository;
-import com.vistaluxevent.repository.EventServiceCostTypeRepository;
-import com.vistaluxevent.repository.EventTypeRepository;
+import com.vistaluxevent.repository.*;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.FilterLeadObj;
 import com.vistaluxhms.repository.ClientEntityRepository;
@@ -50,6 +44,9 @@ public class EventServicesImpl {
 
 	@Autowired
 	EventPackageRepository eventPackageRepository;
+
+	@Autowired
+	EventPackageServiceRepository eventPackageServiceRepository;
 
 	public List<EventTypeEntity> findAllEventType(){
 		return eventTypeRepository.findAll();
@@ -190,4 +187,7 @@ public class EventServicesImpl {
 		return eventPackageRepository.findById(id).get();
 	}
 
+	public void deleteEventPackageService(Long id){
+		eventPackageServiceRepository.deleteById(id);
+	}
 }
