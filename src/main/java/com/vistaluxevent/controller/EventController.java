@@ -1,5 +1,6 @@
 package com.vistaluxevent.controller;
 
+import com.lowagie.text.DocumentException;
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
@@ -12,18 +13,24 @@ import com.vistaluxhms.services.ClientServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
+import freemarker.core.Configurable;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -647,6 +654,85 @@ public class EventController {
 		modelAndView.setViewName("redirect:load_event_quotation_wiz_2?update=true&id="+eventPackageEntityDTO.getId());
 		return modelAndView;
 
+	}
+
+
+	@RequestMapping(value = "create_create_event_quotation", params = "updateQuotation", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView edit_edit_event_quotation(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
+												  BindingResult result, final RedirectAttributes redirectAttrib) {
+
+
+	@RequestMapping(value = "process_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public void downloadQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
+		generateQuotationPDF(quotationEntityDTO, session, response,"PDFQuotation.ftl");
+	}
+
+	private void generateQuotationPDF(QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
+		// Prepare data for the template
+		Map<String, Object> model = new HashMap<>();
+		UserDetailsObj userObj = getLoggedInUser();
+		String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+		QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+		sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+		sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+		sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+		sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+		if (sessionQuotation != null) {
+			quotationEntityDTO = sessionQuotation;
+		}
+
+		if (sessionQuotation != null) {
+			quotationEntityDTO = sessionQuotation;
+		}
+
+		model.put("contactName", quotationEntityDTO.getGuestName());
+		formatRoomDates(quotationEntityDTO);
+		model.put("roomDetails", quotationEntityDTO.getRoomDetails()); // Fetch dynamically as per your application
+		model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
+		model.put("discount", quotationEntityDTO.getDiscount());
+		model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
+		model.put("serviceAdvisorMobile", userObj.getMobile());
+		model.put("remarks",quotationEntityDTO.getRemarks());
+
+		// Load the Freemarker template
+		freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+		//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
+		freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
+		freemarkerConfig.setAPIBuiltinEnabled(true);
+		freemarkerConfig.setTemplateUpdateDelay(0);
+		Template template = freemarkerConfig.getTemplate(templateName);
+		String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+		// Generate PDF
+		byte[] pdfBytes = new byte[0];
+		try {
+			pdfBytes = commonService.generatePdfFromHtml(htmlContent);
+		} catch (DocumentException e) {
+			throw new RuntimeException(e);
+		}
+
+		// Set response headers
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=Quotation.pdf");
+		response.getOutputStream().write(pdfBytes);
+		response.getOutputStream().flush();
+	}
+
+	public void formatRoomDates(QuotationEntityDTO quotation) {
+		if (quotation != null && quotation.getRoomDetails() != null) {
+			for (QuotationRoomDetailsDTO room : quotation.getRoomDetails()) {
+				LocalDate checkIn = room.getCheckInDate();
+				LocalDate checkOut = room.getCheckOutDate();
+
+				if (checkIn != null) {
+					room.setFormattedCheckInDate(checkIn.format(OUTPUT_FORMAT));
+				}
+				if (checkOut != null) {
+					room.setFormattedCheckOutDate(checkOut.format(OUTPUT_FORMAT));
+				}
+			}
+		}
 	}
 
 
