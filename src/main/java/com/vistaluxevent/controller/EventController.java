@@ -14,6 +14,7 @@ import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
 import freemarker.core.Configurable;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
@@ -54,10 +56,12 @@ public class EventController {
 	@Autowired
 	ClientServicesImpl clientService;
 
+	@Autowired
+	private Configuration freemarkerConfig;
 
 	//@Autowired
 	//EmailServiceImpl emailService;
-
+	private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
 	private UserDetailsObj getLoggedInUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -657,43 +661,45 @@ public class EventController {
 	}
 
 
-	@RequestMapping(value = "create_create_event_quotation", params = "updateQuotation", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView edit_edit_event_quotation(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
-												  BindingResult result, final RedirectAttributes redirectAttrib) {
-
-
-	@RequestMapping(value = "process_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "create_create_event_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public void downloadQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
-		generateQuotationPDF(quotationEntityDTO, session, response,"PDFQuotation.ftl");
+	public void downloadEventQuotationPdf(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
+		generateEventQuotationPDF(eventPackageEntityDTO, session, response,"MarriageQuotation.ftl");
 	}
 
-	private void generateQuotationPDF(QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
+	private void generateEventQuotationPDF(EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
 		// Prepare data for the template
 		Map<String, Object> model = new HashMap<>();
 		UserDetailsObj userObj = getLoggedInUser();
-		String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
-		QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
-		sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
-		sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
-		sessionQuotation.setMobile(quotationEntityDTO.getMobile());
-		sessionQuotation.setEmail(quotationEntityDTO.getEmail());
-		if (sessionQuotation != null) {
-			quotationEntityDTO = sessionQuotation;
-		}
+		model.put("guestName", eventPackageEntityDTO.getGuestName());
+		formatRoomDates(eventPackageEntityDTO);
+		model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
+		model.put("eventEndDate", eventPackageEntityDTO.getFormattedEndDate()); // Fetch dynamically as per your application
 
-		if (sessionQuotation != null) {
-			quotationEntityDTO = sessionQuotation;
-		}
+		model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
+		model.put("baseGuestCount", eventPackageEntityDTO.getBaseGuestCount());
+		model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
+		model.put("discount", eventPackageEntityDTO.getDiscount());
+		model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 
-		model.put("contactName", quotationEntityDTO.getGuestName());
-		formatRoomDates(quotationEntityDTO);
-		model.put("roomDetails", quotationEntityDTO.getRoomDetails()); // Fetch dynamically as per your application
-		model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
-		model.put("discount", quotationEntityDTO.getDiscount());
+		List<Map<String, Object>> serviceList = new ArrayList<>();
+
+		for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
+			Map<String, Object> serviceMap = new HashMap<>();
+			serviceMap.put("name", entity.getServiceName());
+			serviceMap.put("costType", entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName()); // assuming getName() exists
+			serviceMap.put("amount", entity.getTotalCost());
+			serviceList.add(serviceMap);
+		}
+		model.put("services", serviceList);  // now accessible in FreeMarker as "services"
+
+
+		/*
 		model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
 		model.put("serviceAdvisorMobile", userObj.getMobile());
 		model.put("remarks",quotationEntityDTO.getRemarks());
+
+		 */
 
 		// Load the Freemarker template
 		freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
@@ -719,20 +725,10 @@ public class EventController {
 		response.getOutputStream().flush();
 	}
 
-	public void formatRoomDates(QuotationEntityDTO quotation) {
-		if (quotation != null && quotation.getRoomDetails() != null) {
-			for (QuotationRoomDetailsDTO room : quotation.getRoomDetails()) {
-				LocalDate checkIn = room.getCheckInDate();
-				LocalDate checkOut = room.getCheckOutDate();
+	public void formatRoomDates(EventPackageEntityDTO quotation) {
+		quotation.setFormattedStartDate(quotation.getEventStartDate().format(OUTPUT_FORMAT));
+		quotation.setFormattedEndDate(quotation.getEventEndDate().format(OUTPUT_FORMAT));
 
-				if (checkIn != null) {
-					room.setFormattedCheckInDate(checkIn.format(OUTPUT_FORMAT));
-				}
-				if (checkOut != null) {
-					room.setFormattedCheckOutDate(checkOut.format(OUTPUT_FORMAT));
-				}
-			}
-		}
 	}
 
 

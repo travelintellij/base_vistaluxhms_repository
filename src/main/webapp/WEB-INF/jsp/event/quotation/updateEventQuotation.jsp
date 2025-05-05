@@ -535,7 +535,7 @@ h2, h3 {
  <div class="action-buttons">
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
    <button type="submit" class="btn btn-save" name="updateQuotation" id="updateQuotation" value="updateQuotation">Save Quotation</button>
-   <button type="submit" class="btn btn-download">Download Quotation</button>
+   <button type="submit" class="btn btn-download" name="Download" id="Download" value="Download">Download Quotation</button>
    <button type="submit" class="btn btn-whatsapp">WhatsApp Quotation</button>
    <button type="submit" class="btn btn-email">Email Quotation</button>
  </div>
