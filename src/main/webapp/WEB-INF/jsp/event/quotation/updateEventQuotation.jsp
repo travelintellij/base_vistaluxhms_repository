@@ -380,12 +380,10 @@ h2, h3 {
 
 <div class="container">
     <h2>Update Event Quotation (<font color="blue"> Event Id: ${EVENT_PACKAGE.id} </font>) </h2>
-     <div align="center" style="margin: 10px 0;">
-                <b>
-                    <font color="green">${Success}</font>
-                    <font color="red">${Error}</font>
-                </b>
-            </div>
+      <c:if test="${not empty SuccessMessage}">
+          <div class="alert alert-success"><font color="green">${SuccessMessage}<font></div>
+      </c:if>
+
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
         <form:hidden path="id" />
         <form:hidden path="guestId" />
@@ -536,8 +534,7 @@ h2, h3 {
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
    <button type="submit" class="btn btn-save" name="updateQuotation" id="updateQuotation" value="updateQuotation">Save Quotation</button>
    <button type="submit" class="btn btn-download" name="Download" id="Download" value="Download">Download Quotation</button>
-   <button type="submit" class="btn btn-whatsapp">WhatsApp Quotation</button>
-   <button type="submit" class="btn btn-email">Email Quotation</button>
+   <button type="submit" class="btn btn-email" name="Email" id="Email" value="Email">Email Quotation</button>
  </div>
 
 </div>

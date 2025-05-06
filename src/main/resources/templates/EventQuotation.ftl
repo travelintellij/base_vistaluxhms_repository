@@ -2,18 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Wedding Quotation</title>
+    <title>Event Quotation</title>
     <style>
         body {
-            font-family: 'Georgia', serif;
-            background-color: #fff7f9;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f8fb;
             margin: 0;
             padding: 0;
-            color: #6a1b3f;
+            color: #2c3e50;
+
         }
 
         .header {
-            background-image: url('https://mcusercontent.com/b524536bce55ad238411aa638/images/b0b22964-b8d6-b349-800f-990f03a5ea12.jpg?fit=crop&amp;w=1500&amp;q=80');
+            background-image: url('https://mcusercontent.com/b524536bce55ad238411aa638/images/5e424e73-2127-47ee-3a6c-f98219f37551.jpg?fit=crop&amp;w=1500&amp;q=80');
 	        background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -21,9 +22,8 @@
             padding: 80px 30px 60px 30px;
             text-align: center;
             position: relative;
-	    min-height: 100px; /* Ensures enough space for image visibility */
-
-        }
+    	    min-height: 100px; /* Ensures enough space for image visibility */
+    }
 
         .header h1 {
             font-size: 36px;
@@ -114,8 +114,8 @@
         }
 
         .footer {
-            padding: 25px 30px;
-            background-color: #fde9ef;
+            padding: 20px 25px;
+            background-color: #ecf3f8;
             font-size: 14px;
             color: #7a0040;
         }
@@ -137,7 +137,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px 10px 30px;
-            background-color: #fff7f9;
+            background-color: #ecf3f8;
+
         }
 
         .logo img {
@@ -166,7 +167,7 @@
 
 
 <div class="header">
-    <h1>Wedding Quotation</h1>
+    <h1>Event Quotation</h1>
 </div>
 
 <div class="section">
@@ -178,76 +179,60 @@
         <tr><td><strong>No. of Guests:</strong></td><td>${baseGuestCount}</td></tr>
     </table>
 </div>
-<div class="section">
-    <h2>Wedding Photo Inspirations</h2>
-    <div class="photo-collage" style="display: inline-block; text-align: center;">
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/26266fa6-ab2e-3ff6-626e-a6a4c1e76a38.jpg?fit=crop&amp;w=600&amp;q=80" alt="1" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/f2bd4644-fce8-e9d3-1d47-a7810598ef6b.jpg?fit=crop&amp;w=600&amp;q=80" alt="2" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/bcf9ae95-131d-ec42-265b-5e8103c99eb6.jpg?fit=crop&amp;w=600&amp;q=80" alt="3" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/74c33475-919e-0db5-b48c-a3321a7e3a80.jpg?fit=crop&amp;w=600&amp;q=80" alt="4" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/30a30b90-c2e2-fb39-19cd-ccdee149265b.jpg?fit=crop&amp;w=600&amp;q=80" alt="5" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/20fdc30d-9c37-1f24-ee09-d06b94838c98.jpg?fit=crop&amp;w=600&amp;q=80" alt="5" />
 
+
+<div class="section">
+    <h2>Venue &amp; Experience Overview</h2>
+    <p>
+        Thank you for considering <strong>Ashoka’s Tiger Trail Resort</strong> for your upcoming corporate event. Our resort offers a serene and focused environment ideal for strategic meetings, team-building sessions, workshops, or offsite retreats.
+    </p>
+    <p>
+        We are committed to delivering a seamless experience with the right mix of comfort, professionalism, and personalized service to ensure your event is impactful and productive.
+    </p>
+
+   <div class="highlight-box">
+          <h3>Event Highlights &amp; Offerings</h3>
+          <ul>
+              <li>42 well-appointed rooms with modern amenities</li>
+              <li>Indoor conference hall with AV equipment</li>
+              <li>Breakout spaces and outdoor lawns for team activities</li>
+              <li>Customizable meal plans (veg/non-veg)</li>
+              <li>Bonfire, wildlife safari &amp; nature walks for leisure</li>
+              <li>Dedicated event coordinator &amp; on-site support</li>
+          </ul>
+      </div>
+
+<div class="section">
+    <h2>Photo Gallery</h2>
+    <div class="photo-collage">
+        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/89e9c291-2a41-cb74-5abc-40cd8bf54a78.jpeg?fit=crop&amp;w=600&amp;q=80" alt="5" />
+        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/93a3c3c9-b2c3-2b41-15d2-50f7aad8a631.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Team Meeting" />
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?fit=crop&amp;w=600&amp;q=80" alt="Conference" />
+        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/a6f572c5-8eb7-106b-ecab-4197919c936a.png?fit=crop&amp;w=600&amp;q=80" alt="Team Building" />
+        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/43c37228-758e-fc5d-335a-f89fa80f2fef.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
+        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/8928c72a-cfa1-eebd-7881-0d2563bd4627.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
     </div>
 </div>
 
-<div class="section">
-    <h2 style="text-align: center; color: #2e6c80;">Welcome to Ashoka's Tiger Trail Resort – Corbett</h2>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        We are delighted to present our proposal for hosting your upcoming marriage celebration at <strong>Ashoka’s Tiger Trail Resort</strong>, nestled in the pristine wilderness of Jim Corbett National Park. Our resort, spread across lush landscapes and surrounded by nature, offers an ideal setting for a destination wedding that blends elegance with the tranquility of the forest.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        Whether you envision an intimate gathering or a grand celebration, our experienced hospitality team is committed to ensuring that every moment is seamlessly executed — from the décor to gourmet dining, from themed functions to personalized experiences.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        This proposal outlines the accommodations, event venues, services, and arrangements we would be honored to provide for your special occasion. Our aim is to offer a memorable, comfortable, and joyful experience for you and your guests.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        We look forward to being part of your most cherished celebration and delivering an event that is both unique and unforgettable.
-    </p>
-
-    <!-- Highlights Box with Floral Background -->
-    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
-        <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
-            <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Wedding Celebration Highlights</h3>
-            <ul style="margin: 0 0 0 18px; font-size: 14px; line-height: 1.6;">
-                <li>42 spacious rooms and luxury suites with modern amenities</li>
-                <li>Open-air lawns for Mehendi, Haldi, and Sangeet ceremonies</li>
-                <li>Indoor banquet hall ideal for formal functions or receptions</li>
-                <li>Scenic forest backdrops for couple photoshoots</li>
-                <li>Custom floral décor, mandap setups &amp; lighting themes</li>
-                <li>Dedicated bridal preparation suite &amp; guest hospitality desk</li>
-                <li>Live food counters, customizable veg/non-veg menus</li>
-                <li>Bonfire arrangements, wildlife safaris &amp; local experiences</li>
-            </ul>
-        </div>
-    </div>
-
     <!-- Additional Testimonial -->
     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        “The tranquil forest vibe added such uniqueness to our wedding. Our guests still talk about it!”<br/>
-        <strong>– Mr. Tiwari and Family, Delhi NCR</strong>
+        "Ashoka's Tiger Trail Resort provided the perfect setting for our corporate retreat. The serene atmosphere helped our team stay focused, while the modern amenities and impeccable service ensured that our meetings were productive. The venue was spacious and well-equipped, and the team went above and beyond to tailor every aspect to our needs. Highly recommend for any corporate event!"<br/>
+        <strong>– Confidential, Ahmedabad</strong>
     </div>
 
     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        “Every detail was handled with care — from the decor to the food. The resort staff made us feel like royalty and our families were truly impressed.”<br/>
-        <strong>–  From a Recent Wedding Party,  Delhi NCR</strong>
+        "We hosted our annual leadership meeting at Ashoka's Tiger Trail Resort, and it was an incredible experience. The combination of state-of-the-art conference facilities and the beautiful natural surroundings made it the ideal venue for our team-building exercises and strategic sessions. The staff was professional, accommodating, and ensured everything went smoothly. It was a memorable event that enhanced both productivity and morale."<br/>
+        <strong>–  From a Recent MICE Event,  Delhi NCR</strong>
     </div>
 
     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        "Organizing a destination wedding at Ashoka’s Tiger Trail Resort was an absolute delight. The resort team was proactive, professional, and handled every request with efficiency and grace. Our clients were extremely happy, and the event went off without a hitch. It’s rare to find a venue that combines natural beauty with such high standards of service."<br/>
-        <strong>–  Mr. Gopi, Corbett</strong>
+        "Ashoka Tiger Trail Resort provided the perfect setting for our corporate offsite. The serene surroundings and state-of-the-art conference facilities enabled us to focus on strategic planning and team-building activities. The staff was incredibly professional, ensuring every detail was handled seamlessly. A truly memorable experience that fostered collaboration and innovation among our team!"<br/>
+        <strong>– Sushil, Delhi NCR </strong>
     </div>
 
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
 </div>
-
-
 
 
 <#if showBreakup>
@@ -304,7 +289,7 @@
                 </tbody>
             </table>
         </#if>
-        <div class="total" style="margin-top:20px;">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div>
+    <div class="total" style="margin-top:20px;">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div>
     </div>
 </#if>
 
@@ -316,7 +301,6 @@
         </p>
     </div>
 </#if>
-
 
 <div class="footer">
     <h3>Terms and Conditions</h3>
@@ -334,7 +318,6 @@
         <li>Liquor services require valid permits, to be arranged separately.</li>
         <li>External vendors are subject to resort approval.</li>
         <li>Check-in and check-out times are as per resort policy.</li>
-        <li>The resort is not responsible for any personal loss or damage during the event.</li>
     </ul>
     <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
 </div>

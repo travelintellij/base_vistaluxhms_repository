@@ -41,4 +41,7 @@ public interface VistaluxConstants {
     public static final String PER_NIGHT="PER_NIGHT";
     public static final String ONE_TIME="ONE_TIME";
 
+    public static int EVENT_TYPE_WEDDING = 1;
+    public static int EVENT_TYPE_MICE = 2;
+
 }

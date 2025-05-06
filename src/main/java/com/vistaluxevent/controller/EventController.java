@@ -6,10 +6,12 @@ import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
 import com.vistaluxevent.model.FilterEventObj;
 import com.vistaluxevent.services.EventServicesImpl;
+import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.ClientServicesImpl;
+import com.vistaluxhms.services.EmailServiceImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -18,6 +20,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +32,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -58,6 +64,15 @@ public class EventController {
 
 	@Autowired
 	private Configuration freemarkerConfig;
+
+	@Value("${all.email.notify.communication.active}")
+	private boolean emailNotifyActive;
+
+	@Value("${email.notify.communication.email}")
+	private String emailNotifyBcc;
+
+	@Autowired
+	EmailServiceImpl emailService;
 
 	//@Autowired
 	//EmailServiceImpl emailService;
@@ -588,7 +603,7 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
 		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
-
+		modelView.setViewName("event/quotation/updateEventQuotation");
 		if (result.hasErrors()) {
 			modelView.setViewName("event/quotation/updateEventQuotation");
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
@@ -605,9 +620,13 @@ public class EventController {
 			syncServiceList(eventPackageEntity, eventPackageEntityDTO.getServices());
 			// Save the Entity (not DTO)
 			eventServices.saveEventPackage(eventPackageEntity);
-			redirectAttrib.addFlashAttribute("Success", "Event Package Record is saved successfully.");
+			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+			//redirectAttrib.addFlashAttribute("Success", "Event Package Record is saved successfully.");
+			modelView.addObject("SuccessMessage", "Event Package Record is saved successfully.");
 		}
-		modelView.setViewName("redirect:view_filter_events?id="+ eventPackageEntityDTO.getId());
+		//modelView.setViewName("redirect:view_filter_events?id="+ eventPackageEntityDTO.getId());
 		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 		//modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 		//modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
@@ -664,7 +683,14 @@ public class EventController {
 	@RequestMapping(value = "create_create_event_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public void downloadEventQuotationPdf(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
-		generateEventQuotationPDF(eventPackageEntityDTO, session, response,"MarriageQuotation.ftl");
+		String templateName = "";
+		if(eventPackageEntityDTO.getEventType().getEventTypeId() ==VistaluxConstants.EVENT_TYPE_WEDDING){
+			templateName="MarriageQuotation.ftl";
+		}
+		else if(eventPackageEntityDTO.getEventType().getEventTypeId() ==VistaluxConstants.EVENT_TYPE_MICE){
+			templateName="EventQuotation.ftl";
+		}
+		generateEventQuotationPDF(eventPackageEntityDTO, session, response,templateName);
 	}
 
 	private void generateEventQuotationPDF(EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
@@ -679,8 +705,10 @@ public class EventController {
 		model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
 		model.put("baseGuestCount", eventPackageEntityDTO.getBaseGuestCount());
 		model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
+		model.put("gstIncluded", eventPackageEntityDTO.isGstIncluded());
 		model.put("discount", eventPackageEntityDTO.getDiscount());
 		model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
+		model.put("remarks", eventPackageEntityDTO.getDescription());
 
 		List<Map<String, Object>> serviceList = new ArrayList<>();
 
@@ -692,15 +720,6 @@ public class EventController {
 			serviceList.add(serviceMap);
 		}
 		model.put("services", serviceList);  // now accessible in FreeMarker as "services"
-
-
-		/*
-		model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
-		model.put("serviceAdvisorMobile", userObj.getMobile());
-		model.put("remarks",quotationEntityDTO.getRemarks());
-
-		 */
-
 		// Load the Freemarker template
 		freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 		//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
@@ -709,7 +728,6 @@ public class EventController {
 		freemarkerConfig.setTemplateUpdateDelay(0);
 		Template template = freemarkerConfig.getTemplate(templateName);
 		String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
 		// Generate PDF
 		byte[] pdfBytes = new byte[0];
 		try {
@@ -731,6 +749,129 @@ public class EventController {
 
 	}
 
+
+
+	@RequestMapping(value = "create_create_event_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView process_event_Email(@ModelAttribute("EVENT_PACKAGE") EventPackageEntityDTO eventPackageEntityDTO,
+												  BindingResult result, final RedirectAttributes redirectAttrib) {
+		//ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+
+		ModelAndView modelView = new ModelAndView();
+		UserDetailsObj userObj = getLoggedInUser();
+		modelView.setViewName("redirect:review_process_create_fh_quotation");
+		List<String> recipientEmails = validateAndExtractEmails(eventPackageEntityDTO.getEmail(), result);
+		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
+		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);
+		modelView.setViewName("event/quotation/updateEventQuotation");
+		String templateName = "";
+		if(eventPackageEntityDTO.getEventType().getEventTypeId() ==VistaluxConstants.EVENT_TYPE_WEDDING){
+			templateName="MarriageQuotationEmail.ftl";
+		}
+		else if(eventPackageEntityDTO.getEventType().getEventTypeId() ==VistaluxConstants.EVENT_TYPE_MICE){
+			templateName="EventQuotationEmail.ftl";
+		}
+
+		if (result.hasErrors()) {
+			modelView.setViewName("event/quotation/updateEventQuotation");
+			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
+			return modelView;
+		} else {
+			formatRoomDates(eventPackageEntityDTO);
+			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
+			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+			notifyQuotationReceiverByEmail(eventPackageEntityDTO, recipientEmails, templateName);
+			System.out.println("Quotation Sent Successfully!! ");
+			modelView.addObject("SuccessMessage", "Event Package Record is sent successfully.");
+		}
+		return modelView;
+	}
+
+
+	private void notifyQuotationReceiverByEmail(EventPackageEntityDTO eventPackageEntityDTO, List<String> recipientEmails, String templateName) {
+		if (emailNotifyActive) {
+			Mail mail = new Mail();
+			//String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
+			String emailSubject = "Quotation: Ashoka Tiger Trail | " + eventPackageEntityDTO.getGuestName() + " | Jim Corbett ";
+			mail.setSubject(emailSubject);
+			AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
+			//mail.setTo(quotationEntityDTO.getEmail());
+			InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
+			for (int i = 0; i < recipientEmails.size(); i++) {
+				try {
+					emailAddresses[i] = new InternetAddress(recipientEmails.get(i).trim());
+				} catch (AddressException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			mail.setToList(emailAddresses);
+			mail.setCc(userObj.getEmail());
+
+			try {
+				Map<String, Object> model = new HashMap<String, Object>();
+				model.put("guestName", eventPackageEntityDTO.getGuestName());
+				formatRoomDates(eventPackageEntityDTO);
+				model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
+				model.put("eventEndDate", eventPackageEntityDTO.getFormattedEndDate()); // Fetch dynamically as per your application
+
+				model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
+				model.put("baseGuestCount", eventPackageEntityDTO.getBaseGuestCount());
+				model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
+				model.put("gstIncluded", eventPackageEntityDTO.isGstIncluded());
+				model.put("discount", eventPackageEntityDTO.getDiscount());
+				model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
+				model.put("remarks", eventPackageEntityDTO.getDescription());
+
+				List<Map<String, Object>> serviceList = new ArrayList<>();
+
+				for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
+					Map<String, Object> serviceMap = new HashMap<>();
+					serviceMap.put("name", entity.getServiceName());
+					serviceMap.put("costType", entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName()); // assuming getName() exists
+					serviceMap.put("amount", entity.getTotalCost());
+					serviceList.add(serviceMap);
+				}
+				model.put("services", serviceList);
+
+				mail.setModel(model);
+				//emailService.sendEmailMessageUsingTemplate(mail,templateName);
+				emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
+			} catch (MessagingException | IOException | TemplateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Email Notification DISABLE. ");
+		}
+	}
+
+	private List<String> validateAndExtractEmails(String emailInput, Errors errors) {
+		List<String> emailList = new ArrayList<>();
+		if (emailInput != null && !emailInput.trim().isEmpty()) {
+			// Split input using comma ',' or semicolon ';' as delimiter
+			String[] emails = emailInput.split("[,;]");
+			for (String email : emails) {
+				email = email.trim(); // Remove spaces
+				if (!isValidEmail(email)) {
+					errors.rejectValue("email", "error.email", "Invalid email format: " + email);
+				} else {
+					emailList.add(email);
+				}
+			}
+		}
+		if (emailList.isEmpty()) {
+			errors.rejectValue("email", "error.email", "At least one valid email is required.");
+		}
+		return emailList;
+	}
+
+	private boolean isValidEmail(String email) {
+		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+		return email.matches(emailRegex);
+	}
 
 
 }
