@@ -201,7 +201,7 @@
               <li>Dedicated event coordinator &amp; on-site support</li>
           </ul>
       </div>
-
+<div style="page-break-after: always;"></div>
 <div class="section">
     <h2>Photo Gallery</h2>
     <div class="photo-collage">

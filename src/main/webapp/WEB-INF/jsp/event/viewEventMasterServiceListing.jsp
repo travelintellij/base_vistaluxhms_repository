@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
     body {
-        background-image: url('<%= request.getContextPath() %>/resources/images/roomlist.jpg');
+        background-image: url('<%= request.getContextPath() %>/resources/images/service-bg.jpg');
         background-size: cover; /* Ensures the image covers the full page */
         background-position: center; /* Centers the image */
         background-attachment: fixed; /* Keeps the background fixed while scrolling */

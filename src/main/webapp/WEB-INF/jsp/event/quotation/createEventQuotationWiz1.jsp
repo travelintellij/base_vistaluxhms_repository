@@ -12,7 +12,7 @@
     <title>Dynamic Form</title>
     <style>
            body {
-               background-image: url('<%= request.getContextPath() %>/resources/images/quotation.jpg');
+               background-image: url('<%= request.getContextPath() %>/resources/images/event-reg.jpg');
                background-size: cover; /* Ensures the image covers the full page */
                background-position: center; /* Centers the image */
                background-attachment: fixed; /* Keeps the background fixed while scrolling */

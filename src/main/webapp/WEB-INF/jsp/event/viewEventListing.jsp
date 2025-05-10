@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <style>
     body {
-        background-image: url('<%= request.getContextPath() %>/resources/images/roomlist.jpg');
+        background-image: url('<%= request.getContextPath() %>/resources/images/celeb-list.png');
         background-size: cover; /* Ensures the image covers the full page */
         background-position: center; /* Centers the image */
         background-attachment: fixed; /* Keeps the background fixed while scrolling */
