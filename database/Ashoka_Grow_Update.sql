@@ -1,3 +1,20 @@
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('3', 'CLIENT_CREATE', 'CLIENT');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('4', 'CLIENT_MANAGE', 'CLIENT');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('5', 'USER_MANAGE', 'USER');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('6', 'LEADS_MANAGE', 'LEADS');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('7', 'COST_MANAGE', 'COST');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('8', 'SALES_PARTNER_CREATE', 'SALES');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('9', 'SALES_PARTNER_MANAGE', 'SALES');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('10', 'RATE_TYPE_MANAGE', 'SALES');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('11', 'ROOMS_MANAGE', 'SALES');
+
+
+
+
+/********************* Updated below already *****************************/
+#change the lead id and user id as appropriate.
+INSERT INTO `ashokadb`.`leads_team_map` (`leadId`, `userId`) VALUES ('34', '0');
+
 CREATE TABLE `ashokadb`.`eventtype` (
   `eventTypeId` INT NOT NULL,
   `eventTypeName` VARCHAR(500) NOT NULL,

@@ -20,6 +20,9 @@ public class UserDetailsObj extends AshokaTeam implements UserDetails{
 	private String passwordConfirm;//this is the new confirm password.
 	private String roleName;
 	private int roleId;
+	private String formattedDOJ;
+	private String formattedDOB;
+	private String formattedDOL;
 	
     @Override
     public String getPassword() {
@@ -209,5 +212,29 @@ public class UserDetailsObj extends AshokaTeam implements UserDetails{
 				", deleted=" + deleted +
 				", roles=" + roles +
 				'}';
+	}
+
+	public String getFormattedDOJ() {
+		return formattedDOJ;
+	}
+
+	public void setFormattedDOJ(String formattedDOJ) {
+		this.formattedDOJ = formattedDOJ;
+	}
+
+	public String getFormattedDOB() {
+		return formattedDOB;
+	}
+
+	public void setFormattedDOB(String formattedDOB) {
+		this.formattedDOB = formattedDOB;
+	}
+
+	public String getFormattedDOL() {
+		return formattedDOL;
+	}
+
+	public void setFormattedDOL(String formattedDOL) {
+		this.formattedDOL = formattedDOL;
 	}
 }

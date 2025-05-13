@@ -16,6 +16,8 @@
         background-attachment: fixed; /* Keeps the background fixed while scrolling */
         height: 100vh; /* Ensures the background covers the full height of the viewport */
         position: relative; /* Required for the overlay */
+        font-size: 20px; /* Standard readable size */
+        font-family: Arial, sans-serif;
     }
 
     /* Create a watermark-like effect using an overlay */
@@ -77,7 +79,7 @@
                 </div>
                <div class="form-cell">
                    <label for="">Date of Birth</label>
-                    <fmt:formatDate value="${USER_OBJ.dob}" pattern="dd-MM-yyyy" />
+                    <fmt:formatDate value="${USER_OBJ.dob}" pattern="dd-MMM-yyyy" />
                </div>
                 <div class="form-cell">
                     <label for="" >Personal Email</label>
@@ -107,8 +109,12 @@
                    ${USER_OBJ.accountLocked}
               </div>
               <div class="form-cell">
+                 <label for="">Date Of Joining</label>
+                 <fmt:formatDate value="${USER_OBJ.doj}" pattern="dd-MMM-yyyy" />
+             </div>
+              <div class="form-cell">
                  <label for="">Last Working Day</label>
-                 ${USER_OBJ.lastWorkingDay}
+                 <fmt:formatDate value="${USER_OBJ.lastWorkingDay}" pattern="dd-MMM-yyyy" />
              </div>
             <div class="form-cell">
                <label for="">Remarks</label> <br>

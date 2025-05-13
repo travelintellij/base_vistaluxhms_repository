@@ -46,6 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
+                .headers()
+                .frameOptions().sameOrigin()  // ← ✅ Add this line
+                .and()
                 .authorizeRequests()
                 .antMatchers("/login", "/resources/**", "/static/**").permitAll() // Allow public access to login and resources
                 .antMatchers("/admin").hasRole("ADMIN") // Only admins can access /admin

@@ -26,8 +26,16 @@ username = "Guest";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/styles.css">
-
 </head>
+<style>
+ .gear-icon {
+     font-size: 20px;
+     background-color: #007bff; /* Blue background */
+     color: white;              /* Icon color */
+     padding: 6px 8px;
+     border-radius: 50%;        /* Makes it circular */
+     margin-right: 5px;
+</style>
 <body>
 <header>
     <div class="logo">
@@ -167,9 +175,11 @@ username = "Guest";
                 </ul>
             </li>
          </c:if>
-
-
-
         <li><a href="logout" class="logout">Logout</a></li>
+        <li>
+          <a href="view_form_my_profile">
+            <span class="gear-icon" >&#9881;</span>
+          </a>
+        </li>
     </ul>
 </nav>

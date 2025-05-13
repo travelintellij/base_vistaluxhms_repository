@@ -153,6 +153,10 @@
                </div>
               </div>
               <div class="form-cell">
+                   <label for="">Date Of Joining</label>
+                   <form:input path="doj" type="date" />
+               </div>
+              <div class="form-cell">
                  <label for="">Last Working Day</label>
                  <form:input path="lastWorkingDay" type="date" />
              </div>

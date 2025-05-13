@@ -155,7 +155,18 @@
                 <p style="margin: 0; font-size: 14px; color: #555;">${remarks?html}</p>
             </div>
         </#if>
+        <p style="font-size: 10px; color: #555;"><strong>Meal Plans:</strong>
+            <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
+        </p>
 
+         <h2 style="font-weight: bold; margin-top: 20px;">Your Stay Includes</h2>
+            <ul style="color: #333; line-height: 1.6;">
+              <li>Stay in a well-appointed room with modern amenities</li>
+              <li>Meal plan as per your selected package</li>
+              <li>Evening high tea with snacks</li>
+              <li>Access to the swimming pool</li>
+              <li>Travel desk assistance for jungle safari (charges apply)</li>
+            </ul>
 
         <h3>Terms & Conditions:</h3>
         <ul>

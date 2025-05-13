@@ -273,8 +273,8 @@
                                                          alt="${leadRec.flagged ? 'Flagged' : 'Not Flagged'}"
                                                          style="width: 25px; height: 25px;" /></td>
                     <td>${leadRec.clientName}</td>
-                    <td>${leadRec.checkInDate}</td>
-                    <td>${leadRec.checkOutDate}</td>
+                    <td>${leadRec.formattedCheckInDate}</td>
+                    <td>${leadRec.formattedCheckOutDate}</td>
                     <td>${leadRec.b2b ? "B2B" : "B2C"}</td>
                     <td>${leadRec.statusName}</td>
                     <td>${leadRec.leadOwnerName}</td>

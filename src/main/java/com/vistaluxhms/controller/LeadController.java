@@ -293,6 +293,8 @@ public class LeadController {
             LeadEntity leadEntity = (LeadEntity) filteredLeadsIterator.next();
             LeadEntityDTO leadsVO =new LeadEntityDTO();
             leadsVO.updateLeadVoFromEntity(leadEntity);
+            leadsVO.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+            leadsVO.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
             ClientEntity clientEntity =clientService.findClientById(leadEntity.getClient().getClientId());
             leadsVO.setClientName(clientEntity.getClientName());
             leadsVO.setB2b(clientEntity.getB2b());
