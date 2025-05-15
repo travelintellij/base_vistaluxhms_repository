@@ -61,7 +61,9 @@
         <div class="sidebar">
             <a  href="settings_my_profile" target="contentFrame">My Profile</a>
             <a href="view_form_change_password" target="contentFrame">Change Password</a>
-            <a href="view_form_manage_permissions" target="contentFrame">Permissions</a>
+            <sec:authorize access="hasAnyRole('ADMIN')">
+                <a href="view_form_manage_permissions" target="contentFrame">Permissions</a>
+            </sec:authorize>
         </div>
 
         <!-- Right Content -->

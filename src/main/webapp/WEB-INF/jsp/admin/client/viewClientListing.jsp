@@ -37,6 +37,8 @@
     }
 
 </style>
+
+<sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
 <div class="form-container filter-container" style="width: 85%; min-width: 85%; max-width: 90%;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
@@ -101,6 +103,8 @@
         </div>
     </form:form>
 </div>
+</sec:authorize>
+
 
 <div align="center" style="margin:10px 0">
     <b>
@@ -109,6 +113,8 @@
     </b>
 </div>
 
+
+<sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
 <!-- Client List Table Section -->
 <div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <c:set value="${CLIENT_FILTERED_LIST}" var="clientList" />
@@ -198,7 +204,7 @@
         </c:if>
     </c:if>
 </div>
-
+</sec:authorize>
 <script>
     $(document).ready(function () {
         $('#cityName').autocomplete({

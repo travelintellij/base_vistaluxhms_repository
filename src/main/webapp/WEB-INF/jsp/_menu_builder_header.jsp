@@ -49,7 +49,7 @@ username = "Guest";
 </header>
 <nav>
     <ul>
-       <c:if test="${role == 'admin' || role == 'guest'}">
+       <sec:authorize access="hasAnyRole('ADMIN','LEADS_MANAGE')">
              <li>
                  <a href="#">Lead Management</a>
                  <ul class="submenu">
@@ -59,8 +59,8 @@ username = "Guest";
                      </li>
                  </ul>
              </li>
-         </c:if>
-         <c:if test="${role == 'admin' || role == 'guest'}">
+        </sec:authorize>
+        <sec:authorize access="hasAnyRole('ADMIN','USER_MANAGE')">
                     <li>
                         <a href="#">User Management</a>
                         <ul class="submenu">
@@ -70,18 +70,20 @@ username = "Guest";
                             </li>
                         </ul>
                     </li>
-                </c:if>
-        <c:if test="${role == 'admin' || role == 'guest'}">
+        </sec:authorize>
+        <sec:authorize access="hasAnyRole('ADMIN','CLIENT_CREATE','CLIENT_MANAGE')">
             <li>
                 <a href="#">Client Management</a>
                 <ul class="submenu">
                     <li><a href="view_add_client_form">Add Client</a></li>
+                    <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
                     <li>
                         <a href="view_clients_list">Clients Management</a>
                     </li>
+                    </sec:authorize>
                 </ul>
             </li>
-        </c:if>
+        </sec:authorize>
         <c:if test="${role == 'admin' || role == 'guest'}">
                     <li>
                         <a href="#">Others</a>
@@ -101,20 +103,28 @@ username = "Guest";
             <li>
                 <a href="#">Sales Management</a>
                 <ul class="submenu">
+                    <sec:authorize access="hasAnyRole('ADMIN','RATE_TYPE_MANAGE')">
                       <li>
-                        <a href="#">Rate Type</a>
-                        <ul class="second-level">
-                            <li><a href="view_add_rate_type_form">Add Rate Type</a></li>
-                            <li><a href="view_rate_type_list">Manage Rate Type</a></li>
-                        </ul>
-                    </li>
+                            <a href="#">Rate Type</a>
+                            <ul class="second-level">
+                                <li><a href="view_add_rate_type_form">Add Rate Type</a></li>
+                                <li><a href="view_rate_type_list">Manage Rate Type</a></li>
+                            </ul>
+                       </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_CREATE','SALES_PARTNER_MANAGE')">
                       <li>
-                        <a href="#">Sales Partner</a>
-                        <ul class="second-level">
-                        <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
-                        <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
-                    </ul>
-                    </li>
+                            <a href="#">Sales Partner</a>
+                            <ul class="second-level">
+                                <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
+                                <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
+                                    <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
+                                </sec:authorize>
+                            </ul>
+                        </li>
+                      </sec:authorize>
+
+                    <sec:authorize access="hasAnyRole('ADMIN','ROOMS_MANAGE')">
                       <li>
                         <a href="#">Master Rooms Management</a>
                         <ul class="second-level">
@@ -122,6 +132,7 @@ username = "Guest";
                         <li><a href="view_rooms_list">Manage Rooms</a></li>
                     </ul>
                     </li>
+                   </sec:authorize>
                 </ul>
             </li>
         </c:if>

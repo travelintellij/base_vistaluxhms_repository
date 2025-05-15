@@ -38,6 +38,7 @@
 
 </style>
 
+<sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
 <div class="form-container filter-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <h2>View Sales Partners</h2>
     <form:form modelAttribute="SALES_PARTNER_OBJ" action="view_sales_partner_list">
@@ -75,7 +76,7 @@
         </div>
     </form:form>
 </div>
-
+</sec:authorize>
 <div align="center" style="margin:10px 0">
     <b>
         <font color="green">${Success}</font>
@@ -83,6 +84,8 @@
     </b>
 </div>
 
+
+<sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
 <!-- Sales Partner List Table Section -->
 <div class="form-container sales-partner-list-container" style="width: 100%; max-width: 1400px;">
 
@@ -134,6 +137,7 @@
         </tbody>
     </table>
 </div>
+</sec:authorize>
 <script>
     $('#cityName').autocomplete({
         serviceUrl: '${pageContext.request.contextPath}/getCityList',

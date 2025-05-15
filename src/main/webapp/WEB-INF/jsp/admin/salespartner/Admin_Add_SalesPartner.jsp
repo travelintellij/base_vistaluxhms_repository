@@ -115,7 +115,9 @@
             <!-- Second Row -->
             <div class="button-container">
                 <input type="submit" value="Add Sales Partner">
-                <a href="view_sales_partner_list"><input type="button" class="clear-filter-btn" value="View Sales Partners List"></input></a>
+                <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
+                    <a href="view_sales_partner_list"><input type="button" class="clear-filter-btn" value="View Sales Partners List"></input></a>
+                </sec:authorize>
             </div>
         </form:form>
     </div>
