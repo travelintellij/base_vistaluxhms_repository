@@ -220,7 +220,7 @@
                     </div>
                     <div class="checkbox-item">
                         <form:checkbox path="notifyWhatsapp" id="notifyWhatsapp" />
-                        <label for="notifyWhatsapp" style="color: gray; cursor: not-allowed;">Whats App</label>
+                        <label for="notifyWhatsapp">Whats App</label>
                     </div>
                 </div>
             </div>

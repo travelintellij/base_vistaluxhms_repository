@@ -7,6 +7,7 @@ INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('8', 
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('9', 'SALES_PARTNER_MANAGE', 'SALES');
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('10', 'RATE_TYPE_MANAGE', 'SALES');
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('11', 'ROOMS_MANAGE', 'SALES');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('12', 'EVENT_MANAGE', 'EVENT');
 
 
 

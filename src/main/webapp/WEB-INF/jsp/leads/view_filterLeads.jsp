@@ -111,6 +111,62 @@
     text-align: right;
 }
 
+  .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn {
+        background-color: #3498db;
+        color: white;
+        padding: 6px 12px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .dropdown-content a,
+    .dropdown-content .dropdown-button {
+        color: black;
+        padding: 10px 14px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content .dropdown-button:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #2980b9;
+    }
+
+    .dropdown form {
+        margin: 0;
+    }
 
 </style>
 
@@ -279,18 +335,32 @@
                     <td>${leadRec.statusName}</td>
                     <td>${leadRec.leadOwnerName}</td>
                     <td>
-                        <a style="cursor: pointer;" id="myBtn[${leadRec.leadId}]" onclick="myLeadDisplay(this)" data-load-url="view_lead_details_modal?leadId=${leadRec.leadId}">
-                            View
-                        </a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Actions</button>
+                            <div class="dropdown-content">
 
-                        <form action="view_edit_lead_form" method="POST" style="display:inline;">
-                            <input type="hidden" name="leadId" value="${leadRec.leadId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
-                        </form>
-                         <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}" class="pop-up"><button type="button" class="edit-btn" style="height: 25px; padding: 5px 10px;">Follow-Up</button></a>
+                                <!-- View -->
+                                <a style="cursor: pointer;"
+                                   id="myBtn[${leadRec.leadId}]"
+                                   onclick="myLeadDisplay(this)"
+                                   data-load-url="view_lead_details_modal?leadId=${leadRec.leadId}">
+                                    View
+                                </a>
 
+                                <!-- Edit -->
+                                <form action="view_edit_lead_form" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="leadId" value="${leadRec.leadId}" />
+                                    <button type="submit" class="dropdown-button">Edit</button>
+                                </form>
 
+                                <!-- Follow-Up -->
+                                <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}" class="dropdown-button">Follow-Up</a>
+
+                            </div>
+                        </div>
                     </td>
+
+
                 </tr>
             </c:forEach>
         </tbody>

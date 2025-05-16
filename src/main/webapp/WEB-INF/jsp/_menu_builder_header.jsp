@@ -98,8 +98,6 @@ username = "Guest";
                         </ul>
                     </li>
          </c:if>
-
-        <c:if test="${role == 'admin' || role == 'guest'}">
             <li>
                 <a href="#">Sales Management</a>
                 <ul class="submenu">
@@ -135,8 +133,7 @@ username = "Guest";
                    </sec:authorize>
                 </ul>
             </li>
-        </c:if>
-         <c:if test="${role == 'admin' || role == 'guest'}">
+             <sec:authorize access="hasAnyRole('ADMIN','COST_MANAGE')">
                     <li>
                         <a href="#">Cost Management</a>
                         <ul class="submenu">
@@ -149,7 +146,7 @@ username = "Guest";
                             </li>
                         </ul>
                     </li>
-         </c:if>
+         </sec:authorize>
         <c:if test="${role == 'admin' || role == 'guest'}">
              <li>
                  <a href="#">Quotation Management</a>
@@ -163,7 +160,7 @@ username = "Guest";
              </li>
          </c:if>
 
-        <c:if test="${role == 'admin' || role == 'guest'}">
+        <sec:authorize access="hasAnyRole('ADMIN','EVENT_MANAGE')">
             <li>
                 <a href="#">Event Management</a>
                 <ul class="submenu">
@@ -185,7 +182,7 @@ username = "Guest";
                     </li>
                 </ul>
             </li>
-         </c:if>
+        </sec:authorize>
         <li><a href="logout" class="logout">Logout</a></li>
         <li>
           <a href="view_form_my_profile">
