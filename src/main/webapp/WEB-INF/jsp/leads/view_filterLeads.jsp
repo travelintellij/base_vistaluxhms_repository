@@ -111,62 +111,102 @@
     text-align: right;
 }
 
-  .dropdown {
-        position: relative;
-        display: inline-block;
-    }
+ /* Main dropdown container */
+ .dropdown {
+   position: relative;
+   display: inline-block;
+   font-family: Arial, sans-serif;
+ }
 
-    .dropbtn {
-        background-color: #3498db;
-        color: white;
-        padding: 6px 12px;
-        font-size: 14px;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
+ /* Main button */
+ .dropbtn {
+   background-color: #007bff;
+   color: white;
+   padding: 8px 16px;
+   font-size: 14px;
+   border: none;
+   cursor: pointer;
+   border-radius: 4px;
+   transition: background 0.3s ease;
+ }
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        min-width: 160px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-        border-radius: 4px;
-        overflow: hidden;
-    }
+ .dropbtn:hover {
+   background-color: #0056b3;
+ }
 
-    .dropdown-content a,
-    .dropdown-content .dropdown-button {
-        color: black;
-        padding: 10px 14px;
-        text-decoration: none;
-        display: block;
-        font-size: 14px;
-        background: none;
-        border: none;
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
-    }
+ /* Dropdown content */
+ .dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: #ffffff;
+   min-width: 200px;
+   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   z-index: 1000;
+   border-radius: 6px;
+   top: 100%;
+   left: 0;
+   padding: 0;
+ }
 
-    .dropdown-content a:hover,
-    .dropdown-content .dropdown-button:hover {
-        background-color: #f1f1f1;
-    }
+ .dropdown:hover .dropdown-content {
+   display: block;
+ }
 
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
+ .dropdown-content a,
+ .dropdown-content .dropdown-button {
+   display: block;
+   padding: 10px 16px;
+   color: #333;
+   text-decoration: none;
+   font-size: 14px;
+   background: #fff;
+   border: none;
+   text-align: left;
+   cursor: pointer;
+   width: 100%;
+   box-sizing: border-box;
+   transition: background 0.2s ease;
+ }
 
-    .dropdown:hover .dropbtn {
-        background-color: #2980b9;
-    }
+ .dropdown-content a:hover,
+ .dropdown-content .dropdown-button:hover {
+   background-color: #f2f2f2;
+ }
 
-    .dropdown form {
-        margin: 0;
-    }
+ /* Submenu container */
+ .submenu {
+   position: relative;
+ }
+
+ /* Submenu content */
+ .submenu-content {
+   display: none;
+   position: absolute;
+   left: 100%;
+   top: 0;
+   min-width: 220px;
+   background-color: #ffffff;
+   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   z-index: 1001;
+   border-radius: 6px;
+ }
+
+ .submenu:hover .submenu-content {
+   display: block;
+ }
+
+ .submenu-content a {
+   padding: 10px 16px;
+   font-size: 14px;
+   color: #333;
+   text-decoration: none;
+   display: block;
+   white-space: nowrap;
+ }
+
+ .submenu-content a:hover {
+   background-color: #f2f2f2;
+ }
 
 </style>
 
@@ -334,31 +374,41 @@
                     <td>${leadRec.b2b ? "B2B" : "B2C"}</td>
                     <td>${leadRec.statusName}</td>
                     <td>${leadRec.leadOwnerName}</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="dropbtn">Actions</button>
-                            <div class="dropdown-content">
+                 <td>
+                   <div class="dropdown">
+                     <button class="dropbtn">Actions</button>
+                     <div class="dropdown-content">
 
-                                <!-- View -->
-                                <a style="cursor: pointer;"
-                                   id="myBtn[${leadRec.leadId}]"
-                                   onclick="myLeadDisplay(this)"
-                                   data-load-url="view_lead_details_modal?leadId=${leadRec.leadId}">
-                                    View
-                                </a>
+                       <!-- View -->
+                       <a style="cursor: pointer;"
+                          id="myBtn[${leadRec.leadId}]"
+                          onclick="myLeadDisplay(this)"
+                          data-load-url="view_lead_details_modal?leadId=${leadRec.leadId}">
+                          View
+                       </a>
 
-                                <!-- Edit -->
-                                <form action="view_edit_lead_form" method="POST" style="margin: 0;">
-                                    <input type="hidden" name="leadId" value="${leadRec.leadId}" />
-                                    <button type="submit" class="dropdown-button">Edit</button>
-                                </form>
+                       <!-- Edit -->
+                       <form action="view_edit_lead_form" method="POST" style="margin: 0;">
+                         <input type="hidden" name="leadId" value="${leadRec.leadId}" />
+                         <button type="submit" class="dropdown-button">Edit</button>
+                       </form>
 
-                                <!-- Follow-Up -->
-                                <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}" class="dropdown-button">Follow-Up</a>
+                       <!-- Follow-Up -->
+                       <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}" class="dropdown-button">Follow-Up</a>
 
-                            </div>
-                        </div>
-                    </td>
+                       <!-- Quotations Submenu -->
+                       <div class="submenu">
+                         <span class="dropdown-button">Quotations</span>
+                         <div class="submenu-content">
+                           <a href="view_system_leads_quotes?leadId=${leadRec.leadId}">System Quotation</a>
+                           <a href="generate_freehand_quotation?leadId=${leadRec.leadId}">Freehand Quotation</a>
+                           <a href="generate_event_quotation?leadId=${leadRec.leadId}">Event Quotation</a>
+                         </div>
+                       </div>
+
+                     </div>
+                   </div>
+                 </td>
 
 
                 </tr>

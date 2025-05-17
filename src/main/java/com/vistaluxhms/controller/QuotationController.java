@@ -14,6 +14,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -934,6 +935,17 @@ public class QuotationController {
         System.out.println("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
         //session.removeAttribute(sessionKey);
+        return modelView;
+    }
+
+    @RequestMapping(value="view_system_leads_quotes",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView view_filter_leads( @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,
+                                           BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
+
+        ModelAndView modelView = new ModelAndView("quotation/view_lead_system_quote");
+        leadRecorderObj.setLeadId(new Long(35));
+        //System.out.println(filterObj);
+        //List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
         return modelView;
     }
 
