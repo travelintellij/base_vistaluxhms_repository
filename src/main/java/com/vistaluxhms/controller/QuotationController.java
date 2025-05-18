@@ -12,6 +12,7 @@ import freemarker.core.Configurable;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -948,6 +950,48 @@ public class QuotationController {
         //List<WorkLoadStatusVO> lead_wl_statusList = commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
         return modelView;
     }
+
+
+    @RequestMapping("view_create_lead_system_quotation")
+    public ModelAndView view_create_lead_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntity quotationEntityDTO, HttpSession session, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        session.removeAttribute("QUOTATION_OBJ");
+        session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+
+        if (quotationEntityDTO.getRoomDetails() == null || quotationEntityDTO.getRoomDetails().isEmpty()) {
+            quotationEntityDTO.setRoomDetails(new ArrayList<>()); // Only initialize if it's empty
+        }
+        ModelAndView modelView = new ModelAndView("quotation/createQuotation");
+        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        Map<Integer, String> rateTypeMap = listRateType.stream()
+                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        Map<Integer, String> roomTypeMap = listRoomType.stream()
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
+
+        modelView.addObject("userName", userObj.getUsername());
+
+        return modelView;
+    }
+
+
+
+
+    @Transactional
+    @PostMapping("create_create_lead_system_quotation")
+    public ModelAndView create_create_lead_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntity leadSystemQuotationEntity,  BindingResult result,final RedirectAttributes redirectAttrib ) {
+        ModelAndView modelAndView = new ModelAndView("redirect:view_system_leads_quotes");
+
+
+        return modelAndView;
+    }
+
+
 
 
 }

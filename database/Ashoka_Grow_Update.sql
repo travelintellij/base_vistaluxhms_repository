@@ -10,6 +10,53 @@ INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('11',
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('12', 'EVENT_MANAGE', 'EVENT');
 
 
+CREATE TABLE lead_system_quotation (
+    lsqid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    leadId BIGINT NOT NULL,
+    versionId INT,
+    contactMethod INT,
+    clientId INT,
+    guestName VARCHAR(255),
+    mobile VARCHAR(45),
+    email VARCHAR(1000),
+    grandTotal INT,
+    discount INT,
+    remarks VARCHAR(1000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_lead FOREIGN KEY (leadId) REFERENCES lead_master(leadId),
+    CONSTRAINT fk_client_sq FOREIGN KEY (clientId) REFERENCES client(clientId)
+);
+
+
+CREATE TABLE lead_system_quotation_room_details (
+    lsqrd BIGINT AUTO_INCREMENT PRIMARY KEY,
+    lsqid BIGINT NOT NULL,
+    roomCategoryId INT NOT NULL,
+    mealPlanId INT,
+    adults INT DEFAULT 0,
+    CWB INT DEFAULT 0,         -- Child With Bed
+    CNB INT DEFAULT 0,         -- Child No Bed
+    extraBed INT DEFAULT 0,
+    checkInDate DATE NOT NULL,
+    checkOutDate DATE NOT NULL,
+    adultsTotalPrice INT DEFAULT 0,
+    cwbTotalPrice INT DEFAULT 0,
+    cnbTotalPrice INT DEFAULT 0,
+    extraBedTotalPrice INT DEFAULT 0,
+    totalPrice INT DEFAULT 0,
+
+    CONSTRAINT fk_lsqid FOREIGN KEY (lsqid) REFERENCES lead_system_quotation(lsqid)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_room_category FOREIGN KEY (roomCategoryId) REFERENCES master_room_details(roomCategoryId)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+
 
 
 /********************* Updated below already *****************************/
