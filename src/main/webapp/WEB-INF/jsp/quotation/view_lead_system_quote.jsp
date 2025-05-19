@@ -148,6 +148,34 @@
 .action-btn:hover {
     opacity: 0.85;
 }
+.button-container-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.action-btn:hover {
+    background-color: #0056b3;
+}
+
+.clear-filter-btn {
+    background-color: #6c757d;
+}
+
+.clear-filter-btn:hover {
+    background-color: #5a6268;
+}
 
 
 </style>
@@ -156,6 +184,15 @@
         <div class="follow-up-wrapper bs  container">
             <div class="follow-up-heading" style="padding-top:5px">
                 <h1 style="color:blue;">System Quotation</h1>
+            </div>
+            <div class="button-container-right">
+                <form:form action="view_create_lead_system_quotation" modelAttribute="LEAD_OBJ" method="POST" style="display: inline;">
+                    <form:hidden path="leadId" />
+                    <input type="submit" value="Create System Quotation" class="action-btn">
+                </form:form>
+                <a href="view_filter_leads">
+                    <input type="button" class="clear-filter-btn action-btn" value="View Leads List">
+                </a>
             </div>
             <div class="follow-up-main-form">
             <table class="quotation-table">

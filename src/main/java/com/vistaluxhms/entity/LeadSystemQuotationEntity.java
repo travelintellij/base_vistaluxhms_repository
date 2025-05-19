@@ -42,8 +42,8 @@ public class LeadSystemQuotationEntity {
     @Column(length = 1000)
     private String remarks;
 
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<QuotationRoomDetailsDTO> roomDetails;
+    @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
 
     public Long getLsqid() {
         return lsqid;
@@ -131,6 +131,14 @@ public class LeadSystemQuotationEntity {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public List<LeadSystemQuotationRoomDetailsEntity> getRoomDetails() {
+        return roomDetails;
+    }
+
+    public void setRoomDetails(List<LeadSystemQuotationRoomDetailsEntity> roomDetails) {
+        this.roomDetails = roomDetails;
     }
 }
 
