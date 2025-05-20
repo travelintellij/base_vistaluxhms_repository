@@ -989,23 +989,25 @@ public class QuotationController {
         leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
         leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
         leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        quotationEntityDTO.setLeadEntity(leadEntity);
+        quotationEntityDTO.setClientEntity(leadEntity.getClient());
 
         return modelView;
     }
 
 
     @RequestMapping(value = "review_process_create_system_quotation", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView review_process_create_system_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    public ModelAndView review_process_create_system_quotation(@ModelAttribute("QUOTATION_OBJ") LeadSystemQuotationEntity quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
         if (quotationEntityDTO.getRoomDetails() == null) {
-            quotationEntityDTO = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+            quotationEntityDTO = (LeadSystemQuotationEntity) session.getAttribute("QUOTATION_OBJ_" + userObj.getUserId());
             if (quotationEntityDTO.getRoomDetails() == null) {
                 quotationEntityDTO.setRoomDetails(new ArrayList<>());
             }
         }
-        List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
+        List<LeadSystemQuotationRoomDetailsEntity> validRooms = quotationEntityDTO.getRoomDetails().stream()
                 .filter(room -> room.getRoomCategoryId() > 0 && room.getMealPlanId() > 0)
                 .collect(Collectors.toList());
         quotationEntityDTO.setRoomDetails(validRooms);
@@ -1061,17 +1063,52 @@ public class QuotationController {
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
         formatRoomDates(quotationEntityDTO);
-        //session.
-        //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
-        //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
 
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
-        modelView.setViewName("quotation/reviewQuotation");
+        LeadEntity leadEntity = leadService.findLeadById(quotationEntityDTO.getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        modelView.setViewName("quotation/reviewSystemQuotation");
         return modelView;
     }
 
 
+    @RequestMapping(value = "process_system_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_system_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                               BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = process_quotation_back(quotationEntityDTO,result, session, redirectAttrib);
+        modelView.setViewName("quotation/createLeadSystemQuotation");
+        return modelView;
+
+    }
+
+    /*public ModelAndView process_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+                                               BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("quotation/createQuotation");
+        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        Map<Integer, String> rateTypeMap = listRateType.stream()
+                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        Map<Integer, String> roomTypeMap = listRoomType.stream()
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
+        modelView.addObject("userName", userObj.getUsername());
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+
+        modelView.addObject("QUOTATION_OBJ", sessionQuotation);
+        return modelView;
+    }
+    */
 
     @Transactional
     @PostMapping("create_create_lead_system_quotation")

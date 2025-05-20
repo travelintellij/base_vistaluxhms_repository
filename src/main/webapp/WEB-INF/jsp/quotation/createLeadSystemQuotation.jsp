@@ -197,6 +197,38 @@ h2, h3 {
     background-color: #b02a37;
 }
 
+.client-info-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #e6f2fa; /* light blue tone */
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.client-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.client-info-table th {
+    background-color: #d0eaf7;
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #b2d8f5;
+    width: 12%;
+}
+
+.client-info-table td {
+    background-color: #f7fbfd;
+    padding: 10px;
+    border: 1px solid #b2d8f5;
+    width: 21%;
+}
 
 </style>
 
@@ -265,14 +297,28 @@ h2, h3 {
     <h2>Create System Quotation</h2>
 
 
-    <form:form method="post" action="review_process_create_system_quotation" modelAttribute="QUOTATION_OBJ" id="myForm">
-        <form:hidden path="guestId" />
+    <form:form method="post" action="review_process_create_system_quotation" modelAttribute="LEAD_SYSTEM_QUOTATION_OBJ" id="myForm">
+        <input type="hidden" id="clientId" name="clientEntity.clientId" value="${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.clientId}" />
         <form:hidden path="discount" />
+        <input type="hidden" id="leadId" name="leadEntity.leadId" value="${LEAD_SYSTEM_QUOTATION_OBJ.leadEntity.leadId}" />
         <!-- User Type Selection -->
+      <div class="client-info-container">
+          <table class="client-info-table">
+              <tr>
+                  <th>Client Name</th>
+                  <td>${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.clientName}</td>
 
+                  <th>Mobile</th>
+                  <td>${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.mobile}</td>
 
+                  <th>Email</th>
+                  <td>${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.emailId}</td>
+              </tr>
+          </table>
+      </div>
 
-  <div class="form-group">
+        <%--
+        <div class="form-group">
               <label for="quotationAudienceType">User Type:</label>
 
               <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 600px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
@@ -295,6 +341,7 @@ h2, h3 {
               <input type="text" id="salespartner" name="salespartner" class="input-field">
           </div>
 
+
           <div id="unregisteredBox" class="hidden">
               <div class="row">
                   <label for="contactMethod">Contact By:</label>
@@ -315,7 +362,7 @@ h2, h3 {
                   <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
               </div>
           </div>
-
+        --%>
         <!-- Room Details (Dynamically Added Rows) -->
         <div id="roomsContainer">
             <h3>Room Details</h3>
