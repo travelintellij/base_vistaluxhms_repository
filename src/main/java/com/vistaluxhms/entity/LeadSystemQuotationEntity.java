@@ -15,35 +15,35 @@ public class LeadSystemQuotationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long lsqid;
+    protected Long lsqid;
 
     @ManyToOne
     @JoinColumn(name = "leadId", nullable = false)
-    private LeadEntity leadEntity;
+    protected LeadEntity leadEntity;
 
     @ManyToOne
     @JoinColumn(name = "clientId", nullable = false)
-    private ClientEntity clientEntity;
+    protected ClientEntity clientEntity;
 
-    private Integer versionId;
-    private Integer contactMethod;
+    protected int versionId;
+    protected int contactMethod;
 
-    private String guestName;
+    protected String guestName;
 
     @Column(length = 45)
-    private String mobile;
+    protected String mobile;
 
     @Column(length = 1000)
-    private String email;
+    protected String email;
 
-    private Long grandTotal;
-    private Integer discount;
+    protected long grandTotal;
+    protected int discount;
 
     @Column(length = 1000)
-    private String remarks;
+    protected String remarks;
 
     @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
+    protected List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
 
     public Long getLsqid() {
         return lsqid;
@@ -113,7 +113,7 @@ public class LeadSystemQuotationEntity {
         return grandTotal;
     }
 
-    public void setGrandTotal(Long grandTotal) {
+    public void setGrandTotal(long grandTotal) {
         this.grandTotal = grandTotal;
     }
 

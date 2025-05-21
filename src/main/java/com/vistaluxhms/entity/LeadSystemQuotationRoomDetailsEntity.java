@@ -16,58 +16,64 @@ public class LeadSystemQuotationRoomDetailsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long lsqrd;
+    protected long lsqrd;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lsqid", nullable = false)
-    private LeadSystemQuotationEntity leadSystemQuotationEntity;
+    protected LeadSystemQuotationEntity leadSystemQuotationEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomCategoryId", nullable = false)
-    private MasterRoomDetailsEntity roomDetails;
+    protected int roomCategoryId;
 
     @Column(name = "mealPlanId")
-    private Integer mealPlanId;
+    protected int mealPlanId;
 
     @Column(name = "adults", nullable = false)
-    private Integer adults = 0;
+    protected int adults = 0;
 
     @Column(name = "CWB", nullable = false)
-    private Integer cwb = 0;
+    protected int cwb = 0;
 
     @Column(name = "CNB", nullable = false)
-    private Integer cnb = 0;
+    protected int cnb = 0;
 
     @Column(name = "extraBed", nullable = false)
-    private Integer extraBed = 0;
+    protected int extraBed = 0;
 
-    @Column(name = "checkInDate", nullable = false)
-    private LocalDate checkInDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected LocalDate checkInDate;
 
-    @Column(name = "checkOutDate", nullable = false)
-    private LocalDate checkOutDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected LocalDate checkOutDate;
 
     @Column(name = "adultsTotalPrice", nullable = false)
-    private Integer adultsTotalPrice = 0;
+    protected int adultsTotalPrice = 0;
 
     @Column(name = "cwbTotalPrice", nullable = false)
-    private Integer cwbTotalPrice = 0;
+    protected int cwbTotalPrice = 0;
 
     @Column(name = "cnbTotalPrice", nullable = false)
-    private Integer cnbTotalPrice = 0;
+    protected int cnbTotalPrice = 0;
 
     @Column(name = "extraBedTotalPrice", nullable = false)
-    private Integer extraBedTotalPrice = 0;
+    protected int extraBedTotalPrice = 0;
 
     @Column(name = "totalPrice", nullable = false)
-    private Integer totalPrice = 0;
+    protected int totalPrice = 0;
 
 
-    public Long getLsqrd() {
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public LeadSystemQuotationRoomDetailsEntity() {
+    }
+
+
+    public long getLsqrd() {
         return lsqrd;
     }
 
-    public void setLsqrd(Long lsqrd) {
+    public void setLsqrd(long lsqrd) {
         this.lsqrd = lsqrd;
     }
 
@@ -79,51 +85,51 @@ public class LeadSystemQuotationRoomDetailsEntity {
         this.leadSystemQuotationEntity = leadSystemQuotationEntity;
     }
 
-    public MasterRoomDetailsEntity getRoomDetails() {
-        return roomDetails;
+    public int getRoomCategoryId() {
+        return roomCategoryId;
     }
 
-    public void setRoomDetails(MasterRoomDetailsEntity roomDetails) {
-        this.roomDetails = roomDetails;
+    public void setRoomCategoryId(int roomCategoryId) {
+        this.roomCategoryId = roomCategoryId;
     }
 
-    public Integer getMealPlanId() {
+    public int getMealPlanId() {
         return mealPlanId;
     }
 
-    public void setMealPlanId(Integer mealPlanId) {
+    public void setMealPlanId(int mealPlanId) {
         this.mealPlanId = mealPlanId;
     }
 
-    public Integer getAdults() {
+    public int getAdults() {
         return adults;
     }
 
-    public void setAdults(Integer adults) {
+    public void setAdults(int adults) {
         this.adults = adults;
     }
 
-    public Integer getCwb() {
+    public int getCwb() {
         return cwb;
     }
 
-    public void setCwb(Integer cwb) {
+    public void setCwb(int cwb) {
         this.cwb = cwb;
     }
 
-    public Integer getCnb() {
+    public int getCnb() {
         return cnb;
     }
 
-    public void setCnb(Integer cnb) {
+    public void setCnb(int cnb) {
         this.cnb = cnb;
     }
 
-    public Integer getExtraBed() {
+    public int getExtraBed() {
         return extraBed;
     }
 
-    public void setExtraBed(Integer extraBed) {
+    public void setExtraBed(int extraBed) {
         this.extraBed = extraBed;
     }
 
@@ -143,43 +149,45 @@ public class LeadSystemQuotationRoomDetailsEntity {
         this.checkOutDate = checkOutDate;
     }
 
-    public Integer getAdultsTotalPrice() {
+    public int getAdultsTotalPrice() {
         return adultsTotalPrice;
     }
 
-    public void setAdultsTotalPrice(Integer adultsTotalPrice) {
+    public void setAdultsTotalPrice(int adultsTotalPrice) {
         this.adultsTotalPrice = adultsTotalPrice;
     }
 
-    public Integer getCwbTotalPrice() {
+    public int getCwbTotalPrice() {
         return cwbTotalPrice;
     }
 
-    public void setCwbTotalPrice(Integer cwbTotalPrice) {
+    public void setCwbTotalPrice(int cwbTotalPrice) {
         this.cwbTotalPrice = cwbTotalPrice;
     }
 
-    public Integer getCnbTotalPrice() {
+    public int getCnbTotalPrice() {
         return cnbTotalPrice;
     }
 
-    public void setCnbTotalPrice(Integer cnbTotalPrice) {
+    public void setCnbTotalPrice(int cnbTotalPrice) {
         this.cnbTotalPrice = cnbTotalPrice;
     }
 
-    public Integer getExtraBedTotalPrice() {
+    public int getExtraBedTotalPrice() {
         return extraBedTotalPrice;
     }
 
-    public void setExtraBedTotalPrice(Integer extraBedTotalPrice) {
+    public void setExtraBedTotalPrice(int extraBedTotalPrice) {
         this.extraBedTotalPrice = extraBedTotalPrice;
     }
 
-    public Integer getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+
 }

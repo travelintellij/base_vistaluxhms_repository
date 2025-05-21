@@ -386,7 +386,7 @@ h2, h3 {
                 </thead>
                 <tbody>
                     <!-- Dynamic Rows Will Be Added Here -->
-    <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
+    <c:forEach var="room" items="${LEAD_SYSTEM_QUOTATION_OBJ.roomDetails}" varStatus="status">
         <tr>
             <td>
                  <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>

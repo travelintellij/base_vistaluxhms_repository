@@ -1,0 +1,100 @@
+package com.vistaluxhms.model;
+
+import com.vistaluxhms.entity.LeadSystemQuotationEntity;
+import com.vistaluxhms.entity.LeadSystemQuotationRoomDetailsEntity;
+
+import java.time.LocalDate;
+
+public class LeadSystemQuotationRoomDetailsEntityDTO extends LeadSystemQuotationRoomDetailsEntity {
+    private int adultPrice;
+    private int childWithBedPrice;
+    private int childNoBedPrice;
+    private int extraBedPrice;
+    private String formattedCheckInDate;
+    private String formattedCheckOutDate;
+    private String roomCategoryName;
+    private String mealPlanName;
+
+
+    public void updateLeadRoomDetailsDTOFromLeadRoomEntity(LeadSystemQuotationRoomDetailsEntity leadRoomDetailsEntity) {
+        this.lsqrd = leadRoomDetailsEntity.getLsqrd();
+        this.leadSystemQuotationEntity = leadRoomDetailsEntity.getLeadSystemQuotationEntity();
+        this.roomCategoryId = leadRoomDetailsEntity.getRoomCategoryId();
+        this.mealPlanId = leadRoomDetailsEntity.getMealPlanId();
+        this.adults = leadRoomDetailsEntity.getAdults();
+        this.cwb = leadRoomDetailsEntity.getCwb();
+        this.cnb = leadRoomDetailsEntity.getCnb();
+        this.extraBed = leadRoomDetailsEntity.getExtraBed();
+        this.checkInDate = leadRoomDetailsEntity.getCheckInDate();
+        this.checkOutDate = leadRoomDetailsEntity.getCheckOutDate();
+        this.adultsTotalPrice = leadRoomDetailsEntity.getAdultsTotalPrice();
+        this.cwbTotalPrice = leadRoomDetailsEntity.getCwbTotalPrice();
+        this.cnbTotalPrice = leadRoomDetailsEntity.getCnbTotalPrice();
+        this.extraBedTotalPrice = leadRoomDetailsEntity.getExtraBedTotalPrice();
+        this.totalPrice = leadRoomDetailsEntity.getTotalPrice();
+    }
+
+    public int getAdultPrice() {
+        return adultPrice;
+    }
+
+    public void setAdultPrice(int adultPrice) {
+        this.adultPrice = adultPrice;
+    }
+
+    public int getChildWithBedPrice() {
+        return childWithBedPrice;
+    }
+
+    public void setChildWithBedPrice(int childWithBedPrice) {
+        this.childWithBedPrice = childWithBedPrice;
+    }
+
+    public int getChildNoBedPrice() {
+        return childNoBedPrice;
+    }
+
+    public void setChildNoBedPrice(int childNoBedPrice) {
+        this.childNoBedPrice = childNoBedPrice;
+    }
+
+    public int getExtraBedPrice() {
+        return extraBedPrice;
+    }
+
+    public void setExtraBedPrice(int extraBedPrice) {
+        this.extraBedPrice = extraBedPrice;
+    }
+
+    public String getFormattedCheckInDate() {
+        return formattedCheckInDate;
+    }
+
+    public void setFormattedCheckInDate(String formattedCheckInDate) {
+        this.formattedCheckInDate = formattedCheckInDate;
+    }
+
+    public String getFormattedCheckOutDate() {
+        return formattedCheckOutDate;
+    }
+
+    public void setFormattedCheckOutDate(String formattedCheckOutDate) {
+        this.formattedCheckOutDate = formattedCheckOutDate;
+    }
+
+    public String getRoomCategoryName() {
+        return roomCategoryName;
+    }
+
+    public void setRoomCategoryName(String roomCategoryName) {
+        this.roomCategoryName = roomCategoryName;
+    }
+
+    public String getMealPlanName() {
+        return mealPlanName;
+    }
+
+    public void setMealPlanName(String mealPlanName) {
+        this.mealPlanName = mealPlanName;
+    }
+}
