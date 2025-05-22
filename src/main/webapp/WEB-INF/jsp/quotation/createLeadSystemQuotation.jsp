@@ -405,10 +405,10 @@ h2, h3 {
             </td>
             <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
             <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required /></td>
-            <td><input type="number" name="roomDetails[${status.index}].childWithBed" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
+            <td><input type="number" name="roomDetails[${status.index}].cwb" class="input-field" value="${room.cwb}" min="0" style="width:70px;" required /></td>
             <td>
-                <font color="red"><form:errors path="roomDetails[${status.index}].childNoBed" cssClass="error"  /></font>
-                <input type="number" name="roomDetails[${status.index}].childNoBed" class="input-field" value="${room.childNoBed}" min="0"  style="width:70px;" required />
+                <font color="red"><form:errors path="roomDetails[${status.index}].cnb" cssClass="error"  /></font>
+                <input type="number" name="roomDetails[${status.index}].cnb" class="input-field" value="${room.cnb}" min="0"  style="width:70px;" required />
             </td>
             <td><input type="number" name="roomDetails[${status.index}].extraBed" class="input-field" value="${room.extraBed}" min="0" style="width:70px;" required /></td>
             <td>
@@ -537,8 +537,8 @@ function addRoom() {
             </select>
         </td>
         <td><input type="number" name="roomDetails[\${rowCount}].adults" class="input-field" min="1" style="width:70px;" value="2" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childWithBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
-        <td><input type="number" name="roomDetails[\${rowCount}].childNoBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].cwb" class="input-field" min="0" style="width:70px;" value="0" required /></td>
+        <td><input type="number" name="roomDetails[\${rowCount}].cnb" class="input-field" min="0" style="width:70px;" value="0" required /></td>
         <td><input type="number" name="roomDetails[\${rowCount}].extraBed" class="input-field" min="0" style="width:70px;" value="0" required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkInDate"  style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;"  required /></td>
         <td><input type="date" name="roomDetails[\${rowCount}].checkOutDate" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required  /></td>

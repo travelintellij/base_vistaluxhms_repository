@@ -97,7 +97,7 @@ h2, h3 {
 }
 
   .container {
-             width: 60%;
+             width: 100%;
              margin: auto;
              padding: 20px;
              border: 1px solid #ccc;
@@ -177,9 +177,12 @@ h2, h3 {
 }
 
 .client-info-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
     margin-top: 10px;
     margin-bottom: 20px;
-    background-color: #e6f2fa; /* light blue tone */
+    background-color: #e6f2fa;
     padding: 12px;
     border-radius: 6px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
@@ -187,26 +190,27 @@ h2, h3 {
 
 .client-info-table {
     width: 100%;
+    table-layout: auto;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: #333;
 }
 
+.client-info-table th,
+.client-info-table td {
+    padding: 10px;
+    border: 1px solid #b2d8f5;
+}
+
 .client-info-table th {
     background-color: #d0eaf7;
-    padding: 10px;
-    text-align: left;
     font-weight: 600;
-    border: 1px solid #b2d8f5;
-    width: 12%;
+    text-align: left;
 }
 
 .client-info-table td {
     background-color: #f7fbfd;
-    padding: 10px;
-    border: 1px solid #b2d8f5;
-    width: 21%;
 }
 
 </style>
@@ -278,8 +282,6 @@ h2, h3 {
     <form:form method="post" action="process_system_quotation" modelAttribute="LEAD_SYSTEM_QUOTATION_OBJ">
         <!-- User Type Selection -->
             <div class="container">
-
-
             <div class="client-info-container">
                    <table class="client-info-table">
                        <tr>
@@ -331,7 +333,7 @@ h2, h3 {
                         <td><font size="2">${room.cwb} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.childWithBedPrice}</b></font></td>
                         <td><font size="2">${room.cnb} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.childNoBedPrice}</b></font></td>
                         <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedPrice}</b></font></td>
-                        <td>${room.formattedCheckInDate}</td>
+                        <td>${room.formattedCheckInDate} </td>
                         <td>${room.formattedCheckOutDate}</td>
                         <td><font color="#503732" size="4"> <b>&#8377; ${room.totalPrice} </b></font></td>
                     </tr>
@@ -357,6 +359,14 @@ h2, h3 {
                 style="width: 100%; height: 100px; padding: 10px; font-size: 16px; border: 2px solid #4CAF50; border-radius: 8px; background: linear-gradient(white, #f1f1f1); color: #333; outline: none; transition: all 0.3s ease-in-out;"
                 readonly="true"
             />
+
+        <div class="button-container">
+                <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
+                <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
+                <button type="submit" class="btn" name="EmailAndWhatsApp" id="EmailAndWhatsApp" value="EmailAndWhatsApp">Email & WhatsApp Quotation</button> |
+                <button type="submit" class="btn" disabled>Save Quotation</button>
+                <button type="submit" class="btn" name="Download" id="Download" value="Download">Download Quotation</button>
+        </div>
 
 </div>
 <script>

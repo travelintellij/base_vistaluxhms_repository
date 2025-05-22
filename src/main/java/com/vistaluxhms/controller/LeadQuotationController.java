@@ -183,7 +183,7 @@ public class LeadQuotationController {
 
 
     @RequestMapping(value = "review_process_create_system_quotation", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView review_process_create_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    public ModelAndView review_process_create_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
@@ -200,6 +200,7 @@ public class LeadQuotationController {
         quotationEntityDTO.setRoomDetails(validRooms);
 
         quotationValidator.validate(quotationEntityDTO, result);
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
         if (result.hasErrors()) {
             modelView =  view_create_lead_system_quotation(quotationEntityDTO,leadRecorderObj, session,  result);
             return modelView;
@@ -217,6 +218,8 @@ public class LeadQuotationController {
                 //quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 LocalDate checkIn = quotationRoomDTO.getCheckInDate();
                 LocalDate checkOut = quotationRoomDTO.getCheckOutDate();
+
+
                 int totalAdultPrice = 0;
                 int totalChildWithBedPrice = 0;
                 int totalChildNoBedPrice = 0;
@@ -243,8 +246,8 @@ public class LeadQuotationController {
                 quotationRoomDTO.setChildNoBedPrice(totalChildNoBedPrice);
                 quotationRoomDTO.setExtraBedPrice(totalExtraBedPrice);
                 quotationRoomDTO.setTotalPrice(totalAdultPrice + totalChildWithBedPrice + totalChildNoBedPrice + totalExtraBedPrice);
-                quotationRoomDTO.setFormattedCheckInDate(checkIn.format(OUTPUT_FORMAT));
-                quotationRoomDTO.setFormattedCheckOutDate(checkOut.format(OUTPUT_FORMAT));
+                quotationRoomDTO.setFormattedCheckInDate(quotationRoomDTO.getCheckInDate().format(OUTPUT_FORMAT));
+                quotationRoomDTO.setFormattedCheckOutDate(quotationRoomDTO.getCheckOutDate().format(OUTPUT_FORMAT));
                 quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
                 quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 listRoomDetailsDTO.add(quotationRoomDTO);
@@ -317,14 +320,14 @@ public class LeadQuotationController {
 
 
     @RequestMapping(value = "process_system_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView process_system_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                               BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
-        ModelAndView modelView = process_quotation_back(quotationEntityDTO,result, session, redirectAttrib);
+    public ModelAndView process_system_quotation_back(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
+                                                      @ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = process_quotation_back(quotationEntityDTO,leadRecorderObj,result, session, redirectAttrib);
         modelView.setViewName("quotation/createLeadSystemQuotation");
         return modelView;
     }
 
-    public ModelAndView process_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+    public ModelAndView process_quotation_back(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,
                                                BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("quotation/createQuotation");
@@ -341,35 +344,13 @@ public class LeadQuotationController {
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
         modelView.addObject("userName", userObj.getUsername());
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
-        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+        LeadSystemQuotationEntityDTO sessionQuotation = (LeadSystemQuotationEntityDTO) session.getAttribute(sessionKey);
 
-        modelView.addObject("QUOTATION_OBJ", sessionQuotation);
+        modelView.addObject("LEAD_SYSTEM_QUOTATION_OBJ", sessionQuotation);
         return modelView;
     }
 
-    /*public ModelAndView process_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                               BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser();
-        ModelAndView modelView = new ModelAndView("quotation/createQuotation");
-        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
-        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
-        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
-        Map<Integer, String> rateTypeMap = listRateType.stream()
-                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
-        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
-        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
-        Map<Integer, String> roomTypeMap = listRoomType.stream()
-                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
-        modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
-        modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
-        modelView.addObject("userName", userObj.getUsername());
-        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
-        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
 
-        modelView.addObject("QUOTATION_OBJ", sessionQuotation);
-        return modelView;
-    }
-    */
 
     @Transactional
     @PostMapping("create_create_lead_system_quotation")

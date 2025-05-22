@@ -4,6 +4,7 @@ import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationRoomDetailsEntity;
 import com.vistaluxhms.entity.MasterRoomDetailsEntity;
+import com.vistaluxhms.model.LeadSystemQuotationEntityDTO;
 import com.vistaluxhms.model.QuotationEntityDTO;
 import com.vistaluxhms.model.QuotationRoomDetailsDTO;
 import com.vistaluxhms.services.ClientServicesImpl;
@@ -38,12 +39,12 @@ public class LeadSystemQuotationValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return QuotationEntityDTO.class.equals(clazz);	}
+		return LeadSystemQuotationEntityDTO.class.equals(clazz);	}
 
 	//following code validates if the country code (String) matches with the country name.
 	@Override
 	public void validate(Object target, Errors errors) {
-		LeadSystemQuotationEntity leadSystemQuotationEntity = (LeadSystemQuotationEntity)target;
+		LeadSystemQuotationEntityDTO leadSystemQuotationEntity = (LeadSystemQuotationEntityDTO)target;
 		isValidRoomDetails(leadSystemQuotationEntity.getRoomDetails(),errors);
 		validateOccupancy(leadSystemQuotationEntity.getRoomDetails(),errors);
 	}
@@ -69,7 +70,7 @@ public class LeadSystemQuotationValidator implements Validator {
 					errors.rejectValue("roomDetails[" + i + "].roomCategoryId", "error.roomDetails", "Max Occupancy Exceeded.");
 				}
 				if(childNoBed>ANY_ROOM_CHILD_NO_BED_ALLOWED){
-					errors.rejectValue("roomDetails[" + i + "].childNoBed", "error.roomDetails", "Child No Bed Exceeded.");
+					errors.rejectValue("roomDetails[" + i + "].cnb", "error.roomDetails", "Child No Bed Exceeded.");
 				}
 
 				// Use the found room entity
@@ -109,6 +110,7 @@ public class LeadSystemQuotationValidator implements Validator {
 					}
 
 					if (checkOut.isBefore(today)) {
+						System.out.println("Room Detail object chugh is " + roomDetails);
 						errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date cannot be in the past.");
 						isValid = false;
 					}
