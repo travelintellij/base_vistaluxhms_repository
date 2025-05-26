@@ -114,8 +114,8 @@
                 <td>${room.roomCategoryName}</td>
                 <td>${room.mealPlanName}</td>
                 <td>${room.adults}</td>
-                <td>${room.childWithBed}</td>
-                <td>${room.childNoBed}</td>
+                <td>${room.cwb}</td>
+                <td>${room.cnb}</td>
                 <td>${room.extraBed}</td>
                 <td>${room.formattedCheckInDate}</td>
                 <td>${room.formattedCheckOutDate}</td>
