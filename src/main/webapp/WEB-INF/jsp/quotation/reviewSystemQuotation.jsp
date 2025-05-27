@@ -280,6 +280,8 @@ h2, h3 {
     <h2>Review Quotation</h2>
 
     <form:form method="post" action="process_system_quotation" modelAttribute="LEAD_SYSTEM_QUOTATION_OBJ">
+        <input type="hidden" id="clientId" name="clientEntity.clientId" value="${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.clientId}" />
+        <input type="hidden" id="leadId" name="leadEntity.leadId" value="${LEAD_SYSTEM_QUOTATION_OBJ.leadEntity.leadId}" />
         <!-- User Type Selection -->
             <div class="container">
             <div class="client-info-container">
@@ -364,7 +366,7 @@ h2, h3 {
                 <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
                 <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
                 <button type="submit" class="btn" name="EmailAndWhatsApp" id="EmailAndWhatsApp" value="EmailAndWhatsApp">Email & WhatsApp Quotation</button> |
-                <button type="submit" class="btn" disabled>Save Quotation</button>
+                <button type="submit" class="btn" style="background-color: green;"name="SaveQuotation" id="SaveQuotation" value="SaveQuotation">Save Quotation</button>
                 <button type="submit" class="btn" name="Download" id="Download" value="Download">Download Quotation</button>
         </div>
 

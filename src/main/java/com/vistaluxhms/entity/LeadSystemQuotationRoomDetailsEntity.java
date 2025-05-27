@@ -2,6 +2,7 @@ package com.vistaluxhms.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vistaluxhms.model.LeadEntityDTO;
+import com.vistaluxhms.model.LeadSystemQuotationRoomDetailsEntityDTO;
 import com.vistaluxhms.model.QuotationRoomDetailsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -187,6 +188,23 @@ public class LeadSystemQuotationRoomDetailsEntity {
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void updateEntityFromVO(LeadSystemQuotationRoomDetailsEntityDTO leadSystemQuotationRoomDetailsEntityDTO){
+        this.leadSystemQuotationEntity = leadSystemQuotationRoomDetailsEntityDTO.getLeadSystemQuotationEntity();
+        this.roomCategoryId = leadSystemQuotationRoomDetailsEntityDTO.getRoomCategoryId();
+        this.mealPlanId = leadSystemQuotationRoomDetailsEntityDTO.getMealPlanId();
+        this.adults = leadSystemQuotationRoomDetailsEntityDTO.getAdults();
+        this.cwb = leadSystemQuotationRoomDetailsEntityDTO.getCwb();
+        this.cnb = leadSystemQuotationRoomDetailsEntityDTO.getCnb();
+        this.extraBed = leadSystemQuotationRoomDetailsEntityDTO.getExtraBed();
+        this.checkInDate = leadSystemQuotationRoomDetailsEntityDTO.getCheckInDate();
+        this.checkOutDate = leadSystemQuotationRoomDetailsEntityDTO.getCheckOutDate();
+        this.adultsTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getAdultsTotalPrice();
+        this.cwbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getCwbTotalPrice();
+        this.cnbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getCnbTotalPrice();
+        this.extraBedTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getExtraBedTotalPrice();
+        this.totalPrice = leadSystemQuotationRoomDetailsEntityDTO.getTotalPrice();
     }
 
 

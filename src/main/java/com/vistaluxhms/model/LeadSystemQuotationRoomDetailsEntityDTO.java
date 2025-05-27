@@ -15,6 +15,8 @@ public class LeadSystemQuotationRoomDetailsEntityDTO extends LeadSystemQuotation
     private String roomCategoryName;
     private String mealPlanName;
 
+    private int noOfRooms;
+    private int noOfChild;
 
     public void updateLeadRoomDetailsDTOFromLeadRoomEntity(LeadSystemQuotationRoomDetailsEntity leadRoomDetailsEntity) {
         this.lsqrd = leadRoomDetailsEntity.getLsqrd();
@@ -96,5 +98,21 @@ public class LeadSystemQuotationRoomDetailsEntityDTO extends LeadSystemQuotation
 
     public void setMealPlanName(String mealPlanName) {
         this.mealPlanName = mealPlanName;
+    }
+
+    public int getNoOfRooms() {
+        return noOfRooms;
+    }
+
+    public void setNoOfRooms(int noOfRooms) {
+        this.noOfRooms = noOfRooms;
+    }
+
+    public int getNoOfChild() {
+        return noOfChild;
+    }
+
+    public void setNoOfChild(int noOfChild) {
+        this.noOfChild = noOfChild;
     }
 }

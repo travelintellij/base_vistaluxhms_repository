@@ -2,6 +2,7 @@ package com.vistaluxhms.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vistaluxhms.model.LeadEntityDTO;
+import com.vistaluxhms.model.LeadSystemQuotationEntityDTO;
 import com.vistaluxhms.model.QuotationRoomDetailsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +16,7 @@ public class LeadSystemQuotationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "lsqid")
     protected Long lsqid;
 
     @ManyToOne
@@ -26,15 +28,15 @@ public class LeadSystemQuotationEntity {
     protected ClientEntity clientEntity;
 
     protected int versionId;
-    protected int contactMethod;
+    //protected int contactMethod;
 
-    protected String guestName;
+    //protected String guestName;
 
-    @Column(length = 45)
-    protected String mobile;
+    //@Column(length = 45)
+    //protected String mobile;
 
-    @Column(length = 1000)
-    protected String email;
+    //@Column(length = 1000)
+    //protected String email;
 
     protected long grandTotal;
     protected int discount;
@@ -44,6 +46,8 @@ public class LeadSystemQuotationEntity {
 
     @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
+
+
 
     public Long getLsqid() {
         return lsqid;
@@ -77,37 +81,6 @@ public class LeadSystemQuotationEntity {
         this.versionId = versionId;
     }
 
-    public Integer getContactMethod() {
-        return contactMethod;
-    }
-
-    public void setContactMethod(Integer contactMethod) {
-        this.contactMethod = contactMethod;
-    }
-
-    public String getGuestName() {
-        return guestName;
-    }
-
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public Long getGrandTotal() {
         return grandTotal;
@@ -140,5 +113,22 @@ public class LeadSystemQuotationEntity {
     public void setRoomDetails(List<LeadSystemQuotationRoomDetailsEntity> roomDetails) {
         this.roomDetails = roomDetails;
     }
+
+    public void updateEntityfromVO(LeadSystemQuotationEntityDTO leadSystemQuotationEntityDTO){
+        //this.lsqid = lsqid;
+        this.leadEntity = leadSystemQuotationEntityDTO.getLeadEntity();
+        this.clientEntity = leadSystemQuotationEntityDTO.getClientEntity();
+        this.versionId = leadSystemQuotationEntityDTO.getVersionId();
+        //this.contactMethod = contactMethod;
+        //this.guestName = guestName;
+        //this.mobile = mobile;
+        //this.email = email;
+        this.grandTotal = leadSystemQuotationEntityDTO.getGrandTotal();
+        this.discount = leadSystemQuotationEntityDTO.getDiscount();
+        this.remarks = leadSystemQuotationEntityDTO.getRemarks();
+        //this.roomDetails = leadSystemQuotationEntityDTO.getRoomDetails();
+    }
+
+
 }
 
