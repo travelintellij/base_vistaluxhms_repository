@@ -201,28 +201,28 @@
                         <th>Quotation ID</th>
                         <th>Version No.</th>
                         <th>Client Name</th>
-                        <th>Check-In</th>
-                        <th>Check-Out</th>
                         <th>Total Amount</th>
+                        <th>Discount</th>
+                        <th>Net Amount </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="quote" items="${quotationList}">
+                    <c:forEach var="quote" items="${LEAD_SYS_QUOTATION_LIST}">
                         <tr>
-                            <td>${quote.quotationId}</td>
-                            <td>${quote.versionNo}</td>
-                            <td>${quote.clientName}</td>
-                            <td>${quote.checkIn}</td>
-                            <td>${quote.checkOut}</td>
-                            <td>₹ ${quote.totalAmount}</td>
+                            <td>${quote.lsqid}</td>
+                            <td>${quote.versionId}</td>
+                            <td>${quote.clientEntity.clientName}</td>
+                            <td>INR ${quote.grandTotal}</td>
+                            <td>INR ${quote.discount}</td>
+                            <td>INR ${quote.grandTotal - quote.discount}</td>
                             <td>
                                 <!-- View -->
-                                <a href="viewQuotation?quotationId=${quote.quotationId}" class="action-btn view">View</a>
+                                <a href="viewQuotation?quotationId=${quote.lsqid}" class="action-btn view">View</a>
                                 <!-- Edit -->
-                                <a href="editQuotation?quotationId=${quote.quotationId}" class="action-btn edit">Edit</a>
+                                <a href="editQuotation?quotationId=${quote.lsqid}" class="action-btn edit">Edit</a>
                                 <!-- Delete -->
-                                <a href="deleteQuotation?quotationId=${quote.quotationId}" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this quotation?');">Delete</a>
+                                <a href="deleteQuotation?quotationId=${quote.lsqid}" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this quotation?');">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>

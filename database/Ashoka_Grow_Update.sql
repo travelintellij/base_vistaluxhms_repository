@@ -57,6 +57,13 @@ CREATE TABLE lead_system_quotation_room_details (
 );
 
 
+ALTER TABLE `ashokadb`.`lead_system_quotation`
+DROP COLUMN `email`,
+DROP COLUMN `mobile`,
+DROP COLUMN `guestName`,
+DROP COLUMN `contactMethod`;
+
+
 
 
 /********************* Updated below already *****************************/

@@ -141,6 +141,9 @@ public class LeadQuotationController {
         leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
         leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
         leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+
+        List<LeadSystemQuotationEntity> listLeadSystemQuotation = leadQuotationService.findLeadSystemQuotations(leadRecorderObj.getLeadId());
+        modelView.addObject("LEAD_SYS_QUOTATION_LIST",listLeadSystemQuotation);
         //modelView.addObject("LEAD_OBJ",leadRecorderObj);
         //leadRecorderObj.setLeadId(new Long(35));
         //System.out.println(filterObj);
@@ -768,6 +771,9 @@ public class LeadQuotationController {
 
         LeadSystemQuotationEntity leadSystemQuotationEntity = new LeadSystemQuotationEntity();
         leadSystemQuotationEntity.updateEntityfromVO(quotationEntityDTO);
+        Integer maxVersionId = leadQuotationService.findMaxVersionIdOfQuotationByLeadId(leadRecorderObj.getLeadId());
+        leadSystemQuotationEntity.setVersionId((maxVersionId != null ? maxVersionId : 0) + 1);
+
         // Prepare list for child entities
         List<LeadSystemQuotationRoomDetailsEntity> roomEntities = new ArrayList<>();
         if (quotationEntityDTO.getRoomDetailsDTO() != null) {
