@@ -3,12 +3,20 @@ package com.vistaluxhms.services;
 import com.vistaluxevent.entity.EventMasterServiceEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationRoomDetailsEntity;
+import com.vistaluxhms.model.LeadSystemQuotationEntityDTO;
+import com.vistaluxhms.model.LeadSystemQuotationRoomDetailsEntityDTO;
 import com.vistaluxhms.repository.LeadEntityRepository;
 import com.vistaluxhms.repository.LeadSystemQuotationRepository;
+import com.vistaluxhms.repository.LeadSystemQuotationRoomDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LeadQuotationServiceImpl {
@@ -18,6 +26,9 @@ public class LeadQuotationServiceImpl {
 
     @Autowired
     private LeadSystemQuotationRepository quotationRepository;
+
+    @Autowired
+    LeadSystemQuotationRoomDetailsRepository roomDetailsRepository;
 
     public LeadSystemQuotationEntity createQuotationWithRooms(LeadSystemQuotationEntity quotation) {
         // Save parent; children are saved because of CascadeType.ALL
@@ -33,7 +44,16 @@ public class LeadQuotationServiceImpl {
     }
 
     public LeadSystemQuotationEntity findLeadSystemQuotationByID(Long lsqid){
-        return quotationRepository.findById(lsqid).get();
+        Optional<LeadSystemQuotationEntity> leadSystemQuotationEntity = quotationRepository.findById(lsqid);
+        if(leadSystemQuotationEntity.isPresent()){
+            return leadSystemQuotationEntity.get();
+        }
+        return null;
     }
+
+    public void deleteRoomDetails(List<LeadSystemQuotationRoomDetailsEntity> roomDetailsList) {
+        roomDetailsRepository.deleteAll(roomDetailsList);
+    }
+
 
 }

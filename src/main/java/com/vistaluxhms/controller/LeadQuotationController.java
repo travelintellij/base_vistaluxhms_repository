@@ -36,10 +36,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -364,9 +361,6 @@ public class LeadQuotationController {
         modelView.addObject("LEAD_OBJ", leadRecorderObj);
         return modelView;
     }
-
-
-
 
     @RequestMapping(value = "process_system_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
@@ -748,6 +742,7 @@ public class LeadQuotationController {
     }
 
 
+
     @RequestMapping(value = "process_system_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_system_quotation_save(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
                                                                     BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
@@ -763,7 +758,6 @@ public class LeadQuotationController {
         leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
         LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
         quotationEntityDTO.setLeadEntity(leadEntity);
-
 
         sessionQuotation.setGuestName(quotationEntityDTO.getClientEntity().getClientName());
         sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
@@ -804,11 +798,12 @@ public class LeadQuotationController {
         return modelView;
     }
 
+
     @RequestMapping(value = "view_review_system_quotation", method = RequestMethod.GET)
     public ModelAndView viewReviewSystemQuotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
 
-        System.out.println("Lead System Quotation id is " + quotationEntityDTO.getLsqid());
+        //System.out.println("Lead System Quotation id is " + quotationEntityDTO.getLsqid());
         // 1. Load from DB using your service
         LeadSystemQuotationEntity quotationEntity = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid()); // your actual method here
 
@@ -829,6 +824,68 @@ public class LeadQuotationController {
     }
 
 
+    /*
+    public ModelAndView updateSystemQuotation(LeadSystemQuotationEntityDTO quotationEntityDTO,
+                                              BindingResult result,
+                                              LeadEntityDTO leadRecorderObj,
+                                              BindingResult leadBindingResult,
+                                              HttpSession session,
+                                              RedirectAttributes redirectAttrib) {
+
+        ModelAndView modelView = new ModelAndView("redirect:review_process_create_system_quotation");
+
+        // Load the existing quotation entity
+        LeadSystemQuotationEntity existingQuotation = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid())
+                .orElseThrow(() -> new RuntimeException("Quotation not found"));
+
+        // Update fields from DTO
+        existingQuotation.updateEntityfromVO(quotationEntityDTO);
+
+        // Sync @OneToMany room details
+        List<Long> incomingIds = quotationEntityDTO.getRoomDetailsDTO().stream()
+                .map(LeadSystemQuotationRoomDetailsEntityDTO::getLsqrd)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        List<LeadSystemQuotationRoomDetailsEntity> existingRoomEntities = existingQuotation.getRoomDetails();
+
+        // Identify and remove obsolete rooms
+        List<LeadSystemQuotationRoomDetailsEntity> toRemove = existingRoomEntities.stream()
+                .filter(rd -> !incomingIds.contains(rd.getLsqrd()))
+                .collect(Collectors.toList());
+
+        existingRoomEntities.removeAll(toRemove);
+        roomDetailsService.deleteRoomDetails(toRemove); // assuming service layer is present
+
+        // Add or update rooms
+        for (LeadSystemQuotationRoomDetailsEntityDTO roomDTO : quotationEntityDTO.getRoomDetailsDTO()) {
+            if (roomDTO.getLsqrd() != null) {
+                // Update existing room
+                existingRoomEntities.stream()
+                        .filter(r -> r.getLsqrd().equals(roomDTO.getLsqrd()))
+                        .findFirst()
+                        .ifPresent(r -> r.updateEntityFromVO(roomDTO));
+            } else {
+                // Add new room
+                LeadSystemQuotationRoomDetailsEntity newRoom = new LeadSystemQuotationRoomDetailsEntity();
+                newRoom.updateEntityFromVO(roomDTO);
+                newRoom.setLeadSystemQuotationEntity(existingQuotation);
+                existingRoomEntities.add(newRoom);
+            }
+        }
+
+        existingQuotation.setRoomDetails(existingRoomEntities);
+
+        // Save updated entity
+        leadQuotationService.updateQuotationWithRooms(existingQuotation);
+
+        redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
+        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+
+        return modelView;
+    }
+*/
 
 
 }
