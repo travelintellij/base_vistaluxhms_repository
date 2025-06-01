@@ -437,6 +437,8 @@ h2, h3 {
 
 
         <button type="submit" class="btn">Submit</button>
+        <a href="view_system_leads_quotes?leadId=${LEAD_OBJ.leadId}"> <button type="button" style="background-color: #04AA6D;">View Quotes List</button></a>
+
 
 </div>
 

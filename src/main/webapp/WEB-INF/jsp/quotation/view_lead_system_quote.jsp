@@ -218,7 +218,7 @@
                             <td>INR ${quote.grandTotal - quote.discount}</td>
                             <td>
                                 <!-- View -->
-                                <a href="viewQuotation?quotationId=${quote.lsqid}" class="action-btn view">View</a>
+                                <a href="view_review_system_quotation?lsqid=${quote.lsqid}" class="action-btn view">View</a>
                                 <!-- Edit -->
                                 <a href="editQuotation?quotationId=${quote.lsqid}" class="action-btn edit">Edit</a>
                                 <!-- Delete -->

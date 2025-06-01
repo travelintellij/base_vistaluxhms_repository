@@ -41,4 +41,16 @@ public class LeadSystemQuotationEntityDTO extends LeadSystemQuotationEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void updateDTOFromEntity(LeadSystemQuotationEntity leadSystemQuotationEntity){
+        this.lsqid = lsqid;
+        this.leadEntity = leadSystemQuotationEntity.getLeadEntity();
+        this.clientEntity = leadSystemQuotationEntity.getClientEntity();
+        this.versionId = leadSystemQuotationEntity.getVersionId();
+        this.grandTotal = leadSystemQuotationEntity.getGrandTotal();
+        this.discount = leadSystemQuotationEntity.getDiscount();
+        this.remarks = leadSystemQuotationEntity.getRemarks();
+        this.roomDetails = leadSystemQuotationEntity.getRoomDetails();
+    }
+
 }

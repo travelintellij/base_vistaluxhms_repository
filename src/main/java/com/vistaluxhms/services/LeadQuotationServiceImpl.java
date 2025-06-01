@@ -32,4 +32,8 @@ public class LeadQuotationServiceImpl {
         return quotationRepository.findMaxVersionIdOfQuotationByLeadId(leadId);
     }
 
+    public LeadSystemQuotationEntity findLeadSystemQuotationByID(Long lsqid){
+        return quotationRepository.findById(lsqid).get();
+    }
+
 }

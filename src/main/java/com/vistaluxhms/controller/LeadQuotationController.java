@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +66,7 @@ public class LeadQuotationController {
 
     @Autowired
     LeadServicesImpl leadService;
+
     @Autowired
     EmailServiceImpl emailService;
 
@@ -353,6 +355,13 @@ public class LeadQuotationController {
         LeadSystemQuotationEntityDTO sessionQuotation = (LeadSystemQuotationEntityDTO) session.getAttribute(sessionKey);
 
         modelView.addObject("LEAD_SYSTEM_QUOTATION_OBJ", sessionQuotation);
+        LeadEntity leadEntity = leadService.findLeadById(sessionQuotation.getLeadEntity().getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        modelView.addObject("LEAD_OBJ", leadRecorderObj);
         return modelView;
     }
 
@@ -794,5 +803,32 @@ public class LeadQuotationController {
         redirectAttrib.addFlashAttribute("Success", "Quotation is saved successfully. ");
         return modelView;
     }
+
+    @RequestMapping(value = "view_review_system_quotation", method = RequestMethod.GET)
+    public ModelAndView viewReviewSystemQuotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+
+        System.out.println("Lead System Quotation id is " + quotationEntityDTO.getLsqid());
+        // 1. Load from DB using your service
+        LeadSystemQuotationEntity quotationEntity = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid()); // your actual method here
+
+        // 2. Convert to DTO if needed
+        //LeadSystemQuotationEntityDTO quotationDTO = new LeadSystemQuotationEntityDTO();
+        quotationEntityDTO.updateDTOFromEntity(quotationEntity); // or use a mapper/service
+
+        // 3. Load lead as well
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+
+        // 4. Put in session (to match existing method's expectations)
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+
+
+        ModelAndView modelAndView =  review_process_create_system_quotation(quotationEntityDTO,result,leadRecorderObj, leadBindingresult, session, redirectAttrib);
+        // 5. Call the existing method (direct call, not forward)
+        return modelAndView;
+    }
+
+
+
 
 }
