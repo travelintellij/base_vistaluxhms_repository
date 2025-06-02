@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -741,8 +742,115 @@ public class LeadQuotationController {
         return modelView;
     }
 
+    @RequestMapping(value = "process_system_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_system_quotation_save(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO leadSystemQuotationEntityDTO,
+                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+
+        if(leadSystemQuotationEntityDTO.getLsqid()==null || leadSystemQuotationEntityDTO.getLsqid()==0){
+            return add_new_lead_system_quotation(leadSystemQuotationEntityDTO,result,leadRecorderObj, leadBindingresult,  session, redirectAttrib);
+        }
+        else{
+            System.out.println("Update Quotation Entity is invoked with LSQID " + leadSystemQuotationEntityDTO.getLsqid());
+            LeadSystemQuotationEntity existingleadSystemQuotationEntity = leadQuotationService.findLeadSystemQuotationByID(leadSystemQuotationEntityDTO.getLsqid());
+            LeadSystemQuotationEntity newLeadSystemQuotationEntity = new LeadSystemQuotationEntity();
+            String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+            LeadSystemQuotationEntityDTO sessionQuotation = (LeadSystemQuotationEntityDTO) session.getAttribute(sessionKey);
+
+            ClientEntity clientEntity = clientService.findClientById(leadSystemQuotationEntityDTO.getClientEntity().getClientId());
+            leadSystemQuotationEntityDTO.setClientEntity(clientEntity);
+            newLeadSystemQuotationEntity.setClientEntity(clientEntity);
+
+            leadRecorderObj.setLeadId(leadSystemQuotationEntityDTO.getLeadEntity().getLeadId());
+            LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+            leadSystemQuotationEntityDTO.setLeadEntity(leadEntity);
+
+            sessionQuotation.setGuestName(leadSystemQuotationEntityDTO.getClientEntity().getClientName());
+            sessionQuotation.setDiscount(leadSystemQuotationEntityDTO.getDiscount());
+            sessionQuotation.setMobile(String.valueOf(leadSystemQuotationEntityDTO.getClientEntity().getMobile()));
+            sessionQuotation.setEmail(leadSystemQuotationEntityDTO.getClientEntity().getEmailId());
+
+            if (sessionQuotation != null) {
+                leadSystemQuotationEntityDTO = sessionQuotation;
+            }
+            newLeadSystemQuotationEntity.updateEntityfromVO(leadSystemQuotationEntityDTO);
+            newLeadSystemQuotationEntity.setLsqid(leadSystemQuotationEntityDTO.getLsqid());
+
+            List<LeadSystemQuotationRoomDetailsEntity> roomEntities = new ArrayList<>();
+            if (leadSystemQuotationEntityDTO.getRoomDetailsDTO() != null) {
+                for (LeadSystemQuotationRoomDetailsEntityDTO roomDetail : leadSystemQuotationEntityDTO.getRoomDetailsDTO()) {
+                    LeadSystemQuotationRoomDetailsEntity roomEntity = new LeadSystemQuotationRoomDetailsEntity();
+                    roomEntity.updateEntityFromVO(roomDetail);
+                    roomEntity.setLsqrd(roomDetail.getLsqrd());
+                    roomEntity.setLeadSystemQuotationEntity(newLeadSystemQuotationEntity); // set parent reference
+                    roomEntities.add(roomEntity); // collect to parent list
+                }
+            }
+            newLeadSystemQuotationEntity.setRoomDetails(roomEntities);
+
+            System.out.println("Existing Entity is " + existingleadSystemQuotationEntity);
+            System.out.println("****************************************************************");
+            System.out.println("New Entity is " + newLeadSystemQuotationEntity);
+
+            //System.out.println("Before Updating LSQID is " + existingEntity.getLsqid());
+            existingleadSystemQuotationEntity.getRoomDetails().clear();
+            leadQuotationService.deleteRoomDetails(existingleadSystemQuotationEntity.getRoomDetails());
+            leadQuotationService.createQuotationWithRooms(newLeadSystemQuotationEntity);
+
+            redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
+            return new ModelAndView("redirect:review_process_create_system_quotation");
+
+        }
+    }
+
+    public ModelAndView add_new_lead_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
+                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib) {
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadSystemQuotationEntityDTO sessionQuotation = (LeadSystemQuotationEntityDTO) session.getAttribute(sessionKey);
+
+        ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getClientEntity().getClientId());
+        quotationEntityDTO.setClientEntity(clientEntity);
+
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        quotationEntityDTO.setLeadEntity(leadEntity);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getClientEntity().getClientName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(String.valueOf(quotationEntityDTO.getClientEntity().getMobile()));
+        sessionQuotation.setEmail(quotationEntityDTO.getClientEntity().getEmailId());
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:review_process_create_system_quotation");
+        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        LeadSystemQuotationEntity leadSystemQuotationEntity = new LeadSystemQuotationEntity();
+        leadSystemQuotationEntity.updateEntityfromVO(quotationEntityDTO);
+        Integer maxVersionId = leadQuotationService.findMaxVersionIdOfQuotationByLeadId(leadRecorderObj.getLeadId());
+        leadSystemQuotationEntity.setVersionId((maxVersionId != null ? maxVersionId : 0) + 1);
+        List<LeadSystemQuotationRoomDetailsEntity> roomEntities = new ArrayList<>();
+        if (quotationEntityDTO.getRoomDetailsDTO() != null) {
+            for (LeadSystemQuotationRoomDetailsEntityDTO roomDetail : quotationEntityDTO.getRoomDetailsDTO()) {
+                LeadSystemQuotationRoomDetailsEntity roomEntity = new LeadSystemQuotationRoomDetailsEntity();
+                roomEntity.updateEntityFromVO(roomDetail);
+                roomEntity.setLeadSystemQuotationEntity(leadSystemQuotationEntity); // set parent reference
+                roomEntities.add(roomEntity); // collect to parent list
+            }
+        }
+        leadSystemQuotationEntity.setRoomDetails(roomEntities); // ensure this setter exists
+        leadQuotationService.createQuotationWithRooms(leadSystemQuotationEntity);
+        redirectAttrib.addFlashAttribute("Success", "Quotation is saved successfully. ");
+        return modelView;
+    }
 
 
+
+/*
     @RequestMapping(value = "process_system_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_system_quotation_save(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
                                                                     BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
@@ -798,7 +906,7 @@ public class LeadQuotationController {
         return modelView;
     }
 
-
+*/
     @RequestMapping(value = "view_review_system_quotation", method = RequestMethod.GET)
     public ModelAndView viewReviewSystemQuotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();

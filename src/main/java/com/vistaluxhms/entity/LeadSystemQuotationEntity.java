@@ -44,7 +44,7 @@ public class LeadSystemQuotationEntity {
     @Column(length = 1000)
     protected String remarks;
 
-    @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
 
 
@@ -129,6 +129,18 @@ public class LeadSystemQuotationEntity {
         //this.roomDetails = leadSystemQuotationEntityDTO.getRoomDetails();
     }
 
-
+    @Override
+    public String toString() {
+        return "LeadSystemQuotationEntity{" +
+                "lsqid=" + lsqid +
+                ", leadEntity=" + leadEntity +
+                ", clientEntity=" + clientEntity +
+                ", versionId=" + versionId +
+                ", grandTotal=" + grandTotal +
+                ", discount=" + discount +
+                ", remarks='" + remarks + '\'' +
+                ", roomDetails=" + roomDetails +
+                '}';
+    }
 }
 

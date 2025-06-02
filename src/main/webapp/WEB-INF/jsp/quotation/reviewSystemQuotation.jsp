@@ -281,6 +281,7 @@ h2, h3 {
 
     <form:form method="post" action="process_system_quotation" modelAttribute="LEAD_SYSTEM_QUOTATION_OBJ">
         <form:hidden path="lsqid" />
+        <form:hidden path="versionId" />
         <input type="hidden" id="clientId" name="clientEntity.clientId" value="${LEAD_SYSTEM_QUOTATION_OBJ.clientEntity.clientId}" />
         <input type="hidden" id="leadId" name="leadEntity.leadId" value="${LEAD_SYSTEM_QUOTATION_OBJ.leadEntity.leadId}" />
 

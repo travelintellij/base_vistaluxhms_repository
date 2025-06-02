@@ -207,5 +207,23 @@ public class LeadSystemQuotationRoomDetailsEntity {
         this.totalPrice = leadSystemQuotationRoomDetailsEntityDTO.getTotalPrice();
     }
 
-
+    @Override
+    public String toString() {
+        return "LeadSystemQuotationRoomDetailsEntity{" +
+                "lsqrd=" + lsqrd +
+                ", roomCategoryId=" + roomCategoryId +
+                ", mealPlanId=" + mealPlanId +
+                ", adults=" + adults +
+                ", cwb=" + cwb +
+                ", cnb=" + cnb +
+                ", extraBed=" + extraBed +
+                ", checkInDate=" + checkInDate +
+                ", checkOutDate=" + checkOutDate +
+                ", adultsTotalPrice=" + adultsTotalPrice +
+                ", cwbTotalPrice=" + cwbTotalPrice +
+                ", cnbTotalPrice=" + cnbTotalPrice +
+                ", extraBedTotalPrice=" + extraBedTotalPrice +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

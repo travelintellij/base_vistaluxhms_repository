@@ -55,5 +55,8 @@ public class LeadQuotationServiceImpl {
         roomDetailsRepository.deleteAll(roomDetailsList);
     }
 
+    public void deleteRoomDetails(Long lsqrd) {
+        roomDetailsRepository.deleteById(lsqrd);
+    }
 
 }
