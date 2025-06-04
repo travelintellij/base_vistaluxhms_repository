@@ -188,6 +188,8 @@ public class LeadQuotationController {
     }
 
 
+
+
     @RequestMapping(value = "review_process_create_system_quotation", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView review_process_create_system_quotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
@@ -906,11 +908,10 @@ public class LeadQuotationController {
         return modelView;
     }
 
-*/
+
     @RequestMapping(value = "view_review_system_quotation", method = RequestMethod.GET)
     public ModelAndView viewReviewSystemQuotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
-
         //System.out.println("Lead System Quotation id is " + quotationEntityDTO.getLsqid());
         // 1. Load from DB using your service
         LeadSystemQuotationEntity quotationEntity = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid()); // your actual method here
@@ -924,11 +925,43 @@ public class LeadQuotationController {
 
         // 4. Put in session (to match existing method's expectations)
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
-
-
         ModelAndView modelAndView =  review_process_create_system_quotation(quotationEntityDTO,result,leadRecorderObj, leadBindingresult, session, redirectAttrib);
         // 5. Call the existing method (direct call, not forward)
         return modelAndView;
+    }
+*/
+
+
+    @RequestMapping(value = "view_review_system_quotation", method = RequestMethod.GET)
+    public ModelAndView viewReviewSystemQuotation(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView("quotation/loadSystemQuotation");
+        UserDetailsObj userObj = getLoggedInUser();
+        LeadSystemQuotationEntity leadSystemQuotationEntity = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid()); // your actual method here
+        quotationEntityDTO.updateDTOFromEntity(leadSystemQuotationEntity); // or use a mapper/service
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+
+        List<LeadSystemQuotationRoomDetailsEntityDTO> quotationRoomsDTO = new ArrayList<LeadSystemQuotationRoomDetailsEntityDTO>();
+
+        List<LeadSystemQuotationRoomDetailsEntity> quotationRooms = leadSystemQuotationEntity.getRoomDetails();
+        for (LeadSystemQuotationRoomDetailsEntity quotationRoomDetailsEntity : quotationRooms) {
+            LeadSystemQuotationRoomDetailsEntityDTO quotationRoomDTO = new LeadSystemQuotationRoomDetailsEntityDTO();
+            quotationRoomDTO.updateLeadRoomDetailsDTOFromLeadRoomEntity(quotationRoomDetailsEntity);
+            quotationRoomDTO.setFormattedCheckInDate(quotationRoomDTO.getCheckInDate().format(OUTPUT_FORMAT));
+            quotationRoomDTO.setFormattedCheckOutDate(quotationRoomDTO.getCheckOutDate().format(OUTPUT_FORMAT));
+            quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+            quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+            quotationRoomsDTO.add(quotationRoomDTO);
+        }
+        quotationEntityDTO.setRoomDetailsDTO(quotationRoomsDTO);
+
+        LeadEntity leadEntity = leadService.findLeadById(leadSystemQuotationEntity.getLeadEntity().getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        return modelView;
     }
 
 
