@@ -200,10 +200,10 @@ public class LeadSystemQuotationRoomDetailsEntity {
         this.extraBed = leadSystemQuotationRoomDetailsEntityDTO.getExtraBed();
         this.checkInDate = leadSystemQuotationRoomDetailsEntityDTO.getCheckInDate();
         this.checkOutDate = leadSystemQuotationRoomDetailsEntityDTO.getCheckOutDate();
-        this.adultsTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getAdultsTotalPrice();
-        this.cwbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getCwbTotalPrice();
-        this.cnbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getCnbTotalPrice();
-        this.extraBedTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getExtraBedTotalPrice();
+        this.adultsTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getAdultPrice();
+        this.cwbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getChildWithBedPrice();
+        this.cnbTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getChildNoBedPrice();
+        this.extraBedTotalPrice = leadSystemQuotationRoomDetailsEntityDTO.getExtraBedPrice();
         this.totalPrice = leadSystemQuotationRoomDetailsEntityDTO.getTotalPrice();
     }
 

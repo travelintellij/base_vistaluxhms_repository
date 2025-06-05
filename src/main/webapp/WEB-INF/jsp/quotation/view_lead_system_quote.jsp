@@ -185,6 +185,12 @@
             <div class="follow-up-heading" style="padding-top:5px">
                 <h1 style="color:blue;">System Quotation</h1>
             </div>
+            <div align="center" style="margin: 10px 0;">
+                <b>
+                    <font color="green">${Success}</font>
+                    <font color="red">${Error}</font>
+                </b>
+            </div>
             <div class="button-container-right">
                 <form:form action="view_create_lead_system_quotation" modelAttribute="LEAD_OBJ" method="POST" style="display: inline;">
                     <form:hidden path="leadId" />
@@ -218,11 +224,7 @@
                             <td>INR ${quote.grandTotal - quote.discount}</td>
                             <td>
                                 <!-- View -->
-                                <a href="view_review_system_quotation?lsqid=${quote.lsqid}" class="action-btn view">View</a>
-                                <!-- Edit -->
-                                <a href="editQuotation?quotationId=${quote.lsqid}" class="action-btn edit">Edit</a>
-                                <!-- Delete -->
-                                <a href="deleteQuotation?quotationId=${quote.lsqid}" class="action-btn delete" onclick="return confirm('Are you sure you want to delete this quotation?');">Delete</a>
+                                <a href="view_review_system_quotation?lsqid=${quote.lsqid}" class="action-btn view">Load</a>
                             </td>
                         </tr>
                     </c:forEach>

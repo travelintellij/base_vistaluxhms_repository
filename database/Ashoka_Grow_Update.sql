@@ -64,6 +64,10 @@ DROP COLUMN `guestName`,
 DROP COLUMN `contactMethod`;
 
 
+INSERT INTO `ashokadb`.`workload_status` (`id`, `workloadStatusId`, `workloadStatusObj`, `workloadStatusObjType`, `workloadStatusName`, `workloadCategory`, `active`) VALUES ('4', '104', 'LEAD_STATUS', 'LEAD_STATUS', 'Won-Converted', '2000', '1');
+INSERT INTO `ashokadb`.`workload_status` (`id`, `workloadStatusId`, `workloadStatusObj`, `workloadStatusObjType`, `workloadStatusName`, `workloadCategory`, `active`) VALUES ('5', '105', 'LEAD_STATUS', 'LEAD_STATUS', 'Duplicate', '2000', '1');
+UPDATE `ashokadb`.`workload_status` SET `workloadStatusName` = 'Failed-Closed' WHERE (`id` = '3');
+
 
 
 /********************* Updated below already *****************************/

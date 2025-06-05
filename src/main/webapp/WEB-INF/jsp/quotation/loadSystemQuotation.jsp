@@ -334,10 +334,10 @@ h2, h3 {
                     <tr>
                         <td>${room.roomCategoryName}</td>
                         <td>${room.mealPlanName}</td>
-                        <td><font size="2">${room.adults} Adult(s)</font> | <font color="blue" size="4"><b> &#8377; ${room.adultPrice} </b></font></td>
-                        <td><font size="2">${room.cwb} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.childWithBedPrice}</b></font></td>
-                        <td><font size="2">${room.cnb} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.childNoBedPrice}</b></font></td>
-                        <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedPrice}</b></font></td>
+                        <td><font size="2">${room.adults} Adult(s)</font> | <font color="blue" size="4"><b> &#8377; ${room.adultsTotalPrice} </b></font></td>
+                        <td><font size="2">${room.cwb} CWB </font>| <font color="blue" size="4"><b> &#8377; ${room.cwbTotalPrice}</b></font></td>
+                        <td><font size="2">${room.cnb} CNB </font> | <font color="blue" size="4"><b> &#8377; ${room.cnbTotalPrice}</b></font></td>
+                        <td><font size="2">${room.extraBed} Extra Bed</font> | <font color="blue" size="4"><b> &#8377; ${room.extraBedTotalPrice}</b></font></td>
                         <td>${room.formattedCheckInDate} </td>
                         <td>${room.formattedCheckOutDate}</td>
                         <td><font color="#503732" size="4"> <b>&#8377; ${room.totalPrice} </b></font></td>

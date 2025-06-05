@@ -800,7 +800,9 @@ public class LeadQuotationController {
             leadQuotationService.createQuotationWithRooms(newLeadSystemQuotationEntity);
 
             redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
-            return new ModelAndView("redirect:review_process_create_system_quotation");
+            redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", leadSystemQuotationEntityDTO);
+            redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+            return new ModelAndView("redirect:view_system_leads_quotes?leadId="+leadRecorderObj.getLeadId());
 
         }
     }
@@ -828,7 +830,7 @@ public class LeadQuotationController {
         if (sessionQuotation != null) {
             quotationEntityDTO = sessionQuotation;
         }
-        modelView.setViewName("redirect:review_process_create_system_quotation");
+        modelView.setViewName("redirect:view_system_leads_quotes?leadId="+leadRecorderObj.getLeadId());
         redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
         redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
         LeadSystemQuotationEntity leadSystemQuotationEntity = new LeadSystemQuotationEntity();
