@@ -68,6 +68,45 @@ INSERT INTO `ashokadb`.`workload_status` (`id`, `workloadStatusId`, `workloadSta
 INSERT INTO `ashokadb`.`workload_status` (`id`, `workloadStatusId`, `workloadStatusObj`, `workloadStatusObjType`, `workloadStatusName`, `workloadCategory`, `active`) VALUES ('5', '105', 'LEAD_STATUS', 'LEAD_STATUS', 'Duplicate', '2000', '1');
 UPDATE `ashokadb`.`workload_status` SET `workloadStatusName` = 'Failed-Closed' WHERE (`id` = '3');
 
+CREATE TABLE `lead_fh_quotation` (
+  `lfhqid` bigint NOT NULL AUTO_INCREMENT,
+  `leadId` bigint NOT NULL,
+  `versionId` int DEFAULT NULL,
+  `clientId` int DEFAULT NULL,
+  `grandTotal` int DEFAULT NULL,
+  `discount` int DEFAULT NULL,
+  `remarks` varchar(1000) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lfhqid`),
+  KEY `fk_lead` (`leadId`),
+  KEY `fk_client_sq` (`clientId`),
+  CONSTRAINT `fk_client_fhq` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
+  CONSTRAINT `fk_lead_fh` FOREIGN KEY (`leadId`) REFERENCES `lead_master` (`leadId`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+CREATE TABLE `lead_fh_quotation_room_details` (
+  `lfqrd` bigint NOT NULL AUTO_INCREMENT,
+  `lfhqid` bigint NOT NULL,
+  `roomCategoryName` varchar(250) NOT NULL,
+  `mealPlanId` int DEFAULT NULL,
+  `adults` int DEFAULT '0',
+  `CWB` int DEFAULT '0',
+  `CNB` int DEFAULT '0',
+  `extraBed` int DEFAULT '0',
+  `checkInDate` date NOT NULL,
+  `checkOutDate` date NOT NULL,
+  `adultsTotalPrice` int DEFAULT '0',
+  `cwbTotalPrice` int DEFAULT '0',
+  `cnbTotalPrice` int DEFAULT '0',
+  `extraBedTotalPrice` int DEFAULT '0',
+  `totalPrice` int DEFAULT '0',
+  PRIMARY KEY (`lfqrd`),
+  KEY `fk_lfqid` (`lfhqid`),
+  CONSTRAINT `fk_lfhqid` FOREIGN KEY (`lfhqid`) REFERENCES `lead_fh_quotation` (`lfhqid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 /********************* Updated below already *****************************/

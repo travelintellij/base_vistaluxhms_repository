@@ -966,69 +966,55 @@ public class LeadQuotationController {
         return modelView;
     }
 
+    @RequestMapping(value="view_fh_leads_quotes",method= {RequestMethod.GET,RequestMethod.POST})
+    public ModelAndView view_fh_leads_quotes( @ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,
+                                                  BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
+        ModelAndView modelView = new ModelAndView("quotation/view_lead_fh_quote");
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        List<LeadFreeHandQuotationEntity> listLeadFreeHandQuotation = leadQuotationService.findLeadFreeHandQuotations(leadRecorderObj.getLeadId());
+        modelView.addObject("LEAD_FH_QUOTATION_LIST",listLeadFreeHandQuotation);
+        return modelView;
+    }
 
-    /*
-    public ModelAndView updateSystemQuotation(LeadSystemQuotationEntityDTO quotationEntityDTO,
-                                              BindingResult result,
-                                              LeadEntityDTO leadRecorderObj,
-                                              BindingResult leadBindingResult,
-                                              HttpSession session,
-                                              RedirectAttributes redirectAttrib) {
+    @RequestMapping("view_create_lead_fh_quotation")
+    public ModelAndView view_create_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, HttpSession session, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        session.removeAttribute("QUOTATION_OBJ");
+        session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
 
-        ModelAndView modelView = new ModelAndView("redirect:review_process_create_system_quotation");
-
-        // Load the existing quotation entity
-        LeadSystemQuotationEntity existingQuotation = leadQuotationService.findLeadSystemQuotationByID(quotationEntityDTO.getLsqid())
-                .orElseThrow(() -> new RuntimeException("Quotation not found"));
-
-        // Update fields from DTO
-        existingQuotation.updateEntityfromVO(quotationEntityDTO);
-
-        // Sync @OneToMany room details
-        List<Long> incomingIds = quotationEntityDTO.getRoomDetailsDTO().stream()
-                .map(LeadSystemQuotationRoomDetailsEntityDTO::getLsqrd)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        List<LeadSystemQuotationRoomDetailsEntity> existingRoomEntities = existingQuotation.getRoomDetails();
-
-        // Identify and remove obsolete rooms
-        List<LeadSystemQuotationRoomDetailsEntity> toRemove = existingRoomEntities.stream()
-                .filter(rd -> !incomingIds.contains(rd.getLsqrd()))
-                .collect(Collectors.toList());
-
-        existingRoomEntities.removeAll(toRemove);
-        roomDetailsService.deleteRoomDetails(toRemove); // assuming service layer is present
-
-        // Add or update rooms
-        for (LeadSystemQuotationRoomDetailsEntityDTO roomDTO : quotationEntityDTO.getRoomDetailsDTO()) {
-            if (roomDTO.getLsqrd() != null) {
-                // Update existing room
-                existingRoomEntities.stream()
-                        .filter(r -> r.getLsqrd().equals(roomDTO.getLsqrd()))
-                        .findFirst()
-                        .ifPresent(r -> r.updateEntityFromVO(roomDTO));
-            } else {
-                // Add new room
-                LeadSystemQuotationRoomDetailsEntity newRoom = new LeadSystemQuotationRoomDetailsEntity();
-                newRoom.updateEntityFromVO(roomDTO);
-                newRoom.setLeadSystemQuotationEntity(existingQuotation);
-                existingRoomEntities.add(newRoom);
-            }
+        if (quotationEntityDTO.getRoomDetails() == null || quotationEntityDTO.getRoomDetails().isEmpty()) {
+            quotationEntityDTO.setRoomDetails(new ArrayList<>()); // Only initialize if it's empty
         }
+        ModelAndView modelView = new ModelAndView("quotation/createLeadFHQuotation");
+        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+        modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        Map<Integer, String> rateTypeMap = listRateType.stream()
+                .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        Map<Integer, String> roomTypeMap = listRoomType.stream()
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        //modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
+        modelView.addObject("userName", userObj.getUsername());
 
-        existingQuotation.setRoomDetails(existingRoomEntities);
-
-        // Save updated entity
-        leadQuotationService.updateQuotationWithRooms(existingQuotation);
-
-        redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
-        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
-        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        quotationEntityDTO.setLeadEntity(leadEntity);
+        quotationEntityDTO.setClientEntity(leadEntity.getClient());
 
         return modelView;
     }
-*/
 
 
 }

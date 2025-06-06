@@ -303,7 +303,8 @@ h2, h3 {
                </div>
           </div>
           <br>
-<button type="submit" class="btn" name="Back" id="Back" value="Back" style="float: right;" >Back</button>
+<a href="view_system_leads_quotes?leadId=${LEAD_SYSTEM_QUOTATION_OBJ.leadEntity.leadId}" style="float: right;"> <button type="button" style="background-color: #04AA6D;">View Quotes List</button></a>
+<button type="submit" class="btn" name="Back" id="Back" value="Back" style="float: right;" >Edit</button>
 <hr/>
         <!-- Room Details (Dynamically Added Rows) -->
         <div id="roomsContainer">

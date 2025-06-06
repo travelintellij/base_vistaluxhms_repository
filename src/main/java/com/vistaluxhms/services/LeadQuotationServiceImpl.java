@@ -1,11 +1,13 @@
 package com.vistaluxhms.services;
 
 import com.vistaluxevent.entity.EventMasterServiceEntity;
+import com.vistaluxhms.entity.LeadFreeHandQuotationEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationEntity;
 import com.vistaluxhms.entity.LeadSystemQuotationRoomDetailsEntity;
 import com.vistaluxhms.model.LeadSystemQuotationEntityDTO;
 import com.vistaluxhms.model.LeadSystemQuotationRoomDetailsEntityDTO;
 import com.vistaluxhms.repository.LeadEntityRepository;
+import com.vistaluxhms.repository.LeadFreeHandQuotationRepository;
 import com.vistaluxhms.repository.LeadSystemQuotationRepository;
 import com.vistaluxhms.repository.LeadSystemQuotationRoomDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,10 @@ public class LeadQuotationServiceImpl {
     private LeadSystemQuotationRepository quotationRepository;
 
     @Autowired
+    private LeadFreeHandQuotationRepository  freeHandQuotationRepository;
+
+
+    @Autowired
     LeadSystemQuotationRoomDetailsRepository roomDetailsRepository;
 
     public LeadSystemQuotationEntity createQuotationWithRooms(LeadSystemQuotationEntity quotation) {
@@ -37,6 +43,10 @@ public class LeadQuotationServiceImpl {
 
     public List<LeadSystemQuotationEntity> findLeadSystemQuotations(Long leadId){
         return quotationRepository.findByLeadEntity_LeadIdOrderByVersionIdDesc(leadId);
+    }
+
+    public List<LeadFreeHandQuotationEntity> findLeadFreeHandQuotations(Long leadId){
+        return freeHandQuotationRepository.findByLeadEntity_LeadIdOrderByVersionIdDesc(leadId);
     }
 
     public Integer findMaxVersionIdOfQuotationByLeadId(Long leadId){
