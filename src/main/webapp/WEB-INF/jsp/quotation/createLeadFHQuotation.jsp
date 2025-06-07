@@ -264,7 +264,7 @@ h2, h3 {
 <div class="container">
     <h2>Create Free Hand Quotation</h2>
 
-    <form:form method="post" action="review_process_create_fh_quotation" modelAttribute="LEAD_FH_QUOTATION_OBJ" id="myForm">
+    <form:form method="post" action="review_process_create_lead_fh_quotation" modelAttribute="LEAD_FH_QUOTATION_OBJ" id="myForm">
         <form:hidden path="lfhqid" />
         <form:hidden path="versionId" />
         <input type="hidden" id="clientId" name="clientEntity.clientId" value="${LEAD_FH_QUOTATION_OBJ.clientEntity.clientId}" />
@@ -310,7 +310,7 @@ h2, h3 {
                 </thead>
                 <tbody>
                     <!-- Dynamic Rows Will Be Added Here -->
-    <c:forEach var="room" items="${QUOTATION_OBJ.roomDetails}" varStatus="status">
+    <c:forEach var="room" items="${LEAD_FH_QUOTATION_OBJ.roomDetails}" varStatus="status">
         <tr>
             <td>
                      <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>

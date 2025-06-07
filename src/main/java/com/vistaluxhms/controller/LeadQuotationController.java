@@ -8,7 +8,6 @@ import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.LeadSystemQuotationValidator;
 import com.vistaluxhms.validator.LeadValidator;
-import com.vistaluxhms.validator.QuotationValidator;
 import freemarker.core.Configurable;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -19,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -982,7 +979,7 @@ public class LeadQuotationController {
     }
 
     @RequestMapping("view_create_lead_fh_quotation")
-    public ModelAndView view_create_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, HttpSession session, BindingResult result) {
+    public ModelAndView view_create_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,BindingResult leadBindingResult, HttpSession session ) {
         UserDetailsObj userObj = getLoggedInUser();
         session.removeAttribute("QUOTATION_OBJ");
         session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
@@ -1016,5 +1013,95 @@ public class LeadQuotationController {
         return modelView;
     }
 
+    @RequestMapping(value = "review_process_create_lead_fh_quotation", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView review_process_create_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO, BindingResult result, @ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingResult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("forward:view_create_lead_fh_quotation");
+        if (quotationEntityDTO.getRoomDetails() == null) {
+            quotationEntityDTO = (LeadFreeHandQuotationEntityDTO) session.getAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+            if (quotationEntityDTO.getRoomDetails() == null) {
+                quotationEntityDTO.setRoomDetails(new ArrayList<>());
+            }
+        }
+        List<LeadFreeHandQuotationRoomDetailsEntity> validRooms = quotationEntityDTO.getRoomDetails().stream()
+                .filter(room -> room.getRoomCategoryName() != null && !room.getRoomCategoryName().trim().isEmpty()
+                        && room.getMealPlanId() > 0)
+                .collect(Collectors.toList());
+        quotationEntityDTO.setRoomDetails(validRooms);
+        isValidRoomDetails(validRooms, result);
+        if (result.hasErrors()) {
+            return view_create_lead_fh_quotation( quotationEntityDTO, result, leadRecorderObj, leadBindingResult,  session );
+        } else {
+            int grandTotalSum = 0;
+            ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getClientEntity().getClientId());
+            quotationEntityDTO.setClientEntity(clientEntity);
+            List<LeadFreeHandQuotationRoomDetailsEntityDTO> listRoomDetailsDTO = new ArrayList<LeadFreeHandQuotationRoomDetailsEntityDTO>() ;
+            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(clientEntity.getSalesPartner().getRateTypeEntity().getRateTypeId());
+            for (LeadFreeHandQuotationRoomDetailsEntity quotationRoomDTO : validRooms) {
+                //quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                //quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+                LeadFreeHandQuotationRoomDetailsEntityDTO quotationRoomDetailsEntityDTO = new LeadFreeHandQuotationRoomDetailsEntityDTO();
+                quotationRoomDetailsEntityDTO.updateLeadRoomDetailsDTOFromLeadRoomEntity(quotationRoomDTO);
+                //quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                //quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+                LocalDate checkIn = quotationRoomDTO.getCheckInDate();
+                LocalDate checkOut = quotationRoomDTO.getCheckOutDate();
+                quotationRoomDetailsEntityDTO.setFormattedCheckInDate(quotationRoomDTO.getCheckInDate().format(OUTPUT_FORMAT));
+                quotationRoomDetailsEntityDTO.setFormattedCheckOutDate(quotationRoomDTO.getCheckOutDate().format(OUTPUT_FORMAT));
+                quotationRoomDetailsEntityDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+                grandTotalSum += quotationRoomDTO.getTotalPrice();
+                listRoomDetailsDTO.add(quotationRoomDetailsEntityDTO);
+            }
+            quotationEntityDTO.setGrandTotal(grandTotalSum);
+            quotationEntityDTO.setRoomDetailsDTO(listRoomDetailsDTO);
+        }
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+
+        modelView.addObject("LEAD_FH_QUOTATION_OBJ", quotationEntityDTO);
+        modelView.setViewName("quotation/reviewLeadFHQuotation");
+        return modelView;
+    }
+
+    private boolean isValidRoomDetails(List<LeadFreeHandQuotationRoomDetailsEntity> roomDetails, Errors errors) {
+        boolean isValid = true;
+        LocalDate today = LocalDate.now();
+
+        if (roomDetails != null) {
+            for (int i = 0; i < roomDetails.size(); i++) {
+                LeadFreeHandQuotationRoomDetailsEntity room = roomDetails.get(i);
+
+                // Validate Adults count
+                if (room.getAdults() < 1 && room.getNoOfChild() < 1) {
+                    errors.rejectValue("roomDetails[" + i + "].adults", "error.roomDetails", "Guests must be greater than zero.");
+                    isValid = false;
+                }
+
+                // Validate Check-in and Check-out dates
+                LocalDate checkIn = room.getCheckInDate();
+                LocalDate checkOut = room.getCheckOutDate();
+
+                if (checkIn == null || checkOut == null) {
+                    errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in and Check-out dates are required.");
+                    isValid = false;
+                } else {
+                    if (checkIn.isBefore(today)) {
+                        errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in date cannot be in the past.");
+                        isValid = false;
+                    }
+
+                    if (checkOut.isBefore(today)) {
+                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date cannot be in the past.");
+                        isValid = false;
+                    }
+
+                    if (checkOut.isBefore(checkIn)) {
+                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date must be the same or after Check-in date.");
+                        isValid = false;
+                    }
+                }
+            }
+        }
+        return isValid;
+    }
 
 }

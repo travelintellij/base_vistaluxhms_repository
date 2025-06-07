@@ -6,16 +6,16 @@ import com.vistaluxhms.entity.LeadSystemQuotationEntity;
 import java.util.List;
 
 public class LeadFreeHandQuotationEntityDTO extends LeadFreeHandQuotationEntity {
-    private List<LeadSystemQuotationRoomDetailsEntityDTO> roomDetailsDTO;
+    private List<LeadFreeHandQuotationRoomDetailsEntityDTO> roomDetailsDTO;
     private String guestName;
     private String mobile;
     private String email;
 
-    public List<LeadSystemQuotationRoomDetailsEntityDTO> getRoomDetailsDTO() {
+    public List<LeadFreeHandQuotationRoomDetailsEntityDTO> getRoomDetailsDTO() {
         return roomDetailsDTO;
     }
 
-    public void setRoomDetailsDTO(List<LeadSystemQuotationRoomDetailsEntityDTO> roomDetailsDTO) {
+    public void setRoomDetailsDTO(List<LeadFreeHandQuotationRoomDetailsEntityDTO> roomDetailsDTO) {
         this.roomDetailsDTO = roomDetailsDTO;
     }
 

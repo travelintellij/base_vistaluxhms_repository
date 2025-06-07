@@ -40,8 +40,8 @@ public class LeadFreeHandQuotationEntity {
     @Column(length = 1000)
     protected String remarks;
 
-    @OneToMany(mappedBy = "leadSystemQuotationEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    protected List<LeadSystemQuotationRoomDetailsEntity> roomDetails;
+    @OneToMany(mappedBy = "leadFreeHandQuotationEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    protected List<LeadFreeHandQuotationRoomDetailsEntity> roomDetails;
 
     public LeadEntity getLeadEntity() {
         return leadEntity;
@@ -92,11 +92,11 @@ public class LeadFreeHandQuotationEntity {
         this.remarks = remarks;
     }
 
-    public List<LeadSystemQuotationRoomDetailsEntity> getRoomDetails() {
+    public List<LeadFreeHandQuotationRoomDetailsEntity> getRoomDetails() {
         return roomDetails;
     }
 
-    public void setRoomDetails(List<LeadSystemQuotationRoomDetailsEntity> roomDetails) {
+    public void setRoomDetails(List<LeadFreeHandQuotationRoomDetailsEntity> roomDetails) {
         this.roomDetails = roomDetails;
     }
 

@@ -28,14 +28,11 @@ public class LeadFreeHandQuotationRoomDetailsEntity {
     @Column(name = "adults", nullable = false)
     protected int adults = 0;
 
-    @Column(name = "CWB", nullable = false)
-    protected int cwb = 0;
+    @Column(name = "noOfChild", nullable = false)
+    protected int noOfChild = 0;
 
-    @Column(name = "CNB", nullable = false)
-    protected int cnb = 0;
-
-    @Column(name = "extraBed", nullable = false)
-    protected int extraBed = 0;
+    @Column(name = "noOfRooms", nullable = false)
+    protected int noOfRooms =0;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate checkInDate;
@@ -43,140 +40,14 @@ public class LeadFreeHandQuotationRoomDetailsEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate checkOutDate;
 
-    @Column(name = "adultsTotalPrice", nullable = false)
-    protected int adultsTotalPrice = 0;
-
-    @Column(name = "cwbTotalPrice", nullable = false)
-    protected int cwbTotalPrice = 0;
-
-    @Column(name = "cnbTotalPrice", nullable = false)
-    protected int cnbTotalPrice = 0;
-
-    @Column(name = "extraBedTotalPrice", nullable = false)
-    protected int extraBedTotalPrice = 0;
-
     @Column(name = "totalPrice", nullable = false)
     protected int totalPrice = 0;
-
 
     public void setTotalPrice(Integer totalPrice) {
         this.totalPrice = totalPrice;
     }
 
     public LeadFreeHandQuotationRoomDetailsEntity() {
-    }
-
-    public int getMealPlanId() {
-        return mealPlanId;
-    }
-
-    public void setMealPlanId(int mealPlanId) {
-        this.mealPlanId = mealPlanId;
-    }
-
-    public int getAdults() {
-        return adults;
-    }
-
-    public void setAdults(int adults) {
-        this.adults = adults;
-    }
-
-    public int getCwb() {
-        return cwb;
-    }
-
-    public void setCwb(int cwb) {
-        this.cwb = cwb;
-    }
-
-    public int getCnb() {
-        return cnb;
-    }
-
-    public void setCnb(int cnb) {
-        this.cnb = cnb;
-    }
-
-    public int getExtraBed() {
-        return extraBed;
-    }
-
-    public void setExtraBed(int extraBed) {
-        this.extraBed = extraBed;
-    }
-
-    public LocalDate getCheckInDate() {
-        return checkInDate;
-    }
-
-    public void setCheckInDate(LocalDate checkInDate) {
-        this.checkInDate = checkInDate;
-    }
-
-    public LocalDate getCheckOutDate() {
-        return checkOutDate;
-    }
-
-    public void setCheckOutDate(LocalDate checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
-
-    public int getAdultsTotalPrice() {
-        return adultsTotalPrice;
-    }
-
-    public void setAdultsTotalPrice(int adultsTotalPrice) {
-        this.adultsTotalPrice = adultsTotalPrice;
-    }
-
-    public int getCwbTotalPrice() {
-        return cwbTotalPrice;
-    }
-
-    public void setCwbTotalPrice(int cwbTotalPrice) {
-        this.cwbTotalPrice = cwbTotalPrice;
-    }
-
-    public int getCnbTotalPrice() {
-        return cnbTotalPrice;
-    }
-
-    public void setCnbTotalPrice(int cnbTotalPrice) {
-        this.cnbTotalPrice = cnbTotalPrice;
-    }
-
-    public int getExtraBedTotalPrice() {
-        return extraBedTotalPrice;
-    }
-
-    public void setExtraBedTotalPrice(int extraBedTotalPrice) {
-        this.extraBedTotalPrice = extraBedTotalPrice;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public void updateEntityFromVO(LeadFreeHandQuotationRoomDetailsEntityDTO leadFreeHandQuotationRoomDetailsEntity){
-        this.leadFreeHandQuotationEntity = leadFreeHandQuotationRoomDetailsEntity.getLeadFreeHandQuotationEntity();
-        this.roomCategoryName = leadFreeHandQuotationRoomDetailsEntity.getRoomCategoryName();
-        this.mealPlanId = leadFreeHandQuotationRoomDetailsEntity.getMealPlanId();
-        this.adults = leadFreeHandQuotationRoomDetailsEntity.getAdults();
-        this.cwb = leadFreeHandQuotationRoomDetailsEntity.getCwb();
-        this.cnb = leadFreeHandQuotationRoomDetailsEntity.getCnb();
-        this.extraBed = leadFreeHandQuotationRoomDetailsEntity.getExtraBed();
-        this.checkInDate = leadFreeHandQuotationRoomDetailsEntity.getCheckInDate();
-        this.checkOutDate = leadFreeHandQuotationRoomDetailsEntity.getCheckOutDate();
-        this.adultsTotalPrice = leadFreeHandQuotationRoomDetailsEntity.getAdultPrice();
-        this.cwbTotalPrice = leadFreeHandQuotationRoomDetailsEntity.getChildWithBedPrice();
-        this.cnbTotalPrice = leadFreeHandQuotationRoomDetailsEntity.getChildNoBedPrice();
-        this.extraBedTotalPrice = leadFreeHandQuotationRoomDetailsEntity.getExtraBedPrice();
-        this.totalPrice = leadFreeHandQuotationRoomDetailsEntity.getTotalPrice();
     }
 
     public long getLfqrd() {
@@ -201,5 +72,73 @@ public class LeadFreeHandQuotationRoomDetailsEntity {
 
     public void setRoomCategoryName(String roomCategoryName) {
         this.roomCategoryName = roomCategoryName;
+    }
+
+    public int getMealPlanId() {
+        return mealPlanId;
+    }
+
+    public void setMealPlanId(int mealPlanId) {
+        this.mealPlanId = mealPlanId;
+    }
+
+    public int getAdults() {
+        return adults;
+    }
+
+    public void setAdults(int adults) {
+        this.adults = adults;
+    }
+
+    public int getNoOfChild() {
+        return noOfChild;
+    }
+
+    public void setNoOfChild(int noOfChild) {
+        this.noOfChild = noOfChild;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void updateEntityFromVO(LeadFreeHandQuotationRoomDetailsEntityDTO leadFreeHandQuotationRoomDetailsEntity){
+        this.leadFreeHandQuotationEntity = leadFreeHandQuotationRoomDetailsEntity.getLeadFreeHandQuotationEntity();
+        this.roomCategoryName = leadFreeHandQuotationRoomDetailsEntity.getRoomCategoryName();
+        this.mealPlanId = leadFreeHandQuotationRoomDetailsEntity.getMealPlanId();
+        this.adults = leadFreeHandQuotationRoomDetailsEntity.getAdults();
+        this.checkInDate = leadFreeHandQuotationRoomDetailsEntity.getCheckInDate();
+        this.checkOutDate = leadFreeHandQuotationRoomDetailsEntity.getCheckOutDate();
+        this.totalPrice = leadFreeHandQuotationRoomDetailsEntity.getTotalPrice();
+        this.noOfChild=leadFreeHandQuotationRoomDetailsEntity.getNoOfChild();
+        this.noOfRooms=leadFreeHandQuotationRoomDetailsEntity.getNoOfRooms();
+    }
+
+    public int getNoOfRooms() {
+        return noOfRooms;
+    }
+
+    public void setNoOfRooms(int noOfRooms) {
+        this.noOfRooms = noOfRooms;
     }
 }

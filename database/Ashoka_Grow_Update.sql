@@ -108,6 +108,19 @@ CREATE TABLE `lead_fh_quotation_room_details` (
   CONSTRAINT `fk_lfhqid` FOREIGN KEY (`lfhqid`) REFERENCES `lead_fh_quotation` (`lfhqid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE `ashokadb`.`lead_fh_quotation_room_details`
+DROP COLUMN `extraBedTotalPrice`,
+DROP COLUMN `cnbTotalPrice`,
+DROP COLUMN `cwbTotalPrice`,
+DROP COLUMN `adultsTotalPrice`,
+DROP COLUMN `extraBed`,
+DROP COLUMN `CNB`,
+CHANGE COLUMN `CWB` `noOfChild` INT NULL DEFAULT '0' ;
+
+
+ALTER TABLE `ashokadb`.`lead_fh_quotation_room_details`
+ADD COLUMN `noOfRooms` INT NULL DEFAULT 0 AFTER `roomCategoryName`;
+
 
 /********************* Updated below already *****************************/
 #change the lead id and user id as appropriate.
