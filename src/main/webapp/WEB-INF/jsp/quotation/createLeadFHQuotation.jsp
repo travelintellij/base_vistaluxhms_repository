@@ -313,7 +313,6 @@ h2, h3 {
     <c:forEach var="room" items="${LEAD_FH_QUOTATION_OBJ.roomDetails}" varStatus="status">
         <tr>
             <td>
-                     <font color="red"><form:errors path="roomDetails[${status.index}].roomCategoryId" cssClass="error"  /></font>
                     <input type="text" name="roomDetails[${status.index}].roomCategoryName" class="input-field" value="${room.roomCategoryName}" style="width: 200px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required />
             </td>
             <td>
@@ -324,13 +323,13 @@ h2, h3 {
                 </select>
             </td>
             <td>
-                <input type="number" name="roomDetails[${status.index}].noOfRooms" class="input-field" value="${room.adults}" min="1" style="width:70px;" required />
+                <input type="number" name="roomDetails[${status.index}].noOfRooms" class="input-field" value="${room.noOfRooms}" min="1" style="width:70px;" required />
             </td>
             <td>  <font color="red"><form:errors path="roomDetails[${status.index}].adults" cssClass="error"  /></font>
                 <input type="number" name="roomDetails[${status.index}].adults" class="input-field" value="${room.adults}" min="1" style="width:70px;" required />
             </td>
 
-            <td><input type="number" name="roomDetails[${status.index}].noOfChild" class="input-field" value="${room.childWithBed}" min="0" style="width:70px;" required /></td>
+            <td><input type="number" name="roomDetails[${status.index}].noOfChild" class="input-field" value="${room.noOfChild}" min="0" style="width:70px;" required /></td>
             <td>
             <font color="red"><form:errors path="roomDetails[${status.index}].checkInDate" cssClass="error"  /></font>
             <input type="date" name="roomDetails[${status.index}].checkInDate" class="input-field" value="${room.checkInDate}" style="width: 150px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;" required /></td>

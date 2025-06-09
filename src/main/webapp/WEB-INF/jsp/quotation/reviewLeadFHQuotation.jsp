@@ -281,7 +281,7 @@ h2, h3 {
 <div class="container">
     <h2>Review Free Hand Quotation</h2>
 
-   <form:form method="post" action="process_system_quotation" modelAttribute="LEAD_FH_QUOTATION_OBJ">
+   <form:form method="post" action="process_fh_lead_quotation" modelAttribute="LEAD_FH_QUOTATION_OBJ">
           <form:hidden path="lfhqid" />
           <form:hidden path="versionId" />
           <input type="hidden" id="clientId" name="clientEntity.clientId" value="${LEAD_FH_QUOTATION_OBJ.clientEntity.clientId}" />

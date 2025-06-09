@@ -1029,6 +1029,7 @@ public class LeadQuotationController {
                 .collect(Collectors.toList());
         quotationEntityDTO.setRoomDetails(validRooms);
         isValidRoomDetails(validRooms, result);
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
         if (result.hasErrors()) {
             return view_create_lead_fh_quotation( quotationEntityDTO, result, leadRecorderObj, leadBindingResult,  session );
         } else {
@@ -1103,5 +1104,115 @@ public class LeadQuotationController {
         }
         return isValid;
     }
+
+    @RequestMapping(value = "process_fh_lead_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_fh_lead_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
+                                             BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,BindingResult leadBindingResult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("quotation/createLeadFHQuotation");
+        Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+        //modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        //List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
+        //Map<Integer, String> rateTypeMap = listRateType.stream()
+          //      .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        //modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
+        //List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
+        //Map<Integer, String> roomTypeMap = listRoomType.stream()
+          //      .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        //modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
+        modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
+        modelView.addObject("userName", userObj.getUsername());
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+        modelView.addObject("LEAD_FH_QUOTATION_OBJ", sessionQuotation);
+
+        LeadEntity leadEntity = leadService.findLeadById(sessionQuotation.getLeadEntity().getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        modelView.addObject("LEAD_OBJ", leadRecorderObj);
+        return modelView;
+    }
+
+
+
+
+    @RequestMapping(value = "process_fh_lead_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public void downloadQuotationPdf(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
+        generateQuotationPDF(quotationEntityDTO, session, response,"PDFFreeHandQuotation.ftl");
+    }
+
+    private void generateQuotationPDF(LeadFreeHandQuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
+        // Prepare data for the template
+        Map<String, Object> model = new HashMap<>();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        model.put("contactName", quotationEntityDTO.getClientEntity().getClientName());
+        formatRoomDates(quotationEntityDTO);
+        model.put("roomDetails", quotationEntityDTO.getRoomDetailsDTO()); // Fetch dynamically as per your application
+        model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
+        model.put("discount", quotationEntityDTO.getDiscount());
+        model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
+        model.put("serviceAdvisorMobile", userObj.getMobile());
+        model.put("remarks",quotationEntityDTO.getRemarks());
+
+        // Load the Freemarker template
+        freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+        //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
+        freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
+        freemarkerConfig.setAPIBuiltinEnabled(true);
+        freemarkerConfig.setTemplateUpdateDelay(0);
+        Template template = freemarkerConfig.getTemplate(templateName);
+        String htmlContent = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+        // Generate PDF
+        byte[] pdfBytes = new byte[0];
+        try {
+            pdfBytes = commonService.generatePdfFromHtml(htmlContent);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Set response headers
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=Quotation.pdf");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
+    }
+
+    public void formatRoomDates(LeadFreeHandQuotationEntityDTO quotation) {
+        if (quotation != null && quotation.getRoomDetails() != null) {
+            for (LeadFreeHandQuotationRoomDetailsEntityDTO room : quotation.getRoomDetailsDTO()) {
+                LocalDate checkIn = room.getCheckInDate();
+                LocalDate checkOut = room.getCheckOutDate();
+                if (checkIn != null) {
+                    room.setFormattedCheckInDate(checkIn.format(OUTPUT_FORMAT));
+                }
+                if (checkOut != null) {
+                    room.setFormattedCheckOutDate(checkOut.format(OUTPUT_FORMAT));
+                }
+            }
+        }
+    }
+
+
+
+
 
 }
