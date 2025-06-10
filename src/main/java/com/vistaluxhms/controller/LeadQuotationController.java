@@ -1211,7 +1211,88 @@ public class LeadQuotationController {
         }
     }
 
+    @RequestMapping(value = "process_fh_lead_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_fh_lead_quotation_email(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(String.valueOf(quotationEntityDTO.getClientEntity().getMobile()));
+        sessionQuotation.setEmail(quotationEntityDTO.getClientEntity().getEmailId());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:review_process_create_lead_fh_quotation");
+        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getClientEntity().getEmailId(), result);
+        if (result.hasErrors()) {
+            modelView =review_process_create_lead_fh_quotation(quotationEntityDTO, result,  leadRecorderObj,  leadBindingresult,  session, redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewLeadFHQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+        formatRoomDates(quotationEntityDTO);
+        notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
+        System.out.println("Quotation Sent Successfully!! ");
+        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
+        //session.removeAttribute(sessionKey);
+        return modelView;
+    }
+
+    private void notifyQuotationReceiverByEmail(LeadFreeHandQuotationEntityDTO quotationEntityDTO, List<String> recipientEmails, String templateName) {
+        if (emailNotifyActive) {
+            Mail mail = new Mail();
+            //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
+            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getClientEntity().getClientName() + " | Jim Corbett ";
+            mail.setSubject(emailSubject);
+            AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
+            //mail.setTo(quotationEntityDTO.getEmail());
+            InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
+            for (int i = 0; i < recipientEmails.size(); i++) {
+                try {
+                    emailAddresses[i] = new InternetAddress(recipientEmails.get(i).trim());
+                } catch (AddressException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            mail.setToList(emailAddresses);
+            mail.setCc(userObj.getEmail());
+            try {
+                Map<String, Object> model = new HashMap<String, Object>();
+                //model.put("leadId", leadReferenceNumber);
+                model.put("contactName", quotationEntityDTO.getClientEntity().getClientName());
+                model.put("remarks", quotationEntityDTO.getRemarks());
+                model.put("roomDetails", quotationEntityDTO.getRoomDetailsDTO());
+                //System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
+                //System.out.println("Map Value " + model.get("roomDetails"));
+                model.put("quotationAdvisor", userObj.getName());
+                model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
+                model.put("discount", quotationEntityDTO.getDiscount());
+                model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
+                model.put("serviceAdvisorMobile", userObj.getMobile());
+
+                mail.setModel(model);
+                //emailService.sendEmailMessageUsingTemplate(mail,templateName);
+                emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
+            } catch (MessagingException | IOException | TemplateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Email Notification DISABLE. ");
+        }
+    }
 
 
 
