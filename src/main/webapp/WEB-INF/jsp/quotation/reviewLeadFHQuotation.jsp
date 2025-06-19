@@ -370,7 +370,7 @@ h2, h3 {
                 <button type="submit" class="btn" name="Email" id="Email" value="Email">Email Quotation</button> |
                 <button type="submit" class="btn" style="background-color: green;" name="whatsapp" id="whatsapp" value="whatsapp">WhatsApp Quotation</button> |
                 <button type="submit" class="btn" name="EmailAndWhatsApp" id="EmailAndWhatsApp" value="EmailAndWhatsApp">Email & WhatsApp Quotation</button> |
-                <button type="submit" class="btn">Save Quotation</button>
+                <button type="submit" class="btn" name="SaveQuotation" id="SaveQuotation" value="SaveQuotation">Save Quotation</button>
                 <button type="submit" class="btn" name="Download" id="Download" value="Download">Download Quotation</button>
         </div>
 </div>

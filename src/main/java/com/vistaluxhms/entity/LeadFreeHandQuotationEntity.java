@@ -1,5 +1,6 @@
 package com.vistaluxhms.entity;
 
+import com.vistaluxhms.model.LeadFreeHandQuotationEntityDTO;
 import com.vistaluxhms.model.LeadSystemQuotationEntityDTO;
 
 import javax.persistence.*;
@@ -100,18 +101,18 @@ public class LeadFreeHandQuotationEntity {
         this.roomDetails = roomDetails;
     }
 
-    public void updateEntityfromVO(LeadSystemQuotationEntityDTO leadSystemQuotationEntityDTO){
+    public void updateEntityfromVO(LeadFreeHandQuotationEntityDTO leadFHQuotationEntityDTO){
         //this.lsqid = lsqid;
-        this.leadEntity = leadSystemQuotationEntityDTO.getLeadEntity();
-        this.clientEntity = leadSystemQuotationEntityDTO.getClientEntity();
-        this.versionId = leadSystemQuotationEntityDTO.getVersionId();
+        this.leadEntity = leadFHQuotationEntityDTO.getLeadEntity();
+        this.clientEntity = leadFHQuotationEntityDTO.getClientEntity();
+        this.versionId = leadFHQuotationEntityDTO.getVersionId();
         //this.contactMethod = contactMethod;
         //this.guestName = guestName;
         //this.mobile = mobile;
         //this.email = email;
-        this.grandTotal = leadSystemQuotationEntityDTO.getGrandTotal();
-        this.discount = leadSystemQuotationEntityDTO.getDiscount();
-        this.remarks = leadSystemQuotationEntityDTO.getRemarks();
+        this.grandTotal = leadFHQuotationEntityDTO.getGrandTotal();
+        this.discount = leadFHQuotationEntityDTO.getDiscount();
+        this.remarks = leadFHQuotationEntityDTO.getRemarks();
         //this.roomDetails = leadSystemQuotationEntityDTO.getRoomDetails();
     }
 

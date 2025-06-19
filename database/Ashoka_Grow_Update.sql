@@ -1,3 +1,8 @@
+
+
+
+/********************* Updated below already *****************************/
+
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('3', 'CLIENT_CREATE', 'CLIENT');
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('4', 'CLIENT_MANAGE', 'CLIENT');
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('5', 'USER_MANAGE', 'USER');
@@ -122,7 +127,7 @@ ALTER TABLE `ashokadb`.`lead_fh_quotation_room_details`
 ADD COLUMN `noOfRooms` INT NULL DEFAULT 0 AFTER `roomCategoryName`;
 
 
-/********************* Updated below already *****************************/
+
 #change the lead id and user id as appropriate.
 INSERT INTO `ashokadb`.`leads_team_map` (`leadId`, `userId`) VALUES ('34', '0');
 

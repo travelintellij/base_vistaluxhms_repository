@@ -1057,7 +1057,15 @@ public class LeadQuotationController {
             quotationEntityDTO.setRoomDetailsDTO(listRoomDetailsDTO);
         }
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
-
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId() );
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        quotationEntityDTO.setLeadEntity(leadEntity);
+        quotationEntityDTO.setClientEntity(leadEntity.getClient());
         modelView.addObject("LEAD_FH_QUOTATION_OBJ", quotationEntityDTO);
         modelView.setViewName("quotation/reviewLeadFHQuotation");
         return modelView;
@@ -1295,5 +1303,69 @@ public class LeadQuotationController {
     }
 
 
+    @RequestMapping(value = "process_fh_lead_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_fh_lead_quotation_save(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO leadFHQuotationEntityDTO,
+                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        UserDetailsObj userObj = getLoggedInUser();
+
+        if(leadFHQuotationEntityDTO.getLfhqid()==null || leadFHQuotationEntityDTO.getLfhqid()==0){
+            return view_create_lead_fh_quotation(leadFHQuotationEntityDTO,result,leadRecorderObj, leadBindingresult,  session);
+        }
+        else{
+            LeadFreeHandQuotationEntity existingleadFHQuotationEntity = leadQuotationService.findLeadFreeHandQuotationByID(leadFHQuotationEntityDTO.getLfhqid());
+            LeadFreeHandQuotationEntity newLeadFHQuotationEntity = new LeadFreeHandQuotationEntity();
+            String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+            LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+
+            ClientEntity clientEntity = clientService.findClientById(leadFHQuotationEntityDTO.getClientEntity().getClientId());
+            leadFHQuotationEntityDTO.setClientEntity(clientEntity);
+            newLeadFHQuotationEntity.setClientEntity(clientEntity);
+
+            leadRecorderObj.setLeadId(leadFHQuotationEntityDTO.getLeadEntity().getLeadId());
+            LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+            leadFHQuotationEntityDTO.setLeadEntity(leadEntity);
+
+            sessionQuotation.setGuestName(leadFHQuotationEntityDTO.getClientEntity().getClientName());
+            sessionQuotation.setDiscount(leadFHQuotationEntityDTO.getDiscount());
+            sessionQuotation.setMobile(String.valueOf(leadFHQuotationEntityDTO.getClientEntity().getMobile()));
+            sessionQuotation.setEmail(leadFHQuotationEntityDTO.getClientEntity().getEmailId());
+
+            if (sessionQuotation != null) {
+                leadFHQuotationEntityDTO = sessionQuotation;
+            }
+            newLeadFHQuotationEntity.updateEntityfromVO(leadFHQuotationEntityDTO);
+            newLeadFHQuotationEntity.setLfhqid(leadFHQuotationEntityDTO.getLfhqid());
+
+            List<LeadFreeHandQuotationRoomDetailsEntity> roomEntities = new ArrayList<>();
+            if (leadFHQuotationEntityDTO.getRoomDetailsDTO() != null) {
+                for (LeadFreeHandQuotationRoomDetailsEntityDTO roomDetail : leadFHQuotationEntityDTO.getRoomDetailsDTO()) {
+                    LeadFreeHandQuotationRoomDetailsEntity roomEntity = new LeadFreeHandQuotationRoomDetailsEntity();
+                    roomEntity.updateEntityFromVO(roomDetail);
+                    roomEntity.setLfqrd(roomDetail.getLfqrd());
+                    roomEntity.setLeadFreeHandQuotationEntity(newLeadFHQuotationEntity); // set parent reference
+                    roomEntities.add(roomEntity); // collect to parent list
+                }
+            }
+            newLeadFHQuotationEntity.setRoomDetails(roomEntities);
+
+            /*
+            System.out.println("Existing Entity is " + existingleadSystemQuotationEntity);
+            System.out.println("****************************************************************");
+            System.out.println("New Entity is " + newLeadSystemQuotationEntity);
+            */
+            //System.out.println("Before Updating LSQID is " + existingEntity.getLsqid());
+            existingleadFHQuotationEntity.getRoomDetails().clear();
+            leadQuotationService.deleteFHRoomDetails(existingleadFHQuotationEntity.getRoomDetails());
+            leadQuotationService.createFHQuotationWithRooms(newLeadFHQuotationEntity);
+
+            redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
+            redirectAttrib.addFlashAttribute("LEAD_FH_QUOTATION_OBJ", leadFHQuotationEntityDTO);
+            redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+            return new ModelAndView("redirect:view_system_leads_quotes?leadId="+leadRecorderObj.getLeadId());
+
+        }
+    }
+
+    
 
 }
