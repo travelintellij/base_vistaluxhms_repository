@@ -16,5 +16,6 @@ public interface LeadFreeHandQuotationRepository extends JpaRepository<LeadFreeH
     Integer findMaxVersionIdOfQuotationByLeadId(Long leadId);
 
 
+
 }
 

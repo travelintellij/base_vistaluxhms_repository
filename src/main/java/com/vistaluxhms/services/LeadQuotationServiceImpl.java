@@ -87,4 +87,13 @@ public class LeadQuotationServiceImpl {
         return freeHandQuotationRepository.save(quotation);
     }
 
+    public Integer findMaxVersionIdOfFHQuotationByLeadId(Long leadId){
+        return freeHandQuotationRepository.findMaxVersionIdOfQuotationByLeadId(leadId);
+    }
+
+
+    public LeadFreeHandQuotationEntity createLeadFHQuotationWithRooms(LeadFreeHandQuotationEntity quotation) {
+        // Save parent; children are saved because of CascadeType.ALL
+        return freeHandQuotationRepository.save(quotation);
+    }
 }

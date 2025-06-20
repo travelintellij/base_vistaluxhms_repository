@@ -216,7 +216,7 @@
                 <tbody>
                     <c:forEach var="quote" items="${LEAD_FH_QUOTATION_LIST}">
                         <tr>
-                            <td>${quote.lsqid}</td>
+                            <td>${quote.lfhqid}</td>
                             <td>${quote.versionId}</td>
                             <td>${quote.clientEntity.clientName}</td>
                             <td>INR ${quote.grandTotal}</td>

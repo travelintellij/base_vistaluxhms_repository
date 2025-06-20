@@ -1309,7 +1309,7 @@ public class LeadQuotationController {
         UserDetailsObj userObj = getLoggedInUser();
 
         if(leadFHQuotationEntityDTO.getLfhqid()==null || leadFHQuotationEntityDTO.getLfhqid()==0){
-            return view_create_lead_fh_quotation(leadFHQuotationEntityDTO,result,leadRecorderObj, leadBindingresult,  session);
+            return add_new_lead_fh_quotation(leadFHQuotationEntityDTO,result,leadRecorderObj, leadBindingresult,  session,redirectAttrib);
         }
         else{
             LeadFreeHandQuotationEntity existingleadFHQuotationEntity = leadQuotationService.findLeadFreeHandQuotationByID(leadFHQuotationEntityDTO.getLfhqid());
@@ -1366,6 +1366,51 @@ public class LeadQuotationController {
         }
     }
 
-    
+    public ModelAndView add_new_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
+                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib) {
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+
+        ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getClientEntity().getClientId());
+        quotationEntityDTO.setClientEntity(clientEntity);
+
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
+        quotationEntityDTO.setLeadEntity(leadEntity);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getClientEntity().getClientName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(String.valueOf(quotationEntityDTO.getClientEntity().getMobile()));
+        sessionQuotation.setEmail(quotationEntityDTO.getClientEntity().getEmailId());
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:view_fh_leads_quotes?leadId="+leadRecorderObj.getLeadId());
+        redirectAttrib.addFlashAttribute("LEAD_FH_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        LeadFreeHandQuotationEntity leadFreeHandQuotationEntity = new LeadFreeHandQuotationEntity();
+        leadFreeHandQuotationEntity.updateEntityfromVO(quotationEntityDTO);
+        Integer maxVersionId = leadQuotationService.findMaxVersionIdOfFHQuotationByLeadId(leadRecorderObj.getLeadId());
+        leadFreeHandQuotationEntity.setVersionId((maxVersionId != null ? maxVersionId : 0) + 1);
+        List<LeadFreeHandQuotationRoomDetailsEntity> roomEntities = new ArrayList<>();
+        if (quotationEntityDTO.getRoomDetailsDTO() != null) {
+            for (LeadFreeHandQuotationRoomDetailsEntityDTO roomDetail : quotationEntityDTO.getRoomDetailsDTO()) {
+                LeadFreeHandQuotationRoomDetailsEntity roomEntity = new LeadFreeHandQuotationRoomDetailsEntity();
+                roomEntity.updateEntityFromVO(roomDetail);
+                roomEntity.setLeadFreeHandQuotationEntity(leadFreeHandQuotationEntity); // set parent reference
+                roomEntities.add(roomEntity); // collect to parent list
+            }
+        }
+        leadFreeHandQuotationEntity.setRoomDetails(roomEntities); // ensure this setter exists
+        leadQuotationService.createLeadFHQuotationWithRooms(leadFreeHandQuotationEntity);
+        redirectAttrib.addFlashAttribute("Success", "Quotation is saved successfully. ");
+        return modelView;
+    }
+
+
 
 }
