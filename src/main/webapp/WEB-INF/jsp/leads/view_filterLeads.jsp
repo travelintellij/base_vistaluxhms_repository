@@ -402,7 +402,9 @@
                          <div class="submenu-content">
                            <a href="view_system_leads_quotes?leadId=${leadRec.leadId}">System Quotation</a>
                            <a href="view_fh_leads_quotes?leadId=${leadRec.leadId}">Freehand Quotation</a>
+                           <!--
                            <a href="generate_event_quotation?leadId=${leadRec.leadId}">Event Quotation</a>
+                           -->
                          </div>
                        </div>
 

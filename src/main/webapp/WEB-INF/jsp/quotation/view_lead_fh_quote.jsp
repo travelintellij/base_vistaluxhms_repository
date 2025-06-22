@@ -224,7 +224,7 @@
                             <td>INR ${quote.grandTotal - quote.discount}</td>
                             <td>
                                 <!-- View -->
-                                <a href="view_review_fh_quotation?lsqid=${quote.lfhqid}" class="action-btn view">Load</a>
+                                <a href="view_review_fh_quotation?lfhqid=${quote.lfhqid}" class="action-btn view">Load</a>
                             </td>
                         </tr>
                     </c:forEach>

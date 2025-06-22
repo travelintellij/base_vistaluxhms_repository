@@ -1361,7 +1361,7 @@ public class LeadQuotationController {
             redirectAttrib.addFlashAttribute("Success", "Quotation updated successfully.");
             redirectAttrib.addFlashAttribute("LEAD_FH_QUOTATION_OBJ", leadFHQuotationEntityDTO);
             redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
-            return new ModelAndView("redirect:view_system_leads_quotes?leadId="+leadRecorderObj.getLeadId());
+            return new ModelAndView("redirect:view_fh_leads_quotes?leadId="+leadRecorderObj.getLeadId());
 
         }
     }
@@ -1411,6 +1411,36 @@ public class LeadQuotationController {
         return modelView;
     }
 
+    @RequestMapping(value = "view_review_fh_quotation", method = RequestMethod.GET)
+    public ModelAndView viewReviewFHQuotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session,final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView("quotation/loadFreeHandQuotation");
+        UserDetailsObj userObj = getLoggedInUser();
+        LeadFreeHandQuotationEntity leadFreeHandQuotationEntity = leadQuotationService.findLeadFreeHandQuotationByID(quotationEntityDTO.getLfhqid()); // your actual method here
+        quotationEntityDTO.updateDTOFromEntity(leadFreeHandQuotationEntity); // or use a mapper/service
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
 
+        List<LeadFreeHandQuotationRoomDetailsEntityDTO> quotationRoomsDTO = new ArrayList<LeadFreeHandQuotationRoomDetailsEntityDTO>();
+
+        List<LeadFreeHandQuotationRoomDetailsEntity> quotationRooms = leadFreeHandQuotationEntity.getRoomDetails();
+        for (LeadFreeHandQuotationRoomDetailsEntity quotationRoomDetailsEntity : quotationRooms) {
+            LeadFreeHandQuotationRoomDetailsEntityDTO quotationRoomDTO = new LeadFreeHandQuotationRoomDetailsEntityDTO();
+            quotationRoomDTO.updateLeadRoomDetailsDTOFromLeadRoomEntity(quotationRoomDetailsEntity);
+            quotationRoomDTO.setFormattedCheckInDate(quotationRoomDTO.getCheckInDate().format(OUTPUT_FORMAT));
+            quotationRoomDTO.setFormattedCheckOutDate(quotationRoomDTO.getCheckOutDate().format(OUTPUT_FORMAT));
+            //quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+            quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+            quotationRoomsDTO.add(quotationRoomDTO);
+        }
+        quotationEntityDTO.setRoomDetailsDTO(quotationRoomsDTO);
+
+        LeadEntity leadEntity = leadService.findLeadById(leadFreeHandQuotationEntity.getLeadEntity().getLeadId());
+        leadRecorderObj.updateLeadVoFromEntity(leadEntity);
+        leadRecorderObj.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderObj.getLeadOwner()).getUsername());
+        leadRecorderObj.setStatusName(commonService.findWorkLoadStatusById(leadRecorderObj.getLeadStatus()).getWorkloadStatusName());
+        leadRecorderObj.setFormattedCheckInDate(formatter.format(leadEntity.getCheckInDate()));
+        leadRecorderObj.setFormattedCheckOutDate(formatter.format(leadEntity.getCheckOutDate()));
+        return modelView;
+    }
 
 }
