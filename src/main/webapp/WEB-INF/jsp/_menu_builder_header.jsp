@@ -180,6 +180,19 @@ username = "Guest";
                 </ul>
             </li>
         </sec:authorize>
+        <sec:authorize access="hasAnyRole('ADMIN','CLAIMS_ALLOWED')">
+            <li>
+                <a href="#">My Claims</a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#">New Claim</a>
+                        <a href="#">Claim Reports</a>
+                    </li>
+                </ul>
+            </li>
+        </sec:authorize>
+
+
         <li><a href="logout" class="logout">Logout</a></li>
         <li>
           <a href="view_form_my_profile">

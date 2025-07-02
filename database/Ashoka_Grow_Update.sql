@@ -1,4 +1,29 @@
 
+CREATE TABLE `ashokadb`.`my_claims` (
+  `claimId` BIGINT NOT NULL,
+  `claimdetails` VARCHAR(500) NULL,
+  `claimamount` INT NULL,
+  `approvedamount` INT NULL,
+  `claimdate` DATE NULL,
+  `claimdecisiondate` DATE NULL,
+  `claimstatus` INT NULL,
+  `expensestartdate` DATE NULL,
+  `expenseenddate` DATE NULL,
+  `managementremarks` VARCHAR(500) NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `claimentId` INT NULL,
+  `decisionmakerid` INT NULL,
+  PRIMARY KEY (`claimId`));
+
+ALTER TABLE `ashokadb`.`my_claims`
+ADD CONSTRAINT `fk_myclaims_claiment`
+FOREIGN KEY (`claimentId`) REFERENCES `ashokateam`(`userid`)
+ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_myclaims_decisionmaker`
+FOREIGN KEY (`decisionmakerId`) REFERENCES `ashokateam`(`userid`)
+ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 
 /********************* Updated below already *****************************/
