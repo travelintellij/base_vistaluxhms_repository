@@ -44,4 +44,11 @@ public interface VistaluxConstants {
     public static int EVENT_TYPE_WEDDING = 1;
     public static int EVENT_TYPE_MICE = 2;
 
+    static final Map<Integer, String> CLAIM_TYPE_MAP = new HashMap<Integer, String>(){
+        {
+            put(1,"Expense");
+            put(2,"Incentive");
+        }
+    };
+
 }

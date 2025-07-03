@@ -24,6 +24,43 @@ ADD CONSTRAINT `fk_myclaims_decisionmaker`
 FOREIGN KEY (`decisionmakerId`) REFERENCES `ashokateam`(`userid`)
 ON DELETE SET NULL ON UPDATE CASCADE;
 
+ALTER TABLE `ashokadb`.`my_claims`
+ADD COLUMN `claimtype` INT NULL AFTER `claimamount`;
+
+CREATE TABLE `ashokadb`.`my_travel_claims` (
+  `travelClaimId` BIGINT NOT NULL,
+  `source` VARCHAR(250) NULL,
+  `destination` VARCHAR(250) NULL,
+  `expenseStartDate` DATE NULL,
+  `expenseEndDate` DATE NULL,
+  `claimDetails` VARCHAR(500) NULL,
+  `travelMode` INT NULL,
+  `kms` INT NULL,
+  `travelExpense` INT NULL,
+  `foodExpense` INT NULL,
+  `parkingExpense` INT NULL,
+  `otherExpense1` INT NULL,
+  `otherExpense2` INT NULL,
+  `otherExpense3` INT NULL,
+  `claimentId` INT NULL,
+  `approverId` INT NULL,
+  `approverRemarks` VARCHAR(500) NULL,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`travelClaimId`),
+  INDEX `FK_ClaimentId_idx` (`claimentId` ASC) VISIBLE,
+  INDEX `FK_ApproverID_idx` (`approverId` ASC) VISIBLE,
+  CONSTRAINT `FK_ClaimentId`
+    FOREIGN KEY (`claimentId`)
+    REFERENCES `ashokadb`.`ashokateam` (`userId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ApproverID`
+    FOREIGN KEY (`approverId`)
+    REFERENCES `ashokadb`.`ashokateam` (`userId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
 
 
 /********************* Updated below already *****************************/

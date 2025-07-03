@@ -15,6 +15,7 @@ public class MyClaimsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long claimId;
 
+    protected int claimtype;
     protected String claimdetails;
     protected int claimamount;
     protected int approvedamount;
@@ -121,6 +122,14 @@ public class MyClaimsEntity {
 
     public void setDecisionmakerid(int decisionmakerid) {
         this.decisionmakerid = decisionmakerid;
+    }
+
+    public int getClaimtype() {
+        return claimtype;
+    }
+
+    public void setClaimtype(int claimtype) {
+        this.claimtype = claimtype;
     }
 }
 

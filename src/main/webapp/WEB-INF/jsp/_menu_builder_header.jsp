@@ -185,7 +185,7 @@ username = "Guest";
                 <a href="#">My Claims</a>
                 <ul class="submenu">
                     <li>
-                        <a href="#">New Claim</a>
+                        <a href="view_add_claim_form">New Claim</a>
                         <a href="#">Claim Reports</a>
                     </li>
                 </ul>
