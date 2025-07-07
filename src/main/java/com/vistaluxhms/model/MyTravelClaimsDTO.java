@@ -21,6 +21,7 @@ public class MyTravelClaimsDTO {
     private Integer otherExpense1;
     private Integer otherExpense2;
     private Integer otherExpense3;
+    private String otherExpensesDetails;
     private Integer claimentId;
     private Integer approverId;
     private String approverRemarks;
@@ -137,6 +138,14 @@ public class MyTravelClaimsDTO {
 
     public void setOtherExpense3(Integer otherExpense3) {
         this.otherExpense3 = otherExpense3;
+    }
+
+    public String getOtherExpensesDetails() {
+        return otherExpensesDetails;
+    }
+
+    public void setOtherExpensesDetails(String otherExpensesDetails) {
+        this.otherExpensesDetails = otherExpensesDetails;
     }
 
     public Integer getClaimentId() {

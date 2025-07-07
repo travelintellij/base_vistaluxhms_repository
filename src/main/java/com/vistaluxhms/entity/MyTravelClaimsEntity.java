@@ -3,6 +3,7 @@ package com.vistaluxhms.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "my_travel_claims")
@@ -12,6 +13,11 @@ public class MyTravelClaimsEntity {
     @Column(name = "travelClaimId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long travelClaimId;
+
+
+    @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<TravelClaimBillEntity> bills;
+
 
     @Column(name = "source", length = 250)
     private String source;
@@ -52,6 +58,8 @@ public class MyTravelClaimsEntity {
     @Column(name = "otherExpense3")
     private Integer otherExpense3;
 
+    @Column(name = "otherExpensesDetails", length = 500)
+    private String otherExpensesDetails;
 
     private Integer claimentId;
 
@@ -217,6 +225,27 @@ public class MyTravelClaimsEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    // NEW: list of associated bills
+
+    // getters and setters for all fields (omitted here for brevity — keep as you already wrote)
+
+    public List<TravelClaimBillEntity> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<TravelClaimBillEntity> bills) {
+        this.bills = bills;
+    }
+
+    public String getOtherExpensesDetails() {
+        return otherExpensesDetails;
+    }
+
+    public void setOtherExpensesDetails(String otherExpensesDetails) {
+        this.otherExpensesDetails = otherExpensesDetails;
     }
 }
 

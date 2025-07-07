@@ -1,4 +1,20 @@
 
+
+CREATE TABLE travel_claim_bills (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    travelClaimId BIGINT NOT NULL,
+    bill_file LONGBLOB NOT NULL,
+    file_name VARCHAR(255),
+    file_type VARCHAR(100),
+    CONSTRAINT fk_travel_claim FOREIGN KEY (travelClaimId)
+      REFERENCES my_travel_claims (travelClaimId)
+      ON DELETE CASCADE
+);
+
+ALTER TABLE `ashokadb`.`my_travel_claims`
+ADD COLUMN `otherExpensesDetails` VARCHAR(500) NULL AFTER `otherExpense3`;
+
+************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,
   `claimdetails` VARCHAR(500) NULL,
@@ -60,6 +76,9 @@ CREATE TABLE `ashokadb`.`my_travel_claims` (
     REFERENCES `ashokadb`.`ashokateam` (`userId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+
+
 
 
 
