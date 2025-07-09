@@ -2,6 +2,7 @@ package com.vistaluxhms.services;
 
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.ClientEntityDTO;
+import com.vistaluxhms.model.MyTravelClaimsDTO;
 import com.vistaluxhms.repository.ClientEntityRepository;
 import com.vistaluxhms.repository.MyTravelClaimsEntityRepository;
 import com.vistaluxhms.repository.TravelClaimBillRepository;
@@ -28,20 +29,60 @@ public class MyClaimsServicesImpl {
     MyTravelClaimsEntityRepository travelClaimRepository;
 
     @Transactional
-    public MyTravelClaimsEntity saveClaimWithBills(MyTravelClaimsEntity claim, List<MultipartFile> files) throws IOException {
-        MyTravelClaimsEntity savedClaim = travelClaimRepository.save(claim);
+    public void saveOrUpdateClaim(MyTravelClaimsDTO dto, MultipartFile[] files) throws IOException {
+        MyTravelClaimsEntity entity;
 
-        for (MultipartFile file : files) {
-            TravelClaimBillEntity bill = new TravelClaimBillEntity();
-            bill.setClaim(savedClaim);
-            bill.setFileName(file.getOriginalFilename());
-            bill.setFileType(file.getContentType());
-            bill.setBillFile(file.getBytes());
-
-            travelClaimBillRepository.save(bill);
+        if (dto.getTravelClaimId() != null) {
+            entity = travelClaimRepository.findById(dto.getTravelClaimId())
+                    .orElse(new MyTravelClaimsEntity());
+        } else {
+            entity = new MyTravelClaimsEntity();
         }
 
-        return savedClaim;
+        mapDtoToEntity(dto, entity);
+
+        // save claim first
+        MyTravelClaimsEntity savedClaim = travelClaimRepository.save(entity);
+
+        // clear old bills if updating
+        if (savedClaim.getBills() != null) {
+            savedClaim.getBills().clear();
+        }
+
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    TravelClaimBillEntity bill = new TravelClaimBillEntity();
+                    bill.setClaim(savedClaim);
+                    bill.setFileName(file.getOriginalFilename());
+                    bill.setFileType(file.getContentType());
+                    bill.setBillFile(file.getBytes());
+                    savedClaim.getBills().add(bill);
+                }
+            }
+        }
+
+        travelClaimRepository.save(savedClaim);
+    }
+
+    private void mapDtoToEntity(MyTravelClaimsDTO dto, MyTravelClaimsEntity entity) {
+        entity.setSource(dto.getSource());
+        entity.setDestination(dto.getDestination());
+        entity.setExpenseStartDate(dto.getExpenseStartDate());
+        entity.setExpenseEndDate(dto.getExpenseEndDate());
+        entity.setClaimDetails(dto.getClaimDetails());
+        entity.setTravelMode(dto.getTravelMode());
+        entity.setKms(dto.getKms());
+        entity.setTravelExpense(dto.getTravelExpense());
+        entity.setFoodExpense(dto.getFoodExpense());
+        entity.setParkingExpense(dto.getParkingExpense());
+        entity.setOtherExpense1(dto.getOtherExpense1());
+        entity.setOtherExpense2(dto.getOtherExpense2());
+        entity.setOtherExpense3(dto.getOtherExpense3());
+        entity.setOtherExpensesDetails(dto.getOtherExpensesDetails());
+        entity.setClaimentId(dto.getClaimentId());
+        entity.setApproverId(dto.getApproverId());
+        entity.setApproverRemarks(dto.getApproverRemarks());
     }
 
 

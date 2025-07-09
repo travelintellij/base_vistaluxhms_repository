@@ -68,39 +68,31 @@ public class MyClaimsController {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("myclaims/Add_My_Travel_Claim");
         modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
+        modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
         return modelView;
     }
 
     @Transactional
-    @PostMapping("submit_travel_claim")
-    public ModelAndView submitTravelClaim(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO claimObj,
+    @PostMapping("create_create_my_travel_claim")
+    public ModelAndView create_create_my_travel_claim(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO claimObj,
             @RequestParam(value = "bills", required = false) MultipartFile[] bills,BindingResult result,final RedirectAttributes redirectAttrib) throws IOException {
-
         UserDetailsObj userObj = getLoggedInUser();
         MyTravelClaimForm travelClaimForm = new MyTravelClaimForm();
         travelClaimForm.setClaim(claimObj);
         travelClaimForm.setBills(bills);
-
         travelClaimValidator.validate(travelClaimForm, result);
-
         if (claimObj.getClaimentId() == null || claimObj.getClaimentId() == 0) {
             claimObj.setClaimentId(userObj.getUserId());
         }
-
         ModelAndView modelView = new ModelAndView();
-
-        // validate using your validator framework
-        travelClaimValidator.validate(travelClaimForm, result);
-
         if (result.hasErrors()) {
             modelView = view_add_travel_claim_form(claimObj, result);
             return modelView;
         } else {
-            //travelClaimService.saveClaimWithBills(claimObj, bills != null ? List.of(bills) : List.of());
+            travelClaimService.saveOrUpdateClaim(claimObj, bills);
             redirectAttrib.addFlashAttribute("Success", "Travel claim submitted successfully.");
             modelView.setViewName("redirect:view_travel_claims");
         }
-
         return modelView;
     }
 

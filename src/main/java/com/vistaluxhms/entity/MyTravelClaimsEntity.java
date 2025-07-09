@@ -1,7 +1,10 @@
 package com.vistaluxhms.entity;
 
+import com.vistaluxhms.model.MyTravelClaimsDTO;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class MyTravelClaimsEntity {
 
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<TravelClaimBillEntity> bills;
+    private List<TravelClaimBillEntity> bills = new ArrayList<>();
 
 
     @Column(name = "source", length = 250)
@@ -69,11 +72,17 @@ public class MyTravelClaimsEntity {
     @Column(name = "approverRemarks", length = 500)
     private String approverRemarks;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", insertable = false, updatable = false)
     private LocalDateTime updatedAt;
+
+    public MyTravelClaimsEntity() {
+
+    }
+
+
 
     public Long getTravelClaimId() {
         return travelClaimId;
@@ -247,5 +256,6 @@ public class MyTravelClaimsEntity {
     public void setOtherExpensesDetails(String otherExpensesDetails) {
         this.otherExpensesDetails = otherExpensesDetails;
     }
+
 }
 

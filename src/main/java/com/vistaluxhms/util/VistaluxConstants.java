@@ -51,4 +51,14 @@ public interface VistaluxConstants {
         }
     };
 
+    static final Map<Integer, String> CLAIM_TRAVEL_MODE = new HashMap<Integer, String>(){
+        {
+            put(1,"SELF CAR");
+            put(2,"TAXI");
+            put(3,"FLIGHT");
+            put(4,"RENT A CAR");
+            put(5,"OTHER");
+        }
+    };
+
 }

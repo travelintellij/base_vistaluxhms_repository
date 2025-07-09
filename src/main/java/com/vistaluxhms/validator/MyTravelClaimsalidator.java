@@ -29,7 +29,7 @@ public class MyTravelClaimsalidator implements Validator {
 
 		if (claim.getExpenseStartDate() != null && claim.getExpenseEndDate() != null &&
 				claim.getExpenseStartDate().after(claim.getExpenseEndDate())) {
-			errors.rejectValue("claim.expenseStartDate", "invalid.dates", "Start Date must be before End Date.");
+			errors.rejectValue("expenseStartDate", "invalid.dates", "Start Date must be before End Date.");
 		}
 
 		int totalExpense =
@@ -40,16 +40,16 @@ public class MyTravelClaimsalidator implements Validator {
 						safe(claim.getOtherExpense2()) +
 						safe(claim.getOtherExpense3());
 		if (totalExpense <= 0) {
-			errors.reject("claim.expenses", "At least one expense must be greater than zero.");
+			errors.rejectValue("travelExpense", "invalid.dates", "At least one expense must be greater than zero.");
 		}
 
 		if (files != null) {
 			if (files.length > 5) {
-				errors.reject("bills", "You can upload up to 5 files.");
+				errors.rejectValue("bills", "invalid.files", "You can upload up to 5 files.");
 			}
 			for (MultipartFile file : files) {
 				if (file.getSize() > (5 * 1024 * 1024)) {
-					errors.reject("bills", "Each file must be ≤ 5 MB.");
+					errors.rejectValue("bills", "invalid.files", "Each file must be ≤ 5 MB.");
 				}
 			}
 		}

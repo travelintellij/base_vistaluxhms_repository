@@ -14,6 +14,27 @@ CREATE TABLE travel_claim_bills (
 ALTER TABLE `ashokadb`.`my_travel_claims`
 ADD COLUMN `otherExpensesDetails` VARCHAR(500) NULL AFTER `otherExpense3`;
 
+ALTER TABLE `ashokadb`.`travel_claim_bills`
+DROP FOREIGN KEY `fk_travel_claim`;
+ALTER TABLE `ashokadb`.`travel_claim_bills`
+DROP INDEX `fk_travel_claim` ;
+;
+
+ALTER TABLE `ashokadb`.`my_travel_claims`
+CHANGE COLUMN `travelClaimId` `travelClaimId` BIGINT NOT NULL AUTO_INCREMENT ;
+
+
+ALTER TABLE `ashokadb`.`travel_claim_bills`
+ADD INDEX `fk_travel_claims_idx` (`travelClaimId` ASC) VISIBLE;
+;
+ALTER TABLE `ashokadb`.`travel_claim_bills`
+ADD CONSTRAINT `fk_travel_claims`
+  FOREIGN KEY (`travelClaimId`)
+  REFERENCES `ashokadb`.`my_travel_claims` (`travelClaimId`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,

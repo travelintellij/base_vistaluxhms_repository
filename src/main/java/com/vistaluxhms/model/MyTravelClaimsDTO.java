@@ -1,8 +1,12 @@
 package com.vistaluxhms.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 
 public class MyTravelClaimsDTO {
@@ -10,8 +14,24 @@ public class MyTravelClaimsDTO {
     private Long travelClaimId;
     private String source;
     private String destination;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expenseStartDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expenseEndDate;
+
+    private List<MultipartFile> bills;
+
+    public List<MultipartFile> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<MultipartFile> bills) {
+        this.bills = bills;
+    }
+
+
     private String claimDetails;
     private Integer travelMode;
     private Integer kms;

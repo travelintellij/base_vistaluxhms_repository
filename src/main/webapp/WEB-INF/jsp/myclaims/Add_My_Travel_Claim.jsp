@@ -94,12 +94,14 @@
 
             <div class="form-row">
                 <label for="travelMode">Travel Mode:</label>
-                <form:input path="travelMode" />
+                <form:select path="travelMode">
+                    <form:options items="${CLAIM_TRAVEL_MODE}" />
+                </form:select>
                 <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
             </div>
 
              <div class="form-row">
-                <label for="travelExpense">Food Expense:</label>
+                <label for="travelExpense">Travel Expense:</label>
                 <form:input path="travelExpense" type="number" />
                 <font color="red"><form:errors path="travelExpense" cssClass="error"/></font>
             </div>
@@ -127,12 +129,7 @@
                 <label for="otherExpensesDetails">Other Expenses Details:</label>
                 <form:textarea path="otherExpensesDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
             </div>
-
-            <div class="form-row">
-                <label for="bills">Upload Bills (multiple files):</label>
-                <input type="file" name="bills" multiple />
-            </div>
-
+        <font color="red"><form:errors path="bills" cssClass="error"/></font>
           <div class="form-row">
               <label for="bills">Upload Bills:</label>
               <div id="file-inputs">
