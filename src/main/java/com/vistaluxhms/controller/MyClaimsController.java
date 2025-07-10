@@ -96,5 +96,48 @@ public class MyClaimsController {
         return modelView;
     }
 
+    @RequestMapping("view_travel_claim_list")
+    public ModelAndView view_travel_claim_list(@ModelAttribute("TRAVEL_CLAIM_OBJ") MyTravelClaimsDTO travelClaimsDTO,BindingResult result,@RequestParam(value = "page", defaultValue = "0") int page,
+                                          @RequestParam(value = "size", defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize) {
+
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("myclaims/viewTravelClaimListing");
+
+        // Adding user details to the model
+        modelView.addObject("userName", userObj.getUsername());
+        modelView.addObject("Id", userObj.getUserId());
+
+        // Create PageRequest with pagination
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        // Get the paginated list of filtered clients
+        Page<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, pageable);
+
+        // Convert the filtered list to DTOs
+        List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage.getContent());
+
+        // Adding filtered clients and pagination details to the model
+        modelView.addObject("TRAVEL_CLAIM_FILTERED_LIST", travelClaimsDTOList);
+        modelView.addObject("currentPage", page);
+        modelView.addObject("totalPages", travelClaimFilteredPage.getTotalPages());
+        modelView.addObject("totalClients", travelClaimFilteredPage.getTotalElements());
+        modelView.addObject("pageSize", pageSize);
+
+        modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
+        modelView.addObject("page", page);
+        //modelView.addObject("sortBy", sortBy);
+
+        // modelView.addObject("cityId", searchClientObj.getCityId());
+        //modelView.addObject("active", searchClientObj.isActive());
+
+        // Sales Partner Map for the filter
+        modelView.addObject("TRAVEL_CLAIM_OBJ", travelClaimsDTO);
+        return modelView;
+    }
+    private List<MyTravelClaimsDTO> generateTravelClaimObj(List<MyTravelClaimsEntity> listTravelClaime) {
+        List<MyTravelClaimsDTO> travelClaimsDTOList = new ArrayList<MyTravelClaimsDTO>();
+
+        return travelClaimsDTOList;
+    }
 
 }

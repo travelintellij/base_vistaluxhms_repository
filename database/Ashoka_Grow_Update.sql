@@ -34,6 +34,24 @@ ADD CONSTRAINT `fk_travel_claims`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+ALTER TABLE `ashokadb`.`my_travel_claims`
+ADD COLUMN `claimStatus` INT NULL AFTER `claimentId`;
+
+
+CREATE TABLE `ashokadb`.`status_master` (
+  `statusId` INT NOT NULL AUTO_INCREMENT,
+  `status_obj` VARCHAR(45) NULL,
+  `status_obj_type` VARCHAR(150) NULL,
+  `statusName` VARCHAR(250) NULL,
+  `active` TINYINT NULL,
+  PRIMARY KEY (`statusId`));
+
+INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('1', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Claimed', '1');
+INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('2', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Approved', '1');
+INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('3', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Partially Approved', '1');
+INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('4', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Rejected', '1');
+INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('5', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Paid Settled', '1');
+
 
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (

@@ -86,4 +86,25 @@ public class MyClaimsServicesImpl {
     }
 
 
+    public Page<MyTravelClaimsEntity> filterTravelClaims(MyTravelClaimsDTO searchTravelObj, Pageable pageable) {
+        //Pageable pageable = PageRequest.of(pageable., pageSize);
+
+        return travelClaimRepository.findAll(new Specification<MyTravelClaimsEntity>() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Predicate toPredicate(Root<MyTravelClaimsEntity> travelClaimsEntityRoot, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+
+                // Filter by Client ID
+                if (searchTravelObj.getTravelClaimId() != null && searchTravelObj.getTravelClaimId() != 0) {
+                    predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("travelClaimId"), searchTravelObj.getTravelClaimId()));
+                }
+
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            }
+        }, pageable);
+    }
+
 }
