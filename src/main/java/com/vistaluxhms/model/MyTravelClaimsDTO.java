@@ -1,5 +1,6 @@
 package com.vistaluxhms.model;
 
+import com.vistaluxhms.entity.MyTravelClaimsEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,9 @@ public class MyTravelClaimsDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expenseEndDate;
+
+    private String formattedExpenseStartDate;
+    private String formattedExpenseEndDate;
 
     private List<MultipartFile> bills;
 
@@ -206,6 +210,50 @@ public class MyTravelClaimsDTO {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public MyTravelClaimsDTO(){
+
+    }
+
+    public MyTravelClaimsDTO(MyTravelClaimsEntity myTravelClaimsEntity) {
+        this.travelClaimId = myTravelClaimsEntity.getTravelClaimId();
+        this.source = myTravelClaimsEntity.getSource();
+        this.destination = myTravelClaimsEntity.getDestination();
+        this.expenseStartDate = myTravelClaimsEntity.getExpenseStartDate();
+        this.expenseEndDate = myTravelClaimsEntity.getExpenseEndDate();
+        //this.bills = myTravelClaimsEntity.getBills();
+        this.claimDetails = myTravelClaimsEntity.getClaimDetails();
+        this.travelMode = myTravelClaimsEntity.getTravelMode();
+        this.kms = myTravelClaimsEntity.getKms();
+        this.travelExpense = myTravelClaimsEntity.getTravelExpense();
+        this.foodExpense = myTravelClaimsEntity.getFoodExpense();
+        this.parkingExpense = myTravelClaimsEntity.getParkingExpense();
+        this.otherExpense1 = myTravelClaimsEntity.getOtherExpense1();
+        this.otherExpense2 = myTravelClaimsEntity.getOtherExpense2();
+        this.otherExpense3 = myTravelClaimsEntity.getOtherExpense3();
+        this.otherExpensesDetails = myTravelClaimsEntity.getOtherExpensesDetails();
+        this.claimentId = myTravelClaimsEntity.getClaimentId();
+        this.approverId = myTravelClaimsEntity.getApproverId();
+        this.approverRemarks = myTravelClaimsEntity.getApproverRemarks();
+        this.createdAt = myTravelClaimsEntity.getCreatedAt();
+        this.updatedAt = myTravelClaimsEntity.getUpdatedAt();
+    }
+
+    public String getFormattedExpenseStartDate() {
+        return formattedExpenseStartDate;
+    }
+
+    public void setFormattedExpenseStartDate(String formattedExpenseStartDate) {
+        this.formattedExpenseStartDate = formattedExpenseStartDate;
+    }
+
+    public String getFormattedExpenseEndDate() {
+        return formattedExpenseEndDate;
+    }
+
+    public void setFormattedExpenseEndDate(String formattedExpenseEndDate) {
+        this.formattedExpenseEndDate = formattedExpenseEndDate;
     }
 }
 

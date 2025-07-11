@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +42,8 @@ public class MyClaimsController {
 
     @Autowired
     MyTravelClaimsalidator travelClaimValidator;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,7 +94,7 @@ public class MyClaimsController {
         } else {
             travelClaimService.saveOrUpdateClaim(claimObj, bills);
             redirectAttrib.addFlashAttribute("Success", "Travel claim submitted successfully.");
-            modelView.setViewName("redirect:view_travel_claims");
+            modelView.setViewName("redirect:view_travel_claim_list");
         }
         return modelView;
     }
@@ -134,9 +137,12 @@ public class MyClaimsController {
         modelView.addObject("TRAVEL_CLAIM_OBJ", travelClaimsDTO);
         return modelView;
     }
-    private List<MyTravelClaimsDTO> generateTravelClaimObj(List<MyTravelClaimsEntity> listTravelClaime) {
+    private List<MyTravelClaimsDTO> generateTravelClaimObj(List<MyTravelClaimsEntity> listTravelClaims) {
         List<MyTravelClaimsDTO> travelClaimsDTOList = new ArrayList<MyTravelClaimsDTO>();
-
+        for(int i=0;i<listTravelClaims.size();i++){
+            MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(listTravelClaims.get(i));
+            travelClaimsDTOList.add(myTravelClaimsDTO);
+        }
         return travelClaimsDTOList;
     }
 
