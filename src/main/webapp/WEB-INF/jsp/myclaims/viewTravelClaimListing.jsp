@@ -35,6 +35,19 @@
     body {
         opacity: .98; /* Adjust the opacity for the background image */
     }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* this is important */
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ccc;
+  word-wrap: break-word;
+  text-align: center;
+}
 
 </style>
 
@@ -87,8 +100,8 @@
                     <td>${claimRec.travelClaimId}</td>
                     <td>${claimRec.source}</td>
                     <td>${claimRec.destination}</td>
-                    <td>${claimRec.expenseStartDate}</td>
-                    <td>${claimRec.expenseEndDate}</td>
+                    <td>${claimRec.formattedExpenseStartDate}</td>
+                    <td>${claimRec.formattedExpenseEndDate}</td>
                     <td>Status</td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">

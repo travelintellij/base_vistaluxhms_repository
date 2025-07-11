@@ -141,6 +141,8 @@ public class MyClaimsController {
         List<MyTravelClaimsDTO> travelClaimsDTOList = new ArrayList<MyTravelClaimsDTO>();
         for(int i=0;i<listTravelClaims.size();i++){
             MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(listTravelClaims.get(i));
+            myTravelClaimsDTO.setFormattedExpenseStartDate(formatter.format(myTravelClaimsDTO.getExpenseStartDate()));
+            myTravelClaimsDTO.setFormattedExpenseEndDate(formatter.format(myTravelClaimsDTO.getExpenseEndDate()));
             travelClaimsDTOList.add(myTravelClaimsDTO);
         }
         return travelClaimsDTOList;
