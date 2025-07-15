@@ -53,6 +53,16 @@ INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_ty
 INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `active`) VALUES ('5', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'Paid Settled', '1');
 
 
+ALTER TABLE `ashokadb`.`status_master`
+ADD COLUMN `master_status` TINYINT NULL AFTER `statusName`;
+
+UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '1');
+UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '2');
+UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '4');
+UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '3');
+UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '5');
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,

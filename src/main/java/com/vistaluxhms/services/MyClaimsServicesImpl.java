@@ -107,4 +107,36 @@ public class MyClaimsServicesImpl {
         }, pageable);
     }
 
+    public MyTravelClaimsEntity findTravelClaimById(Long travelClaimId){
+        return travelClaimRepository.findById(travelClaimId).get();
+    }
+
+    public MyTravelClaimsDTO findTravelClaimDTOById(MyTravelClaimsDTO dto,Long travelClaimId){
+        return mapEntityToDTO(dto,travelClaimRepository.findById(travelClaimId).get());
+    }
+
+
+    private MyTravelClaimsDTO mapEntityToDTO(MyTravelClaimsDTO dto,MyTravelClaimsEntity entity) {
+        dto.setSource(entity.getSource());
+        dto.setDestination(entity.getDestination());
+        dto.setExpenseStartDate(entity.getExpenseStartDate());
+        dto.setExpenseEndDate(entity.getExpenseEndDate());
+        dto.setClaimDetails(entity.getClaimDetails());
+        dto.setTravelMode(entity.getTravelMode());
+        dto.setKms(entity.getKms());
+        dto.setTravelExpense(entity.getTravelExpense());
+        dto.setFoodExpense(entity.getFoodExpense());
+        dto.setParkingExpense(entity.getParkingExpense());
+        dto.setOtherExpense1(entity.getOtherExpense1());
+        dto.setOtherExpense2(entity.getOtherExpense2());
+        dto.setOtherExpense3(entity.getOtherExpense3());
+        dto.setOtherExpensesDetails(entity.getOtherExpensesDetails());
+        dto.setClaimentId(entity.getClaimentId());
+        dto.setApproverId(entity.getApproverId());
+        dto.setApproverRemarks(entity.getApproverRemarks());
+
+        return dto;
+    }
+
+
 }

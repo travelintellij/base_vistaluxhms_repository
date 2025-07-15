@@ -43,6 +43,9 @@ public class MyClaimsController {
     @Autowired
     MyTravelClaimsalidator travelClaimValidator;
 
+    @Autowired
+    StatusServiceImpl statusService;
+
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
     private UserDetailsObj getLoggedInUser() {
@@ -75,6 +78,19 @@ public class MyClaimsController {
         return modelView;
     }
 
+    @RequestMapping("view_view_travel_claim_form")
+    public ModelAndView view_view_travel_claim_form(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO myClaimsEntityDto, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("myclaims/view_My_Travel_Claim");
+        myClaimsEntityDto = travelClaimService.findTravelClaimDTOById(myClaimsEntityDto,myClaimsEntityDto.getTravelClaimId());
+        modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
+        modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
+
+
+        return modelView;
+    }
+
+
     @Transactional
     @PostMapping("create_create_my_travel_claim")
     public ModelAndView create_create_my_travel_claim(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO claimObj,
@@ -92,6 +108,7 @@ public class MyClaimsController {
             modelView = view_add_travel_claim_form(claimObj, result);
             return modelView;
         } else {
+            claimObj.setClaimStatus(VistaluxConstants.TRAV_EXP_DEF_STATUS);
             travelClaimService.saveOrUpdateClaim(claimObj, bills);
             redirectAttrib.addFlashAttribute("Success", "Travel claim submitted successfully.");
             modelView.setViewName("redirect:view_travel_claim_list");
@@ -140,9 +157,11 @@ public class MyClaimsController {
     private List<MyTravelClaimsDTO> generateTravelClaimObj(List<MyTravelClaimsEntity> listTravelClaims) {
         List<MyTravelClaimsDTO> travelClaimsDTOList = new ArrayList<MyTravelClaimsDTO>();
         for(int i=0;i<listTravelClaims.size();i++){
-            MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(listTravelClaims.get(i));
+            MyTravelClaimsEntity travelClaimsEntity = listTravelClaims.get(i);
+            MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(travelClaimsEntity);
             myTravelClaimsDTO.setFormattedExpenseStartDate(formatter.format(myTravelClaimsDTO.getExpenseStartDate()));
             myTravelClaimsDTO.setFormattedExpenseEndDate(formatter.format(myTravelClaimsDTO.getExpenseEndDate()));
+            myTravelClaimsDTO.setStatusName(statusService.findStatusById(travelClaimsEntity.getClaimStatus()).getStatusName());
             travelClaimsDTOList.add(myTravelClaimsDTO);
         }
         return travelClaimsDTOList;

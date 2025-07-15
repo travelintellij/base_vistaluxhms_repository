@@ -62,4 +62,6 @@ public interface VistaluxConstants {
     };
 
     public final static String TRAVEL_EXP_STATUS_OBJ = "TRAV_EXP";
+
+    public final static int TRAV_EXP_DEF_STATUS=1;
 }

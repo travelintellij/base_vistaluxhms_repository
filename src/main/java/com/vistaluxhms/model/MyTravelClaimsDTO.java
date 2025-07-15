@@ -49,6 +49,10 @@ public class MyTravelClaimsDTO {
     private Integer claimentId;
     private Integer approverId;
     private String approverRemarks;
+
+    private int claimStatus;
+    private String statusName;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -254,6 +258,22 @@ public class MyTravelClaimsDTO {
 
     public void setFormattedExpenseEndDate(String formattedExpenseEndDate) {
         this.formattedExpenseEndDate = formattedExpenseEndDate;
+    }
+
+    public int getClaimStatus() {
+        return claimStatus;
+    }
+
+    public void setClaimStatus(int claimStatus) {
+        this.claimStatus = claimStatus;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }
 

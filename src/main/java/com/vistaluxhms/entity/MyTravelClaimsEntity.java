@@ -72,6 +72,12 @@ public class MyTravelClaimsEntity {
     @Column(name = "approverRemarks", length = 500)
     private String approverRemarks;
 
+
+    @Column(name = "claimStatus", length = 500)
+    private int claimStatus;
+
+
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -218,6 +224,15 @@ public class MyTravelClaimsEntity {
 
     public void setApproverRemarks(String approverRemarks) {
         this.approverRemarks = approverRemarks;
+    }
+
+
+    public int getClaimStatus() {
+        return claimStatus;
+    }
+
+    public void setClaimStatus(int claimStatus) {
+        this.claimStatus = claimStatus;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -102,10 +102,10 @@ th, td {
                     <td>${claimRec.destination}</td>
                     <td>${claimRec.formattedExpenseStartDate}</td>
                     <td>${claimRec.formattedExpenseEndDate}</td>
-                    <td>Status</td>
+                    <td>${claimRec.statusName}</td>
                     <td>
-                        <form action="view_client_details" method="POST" style="display:inline;">
-                                <input type="hidden" name="clientId" value="${claimRec.travelClaimId}" />
+                        <form action="view_view_travel_claim_form" method="POST" style="display:inline;">
+                                <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                         </form>
                         <form action="view_edit_client_form" method="POST" style="display:inline;">
