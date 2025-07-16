@@ -53,91 +53,129 @@
 
 <div class="form-container-wrapper" style="background: transparent !important;">
     <div class="form-container">
-        <h2>Submit Travel Claim</h2>
+        <h2>View  Travel Claim</h2>
         <form:form method="post" action="create_create_my_travel_claim" modelAttribute="MY_TRAVEL_CLAIMS_OBJ" enctype="multipart/form-data">
+             <div class="form-row" >
+                <label for="source">Claim Id:</label>
+                 <span style="display: inline-block; text-align: left; width: 500px;">
+                        ${MY_TRAVEL_CLAIMS_OBJ.travelClaimId}
+                 </span>
+            </div>
 
-            <div class="form-row">
+            <div class="form-row" >
                 <label for="source">Source:</label>
-                ${MY_TRAVEL_CLAIMS_OBJ.source}
+                 <span style="display: inline-block; text-align: left; width: 500px;">
+                        ${MY_TRAVEL_CLAIMS_OBJ.source}
+                 </span>
             </div>
 
             <div class="form-row">
                 <label for="destination">Destination:</label>
-                <form:input path="destination" placeholder="Enter destination" required="required"/>
-                <font color="red"><form:errors path="destination" cssClass="error"/></font>
+                 <span style="display: inline-block; text-align: left; width: 500px;">
+                 ${MY_TRAVEL_CLAIMS_OBJ.destination}
+                 </span>
             </div>
 
             <div class="form-row">
                 <label for="expenseStartDate">Expense Start Date:</label>
-                <form:input path="expenseStartDate" type="date" required="required" class="date-input"/>
-                <font color="red"><form:errors path="expenseStartDate" cssClass="error"/></font>
+               <span style="display: inline-block; text-align: left; width: 500px;">
+                ${MY_TRAVEL_CLAIMS_OBJ.formattedExpenseStartDate}
+               </span>
             </div>
 
             <div class="form-row">
                 <label for="expenseEndDate">Expense End Date:</label>
-                <form:input path="expenseEndDate" type="date" class="date-input"/>
-                <font color="red"><form:errors path="expenseEndDate" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.formattedExpenseEndDate}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="claimDetails">Claim Details:</label>
-                <form:textarea path="claimDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
-                <font color="red"><form:errors path="claimDetails" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.claimDetails}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="kms">Kilometers:</label>
-                <form:input path="kms" type="number" />
-                <font color="red"><form:errors path="kms" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.kms}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="travelMode">Travel Mode:</label>
-                <form:select path="travelMode">
-                    <form:options items="${CLAIM_TRAVEL_MODE}" />
-                </form:select>
-                <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.travelModeName}
+                </span>
             </div>
 
              <div class="form-row">
                 <label for="travelExpense">Travel Expense:</label>
-                <form:input path="travelExpense" type="number" />
-                <font color="red"><form:errors path="travelExpense" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.travelExpense}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="foodExpense">Food Expense:</label>
-                <form:input path="foodExpense" type="number" />
-                <font color="red"><form:errors path="foodExpense" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                    ${MY_TRAVEL_CLAIMS_OBJ.foodExpense}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="parkingExpense">Parking Expense:</label>
-                <form:input path="parkingExpense" type="number" />
-                <font color="red"><form:errors path="parkingExpense" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                ${MY_TRAVEL_CLAIMS_OBJ.parkingExpense}
+                </span>
             </div>
 
             <div class="form-row">
                 <label for="otherExpense1">Other Expenses:</label>
-                <form:input path="otherExpense1" type="number" placeholder="Other 1"/>
-                <form:input path="otherExpense2" type="number" placeholder="Other 2"/>
-                <form:input path="otherExpense3" type="number" placeholder="Other 3"/>
-                <font color="red"><form:errors path="otherExpense1" cssClass="error"/></font>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                ${MY_TRAVEL_CLAIMS_OBJ.otherExpense1} |
+                ${MY_TRAVEL_CLAIMS_OBJ.otherExpense2} |
+                ${MY_TRAVEL_CLAIMS_OBJ.otherExpense3}
+                </span>
             </div>
             <div class="form-row">
                 <label for="otherExpensesDetails">Other Expenses Details:</label>
-                <form:textarea path="otherExpensesDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+                 ${MY_TRAVEL_CLAIMS_OBJ.otherExpensesDetails}
+                </span>
             </div>
-        <font color="red"><form:errors path="bills" cssClass="error"/></font>
+            <div class="form-row">
+                <label for="otherExpensesDetails">Total Expense</label>
+                <span style="display: inline-block; text-align: left; width: 500px;">
+               <mark> ${MY_TRAVEL_CLAIMS_OBJ.totalClaimAmount} </mark>
+                </span>
+            </div>
+
           <div class="form-row">
-              <label for="bills">Upload Bills:</label>
-              <div id="file-inputs">
-                  <div class="file-input-row">
-                      <input type="file" name="bills" />
-                      <button type="button" onclick="removeFileInput(this)">Remove</button>
-                  </div>
-              </div>
-              <button type="button" onclick="addFileInput()">+ Add Another File</button>
+              <label for="bills">Bills:</label>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${MY_TRAVEL_CLAIMS_OBJ.billsEntity}" var="bill">
+                        <tr>
+                            <td>${bill.fileName}</td>
+                            <td>
+                                <a href="${pageContext.request.contextPath}/travel-claim/bill/${bill.id}" target="_blank">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
           </div>
 
 

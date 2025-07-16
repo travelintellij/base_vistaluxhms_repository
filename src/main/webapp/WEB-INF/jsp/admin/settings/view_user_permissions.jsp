@@ -120,7 +120,8 @@ input[type=button], input[type=submit], input[type=reset] {
 <div align="center"><b><font color="green" > ${Success} </font><font color="red"> ${Error}</font> </b></div>
 	
 		<c:forEach items="${ROLE_OBJ}" var="roleMap">
-			<c:if test="${(roleMap.key ne 'PRIV')}">
+
+            <c:if test="${roleMap.key ne 'PRIV' and fn:substring(roleMap.key, fn:length(roleMap.key)-4, fn:length(roleMap.key)) ne '-SAR'}">
 				<div class="profile-header">
 				<h2>${roleMap.key}</h2>
 				</div>
@@ -148,6 +149,7 @@ input[type=button], input[type=submit], input[type=reset] {
 								<tr>
 										<td style="width:9%;">${user.username}</td>
 										<c:forEach var="roleList" items="${roleMap.value}">
+
 											<c:if test = "${fn:containsIgnoreCase(user.roles, roleList.roleName)}">
 												<td style="width:9%;">
 												 	<form:checkbox path="roles" value="${roleList.roleId}" checked="checked"  style="width: 20px; height: 20px; accent-color: #28a745; cursor: pointer;" />

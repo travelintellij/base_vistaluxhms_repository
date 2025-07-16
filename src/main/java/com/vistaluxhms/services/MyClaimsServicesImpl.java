@@ -7,6 +7,7 @@ import com.vistaluxhms.repository.ClientEntityRepository;
 import com.vistaluxhms.repository.MyTravelClaimsEntityRepository;
 import com.vistaluxhms.repository.TravelClaimBillRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
+import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,11 @@ public class MyClaimsServicesImpl {
 
     @Autowired
     MyTravelClaimsEntityRepository travelClaimRepository;
+
+    @Autowired
+    StatusServiceImpl statusService;
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
     @Transactional
     public void saveOrUpdateClaim(MyTravelClaimsDTO dto, MultipartFile[] files) throws IOException {
@@ -83,6 +90,7 @@ public class MyClaimsServicesImpl {
         entity.setClaimentId(dto.getClaimentId());
         entity.setApproverId(dto.getApproverId());
         entity.setApproverRemarks(dto.getApproverRemarks());
+        entity.setClaimStatus(dto.getClaimStatus());
     }
 
 
@@ -134,9 +142,18 @@ public class MyClaimsServicesImpl {
         dto.setClaimentId(entity.getClaimentId());
         dto.setApproverId(entity.getApproverId());
         dto.setApproverRemarks(entity.getApproverRemarks());
-
+        dto.setBillsEntity(entity.getBills());
+        dto.setFormattedExpenseStartDate(formatter.format(entity.getExpenseStartDate()));
+        dto.setFormattedExpenseEndDate(formatter.format(entity.getExpenseEndDate()));
+        dto.setStatusName(statusService.findStatusById(entity.getClaimStatus()).getStatusName());
+        dto.setTravelModeName(VistaluxConstants.CLAIM_TRAVEL_MODE.get(entity.getTravelMode()));
+        int totalClaimAmount = entity.getTravelExpense() + entity.getFoodExpense() + entity.getParkingExpense() + entity.getOtherExpense1() + entity.getOtherExpense2() + entity.getOtherExpense3();
+        dto.setTotalClaimAmount(totalClaimAmount);
         return dto;
     }
 
+    public TravelClaimBillEntity findTravelClaimBillById(Long travelClaimBillId){
+        return travelClaimBillRepository.findById(travelClaimBillId).get();
+    }
 
 }

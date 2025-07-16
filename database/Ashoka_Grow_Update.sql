@@ -62,6 +62,11 @@ UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = 
 UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '3');
 UPDATE `ashokadb`.`status_master` SET `master_status` = '1' WHERE (`statusId` = '5');
 
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('43', 'SUPER_ADMIN', 'PRIV');
+INSERT INTO `ashokadb`.`ashokateam_role` (`userRoleId`, `userId`, `roleId`) VALUES ('304', '1', '43');
+INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('5000', 'EXPENSE_APPROVER', 'EXPENSE');
+UPDATE `ashokadb`.`role` SET `roleTarget` = 'EXPENSE-SAR' WHERE (`roleId` = '5000');
+
 
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (

@@ -1,9 +1,6 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.City_Entity;
-import com.vistaluxhms.entity.ClientEntity;
-import com.vistaluxhms.entity.MyTravelClaimsEntity;
-import com.vistaluxhms.entity.SalesPartnerEntity;
+import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
@@ -23,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -166,5 +164,16 @@ public class MyClaimsController {
         }
         return travelClaimsDTOList;
     }
+
+    @GetMapping("/travel-claim/bill/{billId}")
+    public void viewBill(@PathVariable Long billId, HttpServletResponse response) throws IOException {
+        TravelClaimBillEntity bill = travelClaimService.findTravelClaimBillById(billId);
+
+        response.setContentType(bill.getFileType());
+        response.setHeader("Content-Disposition", "inline; filename=\"" + bill.getFileName() + "\"");
+        response.getOutputStream().write(bill.getBillFile());
+        response.flushBuffer();
+    }
+
 
 }

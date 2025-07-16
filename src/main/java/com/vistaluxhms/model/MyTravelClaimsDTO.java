@@ -1,11 +1,13 @@
 package com.vistaluxhms.model;
 
 import com.vistaluxhms.entity.MyTravelClaimsEntity;
+import com.vistaluxhms.entity.TravelClaimBillEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +26,9 @@ public class MyTravelClaimsDTO {
 
     private String formattedExpenseStartDate;
     private String formattedExpenseEndDate;
+    private List<TravelClaimBillEntity> billsEntity = new ArrayList<>();
 
-    private List<MultipartFile> bills;
+    private List<MultipartFile> bills = new ArrayList<>();
 
     public List<MultipartFile> getBills() {
         return bills;
@@ -52,6 +55,8 @@ public class MyTravelClaimsDTO {
 
     private int claimStatus;
     private String statusName;
+    private String travelModeName;
+    private int totalClaimAmount;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -274,6 +279,30 @@ public class MyTravelClaimsDTO {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    public String getTravelModeName() {
+        return travelModeName;
+    }
+
+    public void setTravelModeName(String travelModeName) {
+        this.travelModeName = travelModeName;
+    }
+
+    public List<TravelClaimBillEntity> getBillsEntity() {
+        return billsEntity;
+    }
+
+    public void setBillsEntity(List<TravelClaimBillEntity> billsEntity) {
+        this.billsEntity = billsEntity;
+    }
+
+    public int getTotalClaimAmount() {
+        return totalClaimAmount;
+    }
+
+    public void setTotalClaimAmount(int totalClaimAmount) {
+        this.totalClaimAmount = totalClaimAmount;
     }
 }
 
