@@ -64,6 +64,7 @@ public interface VistaluxConstants {
     public final static String TRAVEL_EXP_STATUS_OBJ = "TRAV_EXP";
 
     public final static int TRAV_EXP_DEF_STATUS=1;
+    public final static int TRAV_EXP_REOPENED_STATUS=6;
 
     public final static int TRAV_EXP_APPROVE_ROLE_ID = 5000;
 

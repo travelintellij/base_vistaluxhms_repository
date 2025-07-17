@@ -58,6 +58,8 @@ public class MyTravelClaimsDTO {
     private String travelModeName;
     private int totalClaimAmount;
 
+    private String claimantName;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -303,6 +305,14 @@ public class MyTravelClaimsDTO {
 
     public void setTotalClaimAmount(int totalClaimAmount) {
         this.totalClaimAmount = totalClaimAmount;
+    }
+
+    public String getClaimantName() {
+        return claimantName;
+    }
+
+    public void setClaimantName(String claimantName) {
+        this.claimantName = claimantName;
     }
 }
 

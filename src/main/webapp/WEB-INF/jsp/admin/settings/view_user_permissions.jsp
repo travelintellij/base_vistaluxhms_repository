@@ -120,6 +120,62 @@ input[type=button], input[type=submit], input[type=reset] {
 <div align="center"><b><font color="green" > ${Success} </font><font color="red"> ${Error}</font> </b></div>
 	
 		<c:forEach items="${ROLE_OBJ}" var="roleMap">
+			<sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+			         <c:if test="${roleMap.key ne 'PRIV' and fn:substring(roleMap.key, fn:length(roleMap.key)-4, fn:length(roleMap.key)) eq '-SAR'}">
+                    				<div class="profile-header">
+                    				<h2>${roleMap.key}</h2>
+                    				</div>
+                    				<table style="width: 90%;">
+                    					<tr>
+                    						<th style="background-color:green;width:12%;">User</th>
+                    						<c:forEach var="roleList" items="${roleMap.value}">
+                    							<th style="width:9%;">${roleList.roleName}</th>
+                    						</c:forEach>
+
+                    						<c:forEach var = "i" begin = "${roleMap.value.size()}" end = "8">
+                            					 <th style="width:9%;">&nbsp;</th>
+                          					</c:forEach>
+
+
+
+                    						<th>Action</th>
+                    					</tr>
+
+                    						<c:forEach var="user" items="${ACTIVE_USERS_LIST}">
+                    								<form:form action="update_update_user_permissions" modelAttribute="USER_OBJ">
+                    								<input type="hidden" name="userId" value="${user.userId}" />
+                    								<input type="hidden" name="roleName" value="${roleMap.key}" />
+                    								<tr>
+                    										<td style="width:9%;">${user.username}</td>
+                    										<c:forEach var="roleList" items="${roleMap.value}">
+
+                    											<c:if test = "${fn:containsIgnoreCase(user.roles, roleList.roleName)}">
+                    												<td style="width:9%;">
+                    												 	<form:checkbox path="roles" value="${roleList.roleId}" checked="checked"  style="width: 20px; height: 20px; accent-color: #28a745; cursor: pointer;" />
+                    												</td>
+                    											</c:if>
+                    											<c:if test = "${! fn:containsIgnoreCase(user.roles, roleList.roleName)}">
+                    												<td style="width:9%;"><form:checkbox path="roles" value="${roleList.roleId}"  style="width: 20px; height: 20px; accent-color: #28a745; cursor: pointer;" /></td>
+                    											</c:if>
+                    										</c:forEach>
+                    										<c:forEach var = "i" begin = "${roleMap.value.size()}" end = "8">
+                            									 <td style="width:9%;">&nbsp;</td>
+                          									</c:forEach>
+
+                    									 	<td style="width:9%;"><input type="submit" style="background-color: blue;padding: 4px 5px;"value="Update Permission" /></td>
+
+                    									</tr>
+                    								</form:form>
+
+                    						</c:forEach>
+
+
+                    					</table>
+                    					<hr>
+                    			</c:if>
+			</sec:authorize>
+
+
 
             <c:if test="${roleMap.key ne 'PRIV' and fn:substring(roleMap.key, fn:length(roleMap.key)-4, fn:length(roleMap.key)) ne '-SAR'}">
 				<div class="profile-header">

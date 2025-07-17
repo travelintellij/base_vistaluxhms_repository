@@ -86,6 +86,7 @@ th, td {
         <thead>
             <tr>
                 <th>Claim ID</th>
+                <th>Claimant</th>
                 <th>Source</th>
                 <th>Destination</th>
                 <th>Expense Start Date</th>
@@ -98,6 +99,7 @@ th, td {
             <c:forEach items="${travelClaimList}" var="claimRec">
                 <tr>
                     <td>${claimRec.travelClaimId}</td>
+                    <td>${claimRec.claimantName}</td>
                     <td>${claimRec.source}</td>
                     <td>${claimRec.destination}</td>
                     <td>${claimRec.formattedExpenseStartDate}</td>
@@ -108,10 +110,19 @@ th, td {
                                 <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                         </form>
-                        <form action="view_edit_client_form" method="POST" style="display:inline;">
-                            <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
-                        </form>
+                        <c:set var="statusOK" value="${claimRec.claimStatus == TRAV_EXP_DEF_STATUS or claimRec.claimStatus == TRAV_EXP_REOPENED_STATUS}" />
+                        <c:set var="shouldShow" value="${statusOK}" />
+                        <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">
+                            <c:set var="shouldShow" value="true" />
+                        </sec:authorize>
+
+                        <c:if test="${shouldShow}">
+                            <form action="view_edit_travel_claim_form" method="POST" style="display:inline;">
+                                <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
+                                <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                            </form>
+                        </c:if>
+
 
                     </td>
                 </tr>

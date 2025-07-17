@@ -94,7 +94,7 @@ public class MyClaimsServicesImpl {
     }
 
 
-    public Page<MyTravelClaimsEntity> filterTravelClaims(MyTravelClaimsDTO searchTravelObj, Pageable pageable) {
+    public Page<MyTravelClaimsEntity> filterTravelClaims(MyTravelClaimsDTO searchTravelObj, Pageable pageable,boolean isAllowedAdmin) {
         //Pageable pageable = PageRequest.of(pageable., pageSize);
 
         return travelClaimRepository.findAll(new Specification<MyTravelClaimsEntity>() {
@@ -103,12 +103,12 @@ public class MyClaimsServicesImpl {
             @Override
             public Predicate toPredicate(Root<MyTravelClaimsEntity> travelClaimsEntityRoot, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-
-                // Filter by Client ID
                 if (searchTravelObj.getTravelClaimId() != null && searchTravelObj.getTravelClaimId() != 0) {
                     predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("travelClaimId"), searchTravelObj.getTravelClaimId()));
                 }
-
+                if(!isAllowedAdmin) {
+                    predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimentId"), searchTravelObj.getClaimentId()));
+                }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
@@ -149,6 +149,7 @@ public class MyClaimsServicesImpl {
         dto.setTravelModeName(VistaluxConstants.CLAIM_TRAVEL_MODE.get(entity.getTravelMode()));
         int totalClaimAmount = entity.getTravelExpense() + entity.getFoodExpense() + entity.getParkingExpense() + entity.getOtherExpense1() + entity.getOtherExpense2() + entity.getOtherExpense3();
         dto.setTotalClaimAmount(totalClaimAmount);
+        dto.setClaimStatus(entity.getClaimStatus());
         return dto;
     }
 

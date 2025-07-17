@@ -83,7 +83,8 @@ public class MyClaimsController {
         myClaimsEntityDto = travelClaimService.findTravelClaimDTOById(myClaimsEntityDto,myClaimsEntityDto.getTravelClaimId());
         modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
         modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
-
+        modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
+        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
 
         return modelView;
     }
@@ -125,11 +126,25 @@ public class MyClaimsController {
         modelView.addObject("userName", userObj.getUsername());
         modelView.addObject("Id", userObj.getUserId());
 
+        //filterObj.setLeadOwner(user.getUserId());
+        boolean isAllowedAdmin=false;
+        if(userObj.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SUPERADMIN") || a.getAuthority().equals("ROLE_EXPENSE_APPROVER"))) {
+            System.out.println("Making him to go through");
+            isAllowedAdmin=true;
+        }
+
+        //System.out.println("Lead Filter Owner is " + filterObj.getLeadOwner());
+
+        if(!isAllowedAdmin) {
+            travelClaimsDTO.setClaimentId(userObj.getUserId());
+        }
+
+
         // Create PageRequest with pagination
         Pageable pageable = PageRequest.of(page, pageSize);
 
         // Get the paginated list of filtered clients
-        Page<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, pageable);
+        Page<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, pageable,isAllowedAdmin);
 
         // Convert the filtered list to DTOs
         List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage.getContent());
@@ -143,6 +158,8 @@ public class MyClaimsController {
 
         modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
         modelView.addObject("page", page);
+        modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
+        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
         //modelView.addObject("sortBy", sortBy);
 
         // modelView.addObject("cityId", searchClientObj.getCityId());
@@ -160,6 +177,8 @@ public class MyClaimsController {
             myTravelClaimsDTO.setFormattedExpenseStartDate(formatter.format(myTravelClaimsDTO.getExpenseStartDate()));
             myTravelClaimsDTO.setFormattedExpenseEndDate(formatter.format(myTravelClaimsDTO.getExpenseEndDate()));
             myTravelClaimsDTO.setStatusName(statusService.findStatusById(travelClaimsEntity.getClaimStatus()).getStatusName());
+            myTravelClaimsDTO.setClaimantName(userDetailsService.findUserByID(travelClaimsEntity.getClaimentId()).getName());
+            myTravelClaimsDTO.setClaimStatus(travelClaimsEntity.getClaimStatus());
             travelClaimsDTOList.add(myTravelClaimsDTO);
         }
         return travelClaimsDTOList;
@@ -175,5 +194,16 @@ public class MyClaimsController {
         response.flushBuffer();
     }
 
+    @PostMapping("view_edit_travel_claim_form")
+    public ModelAndView view_edit_travel_claim_form(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO myClaimsEntityDto, BindingResult result) {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("myclaims/edit_My_Travel_Claim");
+        myClaimsEntityDto = travelClaimService.findTravelClaimDTOById(myClaimsEntityDto,myClaimsEntityDto.getTravelClaimId());
+        modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
+        modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
+        modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
+        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
+        return modelView;
+    }
 
 }

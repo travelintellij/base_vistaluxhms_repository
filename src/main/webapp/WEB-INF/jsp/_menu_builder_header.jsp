@@ -180,12 +180,14 @@ username = "Guest";
                 </ul>
             </li>
         </sec:authorize>
-        <sec:authorize access="hasAnyRole('ADMIN','CLAIMS_ALLOWED')">
+        <sec:authorize access="hasAnyRole('SUPERADMIN','EXPENSE_APPROVER','CAN_CLAIM')">
             <li>
                 <a href="#">My Claims</a>
                 <ul class="submenu">
                     <li>
-                        <a href="view_add_travel_claim_form">New Travel Claim</a>
+                        <sec:authorize access="hasAnyRole('CAN_CLAIM')">
+                            <a href="view_add_travel_claim_form">New Travel Claim</a>
+                        </sec:authorize>
                         <a href="view_travel_claim_list">Manage Travel Claims</a>
 
                         <a href="view_add_claim_form">New Claim</a>

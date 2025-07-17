@@ -177,12 +177,17 @@
             </table>
 
           </div>
-
-
-
             <div class="button-container">
-                <input type="submit" value="Submit Claim" />
-                <a href="view_claims"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+               <c:set var="statusOK" value="${MY_TRAVEL_CLAIMS_OBJ.claimStatus == TRAV_EXP_DEF_STATUS or MY_TRAVEL_CLAIMS_OBJ.claimStatus == TRAV_EXP_REOPENED_STATUS}" />
+                <c:set var="shouldShow" value="${statusOK}" />
+                <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">
+                    <c:set var="shouldShow" value="true" />
+                </sec:authorize>
+                <c:if test="${shouldShow}">
+                    <!-- ✅ This block will show if any of the three conditions is true -->
+                    <input type="submit" value="Edit Claim" />
+                </c:if>
+                <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
             </div>
 
 
