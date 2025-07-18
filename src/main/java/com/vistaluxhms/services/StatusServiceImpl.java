@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -32,6 +33,9 @@ public class StatusServiceImpl {
 		return statusRepository.findByStatusObj(statusObj);
 	}
 
+	public List<StatusEntity> findAllActiveStatusList(){
+		return statusRepository.findByActiveTrue();
+	}
 
 
 }

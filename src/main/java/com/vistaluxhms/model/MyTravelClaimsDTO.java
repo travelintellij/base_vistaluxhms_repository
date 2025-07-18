@@ -40,14 +40,14 @@ public class MyTravelClaimsDTO {
 
 
     private String claimDetails;
-    private Integer travelMode;
-    private Integer kms;
-    private Integer travelExpense;
-    private Integer foodExpense;
-    private Integer parkingExpense;
-    private Integer otherExpense1;
-    private Integer otherExpense2;
-    private Integer otherExpense3;
+    private int travelMode;
+    private int kms;
+    private int travelExpense;
+    private int foodExpense;
+    private int parkingExpense;
+    private int otherExpense1;
+    private int otherExpense2;
+    private int otherExpense3;
     private String otherExpensesDetails;
     private Integer claimentId;
     private Integer approverId;
@@ -111,67 +111,67 @@ public class MyTravelClaimsDTO {
         this.claimDetails = claimDetails;
     }
 
-    public Integer getTravelMode() {
+    public int getTravelMode() {
         return travelMode;
     }
 
-    public void setTravelMode(Integer travelMode) {
+    public void setTravelMode(int travelMode) {
         this.travelMode = travelMode;
     }
 
-    public Integer getKms() {
+    public int getKms() {
         return kms;
     }
 
-    public void setKms(Integer kms) {
+    public void setKms(int kms) {
         this.kms = kms;
     }
 
-    public Integer getTravelExpense() {
+    public int getTravelExpense() {
         return travelExpense;
     }
 
-    public void setTravelExpense(Integer travelExpense) {
+    public void setTravelExpense(int travelExpense) {
         this.travelExpense = travelExpense;
     }
 
-    public Integer getFoodExpense() {
+    public int getFoodExpense() {
         return foodExpense;
     }
 
-    public void setFoodExpense(Integer foodExpense) {
+    public void setFoodExpense(int foodExpense) {
         this.foodExpense = foodExpense;
     }
 
-    public Integer getParkingExpense() {
+    public int getParkingExpense() {
         return parkingExpense;
     }
 
-    public void setParkingExpense(Integer parkingExpense) {
+    public void setParkingExpense(int parkingExpense) {
         this.parkingExpense = parkingExpense;
     }
 
-    public Integer getOtherExpense1() {
+    public int getOtherExpense1() {
         return otherExpense1;
     }
 
-    public void setOtherExpense1(Integer otherExpense1) {
+    public void setOtherExpense1(int otherExpense1) {
         this.otherExpense1 = otherExpense1;
     }
 
-    public Integer getOtherExpense2() {
+    public int getOtherExpense2() {
         return otherExpense2;
     }
 
-    public void setOtherExpense2(Integer otherExpense2) {
+    public void setOtherExpense2(int otherExpense2) {
         this.otherExpense2 = otherExpense2;
     }
 
-    public Integer getOtherExpense3() {
+    public int getOtherExpense3() {
         return otherExpense3;
     }
 
-    public void setOtherExpense3(Integer otherExpense3) {
+    public void setOtherExpense3(int otherExpense3) {
         this.otherExpense3 = otherExpense3;
     }
 

@@ -48,110 +48,175 @@
         border-color: #3399ff;
         box-shadow: 0 0 3px rgba(51, 153, 255, 0.5);
       }
+th,td{
+ border: 1px solid #ccc;
+ text-align:center;
+}
 
+.two-columns {
+  display: flex;
+  gap: 20px;
+}
+
+.claimant-section {
+  flex: 2;
+}
+
+.approver-section {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+   background: #e6f2ff; /* light blue */
+}
 </style>
 
-<div class="form-container-wrapper" style="background: transparent !important;">
-    <div class="form-container">
-        <h2>Submit Travel Claim</h2>
-        <form:form method="post" action="create_create_my_travel_claim" modelAttribute="MY_TRAVEL_CLAIMS_OBJ" enctype="multipart/form-data">
+<div class="form-container-wrapper">
+<form:form method="post" action="edit_edit_my_travel_claim" modelAttribute="MY_TRAVEL_CLAIMS_OBJ" enctype="multipart/form-data">
+  <div class="two-columns">
+    <div class="claimant-section">
+        <h3>Claimant Section</h3>
 
-            <div class="form-row">
-                <label for="source">Source:</label>
-                <form:input path="source" placeholder="Enter source" required="required"/>
-                <font color="red"><form:errors path="source" cssClass="error"/></font>
-            </div>
+                        <h2>Edit Travel Claim </h2><font color="green"><b> Claim Id: ${MY_TRAVEL_CLAIMS_OBJ.travelClaimId} </b></font>
+                        <form:hidden path="travelClaimId" />
+                        <div class="form-row">
+                            <label for="source">Source:</label>
+                            <form:input path="source" placeholder="Enter source" required="required"/>
+                            <font color="red"><form:errors path="source" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="destination">Destination:</label>
-                <form:input path="destination" placeholder="Enter destination" required="required"/>
-                <font color="red"><form:errors path="destination" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="destination">Destination:</label>
+                            <form:input path="destination" placeholder="Enter destination" required="required"/>
+                            <font color="red"><form:errors path="destination" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="expenseStartDate">Expense Start Date:</label>
-                <form:input path="expenseStartDate" type="date" required="required" class="date-input"/>
-                <font color="red"><form:errors path="expenseStartDate" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="expenseStartDate">Expense Start Date:</label>
+                            <form:input path="expenseStartDate" type="date" required="required" class="date-input"/>
+                            <font color="red"><form:errors path="expenseStartDate" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="expenseEndDate">Expense End Date:</label>
-                <form:input path="expenseEndDate" type="date" class="date-input"/>
-                <font color="red"><form:errors path="expenseEndDate" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="expenseEndDate">Expense End Date:</label>
+                            <form:input path="expenseEndDate" type="date" class="date-input"/>
+                            <font color="red"><form:errors path="expenseEndDate" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="claimDetails">Claim Details:</label>
-                <form:textarea path="claimDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
-                <font color="red"><form:errors path="claimDetails" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="claimDetails">Claim Details:</label>
+                            <form:textarea path="claimDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
+                            <font color="red"><form:errors path="claimDetails" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="kms">Kilometers:</label>
-                <form:input path="kms" type="number" />
-                <font color="red"><form:errors path="kms" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="kms">Kilometers:</label>
+                            <form:input path="kms" type="number" min="0" required="required" />
+                            <font color="red"><form:errors path="kms" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="travelMode">Travel Mode:</label>
-                <form:select path="travelMode">
-                    <form:options items="${CLAIM_TRAVEL_MODE}" />
-                </form:select>
-                <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="travelMode">Travel Mode:</label>
+                            <form:select path="travelMode">
+                                <form:options items="${CLAIM_TRAVEL_MODE}" />
+                            </form:select>
+                            <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
+                        </div>
 
-             <div class="form-row">
-                <label for="travelExpense">Travel Expense:</label>
-                <form:input path="travelExpense" type="number" />
-                <font color="red"><form:errors path="travelExpense" cssClass="error"/></font>
-            </div>
+                         <div class="form-row">
+                            <label for="travelExpense">Travel Expense:</label>
+                            <form:input path="travelExpense" type="number" min="0" required="required" />
+                            <font color="red"><form:errors path="travelExpense" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="foodExpense">Food Expense:</label>
-                <form:input path="foodExpense" type="number" />
-                <font color="red"><form:errors path="foodExpense" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="foodExpense">Food Expense:</label>
+                            <form:input path="foodExpense" type="number" min="0" required="required" />
+                            <font color="red"><form:errors path="foodExpense" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="parkingExpense">Parking Expense:</label>
-                <form:input path="parkingExpense" type="number" />
-                <font color="red"><form:errors path="parkingExpense" cssClass="error"/></font>
-            </div>
+                        <div class="form-row">
+                            <label for="parkingExpense">Parking Expense:</label>
+                            <form:input path="parkingExpense" type="number" />
+                            <font color="red"><form:errors path="parkingExpense" cssClass="error"/></font>
+                        </div>
 
-            <div class="form-row">
-                <label for="otherExpense1">Other Expenses:</label>
-                <form:input path="otherExpense1" type="number" placeholder="Other 1"/>
-                <form:input path="otherExpense2" type="number" placeholder="Other 2"/>
-                <form:input path="otherExpense3" type="number" placeholder="Other 3"/>
-                <font color="red"><form:errors path="otherExpense1" cssClass="error"/></font>
-            </div>
-            <div class="form-row">
-                <label for="otherExpensesDetails">Other Expenses Details:</label>
-                <form:textarea path="otherExpensesDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
-            </div>
-        <font color="red"><form:errors path="bills" cssClass="error"/></font>
-          <div class="form-row">
-              <label for="bills">Upload Bills:</label>
-              <div id="file-inputs">
-                  <div class="file-input-row">
-                      <input type="file" name="bills" />
-                      <button type="button" onclick="removeFileInput(this)">Remove</button>
-                  </div>
-              </div>
-              <button type="button" onclick="addFileInput()">+ Add Another File</button>
-          </div>
+                        <div class="form-row">
+                            <label for="otherExpense1">Other Expenses:</label>
+                            <form:input path="otherExpense1" type="number" placeholder="Other 1" min="0" required="required" />
+                            <form:input path="otherExpense2" type="number" placeholder="Other 2" min="0" required="required" />
+                            <form:input path="otherExpense3" type="number" placeholder="Other 3" min="0" required="required" />
+                            <font color="red"><form:errors path="otherExpense1" cssClass="error"/></font>
+                        </div>
+                        <div class="form-row">
+                            <label for="otherExpensesDetails">Other Expenses Details:</label>
+                            <form:textarea path="otherExpensesDetails" maxlength="500" cols="68" rows="3" placeholder="Enter claim details"/>
+                        </div>
+                    <font color="red"><form:errors path="bills" cssClass="error"/></font>
+                        <div class="form-row">
+                            <label for="bills">Existing Bills:</label>
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Action</th>
+                                        <th>Remove?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${MY_TRAVEL_CLAIMS_OBJ.billsEntity}" var="bill">
+                                        <tr>
+                                            <td>${bill.fileName}</td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/travel-claim/bill/${bill.id}" target="_blank">
+                                                    View
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="deleteBillIds" value="${bill.id}" />
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-row">
+                            <label for="newBills">Upload New Bills:</label>
+                            <div id="file-inputs">
+                                <div class="file-input-row">
+                                    <input type="file" name="bills" />
+                                    <button type="button" onclick="removeFileInput(this)">Remove</button>
+                                </div>
+                            </div>
+                            <button type="button" onclick="addFileInput()">+ Add Another File</button>
+                        </div>
 
 
 
-            <div class="button-container">
-                <input type="submit" value="Submit Claim" />
-                <a href="view_claims"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
-            </div>
+                        <div class="button-container">
+                            <input type="submit" value="Update Claim" />
+                            <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+                        </div>
 
 
-        </form:form>
+
     </div>
+    <div class="approver-section">
+      <h3>Approver Actions</h3>
+      <div class="form-row">
+          <label for="claim Status">Update Status:</label>
+          <form:select path="claimStatus">
+              <form:options items="${TRAV_EXP_STATUS_MAP}" />
+          </form:select>
+          <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
+      </div>
+    </div>
+  </div>
+</form:form>
 </div>
+
+
+
 
 <script language="JavaScript">
      function addFileInput() {

@@ -67,7 +67,17 @@ INSERT INTO `ashokadb`.`ashokateam_role` (`userRoleId`, `userId`, `roleId`) VALU
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('5000', 'EXPENSE_APPROVER', 'EXPENSE');
 UPDATE `ashokadb`.`role` SET `roleTarget` = 'EXPENSE-SAR' WHERE (`roleId` = '5000');
 INSERT INTO `ashokadb`.`role` (`roleId`, `roleName`, `roleTarget`) VALUES ('5100', 'CAN_CLAIM', 'EXPENSE-SAR');
-INSERT INTO `ashokadb`.`status_master` (`statusId`, `status_obj`, `status_obj_type`, `statusName`, `master_status`, `active`) VALUES ('6', 'TRAV_EXP', 'TRAVEL_EXPENSE_CLAIM', 'ReOpened', '1', '1');
+
+ALTER TABLE `ashokadb`.`my_travel_claims`
+CHANGE COLUMN `kms` `kms` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `travelExpense` `travelExpense` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `foodExpense` `foodExpense` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `parkingExpense` `parkingExpense` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `otherExpense1` `otherExpense1` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `otherExpense2` `otherExpense2` INT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `otherExpense3` `otherExpense3` INT NOT NULL ,
+CHANGE COLUMN `claimStatus` `claimStatus` INT NULL ;
+
 
 
 ************************************************************ updated till below *****************

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class MyClaimsController {
@@ -84,7 +85,6 @@ public class MyClaimsController {
         modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
         modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
-        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
 
         return modelView;
     }
@@ -159,7 +159,7 @@ public class MyClaimsController {
         modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
         modelView.addObject("page", page);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
-        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
+
         //modelView.addObject("sortBy", sortBy);
 
         // modelView.addObject("cityId", searchClientObj.getCityId());
@@ -202,8 +202,102 @@ public class MyClaimsController {
         modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
         modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
-        modelView.addObject("TRAV_EXP_REOPENED_STATUS", VistaluxConstants.TRAV_EXP_REOPENED_STATUS);
+
+        List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        Map<Integer, String> TRAV_EXP_STATUS_MAP = listStatus.stream()
+                .collect(Collectors.toMap(
+                        StatusEntity::getStatusId,       // key = statusId
+                        StatusEntity::getStatusName  // value = statusName
+                ));
+        modelView.addObject("TRAV_EXP_STATUS_MAP", TRAV_EXP_STATUS_MAP);
+
         return modelView;
     }
+
+
+
+
+    @Transactional
+    @PostMapping("edit_edit_my_travel_claim")
+    public ModelAndView edit_edit_my_travel_claim(@ModelAttribute("MY_TRAVEL_CLAIMS_OBJ") MyTravelClaimsDTO claimObj,
+                                                  @RequestParam(value = "deleteBillIds", required = false) List<Long> deleteBillIds, @RequestParam(value = "bills", required = false) MultipartFile[] bills,BindingResult result,final RedirectAttributes redirectAttrib) throws IOException {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView();
+        MyTravelClaimsEntity existingClaim = travelClaimService.findTravelClaimById(claimObj.getTravelClaimId());
+        updateTravelEntity(existingClaim,claimObj);
+
+        System.out.println("Roles are " + userObj.getRoles());
+        System.out.println("Auth are " + userObj.getAuthorities());
+
+        if(userObj.getRoles().contains("ROLE_EXPENSE_APPROVER")){
+            System.out.println("Role is approver man.. it worked");
+        }
+
+        MyTravelClaimForm travelClaimForm = new MyTravelClaimForm();
+        travelClaimForm.setClaim(claimObj);
+        travelClaimForm.setBills(bills);
+        travelClaimValidator.validate(travelClaimForm, result);
+        int remainingFiles = existingClaim.getBills().size() - (deleteBillIds != null ? deleteBillIds.size() : 0);
+        if (bills != null) {
+            if (remainingFiles + bills.length > 5) {
+                result.rejectValue("bills", "too.many.files", "Total files cannot exceed 5 per claim.");
+            }
+        }
+        if (result.hasErrors()) {
+            modelView = view_edit_travel_claim_form(claimObj, result);
+            return modelView;
+        }
+        if (deleteBillIds != null && !deleteBillIds.isEmpty()) {
+            List<TravelClaimBillEntity> toRemove = existingClaim.getBills().stream()
+                    .filter(b -> deleteBillIds.contains(b.getId()))
+                    .collect(Collectors.toList());
+            existingClaim.getBills().removeAll(toRemove);
+        }
+        if (bills != null) {
+            for (MultipartFile file : bills) {
+                if (file.isEmpty()) continue;
+                TravelClaimBillEntity bill = new TravelClaimBillEntity();
+                bill.setFileName(file.getOriginalFilename());
+                bill.setFileType(file.getContentType());
+                bill.setBillFile(file.getBytes());
+                bill.setClaim(existingClaim);
+                existingClaim.getBills().add(bill);
+            }
+        }
+        // Step 4: Now delete the removed ones from DB
+        /*if(toRemove.size()>0) {
+            travelClaimService.deleteAllTravelBills(toRemove);
+        }*/
+
+        travelClaimService.saveTravelClaimEntity(existingClaim);
+        redirectAttrib.addFlashAttribute("Success", "Travel claim record updated successfully.");
+        modelView.setViewName("redirect:view_travel_claim_list");
+        return modelView;
+    }
+
+
+    private void updateTravelEntity(MyTravelClaimsEntity entity,MyTravelClaimsDTO dto){
+        entity.setSource(dto.getSource());
+        entity.setDestination(dto.getDestination());
+        entity.setExpenseStartDate(dto.getExpenseStartDate());
+        entity.setExpenseEndDate(dto.getExpenseEndDate());
+        entity.setClaimDetails(dto.getClaimDetails());
+        entity.setTravelMode(dto.getTravelMode());
+        entity.setKms(dto.getKms());
+        entity.setTravelExpense(dto.getTravelExpense());
+        entity.setFoodExpense(dto.getFoodExpense());
+        entity.setParkingExpense(dto.getParkingExpense());
+        entity.setOtherExpense1(dto.getOtherExpense1());
+        entity.setOtherExpense2(dto.getOtherExpense2());
+        entity.setOtherExpense3(dto.getOtherExpense3());
+        entity.setOtherExpensesDetails(dto.getOtherExpensesDetails());
+        //entity.setClaimentId(dto.getClaimentId());
+        entity.setApproverId(dto.getApproverId());
+        entity.setApproverRemarks(dto.getApproverRemarks());
+
+        //entity.setClaimStatus(dto.getClaimStatus());
+    }
+
+
 
 }

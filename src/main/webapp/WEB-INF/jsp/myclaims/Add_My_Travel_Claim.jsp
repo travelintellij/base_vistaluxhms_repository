@@ -88,7 +88,7 @@
 
             <div class="form-row">
                 <label for="kms">Kilometers:</label>
-                <form:input path="kms" type="number" />
+                <form:input path="kms" type="number" min="0" required="required" />
                 <font color="red"><form:errors path="kms" cssClass="error"/></font>
             </div>
 
@@ -102,27 +102,27 @@
 
              <div class="form-row">
                 <label for="travelExpense">Travel Expense:</label>
-                <form:input path="travelExpense" type="number" />
+                <form:input path="travelExpense" type="number" min="0" required="required" />
                 <font color="red"><form:errors path="travelExpense" cssClass="error"/></font>
             </div>
 
             <div class="form-row">
                 <label for="foodExpense">Food Expense:</label>
-                <form:input path="foodExpense" type="number" />
+                <form:input path="foodExpense" type="number" min="0" required="required" />
                 <font color="red"><form:errors path="foodExpense" cssClass="error"/></font>
             </div>
 
             <div class="form-row">
                 <label for="parkingExpense">Parking Expense:</label>
-                <form:input path="parkingExpense" type="number" />
+                <form:input path="parkingExpense" type="number" min="0" required="required" />
                 <font color="red"><form:errors path="parkingExpense" cssClass="error"/></font>
             </div>
 
             <div class="form-row">
                 <label for="otherExpense1">Other Expenses:</label>
-                <form:input path="otherExpense1" type="number" placeholder="Other 1"/>
-                <form:input path="otherExpense2" type="number" placeholder="Other 2"/>
-                <form:input path="otherExpense3" type="number" placeholder="Other 3"/>
+                <form:input path="otherExpense1" type="number" placeholder="Other 1" min="0" required="required"/>
+                <form:input path="otherExpense2" type="number" placeholder="Other 2" min="0" required="required"/>
+                <form:input path="otherExpense3" type="number" placeholder="Other 3" min="0" required="required"/>
                 <font color="red"><form:errors path="otherExpense1" cssClass="error"/></font>
             </div>
             <div class="form-row">
@@ -145,7 +145,7 @@
 
             <div class="button-container">
                 <input type="submit" value="Submit Claim" />
-                <a href="view_claims"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+                <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
             </div>
 
 

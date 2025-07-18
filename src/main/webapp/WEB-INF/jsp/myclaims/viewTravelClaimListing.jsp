@@ -110,7 +110,7 @@ th, td {
                                 <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
                                 <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
                         </form>
-                        <c:set var="statusOK" value="${claimRec.claimStatus == TRAV_EXP_DEF_STATUS or claimRec.claimStatus == TRAV_EXP_REOPENED_STATUS}" />
+                        <c:set var="statusOK" value="${claimRec.claimStatus == TRAV_EXP_DEF_STATUS}" />
                         <c:set var="shouldShow" value="${statusOK}" />
                         <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">
                             <c:set var="shouldShow" value="true" />

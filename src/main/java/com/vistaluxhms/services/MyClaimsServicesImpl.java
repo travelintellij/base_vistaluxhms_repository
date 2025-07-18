@@ -116,7 +116,10 @@ public class MyClaimsServicesImpl {
     }
 
     public MyTravelClaimsEntity findTravelClaimById(Long travelClaimId){
-        return travelClaimRepository.findById(travelClaimId).get();
+        //return travelClaimRepository.findById(travelClaimId).get();
+
+        return travelClaimRepository.findById(travelClaimId)
+                .orElseThrow(() -> new IllegalArgumentException("Claim not found"));
     }
 
     public MyTravelClaimsDTO findTravelClaimDTOById(MyTravelClaimsDTO dto,Long travelClaimId){
@@ -157,4 +160,16 @@ public class MyClaimsServicesImpl {
         return travelClaimBillRepository.findById(travelClaimBillId).get();
     }
 
+
+    public void saveTravelClaimEntity(MyTravelClaimsEntity travelClaimsEntity){
+        travelClaimRepository.save(travelClaimsEntity);
+    }
+
+    public void saveTravelClaimBill(TravelClaimBillEntity travelClaimBillEntity){
+        travelClaimBillRepository.save(travelClaimBillEntity);
+    }
+
+    public void deleteAllTravelBills( List<TravelClaimBillEntity> travelClaimBillEntityList){
+        travelClaimBillRepository.deleteAll(travelClaimBillEntityList);
+    }
 }

@@ -54,7 +54,8 @@
 <div class="form-container-wrapper" style="background: transparent !important;">
     <div class="form-container">
         <h2>View  Travel Claim</h2>
-        <form:form method="post" action="create_create_my_travel_claim" modelAttribute="MY_TRAVEL_CLAIMS_OBJ" enctype="multipart/form-data">
+        <form:form method="post" action="view_edit_travel_claim_form" modelAttribute="MY_TRAVEL_CLAIMS_OBJ" enctype="multipart/form-data">
+             <form:hidden path="travelClaimId" />
              <div class="form-row" >
                 <label for="source">Claim Id:</label>
                  <span style="display: inline-block; text-align: left; width: 500px;">
