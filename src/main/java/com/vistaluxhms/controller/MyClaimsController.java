@@ -225,12 +225,14 @@ public class MyClaimsController {
         ModelAndView modelView = new ModelAndView();
         MyTravelClaimsEntity existingClaim = travelClaimService.findTravelClaimById(claimObj.getTravelClaimId());
         updateTravelEntity(existingClaim,claimObj);
-
-        System.out.println("Roles are " + userObj.getRoles());
-        System.out.println("Auth are " + userObj.getAuthorities());
-
-        if(userObj.getRoles().contains("ROLE_EXPENSE_APPROVER")){
-            System.out.println("Role is approver man.. it worked");
+        boolean isSuperAdmin = userObj.getAuthorities()
+                .stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_SUPERADMIN"));
+        boolean isExpenseApprover = userObj.getRoles()
+                .stream()
+                .anyMatch(role -> role.getRoleName().equals("EXPENSE_APPROVER"));
+        if(isSuperAdmin || isExpenseApprover){
+            existingClaim.setClaimStatus(claimObj.getClaimStatus());
         }
 
         MyTravelClaimForm travelClaimForm = new MyTravelClaimForm();
