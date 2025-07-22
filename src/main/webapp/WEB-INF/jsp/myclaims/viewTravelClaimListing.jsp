@@ -92,6 +92,35 @@ th, td {
     background-color: #0056b3;
   }
 
+ .date-input {
+    appearance: none;        /* Remove default styles (optional) */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #333;
+
+    width: 180px;            /* adjust width as per your layout */
+    box-sizing: border-box;
+
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .date-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+    outline: none;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.5);  /* optional: style the calendar icon */
+  }
 </style>
 
 
@@ -105,7 +134,7 @@ th, td {
           </div>
           <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN','ROLE_EXPENSE_APPROVER')">
               <div class="filter-item">
-                <label for="category">Category:</label>
+                <label for="category">Claimant:</label>
                 <form:select path="claimentId" style="width:90%" required="required">
                      <form:option value="0">Please Select</form:option>
                      <form:options items="${ACTIVE_USERS_MAP}" class="service-small" />
@@ -117,6 +146,17 @@ th, td {
                    <form:options items="${DATE_SEL_OPTIONS}" class="service-small" />
               </form:select>
           </div>
+           <div class="filter-item">
+                <label for="category">Expense Start Date:</label>
+                <form:input type="date" path="expenseStartDate" name="expenseStartDate" class="date-input" />
+           </div>
+           <div class="filter-item">
+                <label for="category">Expense End Date:</label>
+               <form:input type="date" path="expenseEndDate" name="expenseEndDate" class="date-input" />
+          </div>
+
+
+
         <div class="filter-item">
             <button type="submit">Apply Filter</button>
             <a href="view_travel_claim_list"
