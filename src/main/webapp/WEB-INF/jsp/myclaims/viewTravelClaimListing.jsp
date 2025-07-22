@@ -49,26 +49,82 @@ th, td {
   text-align: center;
 }
 
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+
+  .filter-bar label {
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  .filter-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .filter-bar input[type="text"],
+  .filter-bar select {
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 150px;
+  }
+
+  .filter-bar button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .filter-bar button:hover {
+    background-color: #0056b3;
+  }
+
 </style>
 
 
-<div class="form-container filter-container" style="width: 85%; min-width: 85%; max-width: 90%;">
+
     <h2>Manage Claims </h2>
     <form:form modelAttribute="TRAVEL_CLAIM_OBJ" action="view_travel_claim_list">
-        <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-            <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label for="travelClaimId">Travel Claim ID:</label>
-                <form:input path="travelClaimId" name="travelClaimId" style="width:130px;" />
-            </div>
-
-
-        <div class="form-actions" style="flex: 1; min-width: 200px;">
-            <button type="submit" class="apply-filter-btn">Apply Filter</button>
-            <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="Clear Filter"></input></a>
+        <div class="filter-bar">
+          <div class="filter-item">
+            <label for="search">Travel Claim ID:</label>
+            <form:input path="travelClaimId" name="travelClaimId" style="width:130px;" />
+          </div>
+          <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN','ROLE_EXPENSE_APPROVER')">
+              <div class="filter-item">
+                <label for="category">Category:</label>
+                <form:select path="claimentId" style="width:90%" required="required">
+                     <form:option value="0">Please Select</form:option>
+                     <form:options items="${ACTIVE_USERS_MAP}" class="service-small" />
+                </form:select>
+              </div>
+          </sec:authorize>
+          <div class="filter-item">
+              <form:select path="dateSelOpt" style="width:90%" required="required">
+                   <form:options items="${DATE_SEL_OPTIONS}" class="service-small" />
+              </form:select>
+          </div>
+        <div class="filter-item">
+            <button type="submit">Apply Filter</button>
+            <a href="view_travel_claim_list"
+               style="background-color: green; color: white; border-radius: 4px; padding: 6px 12px; text-decoration: none; display: inline-block;">Clear Filter</a>
         </div>
         </div>
     </form:form>
-</div>
+
 
 <div align="center" style="margin:10px 0">
     <b>

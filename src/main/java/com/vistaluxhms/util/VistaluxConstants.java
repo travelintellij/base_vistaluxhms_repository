@@ -65,7 +65,16 @@ public interface VistaluxConstants {
 
     public final static int TRAV_EXP_DEF_STATUS=1;
 
-
     public final static int TRAV_EXP_APPROVE_ROLE_ID = 5000;
+
+    public static final Map<Integer, String> DATE_SEL_OPTIONS = new HashMap<Integer, String>(){
+        {
+            put(1,"Current Month");
+            put(2,"Previous Month");
+            put(3,"Current Financial Year");
+            put(4,"Previous Financial Year");
+            put(5,"Apply Date Range");
+        }
+    };
 
 }

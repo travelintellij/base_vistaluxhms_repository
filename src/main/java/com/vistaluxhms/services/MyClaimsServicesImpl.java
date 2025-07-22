@@ -106,9 +106,14 @@ public class MyClaimsServicesImpl {
                 if (searchTravelObj.getTravelClaimId() != null && searchTravelObj.getTravelClaimId() != 0) {
                     predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("travelClaimId"), searchTravelObj.getTravelClaimId()));
                 }
-                if(!isAllowedAdmin) {
-                    predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimentId"), searchTravelObj.getClaimentId()));
+                System.out.println("Admin or approver is " + isAllowedAdmin + "    | Claimant Id is " + searchTravelObj.getClaimentId());
+
+                if(!isAllowedAdmin || searchTravelObj.getClaimentId()!=null) {
+                    if(searchTravelObj.getClaimentId()>0) {
+                        predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimentId"), searchTravelObj.getClaimentId()));
+                    }
                 }
+
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }

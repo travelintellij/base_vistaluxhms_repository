@@ -17,6 +17,7 @@ public class MyTravelClaimsDTO {
     private Long travelClaimId;
     private String source;
     private String destination;
+    private int dateSelOpt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expenseStartDate;
@@ -313,6 +314,14 @@ public class MyTravelClaimsDTO {
 
     public void setClaimantName(String claimantName) {
         this.claimantName = claimantName;
+    }
+
+    public int getDateSelOpt() {
+        return dateSelOpt;
+    }
+
+    public void setDateSelOpt(int dateSelOpt) {
+        this.dateSelOpt = dateSelOpt;
     }
 }
 

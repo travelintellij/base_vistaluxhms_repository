@@ -76,7 +76,6 @@ th,td{
   <div class="two-columns">
     <div class="claimant-section">
         <h3>Claimant Section</h3>
-
                         <h2>Edit Travel Claim </h2><font color="green"><b> Claim Id: ${MY_TRAVEL_CLAIMS_OBJ.travelClaimId} </b></font>
                         <form:hidden path="travelClaimId" />
                         <div class="form-row">
@@ -191,17 +190,13 @@ th,td{
                             <button type="button" onclick="addFileInput()">+ Add Another File</button>
                         </div>
 
-
-
                         <div class="button-container">
                             <input type="submit" value="Update Claim" />
                             <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
                         </div>
-
-
-
     </div>
-    <div class="approver-section">
+    <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">
+      <div class="approver-section">
       <h3>Approver Actions</h3>
       <div class="form-row">
           <label for="claim Status">Update Status:</label>
@@ -211,6 +206,7 @@ th,td{
           <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
       </div>
     </div>
+    </sec:authorize>
   </div>
 </form:form>
 </div>

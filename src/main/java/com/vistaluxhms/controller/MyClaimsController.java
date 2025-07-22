@@ -129,7 +129,6 @@ public class MyClaimsController {
         //filterObj.setLeadOwner(user.getUserId());
         boolean isAllowedAdmin=false;
         if(userObj.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SUPERADMIN") || a.getAuthority().equals("ROLE_EXPENSE_APPROVER"))) {
-            System.out.println("Making him to go through");
             isAllowedAdmin=true;
         }
 
@@ -148,7 +147,6 @@ public class MyClaimsController {
 
         // Convert the filtered list to DTOs
         List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage.getContent());
-
         // Adding filtered clients and pagination details to the model
         modelView.addObject("TRAVEL_CLAIM_FILTERED_LIST", travelClaimsDTOList);
         modelView.addObject("currentPage", page);
@@ -159,6 +157,12 @@ public class MyClaimsController {
         modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
         modelView.addObject("page", page);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
+
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
+                Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+        modelView.addObject("DATE_SEL_OPTIONS", VistaluxConstants.DATE_SEL_OPTIONS);
 
         //modelView.addObject("sortBy", sortBy);
 
