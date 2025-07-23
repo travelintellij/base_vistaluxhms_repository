@@ -205,8 +205,26 @@ th,td{
           </form:select>
           <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
       </div>
+      <div class="form-row">
+          <label for="claim Status">Remarks:</label>
+          <form:textarea path = "approverRemarks" rows="6" maxlength="1000" style="width: 100%; box-sizing: border-box;" />
+      </div>
     </div>
     </sec:authorize>
+    <sec:authorize access="! hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">
+          <div class="approver-section">
+          <h3>Approver Actions</h3>
+          <div class="form-row">
+              <label for="claim Status">Current Status:</label>
+             ${MY_TRAVEL_CLAIMS_OBJ.statusName}
+              <font color="red"><form:errors path="travelMode" cssClass="error"/></font>
+          </div>
+          <div class="form-row">
+              <label for="claim Status">Remarks:</label>
+              ${MY_TRAVEL_CLAIMS_OBJ.approverRemarks}
+          </div>
+        </div>
+        </sec:authorize>
   </div>
 </form:form>
 </div>

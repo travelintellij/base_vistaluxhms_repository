@@ -20,6 +20,8 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -106,6 +108,93 @@ public class MyClaimsServicesImpl {
                 if (searchTravelObj.getTravelClaimId() != null && searchTravelObj.getTravelClaimId() != 0) {
                     predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("travelClaimId"), searchTravelObj.getTravelClaimId()));
                 }
+                else{
+                    // Date filtering logic
+                    Calendar cal = Calendar.getInstance();
+                    Date periodStart = null;
+                    Date periodEnd = null;
+
+                    int dateSelOpt = searchTravelObj.getDateSelOpt() > 0 ? searchTravelObj.getDateSelOpt() : 1;
+
+                    switch (dateSelOpt) {
+                        case 1: // Current month
+                        default:
+                            cal.setTime(new Date());
+                            cal.set(Calendar.DAY_OF_MONTH, 1);
+                            periodStart = cal.getTime();
+
+                            cal.add(Calendar.MONTH, 1);
+                            cal.set(Calendar.DAY_OF_MONTH, 1);
+                            cal.add(Calendar.DATE, -1);
+                            periodEnd = cal.getTime();
+                            break;
+
+                        case 2: // Previous month
+                            cal.setTime(new Date());
+                            cal.add(Calendar.MONTH, -1);
+                            cal.set(Calendar.DAY_OF_MONTH, 1);
+                            periodStart = cal.getTime();
+
+                            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            periodEnd = cal.getTime();
+                            break;
+
+                        case 3: // Current FY
+                            cal.setTime(new Date());
+                            int year = cal.get(Calendar.YEAR);
+                            int month = cal.get(Calendar.MONTH) + 1;
+
+                            if (month >= 4) {
+                                cal.set(year, Calendar.APRIL, 1);
+                                periodStart = cal.getTime();
+
+                                cal.set(year + 1, Calendar.MARCH, 31);
+                                periodEnd = cal.getTime();
+                            } else {
+                                cal.set(year - 1, Calendar.APRIL, 1);
+                                periodStart = cal.getTime();
+
+                                cal.set(year, Calendar.MARCH, 31);
+                                periodEnd = cal.getTime();
+                            }
+                            break;
+
+                        case 4: // Previous FY
+                            cal.setTime(new Date());
+                            year = cal.get(Calendar.YEAR);
+                            month = cal.get(Calendar.MONTH) + 1;
+
+                            if (month >= 4) {
+                                cal.set(year - 1, Calendar.APRIL, 1);
+                                periodStart = cal.getTime();
+
+                                cal.set(year, Calendar.MARCH, 31);
+                                periodEnd = cal.getTime();
+                            } else {
+                                cal.set(year - 2, Calendar.APRIL, 1);
+                                periodStart = cal.getTime();
+
+                                cal.set(year - 1, Calendar.MARCH, 31);
+                                periodEnd = cal.getTime();
+                            }
+                            break;
+
+                        case 5: // DTO range
+                            if (searchTravelObj.getExpenseStartDate() != null && searchTravelObj.getExpenseEndDate() != null) {
+                                periodStart = searchTravelObj.getExpenseStartDate();
+                                periodEnd = searchTravelObj.getExpenseEndDate();
+                            }
+                            break;
+                    }
+
+                    if (periodStart != null && periodEnd != null) {
+                        predicates.add(criteriaBuilder.and(
+                                criteriaBuilder.lessThanOrEqualTo(travelClaimsEntityRoot.get("expenseStartDate"), periodEnd),
+                                criteriaBuilder.greaterThanOrEqualTo(travelClaimsEntityRoot.get("expenseEndDate"), periodStart)
+                        ));
+                    }
+                }
+
                 System.out.println("Admin or approver is " + isAllowedAdmin + "    | Claimant Id is " + searchTravelObj.getClaimentId());
 
                 if(!isAllowedAdmin || searchTravelObj.getClaimentId()!=null) {
@@ -113,6 +202,7 @@ public class MyClaimsServicesImpl {
                         predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimentId"), searchTravelObj.getClaimentId()));
                     }
                 }
+
 
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

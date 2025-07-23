@@ -190,6 +190,17 @@
                 </c:if>
                 <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
             </div>
+        <h3>Approver Section</h3>
+
+          <div class="form-row" style="background-color: #f0f8ff;">
+              <label for="claim Status">Current Status:</label>
+             ${MY_TRAVEL_CLAIMS_OBJ.statusName}
+          </div>
+          <div class="form-row" style="background-color: #f0f8ff;">
+              <label for="claim Status">Remarks:</label>
+              ${MY_TRAVEL_CLAIMS_OBJ.approverRemarks}
+          </div>
+
 
 
         </form:form>
