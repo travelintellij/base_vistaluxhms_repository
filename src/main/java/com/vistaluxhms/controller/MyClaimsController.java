@@ -82,7 +82,7 @@ public class MyClaimsController {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("myclaims/view_My_Travel_Claim");
         myClaimsEntityDto = travelClaimService.findTravelClaimDTOById(myClaimsEntityDto,myClaimsEntityDto.getTravelClaimId());
-        modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
+        //modelView.addObject("CLAIM_TYPE_MAP",VistaluxConstants.CLAIM_TYPE_MAP);
         modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
 
@@ -163,6 +163,13 @@ public class MyClaimsController {
                 Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
         modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
         modelView.addObject("DATE_SEL_OPTIONS", VistaluxConstants.DATE_SEL_OPTIONS);
+        List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        Map<Integer, String> TRAV_EXP_STATUS_MAP = listStatus.stream()
+                .collect(Collectors.toMap(
+                        StatusEntity::getStatusId,       // key = statusId
+                        StatusEntity::getStatusName  // value = statusName
+                ));
+        modelView.addObject("TRAV_EXP_STATUS_MAP", TRAV_EXP_STATUS_MAP);
 
         //modelView.addObject("sortBy", sortBy);
 

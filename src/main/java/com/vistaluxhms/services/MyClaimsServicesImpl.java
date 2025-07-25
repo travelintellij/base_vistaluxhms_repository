@@ -202,8 +202,9 @@ public class MyClaimsServicesImpl {
                         predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimentId"), searchTravelObj.getClaimentId()));
                     }
                 }
-
-
+                if(searchTravelObj.getClaimStatus()>0) {
+                    predicates.add(criteriaBuilder.equal(travelClaimsEntityRoot.get("claimStatus"), searchTravelObj.getClaimStatus()));
+                }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }

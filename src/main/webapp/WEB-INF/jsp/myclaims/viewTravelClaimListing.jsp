@@ -155,7 +155,13 @@ th, td {
                <form:input type="date" path="expenseEndDate" name="expenseEndDate" class="date-input" />
           </div>
 
-
+         <div class="filter-item">
+                <label for="category">Claim Status:</label>
+               <form:select path="claimStatus">
+                     <form:option value="0">Please Select</form:option>
+                     <form:options items="${TRAV_EXP_STATUS_MAP}" />
+                </form:select>
+          </div>
 
         <div class="filter-item">
             <button type="submit">Apply Filter</button>
