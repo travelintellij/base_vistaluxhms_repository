@@ -69,6 +69,8 @@ th,td{
   border-left: 1px solid #ccc;
    background: #e6f2ff; /* light blue */
 }
+
+
 </style>
 
 <div class="form-container-wrapper">
@@ -142,9 +144,9 @@ th,td{
 
                         <div class="form-row">
                             <label for="otherExpense1">Other Expenses:</label>
-                            <form:input path="otherExpense1" type="number" placeholder="Other 1" min="0" required="required" />
-                            <form:input path="otherExpense2" type="number" placeholder="Other 2" min="0" required="required" />
-                            <form:input path="otherExpense3" type="number" placeholder="Other 3" min="0" required="required" />
+                            <form:input path="otherExpense1" type="number" placeholder="Other 1" min="0" required="required" style="width: 50px;" />
+                            <form:input path="otherExpense2" type="number" placeholder="Other 2" min="0" required="required" style="width: 50px;"/>
+                            <form:input path="otherExpense3" type="number" placeholder="Other 3" min="0" required="required" style="width: 50px;" />
                             <font color="red"><form:errors path="otherExpense1" cssClass="error"/></font>
                         </div>
                         <div class="form-row">

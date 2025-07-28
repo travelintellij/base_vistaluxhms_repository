@@ -188,7 +188,7 @@
                     <!-- ✅ This block will show if any of the three conditions is true -->
                     <input type="submit" value="Edit Claim" />
                 </c:if>
-                <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+                <a href="view_travel_claim_list?view_travelclaimlist"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
             </div>
         <h3>Approver Section</h3>
 

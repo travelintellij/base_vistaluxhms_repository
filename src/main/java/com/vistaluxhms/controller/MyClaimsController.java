@@ -24,10 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -44,6 +41,9 @@ public class MyClaimsController {
 
     @Autowired
     StatusServiceImpl statusService;
+
+    @Autowired
+    private EmailServiceImpl emailService;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -110,12 +110,12 @@ public class MyClaimsController {
             claimObj.setClaimStatus(VistaluxConstants.TRAV_EXP_DEF_STATUS);
             travelClaimService.saveOrUpdateClaim(claimObj, bills);
             redirectAttrib.addFlashAttribute("Success", "Travel claim submitted successfully.");
-            modelView.setViewName("redirect:view_travel_claim_list");
+            modelView.setViewName("redirect:view_travel_claim_list?view_travelclaimlist");
         }
         return modelView;
     }
 
-    @RequestMapping("view_travel_claim_list")
+    @RequestMapping(value = "view_travel_claim_list", params = "view_travelclaimlist", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView view_travel_claim_list(@ModelAttribute("TRAVEL_CLAIM_OBJ") MyTravelClaimsDTO travelClaimsDTO,BindingResult result,@RequestParam(value = "page", defaultValue = "0") int page,
                                           @RequestParam(value = "size", defaultValue = VistaluxConstants.DEFAULT_PAGE_SIZE) int pageSize) {
 
@@ -140,22 +140,22 @@ public class MyClaimsController {
 
 
         // Create PageRequest with pagination
-        Pageable pageable = PageRequest.of(page, pageSize);
+        //Pageable pageable = PageRequest.of(page, pageSize);
 
         // Get the paginated list of filtered clients
-        Page<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, pageable,isAllowedAdmin);
-
+        //Page<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, pageable,isAllowedAdmin);
+        List<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, isAllowedAdmin);
         // Convert the filtered list to DTOs
-        List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage.getContent());
+        List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage);
         // Adding filtered clients and pagination details to the model
         modelView.addObject("TRAVEL_CLAIM_FILTERED_LIST", travelClaimsDTOList);
-        modelView.addObject("currentPage", page);
-        modelView.addObject("totalPages", travelClaimFilteredPage.getTotalPages());
-        modelView.addObject("totalClients", travelClaimFilteredPage.getTotalElements());
-        modelView.addObject("pageSize", pageSize);
+        //modelView.addObject("currentPage", page);
+        //modelView.addObject("totalPages", travelClaimFilteredPage.getTotalPages());
+        ///modelView.addObject("totalClients", travelClaimFilteredPage.getTotalElements());
+        //modelView.addObject("pageSize", pageSize);
 
-        modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
-        modelView.addObject("page", page);
+        //modelView.addObject("maxPages", travelClaimFilteredPage.getTotalPages());
+        //modelView.addObject("page", page);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
 
         List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
@@ -194,6 +194,102 @@ public class MyClaimsController {
         }
         return travelClaimsDTOList;
     }
+
+    @RequestMapping(value = "view_travel_claim_list", params = "download_travelclaimlist", method = {RequestMethod.GET, RequestMethod.POST})
+    public void download_travelclaimlist(@ModelAttribute("TRAVEL_CLAIM_OBJ") MyTravelClaimsDTO travelClaimsDTO,BindingResult result,HttpServletResponse response) throws IOException {
+        UserDetailsObj userObj = getLoggedInUser();
+        boolean isAllowedAdmin=false;
+        if(userObj.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SUPERADMIN") || a.getAuthority().equals("ROLE_EXPENSE_APPROVER"))) {
+            isAllowedAdmin=true;
+        }
+        if(!isAllowedAdmin) {
+            travelClaimsDTO.setClaimentId(userObj.getUserId());
+        }
+        List<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, isAllowedAdmin);
+        List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage);
+
+        byte[] pdfBytes = travelClaimService.generatePdf(travelClaimsDTOList);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=travel_claims.pdf");
+        response.getOutputStream().write(pdfBytes);
+    }
+
+    @RequestMapping(value = "view_travel_claim_list", params = "email_travelclaimlist", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView email_travelclaimlist(@ModelAttribute("TRAVEL_CLAIM_OBJ") MyTravelClaimsDTO travelClaimsDTO,BindingResult result,HttpServletResponse response,final RedirectAttributes redirectAttrib) throws IOException {
+        UserDetailsObj userObj = getLoggedInUser();
+        ModelAndView modelView = new ModelAndView("redirect:view_travel_claim_list?view_travelclaimlist");
+        boolean isAllowedAdmin=false;
+        if(userObj.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SUPERADMIN") || a.getAuthority().equals("ROLE_EXPENSE_APPROVER"))) {
+            isAllowedAdmin=true;
+        }
+        if(!isAllowedAdmin) {
+            travelClaimsDTO.setClaimentId(userObj.getUserId());
+        }
+        List<MyTravelClaimsEntity> travelClaimFilteredPage = travelClaimService.filterTravelClaims(travelClaimsDTO, isAllowedAdmin);
+        List<MyTravelClaimsDTO> travelClaimsDTOList = generateTravelClaimObj(travelClaimFilteredPage);
+
+        try {
+            String subject = "Travel Claims Report";
+            String body = buildEmailBody(travelClaimsDTOList); // Create formatted HTML
+
+            // Send using EmailServiceImpl
+            emailService.sendMailWithHtml(travelClaimsDTO.getEmailId(), subject, body);
+            redirectAttrib.addFlashAttribute("Success", "Email sent successfully!");
+            return modelView;
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttrib.addFlashAttribute("Error", "Failed to send email!");
+            return modelView;
+        }
+    }
+
+    private String buildEmailBody(List<MyTravelClaimsDTO> claimsList) {
+        if (claimsList == null || claimsList.isEmpty()) {
+            return "No claims found for the selected filter criteria.";
+        }
+
+        StringBuilder emailBody = new StringBuilder();
+        emailBody.append("<p>Dear User,</p>");
+        emailBody.append("<p>Please find below the filtered travel claims report:</p>");
+
+        emailBody.append("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse; width:100%; font-family: Arial, sans-serif; font-size: 14px;'>");
+        emailBody.append("<thead style='background-color:#f2f2f2;'>");
+        emailBody.append("<tr>");
+        emailBody.append("<th>Claim ID</th>");
+        emailBody.append("<th>Claimant</th>");
+        emailBody.append("<th>Source</th>");
+        emailBody.append("<th>Destination</th>");
+        emailBody.append("<th>Start Date</th>");
+        emailBody.append("<th>End Date</th>");
+        emailBody.append("<th>Status</th>");
+        emailBody.append("</tr>");
+        emailBody.append("</thead>");
+        emailBody.append("<tbody>");
+
+        for (MyTravelClaimsDTO claim : claimsList) {
+            emailBody.append("<tr>");
+            emailBody.append("<td>").append(claim.getTravelClaimId()).append("</td>");
+            emailBody.append("<td>").append(claim.getClaimantName()).append("</td>");
+            emailBody.append("<td>").append(claim.getSource()).append("</td>");
+            emailBody.append("<td>").append(claim.getDestination()).append("</td>");
+            emailBody.append("<td>").append(claim.getFormattedExpenseStartDate()).append("</td>");
+            emailBody.append("<td>").append(claim.getFormattedExpenseEndDate()).append("</td>");
+            emailBody.append("<td>").append(claim.getStatusName()).append("</td>");
+            emailBody.append("</tr>");
+        }
+
+        emailBody.append("</tbody>");
+        emailBody.append("</table>");
+        emailBody.append("<br><p>Regards,<br><b>AxisHMS Pro</b></p>");
+
+        return emailBody.toString();
+    }
+
+    private String formatDate(Date date) {
+        if (date == null) return "";
+        return new SimpleDateFormat("dd-MMM-yyyy").format(date);
+    }
+
 
     @GetMapping("/travel-claim/bill/{billId}")
     public void viewBill(@PathVariable Long billId, HttpServletResponse response) throws IOException {
@@ -284,7 +380,7 @@ public class MyClaimsController {
 
         travelClaimService.saveTravelClaimEntity(existingClaim);
         redirectAttrib.addFlashAttribute("Success", "Travel claim record updated successfully.");
-        modelView.setViewName("redirect:view_travel_claim_list");
+        modelView.setViewName("redirect:view_travel_claim_list?view_travelclaimlist");
         return modelView;
     }
 

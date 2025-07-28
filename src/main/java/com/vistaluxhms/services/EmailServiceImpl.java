@@ -412,4 +412,58 @@ public class EmailServiceImpl {
 		}
 	}
 
+	/**
+	 * Send mail to multiple recipients (comma or semicolon separated).
+	 */
+	public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
+		if (!emailNotifyActive) {
+			System.out.println("Email notifications are disabled.");
+			return;
+		}
+
+		// Validate and extract emails
+		List<String> recipients = validateAndExtractEmails(emailList);
+		if (recipients.isEmpty()) {
+			System.out.println("No valid email addresses found.");
+			return;
+		}
+
+		try {
+			// Prepare message
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom(systemEmailFrom);
+			message.setTo(recipients.toArray(new String[0])); // Convert list to array
+			message.setSubject(subject);
+			message.setText(body);
+
+			// Send mail
+			mailSender.send(message);
+			System.out.println("Email sent to: " + recipients);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Failed to send email: " + e.getMessage());
+		}
+	}
+
+	public void sendMailWithHtml(String to, String subject, String htmlBody) {
+		if (emailNotifyActive) {
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+				helper.setFrom(systemEmailFrom);
+				helper.setTo(to.split("[,;]")); // handles multiple emails separated by , or ;
+				if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
+					message.setRecipients(Message.RecipientType.BCC, emailNotifyBcc);
+				}
+				helper.setSubject(subject);
+				helper.setText(htmlBody, true); // true = HTML content
+				mailSender.send(message);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 }

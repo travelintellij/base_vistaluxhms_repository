@@ -188,7 +188,7 @@ username = "Guest";
                         <sec:authorize access="hasAnyRole('CAN_CLAIM')">
                             <a href="view_add_travel_claim_form">New Travel Claim</a>
                         </sec:authorize>
-                        <a href="view_travel_claim_list">Manage Travel Claims</a>
+                        <a href="view_travel_claim_list?view_travelclaimlist">Manage Travel Claims</a>
 
                         <a href="view_add_claim_form">New Claim</a>
                         <a href="#">Claim Reports</a>

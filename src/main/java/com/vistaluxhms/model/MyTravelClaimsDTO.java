@@ -31,6 +31,8 @@ public class MyTravelClaimsDTO {
 
     private List<MultipartFile> bills = new ArrayList<>();
 
+    public String emailId;
+
     public List<MultipartFile> getBills() {
         return bills;
     }
@@ -322,6 +324,14 @@ public class MyTravelClaimsDTO {
 
     public void setDateSelOpt(int dateSelOpt) {
         this.dateSelOpt = dateSelOpt;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }
 

@@ -1,5 +1,9 @@
 package com.vistaluxhms.services;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.MyTravelClaimsDTO;
@@ -17,12 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class MyClaimsServicesImpl {
@@ -96,7 +102,7 @@ public class MyClaimsServicesImpl {
     }
 
 
-    public Page<MyTravelClaimsEntity> filterTravelClaims(MyTravelClaimsDTO searchTravelObj, Pageable pageable,boolean isAllowedAdmin) {
+    public List<MyTravelClaimsEntity> filterTravelClaims(MyTravelClaimsDTO searchTravelObj, boolean isAllowedAdmin) {
         //Pageable pageable = PageRequest.of(pageable., pageSize);
 
         return travelClaimRepository.findAll(new Specification<MyTravelClaimsEntity>() {
@@ -208,7 +214,7 @@ public class MyClaimsServicesImpl {
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
-        }, pageable);
+        });
     }
 
     public MyTravelClaimsEntity findTravelClaimById(Long travelClaimId){
@@ -268,4 +274,56 @@ public class MyClaimsServicesImpl {
     public void deleteAllTravelBills( List<TravelClaimBillEntity> travelClaimBillEntityList){
         travelClaimBillRepository.deleteAll(travelClaimBillEntityList);
     }
+
+
+    public byte[] generatePdf(List<MyTravelClaimsDTO> claimsList) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            // Title
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+            document.add(new Paragraph("Travel Claims Report", titleFont));
+            document.add(Chunk.NEWLINE);
+
+            // Table with headers
+            PdfPTable table = new PdfPTable(7); // 7 columns
+            table.setWidthPercentage(100);
+
+            // Header row
+            Stream.of("Claim ID", "Claimant", "Source", "Destination",
+                            "Expense Start Date", "Expense End Date", "Status")
+                    .forEach(headerTitle -> {
+                        PdfPCell header = new PdfPCell();
+                        Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        header.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        header.setPhrase(new Phrase(headerTitle, headFont));
+                        table.addCell(header);
+                    });
+
+            // Rows
+            for (MyTravelClaimsDTO claim : claimsList) {
+                table.addCell(String.valueOf(claim.getTravelClaimId()));
+                table.addCell(claim.getClaimantName());
+                table.addCell(claim.getSource());
+                table.addCell(claim.getDestination());
+                table.addCell(claim.getFormattedExpenseStartDate());
+                table.addCell(claim.getFormattedExpenseEndDate());
+                table.addCell(claim.getStatusName());
+            }
+
+            document.add(table);
+            document.close();
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return out.toByteArray();
+    }
+
 }

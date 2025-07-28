@@ -121,12 +121,34 @@ th, td {
     cursor: pointer;
     filter: invert(0.5);  /* optional: style the calendar icon */
   }
+
+  .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5); /* Background overlay */
+  }
+
+  .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 30%;
+      text-align: center;
+  }
+
 </style>
 
 
 
     <h2>Manage Claims </h2>
-    <form:form modelAttribute="TRAVEL_CLAIM_OBJ" action="view_travel_claim_list">
+    <form:form id="filterForm" modelAttribute="TRAVEL_CLAIM_OBJ" action="view_travel_claim_list">
         <div class="filter-bar">
           <div class="filter-item">
             <label for="search">Travel Claim ID:</label>
@@ -164,12 +186,25 @@ th, td {
           </div>
 
         <div class="filter-item">
-            <button type="submit">Apply Filter</button>
-            <a href="view_travel_claim_list"
-               style="background-color: green; color: white; border-radius: 4px; padding: 6px 12px; text-decoration: none; display: inline-block;">Clear Filter</a>
+            <button type="submit" name="view_travelclaimlist" id="view_travelclaimlist">Apply Filter</button>
+            <a href="view_travel_claim_list?view_travelclaimlist" style="background-color: green; color: white; border-radius: 4px; padding: 6px 12px; text-decoration: none; display: inline-block;">Clear Filter</a>
+            <button type="submit" name="download_travelclaimlist" id="download_travelclaimlist">Download PDF</button>
+            <button type="button" onclick="openEmailModal()">Email Claims</button>
+        </div>
+        <div id="emailModal" class="modal" style="display:none;">
+                  <div class="modal-content">
+                    <h3>Email Claims</h3>
+                    <textarea id="emailId" name="emailId" rows="2" cols="30"
+                              style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px;"
+                              placeholder="Enter comma or semicolon separated email addresses"></textarea>
+
+                    <div id="emailError" style="color:red; font-size:14px; margin-top:5px;"></div>
+                    <button type="button" onclick="submitEmail()">Send</button>
+                    <button type="button" onclick="closeEmailModal()">Cancel</button>
+                  </div>
         </div>
         </div>
-    </form:form>
+</form:form>
 
 
 <div align="center" style="margin:10px 0">
@@ -180,12 +215,13 @@ th, td {
 </div>
 
 
-
 <!-- Client List Table Section -->
 <div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
     <c:set value="${TRAVEL_CLAIM_FILTERED_LIST}" var="travelClaimList" />
+
     <table>
         <thead>
+
             <tr>
                 <th>Claim ID</th>
                 <th>Claimant</th>
@@ -231,7 +267,69 @@ th, td {
             </c:forEach>
         </tbody>
     </table>
-</div>
+
+
+<script>
+function openEmailModal() {
+    document.getElementById('emailModal').style.display = 'block';
+}
+
+function closeEmailModal() {
+    document.getElementById('emailModal').style.display = 'none';
+}
+
+function submitEmail() {
+    var emailInput = document.getElementById('emailId').value.trim();
+    var errorDiv = document.getElementById('emailError');
+    var form = document.getElementById('filterForm');
+
+    // Validate
+    if (!validateEmails(emailInput)) {
+        errorDiv.innerText = "Invalid email(s). Please check and try again.";
+        return;
+    } else {
+        errorDiv.innerText = "";
+    }
+
+    // Clear previous hidden inputs (avoid duplicates)
+    var existingAction = document.getElementById('hiddenAction');
+    if (existingAction) existingAction.remove();
+    var existingEmail = document.getElementById('hiddenEmail');
+    if (existingEmail) existingEmail.remove();
+
+    // Add hidden field for the Spring param it expects
+    var hiddenAction = document.createElement('input');
+    hiddenAction.type = 'hidden';
+    hiddenAction.id = 'hiddenAction';
+    hiddenAction.name = 'email_travelclaimlist'; // <-- Spring expects this
+    hiddenAction.value = 'true';
+    form.appendChild(hiddenAction);
+
+    // Add hidden field for the email list
+    var hiddenEmail = document.createElement('input');
+    hiddenEmail.type = 'hidden';
+    hiddenEmail.id = 'hiddenEmail';
+    hiddenEmail.name = 'emailId';
+    hiddenEmail.value = emailInput;
+    form.appendChild(hiddenEmail);
+
+    // Submit form programmatically
+    form.submit();
+}
+
+function validateEmails(emailString) {
+    // Allow both ',' and ';' as separators
+    var emails = emailString.split(/[;,]/).map(function(e) { return e.trim(); });
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    for (var i = 0; i < emails.length; i++) {
+        if (!emailRegex.test(emails[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+</script>
 
 
 
