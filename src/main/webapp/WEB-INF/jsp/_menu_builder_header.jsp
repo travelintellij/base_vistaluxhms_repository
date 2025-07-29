@@ -8,18 +8,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
-<%
-// Example roles and username
-String role = (String) session.getAttribute("role");
-String username = (String) session.getAttribute("username");
-if (role == null) {
-role = "admin"; // Default role if not logged in
-session.setAttribute("role", role);
-}
-if (username == null) {
-username = "Guest";
-}
-%>
+
+<c:set var="role" value="${role != null ? role : 'user'}" />
+<c:set var="username" value="${userName != null ? userName : 'Guest'}" />
+
+
 
 <head>
     <meta charset="UTF-8">
@@ -41,10 +34,10 @@ username = "Guest";
     <div class="logo">
         <a href="view_workloadhome"><img src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
 
-        <h1>Ashoka Resort - Sales Management System</h1>
+        <h1>AxisHMS Pro - Perfect Hotel CRM Solution</h1>
     </div>
     <div class="welcome">
-        Welcome, <%= username %>!
+        Welcome, ${userName} (${message})
     </div>
 </header>
 <nav>
@@ -189,9 +182,10 @@ username = "Guest";
                             <a href="view_add_travel_claim_form">New Travel Claim</a>
                         </sec:authorize>
                         <a href="view_travel_claim_list?view_travelclaimlist">Manage Travel Claims</a>
-
+                        <!--
                         <a href="view_add_claim_form">New Claim</a>
                         <a href="#">Claim Reports</a>
+                        -->
                     </li>
                 </ul>
             </li>

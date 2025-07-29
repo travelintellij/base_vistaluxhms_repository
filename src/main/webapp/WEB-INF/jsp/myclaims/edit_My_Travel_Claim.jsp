@@ -194,7 +194,7 @@ th,td{
 
                         <div class="button-container">
                             <input type="submit" value="Update Claim" />
-                            <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+                            <a href="view_travel_claim_list?view_travelclaimlist"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
                         </div>
     </div>
     <sec:authorize access="hasAnyRole('ROLE_SUPERADMIN', 'ROLE_EXPENSE_APPROVER')">

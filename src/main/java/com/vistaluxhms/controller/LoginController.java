@@ -31,7 +31,7 @@ public class LoginController {
 
     @RequestMapping("/welcome")
     public ModelAndView firstPage(@RequestHeader(value="Authorization") String authorizationHeader) {
-        System.out.println("Request Header is " + authorizationHeader);
+        //System.out.println("Request Header is " + authorizationHeader);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
@@ -55,7 +55,8 @@ public class LoginController {
         mapview.addObject("active", userObj.isActive());
         //mapview.addObject("userRole", userObj.getRoles());
         mapview.addObject("email", userObj.getEmail());
-        mapview.addObject(userObj);
+        mapview.addObject("userObj", userObj);
+        //mapview.addObject(userObj);
 
         //System.out.println(userObj);
         return mapview;
@@ -81,7 +82,8 @@ public class LoginController {
     public ModelAndView loginPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelView = new ModelAndView();
         modelView.setViewName("/login");
-        System.out.println("Login controller is invoked. ");
+        //System.out.println("Login controller is invoked. ");
+
         return modelView;
 
 
@@ -98,14 +100,18 @@ public class LoginController {
 
     @GetMapping("/view_workloadhome")
     public String home(Model model, Principal principal) {
-        System.out.println("User Role is to find out"  );
+        //System.out.println("User Role is to find out"  );
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
-        String roleMessage = isAdmin ? "Admin logged in" : "User logged in";
-
+        String roleMessage = isAdmin ? "Admin" : "User";
         model.addAttribute("message", roleMessage);
+
+        String username = principal.getName();  // Directly from Principal
+        UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
+        model.addAttribute("userName", userObj.getUsername());
+
         return "resortHomePage"; // Home JSP
     }
 

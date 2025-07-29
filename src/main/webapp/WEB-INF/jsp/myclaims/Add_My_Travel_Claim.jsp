@@ -145,7 +145,7 @@
 
             <div class="button-container">
                 <input type="submit" value="Submit Claim" />
-                <a href="view_travel_claim_list"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
+                <a href="view_travel_claim_list?view_travelclaimlist"><input type="button" class="clear-filter-btn" value="View Claims List"></input></a>
             </div>
 
 

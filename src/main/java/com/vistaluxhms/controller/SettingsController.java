@@ -168,4 +168,18 @@ public class SettingsController {
         return modelView;
     }
 
+    @RequestMapping("view_form_manage_central_config")
+    public ModelAndView view_form_manage_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/settings/view_centralConfig");
+        return modelAndView;
+    }
+
+    @RequestMapping("access-denied")
+    public ModelAndView access(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/403");
+        return modelAndView;
+    }
+
 }

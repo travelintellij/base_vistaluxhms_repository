@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/resources/**", "/static/**").permitAll() // Allow public access to login and resources
                 .antMatchers("/admin").hasRole("ADMIN") // Only admins can access /admin
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER") // Admins and users can access /user
+                .antMatchers("/view_form_manage_central_config").hasRole("SUPERADMIN")// added this line.
                 .anyRequest().authenticated() // All other requests need authentication
                 .and()
                 .formLogin()
@@ -61,6 +62,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/view_workloadhome", true) // Redirect after successful login
                 .and()
                 .logout()
-                .permitAll(); // Allow logout for everyone
+                .permitAll() // Allow logout for everyone
+                .and()//added this and below
+                .exceptionHandling()
+                .accessDeniedPage("/access-denied");
     }
 }

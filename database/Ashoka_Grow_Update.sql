@@ -78,6 +78,27 @@ CHANGE COLUMN `otherExpense2` `otherExpense2` INT NOT NULL DEFAULT 0 ,
 CHANGE COLUMN `otherExpense3` `otherExpense3` INT NOT NULL ,
 CHANGE COLUMN `claimStatus` `claimStatus` INT NULL ;
 
+CREATE TABLE hotel_central_config (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    logo_path VARCHAR(255),
+    bank_name VARCHAR(100),
+    account_number VARCHAR(50),
+    ifsc_code VARCHAR(20),
+    branch VARCHAR(100),
+    global_watcher_emails TEXT,
+    hotel_name VARCHAR(150),
+    hotel_address VARCHAR(255),
+    hotel_central_number VARCHAR(20),
+    global_watcher_enabled BOOLEAN DEFAULT FALSE,
+    facebook_link VARCHAR(255),
+    instagram_link VARCHAR(255),
+    linkedin_link VARCHAR(255),
+    youtube_link VARCHAR(255),
+    x_link VARCHAR(255),
+    centralized_email VARCHAR(150),
+    resort_gst_number VARCHAR(30),
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 
 ************************************************************ updated till below *****************
