@@ -74,7 +74,7 @@
 <h2 style="text-align:center;">Hotel Central Configuration</h2>
 
 <div class="container">
-<form:form modelAttribute="CENTRAL_CONFIG_OBJ" method="post" enctype="multipart/form-data" action="saveCentralConfig">
+<form:form modelAttribute="CENTRAL_CONFIG_OBJ" method="post" enctype="multipart/form-data" action="create_edit_central_config">
 
     <table class="config-table">
         <tr>

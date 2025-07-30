@@ -77,4 +77,7 @@ public interface VistaluxConstants {
         }
     };
 
+    public static final String LOGO_PATH = "/resources/images";
+    public static final String LOGO_FILE_NAME = "ashoka_logo.jpg";
+
 }

@@ -3,6 +3,7 @@ package com.vistaluxhms.controller;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.exception.RecordNotFoundException;
 import com.vistaluxhms.model.*;
+import com.vistaluxhms.repository.CentralConfigEntityRepository;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -20,14 +21,19 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -44,6 +50,10 @@ public class SettingsController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    SettingsAndOtherServicesImpl configService;
+
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -180,6 +190,27 @@ public class SettingsController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error/403");
         return modelAndView;
+    }
+
+    @PostMapping("create_edit_central_config")
+    public String create_edit_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
+                             @RequestParam("logoFile") MultipartFile logoFile,
+                             HttpServletRequest request) {
+
+        try {
+            if (!logoFile.isEmpty()) {
+                centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
+                String uploadDir = request.getServletContext().getRealPath(VistaluxConstants.LOGO_PATH);
+                File dir = new File(uploadDir);
+                if (!dir.exists()) dir.mkdirs();
+                Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
+                logoFile.transferTo(filePath.toFile());
+            }
+            configService.saveOrUpdateCentralConfig(centralConfigDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/admin/config";
     }
 
 }

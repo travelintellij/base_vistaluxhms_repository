@@ -1,38 +1,85 @@
-package com.vistaluxhms.model;
+package com.vistaluxhms.entity;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.vistaluxhms.model.ClientEntityDTO;
 
-public class CentralConfigEntityDTO {
+import javax.persistence.*;
+
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+@Entity
+@Table(name = "hotel_central_config")
+public class CentralConfigEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected Integer id;
+
+    @Column(name = "hotel_name", nullable = false)
     private String hotelName;
+
+    @Column(name = "hotel_address", nullable = false)
     private String hotelAddress;
+
+    @Column(name = "hotel_central_number")
     private String centralNumber;
 
     // Bank details
+    @Column(name = "bank_name")
     private String bankName;
+
+    @Column(name = "account_number")
     private String accountNumber;
+
+    @Column(name = "ifsc_code")
     private String ifscCode;
+
     private String branch;
 
     // Watcher settings
+    @Column(name = "global_watcher_emails")
     private String globalWatcherEmails;
+
+    @Column(name = "global_watcher_enabled")
     private boolean globalWatcherEnabled;
 
     // Email & GST
+    @Column(name = "centralized_email")
     private String centralizedEmail;
+
+
+    @Column(name = "resort_gst_number")
     private String gstNumber;
 
     // Social media links
+    @Column(name = "facebook_link")
     private String facebookLink;
+
+    @Column(name = "instagram_link")
     private String instagramLink;
+
+    @Column(name = "linkedin_link")
     private String linkedinLink;
+
+    @Column(name = "youtube_link")
     private String youtubeLink;
+
+    @Column(name = "x_link")
     private String xLink;
 
-    // For logo upload
-    private MultipartFile logoFile; // Optional, if you want to save it as a blob
-    // OR use MultipartFile in controller for better handling
-
+    @Column(name = "logo_path")
     private String logoPath;
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getHotelName() {
         return hotelName;
@@ -160,14 +207,6 @@ public class CentralConfigEntityDTO {
 
     public void setxLink(String xLink) {
         this.xLink = xLink;
-    }
-
-    public MultipartFile getLogoFile() {
-        return logoFile;
-    }
-
-    public void setLogoFile(MultipartFile logoFile) {
-        this.logoFile = logoFile;
     }
 
     public String getLogoPath() {
