@@ -338,11 +338,18 @@ public class LeadController {
         leadRecorderVO.setNotifyEmail(false);
         leadRecorderVO.setNotifySMS(false);
         leadRecorderVO.setNotifyWhatsapp(false);
-        Map<Integer, String>  activeUsersMap = (Map<Integer, String>) modelView.getModel().get("ACTIVE_USERS_MAP");
+        /*Map<Integer, String>  activeUsersMap = (Map<Integer, String>) modelView.getModel().get("ACTIVE_USERS_MAP");
         // Create a new HashMap copy
         Map<Integer, String> ACTIVE_CONTRIBUTORS_MAP = new HashMap<>(activeUsersMap);
         ACTIVE_CONTRIBUTORS_MAP.remove(leadEntity.getLeadOwner());
         modelView.addObject("ACTIVE_CONTRIBUTORS_MAP",ACTIVE_CONTRIBUTORS_MAP);
+        */
+
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
+                Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_CONTRIBUTORS_MAP", activeUsersMap);
+
 
         // teamSet contains a Set of AshokaTeam objects (user entity)
         Set<AshokaTeam> teamSet = leadEntity.getTeam();
@@ -363,6 +370,7 @@ public class LeadController {
         modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
     */
         leadRecorderVO.setLeadOwnerName(userDetailsService.findUserByID(leadRecorderVO.getLeadOwner()).getUsername());
+        modelView.addObject("LEAD_OBJ", leadRecorderVO);
         modelView.setViewName("leads/editLead");
         return modelView;
     }
@@ -389,8 +397,10 @@ public class LeadController {
             leadEntity.setClient(clientEntity);
             long newLeadOwner = leadEntity.getLeadOwner();
             leadRecorderObj.getLeadContributors().forEach((e) -> {
-                AshokaTeam userEntity = userDetailsService.findUserByID(e);
-                leadEntity.getTeam().add(userEntity);
+                if(e!=0) {
+                    AshokaTeam userEntity = userDetailsService.findUserByID(e);
+                    leadEntity.getTeam().add(userEntity);
+                }
             });
             leadService.saveLead(leadEntity);
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");

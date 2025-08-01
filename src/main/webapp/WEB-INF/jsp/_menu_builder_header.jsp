@@ -17,9 +17,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
     <title>Home</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/styles.css">
 </head>
+<script>
+ function updateLogo() {
+     const logo = document.getElementById('topLogo');
+     logo.src = '<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg?ts=' + new Date().getTime();
+ }
+</script>
 <style>
  .gear-icon {
      font-size: 20px;
@@ -32,8 +42,7 @@
 <body>
 <header>
     <div class="logo">
-        <a href="view_workloadhome"><img src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
-
+        <a href="view_workloadhome"><img id = "topLogo" src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
         <h1>AxisHMS Pro - Perfect Hotel CRM Solution</h1>
     </div>
     <div class="welcome">
@@ -200,3 +209,4 @@
         </li>
     </ul>
 </nav>
+

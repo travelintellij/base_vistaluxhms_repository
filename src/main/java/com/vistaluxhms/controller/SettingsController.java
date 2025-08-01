@@ -178,13 +178,6 @@ public class SettingsController {
         return modelView;
     }
 
-    @RequestMapping("view_form_manage_central_config")
-    public ModelAndView view_form_manage_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin/settings/view_centralConfig");
-        return modelAndView;
-    }
-
     @RequestMapping("access-denied")
     public ModelAndView access(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
         ModelAndView modelAndView = new ModelAndView();
@@ -192,25 +185,45 @@ public class SettingsController {
         return modelAndView;
     }
 
+    @RequestMapping("view_form_manage_central_config")
+    public ModelAndView view_form_manage_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
+        ModelAndView modelAndView = new ModelAndView("admin/settings/view_centralConfig");
+
+        centralConfigDTO = configService.getCentralConfig();
+        if (centralConfigDTO == null) {
+            centralConfigDTO = new CentralConfigEntityDTO(); // Empty DTO for first time
+        }
+        modelAndView.addObject("CENTRAL_CONFIG_OBJ", centralConfigDTO);
+        return modelAndView;
+
+    }
+
+
+
+
+
     @PostMapping("create_edit_central_config")
     public String create_edit_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
                              @RequestParam("logoFile") MultipartFile logoFile,
-                             HttpServletRequest request) {
+                             HttpServletRequest request,final RedirectAttributes redirectAttrib) {
 
         try {
             if (!logoFile.isEmpty()) {
-                centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
                 String uploadDir = request.getServletContext().getRealPath(VistaluxConstants.LOGO_PATH);
                 File dir = new File(uploadDir);
                 if (!dir.exists()) dir.mkdirs();
                 Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
                 logoFile.transferTo(filePath.toFile());
             }
+            centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
             configService.saveOrUpdateCentralConfig(centralConfigDTO);
+            redirectAttrib.addFlashAttribute("Success","Configuration is updated Successfully!!. ");
         } catch (Exception e) {
+            redirectAttrib.addFlashAttribute("Error","Configuration updation Failed. !!. ");
             e.printStackTrace();
         }
-        return "redirect:/admin/config";
+        return "redirect:view_form_manage_central_config";
     }
+
 
 }

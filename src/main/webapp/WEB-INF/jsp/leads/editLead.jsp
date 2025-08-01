@@ -226,8 +226,8 @@
            <div class="form-cell">
                 <label for="leadcontibutors">Lead Contributors:</label> <br>
                  <sec:authorize access="hasAnyRole('ADMIN','LEAD_MANAGER')">
-                        <form:select path="leadContributors" multiple="true">
-                        <form:option value="">----- Select Contributors -----</form:option>
+                        <form:select path="leadContributors" multiple="true" style="min-height: 80px; width: 250px;">
+                        <form:option value="0">----- Select Contributors -----</form:option>
                             <c:forEach var="entry" items="${ACTIVE_CONTRIBUTORS_MAP}">
                                 <option value="${entry.key}"
                                     ${SELECTED_CONTRIBUTORS.contains(entry.key) ? 'selected="selected"' : ''}>
@@ -237,8 +237,8 @@
                      </form:select>
                   </sec:authorize>
                   <sec:authorize access="! hasAnyRole('ADMIN','LEAD_MANAGER')">
-                        <form:select path="leadContributors" multiple="true" disabled="true">
-                        <form:option value="">----- Select Contributors -----</form:option>
+                        <form:select path="leadContributors" multiple="true" disabled="true" style="min-height: 80px; width: 250px;">
+                        <form:option value="0">----- Select Contributors -----</form:option>
                             <c:forEach var="entry" items="${ACTIVE_CONTRIBUTORS_MAP}">
                                 <option value="${entry.key}"
                                     ${SELECTED_CONTRIBUTORS.contains(entry.key) ? 'selected="selected"' : ''}>
@@ -249,11 +249,6 @@
                   </sec:authorize>
 
            </div>
-           <div class="form-cell">
-           </div>
-           <div class="form-cell">
-           </div>
-    </div>
 
            <div class="button-container">
                 <input type="submit" value="Update Lead">

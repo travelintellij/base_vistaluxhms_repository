@@ -4,6 +4,7 @@ import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.entity.SalesPartnerEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class LeadEntityDTO extends LeadEntity {
     public String formattedCheckInDate;
     public String formattedCheckOutDate;
 
-    public List<Integer> leadContributors;
+    public List<Integer> leadContributors = new ArrayList<>();
 
    public void updateLeadVoFromEntity(LeadEntity leadEntity) {
            //this.client = leadRecorderObj.getClient();

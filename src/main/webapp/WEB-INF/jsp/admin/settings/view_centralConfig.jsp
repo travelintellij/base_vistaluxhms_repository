@@ -5,164 +5,230 @@
 <html>
 <head>
     <title>Hotel Central Configuration</title>
-  <style>
-  .config-table {
-      width: 60%;
-      margin: 15px auto;
-      border-collapse: collapse;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-  }
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-  .config-table th {
-      text-align: left;
-      padding: 10px;
-      background: #efefef;
-      width: 35%;
-  }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
 
-  .config-table td {
-      padding: 10px;
-  }
+        .form-container {
+            width: 70%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
 
-  .input-field {
-      width: 90%;
-      padding: 6px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-  }
+        .form-group {
+            display: grid;
+            grid-template-columns: 30% 70%;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-  .fieldset-style {
-      width: 64%;
-      margin: 20px auto;
-      border: 1px solid #aaa;
-      padding: 10px;
-      border-radius: 5px;
-      background: #fefefe;
-  }
+        .form-group label {
+            font-weight: 500;
+            color: #444;
+            padding-right: 10px;
+        }
 
-  .fieldset-style legend {
-      font-weight: bold;
-      font-size: 14px;
-      color: #444;
-  }
+        .input-field {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
 
-  .inner-table {
-      width: 100%;
-      border: none;
-  }
+        textarea.input-field {
+            min-height: 60px;
+        }
 
-  .btn-save {
-      background: #007bff;
-      color: #fff;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 5px;
-      font-size: 15px;
-      cursor: pointer;
-  }
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fdfdfd;
+            margin-bottom: 20px;
+        }
 
-  .btn-save:hover {
-      background: #0056b3;
-  }
-  </style>
+        fieldset legend {
+            font-weight: 600;
+            font-size: 15px;
+            color: #2c3e50;
+            padding: 0 8px;
+        }
 
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-save {
+            background: #007bff;
+            color: #fff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #0056b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+            }
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+            .input-field {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h2 style="text-align:center;">Hotel Central Configuration</h2>
+<h2>Hotel Central Configuration</h2>
+<div align="center" style="margin:10px 0"><b>
+    <c:if test="${not empty Success}">
+        <script>
+               if (window.parent && typeof window.parent.updateLogo === 'function') {
+                        window.parent.updateLogo();
+                    }
+        </script>
+    </c:if>
 
-<div class="container">
+    <font color="green">${Success} </font>
+    <font color="red">${Error}</font>
+</b></div>
+
+<div class="form-container">
 <form:form modelAttribute="CENTRAL_CONFIG_OBJ" method="post" enctype="multipart/form-data" action="create_edit_central_config">
 
-    <table class="config-table">
-        <tr>
-            <th>Logo Upload</th>
-            <td>
-                <input type="file" name="logoFile" accept="image/*" onchange="previewLogo(event)" />
-                <br>
-                <img id="logoPreview" style="margin-top: 10px; max-height: 60px; display: none;" />
-            </td>
-        </tr>
-        <tr>
-            <th>Hotel Name</th>
-            <td><form:input path="hotelName" class="input-field" /></td>
-        </tr>
-        <tr>
-            <th>Hotel Address</th>
-            <td><form:input path="hotelAddress" class="input-field" /></td>
-        </tr>
-        <tr>
-            <th>Central Number</th>
-            <td><form:input path="centralNumber" class="input-field" /></td>
-        </tr>
-         <tr>
-         <th>Centralized Email</th>
-            <td><form:input path="centralizedEmail" class="input-field" /></td>
-        </tr>
-        <tr>
-            <th>GST Number</th>
-            <td><form:input path="gstNumber" class="input-field" /></td>
-        </tr>
-    </table>
+    <div class="form-group">
+        <label>Logo Upload</label>
+        <div>
+            <input type="file" id="logoFile" name="logoFile" accept="image/*" />
+            <br>
+            <img id="logoPreview" style="margin-top: 10px; max-height: 60px; display: none;" />
+        </div>
+    </div>
 
-    <!-- Bank Details Section -->
-    <fieldset class="fieldset-style">
+    <div class="form-group">
+        <label>Hotel Name</label>
+        <form:input path="hotelName" class="input-field" />
+    </div>
+
+    <div class="form-group">
+        <label>Hotel Address</label>
+        <form:input path="hotelAddress" class="input-field" />
+    </div>
+
+    <div class="form-group">
+        <label>Central Number</label>
+        <form:input path="centralNumber" class="input-field" />
+    </div>
+
+    <div class="form-group">
+        <label>Centralized Email</label>
+        <form:input path="centralizedEmail" class="input-field" />
+    </div>
+
+    <div class="form-group">
+        <label>GST Number</label>
+        <form:input path="gstNumber" class="input-field" />
+    </div>
+
+    <!-- Bank Details -->
+    <fieldset>
         <legend>Bank Details</legend>
-        <table class="config-table inner-table">
-            <tr>
-                <th>Bank Name</th>
-                <td><form:input path="bankName" class="input-field" /></td>
-            </tr>
-            <tr>
-                <th>Account Number</th>
-                <td><form:input path="accountNumber" class="input-field" /></td>
-            </tr>
-            <tr>
-                <th>IFSC Code</th>
-                <td><form:input path="ifscCode" class="input-field" /></td>
-            </tr>
-            <tr>
-                <th>Branch</th>
-                <td><form:input path="branch" class="input-field" /></td>
-            </tr>
-        </table>
+
+        <div class="form-group">
+            <label>Bank Name</label>
+            <form:input path="bankName" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>Account Number</label>
+            <form:input path="accountNumber" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>IFSC Code</label>
+            <form:input path="ifscCode" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>Branch</label>
+            <form:input path="branch" class="input-field" />
+        </div>
     </fieldset>
 
-    <table class="config-table">
-        <tr>
-            <th>Global Watcher Emails</th>
-            <td><form:textarea path="globalWatcherEmails" class="input-field"></form:textarea></td>
-        </tr>
-        <tr>
-            <th>Global Watcher Enabled</th>
-            <td>
-                <form:radiobutton path="globalWatcherEnabled" value="true" /> Yes
-                <form:radiobutton path="globalWatcherEnabled" value="false" /> No
-            </td>
-        </tr>
+    <div class="form-group">
+        <label>Global Watcher Emails</label>
+        <form:textarea path="globalWatcherEmails" class="input-field"></form:textarea>
+    </div>
 
-    </table>
+    <div class="form-group">
+        <label>Global Watcher Enabled</label>
+        <div>
+            <form:radiobutton path="globalWatcherEnabled" value="true" /> Yes
+            <form:radiobutton path="globalWatcherEnabled" value="false" /> No
+        </div>
+    </div>
 
-    <!-- Social Media Section -->
-    <fieldset class="fieldset-style">
+    <!-- Social Media Links -->
+    <fieldset>
         <legend>Social Media Links</legend>
-        <table class="config-table inner-table">
-            <tr><th>Facebook</th><td><form:input path="facebookLink" class="input-field" /></td></tr>
-            <tr><th>Instagram</th><td><form:input path="instagramLink" class="input-field" /></td></tr>
-            <tr><th>LinkedIn</th><td><form:input path="linkedinLink" class="input-field" /></td></tr>
-            <tr><th>YouTube</th><td><form:input path="youtubeLink" class="input-field" /></td></tr>
-            <tr><th>X (Twitter)</th><td><form:input path="xLink" class="input-field" /></td></tr>
-        </table>
+
+        <div class="form-group">
+            <label>Facebook</label>
+            <form:input path="facebookLink" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>Instagram</label>
+            <form:input path="instagramLink" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>LinkedIn</label>
+            <form:input path="linkedinLink" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>YouTube</label>
+            <form:input path="youtubeLink" class="input-field" />
+        </div>
+
+        <div class="form-group">
+            <label>X (Twitter)</label>
+            <form:input path="xLink" class="input-field" />
+        </div>
     </fieldset>
 
-    <!-- Center align button -->
-    <div style="text-align:center; margin-top:20px;">
+    <div class="btn-container">
         <button type="submit" class="btn-save">Save Configuration</button>
     </div>
 </form:form>
-
 </div>
 
 <script>
@@ -180,6 +246,9 @@
             preview.style.display = 'none';
         }
     });
+
+
+
 </script>
 
 </body>
