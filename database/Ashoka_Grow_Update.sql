@@ -100,6 +100,10 @@ CREATE TABLE hotel_central_config (
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+DELETE FROM `ashokadb`.`status_master` WHERE (`statusId` = '3');
+UPDATE `ashokadb`.`status_master` SET `statusId` = '3' WHERE (`statusId` = '4');
+UPDATE `ashokadb`.`status_master` SET `statusId` = '4' WHERE (`statusId` = '5');
+
 
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (

@@ -2,6 +2,7 @@ package com.vistaluxhms.services;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,6 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 
 import com.vistaluxhms.model.EmailMessageVO;
 import com.vistaluxhms.model.Mail;
@@ -60,7 +62,8 @@ public class EmailServiceImpl {
 	@Autowired
 	private EmailConfig emailConfig;
 
-	
+	@Autowired
+	private ServletContext servletContext;
 	/*@Autowired
     private SimpleMailMessage preConfiguredMessage;
 	*/
@@ -206,8 +209,23 @@ public class EmailServiceImpl {
 	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 	                StandardCharsets.UTF_8.name());
 
+			//helper.addInline("ashokaLogo", new ClassPathResource("resources/images/ashoka_logo.jpg"));
 
-	        //If you have any inline image then following code needs to be commented and add
+// --- Step 1: Set CID name and attach image ---
+			String logoCid = "ashokaLogo";
+			mail.getModel().put("logoCid", logoCid);
+
+			// Absolute path to image in webapp/resources/images
+			String imagePath = servletContext.getRealPath("/resources/images/ashoka_logo.jpg");
+			FileSystemResource logoImage = new FileSystemResource(new File(imagePath));
+
+			if (!logoImage.exists()) {
+				throw new FileNotFoundException("Logo image not found at " + imagePath);
+			}
+
+			helper.addInline(logoCid, logoImage);
+
+			//If you have any inline image then following code needs to be commented and add
 	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
 	        //image files location for ftl template is different. 
 	        /*

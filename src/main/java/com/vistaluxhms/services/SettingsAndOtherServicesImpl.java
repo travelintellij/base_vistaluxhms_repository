@@ -21,15 +21,9 @@ public class SettingsAndOtherServicesImpl {
 	 * Fetch the existing central config (only 1 record is expected)
 	 */
 	public CentralConfigEntityDTO getCentralConfig() {
-		Optional<CentralConfigEntity> entityOpt = centralConfigRepository.findAll()
-				.stream()
-				.findFirst();
-
-		if (entityOpt.isPresent()) {
-			return convertEntityToDTO(entityOpt.get());
-		} else {
-			return new CentralConfigEntityDTO(); // Return an empty DTO if none exists
-		}
+		return Optional.ofNullable(centralConfigRepository.findTopByOrderByIdAsc())
+				.map(this::convertEntityToDTO)
+				.orElse(new CentralConfigEntityDTO());
 	}
 
 	/**
