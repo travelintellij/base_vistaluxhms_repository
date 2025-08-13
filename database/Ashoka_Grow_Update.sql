@@ -104,6 +104,15 @@ DELETE FROM `ashokadb`.`status_master` WHERE (`statusId` = '3');
 UPDATE `ashokadb`.`status_master` SET `statusId` = '3' WHERE (`statusId` = '4');
 UPDATE `ashokadb`.`status_master` SET `statusId` = '4' WHERE (`statusId` = '5');
 
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `baseUrl` VARCHAR(500) NULL AFTER `logo_path`;
+
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `escalationEmail` VARCHAR(250) NULL AFTER `baseUrl`,
+ADD COLUMN `escalationPhone` VARCHAR(45) NULL AFTER `escalationEmail`;
+
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `website` VARCHAR(250) NULL AFTER `hotel_central_number`;
 
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (

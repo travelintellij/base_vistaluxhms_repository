@@ -24,6 +24,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 
+import com.vistaluxhms.entity.CentralConfigEntity;
+import com.vistaluxhms.model.CentralConfigEntityDTO;
 import com.vistaluxhms.model.EmailMessageVO;
 import com.vistaluxhms.model.Mail;
 import com.vistaluxhms.util.EmailConfig;
@@ -67,7 +69,10 @@ public class EmailServiceImpl {
 	/*@Autowired
     private SimpleMailMessage preConfiguredMessage;
 	*/
-	
+
+	@Autowired
+	private SettingsAndOtherServicesImpl settingService;
+
 
 	@Value("${email.client.from}")
 	private String systemEmailFrom;
@@ -209,22 +214,16 @@ public class EmailServiceImpl {
 	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 	                StandardCharsets.UTF_8.name());
 
-			//helper.addInline("ashokaLogo", new ClassPathResource("resources/images/ashoka_logo.jpg"));
-
-// --- Step 1: Set CID name and attach image ---
-			String logoCid = "ashokaLogo";
-			mail.getModel().put("logoCid", logoCid);
-
-			// Absolute path to image in webapp/resources/images
-			String imagePath = servletContext.getRealPath("/resources/images/ashoka_logo.jpg");
-			FileSystemResource logoImage = new FileSystemResource(new File(imagePath));
-
-			if (!logoImage.exists()) {
-				throw new FileNotFoundException("Logo image not found at " + imagePath);
-			}
-
-			helper.addInline(logoCid, logoImage);
-
+			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+			String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
+			mail.getModel().put("logoUrl", logoUrl);
+			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
+			mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
+			mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
+			mail.getModel().put("website", centralConfigEntity.getWebsite());
+			mail.getModel().put("facebook", centralConfigEntity.getFacebookLink());
+			mail.getModel().put("instagram", centralConfigEntity.getInstagramLink());
+			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
 			//If you have any inline image then following code needs to be commented and add
 	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
 	        //image files location for ftl template is different. 
@@ -233,8 +232,9 @@ public class EmailServiceImpl {
 	        //System.out.println("Path isss " + fileRes.getAbsolutePath());
 	        helper.addAttachment("udanchoo.png", fileRes);
 	         */
-        
-	        Template template = freemarkerConfig.getTemplate(templateName);
+			mail.getModel().put("logoCid", "ashokaLogo");
+
+			Template template = freemarkerConfig.getTemplate(templateName);
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getTo());

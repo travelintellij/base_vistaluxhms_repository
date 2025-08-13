@@ -36,7 +36,8 @@
                 <!-- Header Section -->
                 <tr>
                     <td class="header" style="text-align: center; background-color: #0078D7; color: white; padding: 20px 0; border-radius: 12px 12px 0 0;">
-                        <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Vistalux Logo" style="max-width: 150px;">
+                        <img src="${logoUrl}" alt="Logo" style="width:auto; height:50px; display:block; margin:0 auto;">
+
                     </td>
                 </tr>
                 <!-- Content Section -->
@@ -65,15 +66,15 @@
                         <p><strong>Remarks:</strong> ${clientRemarks}</p>
                         <p>Looking forward to seeing your pleasurable experience with us! You will hear soon from us with the quotation to proceed further.</p>
                         <p>I am <strong>${serviceAdvisor}</strong>, reachable at <strong>${contactNumber}</strong>. Please feel free to talk to us for clarifications.</p>
-                        <p>If you face any issues, you can escalate to my manager at <strong><a href="mailto:gm@vistaluxhotel.com" style="color: #0078D7; text-decoration: none;">gm@vistaluxhotel.com</a></strong> or call at <strong>9690735777</strong>.</p>
-                        <p>Regards,<br><strong>${serviceAdvisor}</strong><br>Your Query Owner<br>Reservations: 7827962965</p>
-                        <a href="http://www.ashokastigertrail.com" class="button" style="display: inline-block; background-color: #0078D7; color: white; padding: 10px 15px; margin: 20px 0; text-align: center; font-size: 16px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 10px rgba(0, 120, 215, 0.3);">Visit Our Website</a>
+                        <p>If you face any issues, you can escalate to my manager at <strong><a href="mailto:${escalationEmail}" style="color: #0078D7; text-decoration: none;">${escalationEmail}</a></strong> or call at <strong>${escalationPhone}</strong>.</p>
+                        <p>Regards,<br><strong>${serviceAdvisor}</strong><br>Your Query Owner<br>Reservations: ${centralNumber}</p>
+                        <a href="${website}" class="button" style="display: inline-block; background-color: #0078D7; color: white; padding: 10px 15px; margin: 20px 0; text-align: center; font-size: 16px; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 10px rgba(0, 120, 215, 0.3);">Visit Our Website</a>
                     </td>
                 </tr>
                 <!-- Footer Section -->
                 <tr>
                     <td class="footer" style="text-align: center; margin-top: 30px; color: #777777; font-size: 14px;">
-                        <p>| <a href="https://www.facebook.com/AshokaTigerTrail" style="color: #0078D7; text-decoration: none;">Facebook</a> | <a href="https://www.instagram.com/ashoka_tiger_trail/" style="color: #0078D7; text-decoration: none;">Instagram</a> | <a href="https://www.linkedin.com/company/105009430/admin/dashboard/" style="color: #0078D7; text-decoration: none;">LinkedIn</a> |</p>
+                        <p>| <a href="${facebook}" style="color: #0078D7; text-decoration: none;">Facebook</a> | <a href="${instagram}" style="color: #0078D7; text-decoration: none;">Instagram</a> | <a href="${linkedin}" style="color: #0078D7; text-decoration: none;">LinkedIn</a> |</p>
                         <p>Copyright © 2020 | <a href="https://www.digitalintellij.com" style="color: #0078D7; text-decoration: none;">www.digitalintellij.com</a> | All rights reserved.</p>
                     </td>
                 </tr>

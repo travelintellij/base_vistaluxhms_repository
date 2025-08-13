@@ -28,6 +28,13 @@ public class CentralConfigEntityDTO {
     private String youtubeLink;
     private String xLink;
 
+    private String baseUrl;
+
+    private String escalationEmail;
+    private String escalationPhone;
+
+    private String website;
+
     // For logo upload
     private MultipartFile logoFile; // Optional, if you want to save it as a blob
     // OR use MultipartFile in controller for better handling
@@ -176,5 +183,37 @@ public class CentralConfigEntityDTO {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getEscalationEmail() {
+        return escalationEmail;
+    }
+
+    public void setEscalationEmail(String escalationEmail) {
+        this.escalationEmail = escalationEmail;
+    }
+
+    public String getEscalationPhone() {
+        return escalationPhone;
+    }
+
+    public void setEscalationPhone(String escalationPhone) {
+        this.escalationPhone = escalationPhone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

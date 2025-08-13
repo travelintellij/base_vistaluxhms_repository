@@ -131,6 +131,25 @@
             <img id="logoPreview" style="margin-top: 10px; max-height: 60px; display: none;" />
         </div>
     </div>
+    <div class="form-group">
+        <label>Base Url</label>
+        <div>
+            <form:input path="baseUrl" class="input-field" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Escalation Email</label>
+        <div>
+            <form:input path="escalationEmail" class="input-field" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Escalation Phone</label>
+        <div>
+            <form:input path="escalationPhone" class="input-field" />
+        </div>
+    </div>
 
     <div class="form-group">
         <label>Hotel Name</label>
@@ -151,7 +170,10 @@
         <label>Centralized Email</label>
         <form:input path="centralizedEmail" class="input-field" />
     </div>
-
+    <div class="form-group">
+        <label>Website</label>
+        <form:input path="website" class="input-field" />
+    </div>
     <div class="form-group">
         <label>GST Number</label>
         <form:input path="gstNumber" class="input-field" />

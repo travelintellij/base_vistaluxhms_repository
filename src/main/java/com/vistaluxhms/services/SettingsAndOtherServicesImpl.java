@@ -61,6 +61,10 @@ public class SettingsAndOtherServicesImpl {
 		entity.setYoutubeLink(dto.getYoutubeLink());
 		entity.setxLink(dto.getxLink());
 		entity.setLogoPath(dto.getLogoPath());
+		entity.setBaseUrl(dto.getBaseUrl());
+		entity.setEscalationEmail(dto.getEscalationEmail());
+		entity.setEscalationPhone(dto.getEscalationPhone());
+		entity.setWebsite(dto.getWebsite());
 		centralConfigRepository.save(entity);
 	}
 
@@ -85,6 +89,10 @@ public class SettingsAndOtherServicesImpl {
 		dto.setLinkedinLink(entity.getLinkedinLink());
 		dto.setYoutubeLink(entity.getYoutubeLink());
 		dto.setxLink(entity.getxLink());
+		dto.setBaseUrl(entity.getBaseUrl());
+		dto.setEscalationEmail(entity.getEscalationEmail());
+		dto.setEscalationPhone(entity.getEscalationPhone());
+		dto.setWebsite(entity.getWebsite());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

@@ -72,6 +72,18 @@ public class CentralConfigEntity {
     @Column(name = "logo_path")
     private String logoPath;
 
+    @Column(name = "baseUrl")
+    private String baseUrl;
+
+    @Column(name = "escalationEmail")
+    private String escalationEmail;
+
+    @Column(name = "escalationPhone")
+    private String escalationPhone;
+
+    @Column(name = "website")
+    private String website;
+
 
     public Integer getId() {
         return id;
@@ -215,5 +227,37 @@ public class CentralConfigEntity {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getEscalationEmail() {
+        return escalationEmail;
+    }
+
+    public void setEscalationEmail(String escalationEmail) {
+        this.escalationEmail = escalationEmail;
+    }
+
+    public String getEscalationPhone() {
+        return escalationPhone;
+    }
+
+    public void setEscalationPhone(String escalationPhone) {
+        this.escalationPhone = escalationPhone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }
