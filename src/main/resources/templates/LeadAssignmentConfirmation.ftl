@@ -569,11 +569,8 @@
                     <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width:100%;">
                         <tbody><tr>
                             <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
-                                
-                                    
-                                        <img align="center" alt="" src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" width="135" style="max-width:500px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
-                                    
-                                
+                                    <!--   <img align="center" alt="" src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" width="135" style="max-width:500px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage"> -->
+                                       <img align="center" alt="" src="${logoUrl}" width="135" style="max-width:500px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage">
                             </td>
                         </tr>
                     </tbody></table>

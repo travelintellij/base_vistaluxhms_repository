@@ -36,7 +36,7 @@
                 <!-- Header Section -->
                 <tr>
                     <td class="header" style="text-align: center; background-color: #0078D7; color: white; padding: 20px 0; border-radius: 12px 12px 0 0;">
-                        <img src="${logoUrl}" alt="Logo" style="width:auto; height:50px; display:block; margin:0 auto;">
+                        <img src="${logoUrl}" alt="Logo" style="width:auto; height:150px; display:block; margin:0 auto;">
 
                     </td>
                 </tr>
@@ -74,7 +74,7 @@
                 <!-- Footer Section -->
                 <tr>
                     <td class="footer" style="text-align: center; margin-top: 30px; color: #777777; font-size: 14px;">
-                        <p>| <a href="${facebook}" style="color: #0078D7; text-decoration: none;">Facebook</a> | <a href="${instagram}" style="color: #0078D7; text-decoration: none;">Instagram</a> | <a href="${linkedin}" style="color: #0078D7; text-decoration: none;">LinkedIn</a> |</p>
+                        <p>| <a href="${facebook}" style="color: #0078D7; text-decoration: none;">Facebook</a> | <a href="${instagram}" style="color: #0078D7; text-decoration: none;">Instagram</a> | <a href="${linkedin}" style="color: #0078D7; text-decoration: none;">LinkedIn</a> | <a href="${youtube}" style="color: #0078D7; text-decoration: none;">YouTube</a> |</p>
                         <p>Copyright © 2020 | <a href="https://www.digitalintellij.com" style="color: #0078D7; text-decoration: none;">www.digitalintellij.com</a> | All rights reserved.</p>
                     </td>
                 </tr>

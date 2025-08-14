@@ -353,6 +353,9 @@ DROP TABLE IF EXISTS `hotel_central_config`;
 CREATE TABLE `hotel_central_config` (
   `id` int NOT NULL AUTO_INCREMENT,
   `logo_path` varchar(255) DEFAULT NULL,
+  `baseUrl` varchar(500) DEFAULT NULL,
+  `escalationEmail` varchar(250) DEFAULT NULL,
+  `escalationPhone` varchar(45) DEFAULT NULL,
   `bank_name` varchar(100) DEFAULT NULL,
   `account_number` varchar(50) DEFAULT NULL,
   `ifsc_code` varchar(20) DEFAULT NULL,
@@ -361,6 +364,7 @@ CREATE TABLE `hotel_central_config` (
   `hotel_name` varchar(150) DEFAULT NULL,
   `hotel_address` varchar(255) DEFAULT NULL,
   `hotel_central_number` varchar(20) DEFAULT NULL,
+  `website` varchar(250) DEFAULT NULL,
   `global_watcher_enabled` tinyint(1) DEFAULT '0',
   `facebook_link` varchar(255) DEFAULT NULL,
   `instagram_link` varchar(255) DEFAULT NULL,
@@ -380,7 +384,7 @@ CREATE TABLE `hotel_central_config` (
 
 LOCK TABLES `hotel_central_config` WRITE;
 /*!40000 ALTER TABLE `hotel_central_config` DISABLE KEYS */;
-INSERT INTO `hotel_central_config` VALUES (1,'/resources/images\\ashoka_logo.jpg','Yes Bank','6296-0109-5109','ICICI09090','vikas puri','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Ashoka Tiger Trail Resort great','asdgh','9090762424',0,'www.facebook.com/ashokatigertrail','instagram.com/vistalux','linkedin.com/ashoka','youtube.com/channel/ashoka','x.com/vistalux','sales@vistaluxhotel.com','07ADGPC1092D1Z3','2025-08-01 13:34:33');
+INSERT INTO `hotel_central_config` VALUES (1,'https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png','http://ashokacrm.com','gm@gmail.com','9811462548','Yes Bank','6296-0109-5109','ICICI09090','vikas puri','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Ashoka Tiger Trail Resort great','asdgh','9090762424','www.ti.udanchoo.com',0,'https://www.facebook.com/AshokaTigerTrail','https://www.instagram.com/ashoka_tiger_trail/','https://www.linkedin.com/company/ashokastigertrailresort/','https://www.youtube.com/@ashokatigertrailresort------hello','','sales@vistaluxhotel.com','07ADGPC1092D1Z3','2025-08-14 13:36:38');
 /*!40000 ALTER TABLE `hotel_central_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -488,7 +492,7 @@ CREATE TABLE `lead_master` (
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -497,7 +501,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (34,15,2,3,4,0,'sdgasgadgs This isclient remarks. ','','2025-05-20','2025-05-22',103,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(35,15,2,0,0,0,'1) Temperature\r\n2) Safari Cost\r\n3) Safari Timings\r\n4) Possible Activities. ','','2025-05-14','2025-05-16',103,NULL,1,0,1,0,0,0,1,31,NULL,NULL),(36,15,2,0,0,0,'','','2025-08-15','2025-08-17',103,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(37,15,3,0,0,0,'','','2025-08-14','2025-08-16',103,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(38,15,1,0,0,0,'','','2025-08-14','2025-08-15',105,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(39,15,1,0,0,0,'','','2025-08-13','2025-08-15',105,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(40,15,2,0,0,0,'','','2025-08-19','2025-08-20',105,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(41,15,1,0,0,0,'','','2025-08-19','2025-08-20',103,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(42,15,1,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (34,15,2,3,4,0,'sdgasgadgs This isclient remarks. ','','2025-05-20','2025-05-22',103,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(53,15,4,0,0,0,'','','2025-08-17','2025-08-19',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(54,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(55,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(56,15,2,0,0,0,'','','2025-08-19','2025-08-21',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(57,15,3,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,24,NULL,NULL),(58,15,1,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(59,15,1,0,0,0,'','','2025-08-15','2025-08-17',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(60,15,4,0,0,0,'','','2025-08-24','2025-08-27',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(61,15,3,0,0,0,'','','2025-08-25','2025-08-29',102,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,7 +536,6 @@ CREATE TABLE `lead_system_quotation` (
 
 LOCK TABLES `lead_system_quotation` WRITE;
 /*!40000 ALTER TABLE `lead_system_quotation` DISABLE KEYS */;
-INSERT INTO `lead_system_quotation` VALUES (6,35,1,15,9800,0,'','2025-05-27 15:31:32','2025-05-30 13:12:26'),(7,35,2,15,39792,92,'','2025-05-30 10:09:27','2025-05-30 13:12:26'),(8,35,3,15,16440,0,'','2025-05-30 13:13:17','2025-05-30 13:13:49'),(9,35,4,15,11800,0,'','2025-05-30 13:16:03','2025-05-30 13:17:12'),(10,35,5,15,9800,0,'','2025-05-30 13:17:50','2025-05-30 13:17:50'),(11,34,1,15,9800,800,'','2025-05-30 13:20:27','2025-06-06 14:21:40'),(12,35,8,15,45072,800,'Victoria Great','2025-06-01 09:29:52','2025-06-05 15:26:03'),(14,35,9,15,11800,0,'Great','2025-06-05 15:31:41','2025-06-05 15:31:41'),(15,35,10,15,11097,597,'Great','2025-06-05 15:31:57','2025-06-05 15:39:08'),(16,35,11,15,21600,0,'','2025-06-05 15:39:57','2025-06-05 15:39:57'),(17,35,12,15,21600,0,'','2025-06-05 15:40:00','2025-06-05 15:40:00'),(18,35,13,15,12800,0,'','2025-06-05 15:40:14','2025-06-05 15:44:41'),(19,35,14,15,33291,291,'','2025-06-05 15:45:17','2025-06-05 15:45:17'),(20,34,2,15,7344,344,'Hi Tea charges will be seperate. ','2025-07-19 10:14:23','2025-07-19 10:14:23');
 /*!40000 ALTER TABLE `lead_system_quotation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -573,7 +576,6 @@ CREATE TABLE `lead_system_quotation_room_details` (
 
 LOCK TABLES `lead_system_quotation_room_details` WRITE;
 /*!40000 ALTER TABLE `lead_system_quotation_room_details` DISABLE KEYS */;
-INSERT INTO `lead_system_quotation_room_details` VALUES (57,18,4,4,2,0,0,0,'2025-06-06','2025-06-08',12800,0,0,0,12800),(60,19,7,4,2,0,0,1,'2025-06-09','2025-06-12',0,0,0,0,33291),(63,11,4,1,2,0,0,0,'2025-06-11','2025-06-13',0,0,0,0,9800),(64,20,4,4,2,0,0,1,'2025-07-23','2025-07-24',5440,0,0,1904,7344);
 /*!40000 ALTER TABLE `lead_system_quotation_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -634,7 +636,7 @@ CREATE TABLE `leads_team_map` (
 
 LOCK TABLES `leads_team_map` WRITE;
 /*!40000 ALTER TABLE `leads_team_map` DISABLE KEYS */;
-INSERT INTO `leads_team_map` VALUES (34,31);
+INSERT INTO `leads_team_map` VALUES (57,1),(34,31);
 /*!40000 ALTER TABLE `leads_team_map` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1080,4 +1082,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-12 20:05:58
+-- Dump completed on 2025-08-14 19:37:13

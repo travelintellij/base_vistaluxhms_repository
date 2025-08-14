@@ -215,7 +215,7 @@ public class SettingsController {
                 Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
                 logoFile.transferTo(filePath.toFile());
             }
-            centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
+            //centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
             configService.saveOrUpdateCentralConfig(centralConfigDTO);
             redirectAttrib.addFlashAttribute("Success","Configuration is updated Successfully!!. ");
         } catch (Exception e) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation - Ashoka Tiger Trail Resort</title>
+    <title>Quotation - ${hotelName}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,15 +90,11 @@
 <body>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
-        <img
-                src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png"
-                alt="Ashoka's Tiger Trail Resort"
-                width="200" height="200"
-                style="display: block; margin: 0 auto; width: 200px; height: 200px;"
+        <img src="${logoUrl}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"
         />
     </div>
     <div class="content">
-        <h2 style="text-align:center">Exclusive Stay Quotation – Ashoka Tiger Trail Resort, Corbett</h2>
+        <h2 style="text-align:center">Exclusive Stay Quotation – ${hotelName}</h2>
 
         <p>Dear ${contactName},</p>
         <p>We are pleased to share the quotation for your stay at Ashoka's Tiger Trail Resort, a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids' zone, and restaurant.</p>

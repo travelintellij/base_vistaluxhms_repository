@@ -132,6 +132,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label>Logo Path</label>
+        <div>
+            <form:input path="logoPath" class="input-field" />
+        </div>
+    </div>
+    <div class="form-group">
         <label>Base Url</label>
         <div>
             <form:input path="baseUrl" class="input-field" />
