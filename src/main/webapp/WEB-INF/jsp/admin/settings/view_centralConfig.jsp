@@ -171,11 +171,14 @@
         <label>Central Number</label>
         <form:input path="centralNumber" class="input-field" />
     </div>
-
     <div class="form-group">
         <label>Centralized Email</label>
         <form:input path="centralizedEmail" class="input-field" />
     </div>
+    <div class="form-group">
+            <label>Company Name</label>
+            <form:input path="companyName" class="input-field" />
+        </div>
     <div class="form-group">
         <label>Website</label>
         <form:input path="website" class="input-field" />
@@ -188,7 +191,10 @@
     <!-- Bank Details -->
     <fieldset>
         <legend>Bank Details</legend>
-
+        <div class="form-group">
+            <label>Account Name</label>
+            <form:input path="accountName" class="input-field" />
+        </div>
         <div class="form-group">
             <label>Bank Name</label>
             <form:input path="bankName" class="input-field" />

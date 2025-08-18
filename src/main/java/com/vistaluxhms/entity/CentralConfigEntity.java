@@ -84,6 +84,12 @@ public class CentralConfigEntity {
     @Column(name = "website")
     private String website;
 
+    @Column(name = "accountName")
+    private String accountName;
+
+    @Column(name = "companyName")
+    private String companyName;
+
 
     public Integer getId() {
         return id;
@@ -259,5 +265,21 @@ public class CentralConfigEntity {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

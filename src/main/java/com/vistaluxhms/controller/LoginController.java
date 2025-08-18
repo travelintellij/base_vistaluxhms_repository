@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.vistaluxhms.model.CentralConfigEntityDTO;
 import com.vistaluxhms.model.UserDetailsObj;
+import com.vistaluxhms.services.SettingsAndOtherServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,7 +29,8 @@ public class LoginController {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-
+    @Autowired
+    private SettingsAndOtherServicesImpl settingService;
 
     @RequestMapping("/welcome")
     public ModelAndView firstPage(@RequestHeader(value="Authorization") String authorizationHeader) {
@@ -105,12 +108,15 @@ public class LoginController {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
+        CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+
         String roleMessage = isAdmin ? "Admin" : "User";
         model.addAttribute("message", roleMessage);
 
         String username = principal.getName();  // Directly from Principal
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         model.addAttribute("userName", userObj.getUsername());
+        model.addAttribute("hotelName", centralConfigEntity.getHotelName());
 
         return "resortHomePage"; // Home JSP
     }

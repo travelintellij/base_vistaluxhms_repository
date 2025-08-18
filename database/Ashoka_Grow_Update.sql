@@ -114,6 +114,11 @@ ADD COLUMN `escalationPhone` VARCHAR(45) NULL AFTER `escalationEmail`;
 ALTER TABLE `ashokadb`.`hotel_central_config`
 ADD COLUMN `website` VARCHAR(250) NULL AFTER `hotel_central_number`;
 
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `accountName` VARCHAR(500) NULL AFTER `escalationPhone`,
+ADD COLUMN `companyName` VARCHAR(500) NULL AFTER `website`;
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,

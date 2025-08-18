@@ -66,6 +66,8 @@ public class SettingsAndOtherServicesImpl {
 		entity.setEscalationPhone(dto.getEscalationPhone());
 		entity.setWebsite(dto.getWebsite());
 		entity.setLogoPath(dto.getLogoPath());
+		entity.setAccountName(dto.getAccountName());
+		entity.setCompanyName(dto.getCompanyName());
 		centralConfigRepository.save(entity);
 	}
 
@@ -95,6 +97,8 @@ public class SettingsAndOtherServicesImpl {
 		dto.setEscalationPhone(entity.getEscalationPhone());
 		dto.setWebsite(entity.getWebsite());
 		dto.setLogoPath(entity.getLogoPath());
+		dto.setAccountName(entity.getAccountName());
+		dto.setCompanyName(entity.getCompanyName());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}
