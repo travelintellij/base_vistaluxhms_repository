@@ -125,7 +125,7 @@
                     <td class="content">
                         <h2>Query Reference Number: ${leadId}</h2>
                         <p>Dear ${contactName},</p>
-                        <p>Vistalux has updated your query in our system with original query reference number is <strong>${leadId}</strong> related to this deal.</p>
+                        <p>${companyName} has updated your query in our system with original query reference number is <strong>${leadId}</strong> related to this deal.</p>
 
                         <!-- Table with Details -->
                         <table class="details-table">

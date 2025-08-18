@@ -356,6 +356,7 @@ CREATE TABLE `hotel_central_config` (
   `baseUrl` varchar(500) DEFAULT NULL,
   `escalationEmail` varchar(250) DEFAULT NULL,
   `escalationPhone` varchar(45) DEFAULT NULL,
+  `accountName` varchar(500) DEFAULT NULL,
   `bank_name` varchar(100) DEFAULT NULL,
   `account_number` varchar(50) DEFAULT NULL,
   `ifsc_code` varchar(20) DEFAULT NULL,
@@ -365,6 +366,7 @@ CREATE TABLE `hotel_central_config` (
   `hotel_address` varchar(255) DEFAULT NULL,
   `hotel_central_number` varchar(20) DEFAULT NULL,
   `website` varchar(250) DEFAULT NULL,
+  `companyName` varchar(500) DEFAULT NULL,
   `global_watcher_enabled` tinyint(1) DEFAULT '0',
   `facebook_link` varchar(255) DEFAULT NULL,
   `instagram_link` varchar(255) DEFAULT NULL,
@@ -384,7 +386,7 @@ CREATE TABLE `hotel_central_config` (
 
 LOCK TABLES `hotel_central_config` WRITE;
 /*!40000 ALTER TABLE `hotel_central_config` DISABLE KEYS */;
-INSERT INTO `hotel_central_config` VALUES (1,'https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png','http://ashokacrm.com','gm@gmail.com','9811462548','Yes Bank','6296-0109-5109','ICICI09090','vikas puri','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Ashoka Tiger Trail Resort great','asdgh','9090762424','www.ti.udanchoo.com',0,'https://www.facebook.com/AshokaTigerTrail','https://www.instagram.com/ashoka_tiger_trail/','https://www.linkedin.com/company/ashokastigertrailresort/','https://www.youtube.com/@ashokatigertrailresort------hello','','sales@vistaluxhotel.com','07ADGPC1092D1Z3','2025-08-14 13:36:38');
+INSERT INTO `hotel_central_config` VALUES (1,'https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png','http://ashokacrm.com','gm@gmail.com','9811462548','Vistalux Bank','Yes Bank','6296-0109-5109','ICICI09090','vikas puri','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Vistalux Resort ','asdgh','9999446267','www.ti.udanchoo.com','AxisHMSPRO',0,'https://www.facebook.com/AshokaTigerTrail','https://www.instagram.com/ashoka_tiger_trail/','https://www.linkedin.com/company/ashokastigertrailresort/','https://www.youtube.com/@ashokatigertrailresort------hello','','reservation@axishmspro.com ','07ADGPC1092D1Z3','2025-08-18 14:52:40');
 /*!40000 ALTER TABLE `hotel_central_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,7 +503,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
-INSERT INTO `lead_master` VALUES (34,15,2,3,4,0,'sdgasgadgs This isclient remarks. ','','2025-05-20','2025-05-22',103,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(53,15,4,0,0,0,'','','2025-08-17','2025-08-19',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(54,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(55,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(56,15,2,0,0,0,'','','2025-08-19','2025-08-21',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(57,15,3,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,24,NULL,NULL),(58,15,1,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(59,15,1,0,0,0,'','','2025-08-15','2025-08-17',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(60,15,4,0,0,0,'','','2025-08-24','2025-08-27',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(61,15,3,0,0,0,'','','2025-08-25','2025-08-29',102,NULL,0,0,1,0,0,0,1,1,NULL,NULL);
+INSERT INTO `lead_master` VALUES (34,15,2,3,4,0,'sdgasgadgs This isclient remarks. ','','2025-05-20','2025-05-22',103,NULL,1,0,1,0,0,0,1,1,NULL,NULL),(53,15,4,0,0,0,'','','2025-08-17','2025-08-19',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(54,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(55,15,2,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(56,15,2,0,0,0,'','','2025-08-19','2025-08-21',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(57,15,3,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,24,NULL,NULL),(58,15,1,0,0,0,'','','2025-08-20','2025-08-22',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(59,15,1,0,0,0,'','','2025-08-15','2025-08-17',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(60,15,4,0,0,0,'','','2025-08-24','2025-08-27',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(61,15,3,0,0,0,'client is good. mnm','','2025-08-25','2025-08-29',102,NULL,0,0,1,0,0,0,1,24,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -636,7 +638,7 @@ CREATE TABLE `leads_team_map` (
 
 LOCK TABLES `leads_team_map` WRITE;
 /*!40000 ALTER TABLE `leads_team_map` DISABLE KEYS */;
-INSERT INTO `leads_team_map` VALUES (57,1),(34,31);
+INSERT INTO `leads_team_map` VALUES (57,1),(61,24),(34,31);
 /*!40000 ALTER TABLE `leads_team_map` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1082,4 +1084,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-14 19:37:13
+-- Dump completed on 2025-08-18 20:37:21

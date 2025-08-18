@@ -225,6 +225,7 @@ public class EmailServiceImpl {
 			mail.getModel().put("instagram", centralConfigEntity.getInstagramLink());
 			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
 			mail.getModel().put("youtube", centralConfigEntity.getYoutubeLink());
+			mail.getModel().put("companyName", centralConfigEntity.getCompanyName());
 			//If you have any inline image then following code needs to be commented and add
 	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
 	        //image files location for ftl template is different. 
