@@ -229,14 +229,12 @@ th, td {
                 <th>Destination</th>
                 <th>Expense Start Date</th>
                 <th>Expense End Date</th>
-                <th>Total Claim Amount</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach items="${travelClaimList}" var="claimRec">
-                 <c:set var="grandTotal" value="${grandTotal + claimRec.totalClaimAmount}" scope="page" />
                 <tr>
                     <td>${claimRec.travelClaimId}</td>
                     <td>${claimRec.claimantName}</td>
@@ -244,7 +242,6 @@ th, td {
                     <td>${claimRec.destination}</td>
                     <td>${claimRec.formattedExpenseStartDate}</td>
                     <td>${claimRec.formattedExpenseEndDate}</td>
-                    <td>INR ${claimRec.totalClaimAmount}</td>
                     <td>${claimRec.statusName}</td>
                     <td>
                         <form action="view_view_travel_claim_form" method="POST" style="display:inline;">
@@ -269,14 +266,6 @@ th, td {
                 </tr>
             </c:forEach>
         </tbody>
-        <!-- Grand Total Row -->
-        <tfoot>
-            <tr>
-                <td colspan="6" style="text-align:right; font-weight:bold;">Grand Total:</td>
-                <td style="font-weight:bold;">INR ${grandTotal}</td>
-                <td colspan="2"></td>
-            </tr>
-        </tfoot>
     </table>
 
 

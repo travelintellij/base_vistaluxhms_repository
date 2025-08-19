@@ -183,7 +183,6 @@ public class MyClaimsController {
     private List<MyTravelClaimsDTO> generateTravelClaimObj(List<MyTravelClaimsEntity> listTravelClaims) {
         List<MyTravelClaimsDTO> travelClaimsDTOList = new ArrayList<MyTravelClaimsDTO>();
         for(int i=0;i<listTravelClaims.size();i++){
-
             MyTravelClaimsEntity travelClaimsEntity = listTravelClaims.get(i);
             MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(travelClaimsEntity);
             myTravelClaimsDTO.setFormattedExpenseStartDate(formatter.format(myTravelClaimsDTO.getExpenseStartDate()));
@@ -191,8 +190,6 @@ public class MyClaimsController {
             myTravelClaimsDTO.setStatusName(statusService.findStatusById(travelClaimsEntity.getClaimStatus()).getStatusName());
             myTravelClaimsDTO.setClaimantName(userDetailsService.findUserByID(travelClaimsEntity.getClaimentId()).getName());
             myTravelClaimsDTO.setClaimStatus(travelClaimsEntity.getClaimStatus());
-            int totalClaimAmount = travelClaimsEntity.getTravelExpense() + travelClaimsEntity.getFoodExpense() + travelClaimsEntity.getParkingExpense() + travelClaimsEntity.getOtherExpense1() + travelClaimsEntity.getOtherExpense2() + travelClaimsEntity.getOtherExpense3();
-            myTravelClaimsDTO.setTotalClaimAmount(totalClaimAmount);
             travelClaimsDTOList.add(myTravelClaimsDTO);
         }
         return travelClaimsDTOList;
