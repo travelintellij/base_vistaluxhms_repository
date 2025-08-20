@@ -188,7 +188,9 @@ public class MyClaimsController {
             MyTravelClaimsDTO myTravelClaimsDTO = new MyTravelClaimsDTO(travelClaimsEntity);
             myTravelClaimsDTO.setFormattedExpenseStartDate(formatter.format(myTravelClaimsDTO.getExpenseStartDate()));
             myTravelClaimsDTO.setFormattedExpenseEndDate(formatter.format(myTravelClaimsDTO.getExpenseEndDate()));
-            myTravelClaimsDTO.setStatusName(statusService.findStatusById(travelClaimsEntity.getClaimStatus()).getStatusName());
+            if(statusService.findStatusById(travelClaimsEntity.getClaimStatus())!=null) {
+                myTravelClaimsDTO.setStatusName(statusService.findStatusById(travelClaimsEntity.getClaimStatus()).getStatusName());
+            }
             myTravelClaimsDTO.setClaimantName(userDetailsService.findUserByID(travelClaimsEntity.getClaimentId()).getName());
             myTravelClaimsDTO.setClaimStatus(travelClaimsEntity.getClaimStatus());
             travelClaimsDTOList.add(myTravelClaimsDTO);

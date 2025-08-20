@@ -250,7 +250,9 @@ public class MyClaimsServicesImpl {
         dto.setBillsEntity(entity.getBills());
         dto.setFormattedExpenseStartDate(formatter.format(entity.getExpenseStartDate()));
         dto.setFormattedExpenseEndDate(formatter.format(entity.getExpenseEndDate()));
-        dto.setStatusName(statusService.findStatusById(entity.getClaimStatus()).getStatusName());
+        if(statusService.findStatusById(entity.getClaimStatus())!=null) {
+            dto.setStatusName(statusService.findStatusById(entity.getClaimStatus()).getStatusName());
+        }
         dto.setTravelModeName(VistaluxConstants.CLAIM_TRAVEL_MODE.get(entity.getTravelMode()));
         int totalClaimAmount = entity.getTravelExpense() + entity.getFoodExpense() + entity.getParkingExpense() + entity.getOtherExpense1() + entity.getOtherExpense2() + entity.getOtherExpense3();
         dto.setTotalClaimAmount(totalClaimAmount);

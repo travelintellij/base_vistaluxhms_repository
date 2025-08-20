@@ -26,7 +26,10 @@ public class StatusServiceImpl {
 	StatusRepository statusRepository;
 
 	public StatusEntity findStatusById(Integer statusId){
-		return statusRepository.findById(statusId).get();
+		if(statusRepository.findById(statusId).isPresent())
+			return statusRepository.findById(statusId).get();
+		else
+			return null;
 	}
 
 	public List<StatusEntity> findByStatusObjAndActive(String statusObj,boolean active){
