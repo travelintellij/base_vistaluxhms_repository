@@ -102,6 +102,24 @@
                 width: 100%;
             }
         }
+        .three-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .three-columns fieldset {
+            min-height: 250px; /* adjust height if needed */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .three-columns textarea {
+            flex: 1;
+            resize: vertical; /* allow user to expand vertically */
+        }
+
     </style>
 </head>
 <body>
@@ -258,6 +276,30 @@
             <form:input path="xLink" class="input-field" />
         </div>
     </fieldset>
+<div class="form-container">
+    <h2>Quotation Configuration</h2>
+
+    <div class="three-columns">
+        <!-- Quotation Top Cover -->
+        <fieldset>
+            <legend>Quotation Top Cover</legend>
+            <form:textarea class="input-field" path="quotationTopCover" placeholder="Enter quotation top cover content here..." rows="12" />
+        </fieldset>
+
+        <!-- Inclusions -->
+        <fieldset>
+            <legend>Inclusions</legend>
+            <form:textarea class="input-field" path="inclusions" placeholder="Enter inclusions (use line breaks or bullet symbols)" rows="12" />
+        </fieldset>
+
+        <!-- Terms & Conditions -->
+        <fieldset>
+            <legend>Terms & Conditions</legend>
+            <form:textarea class="input-field" path="tnc" placeholder="Enter terms and conditions" rows="12" />
+        </fieldset>
+    </div>
+</div>
+
 
     <div class="btn-container">
         <button type="submit" class="btn-save">Save Configuration</button>

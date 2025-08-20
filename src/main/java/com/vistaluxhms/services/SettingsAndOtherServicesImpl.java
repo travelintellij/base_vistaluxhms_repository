@@ -68,6 +68,9 @@ public class SettingsAndOtherServicesImpl {
 		entity.setLogoPath(dto.getLogoPath());
 		entity.setAccountName(dto.getAccountName());
 		entity.setCompanyName(dto.getCompanyName());
+		entity.setTnc(dto.getTnc());
+		entity.setQuotationTopCover(dto.getQuotationTopCover());
+		entity.setInclusions(dto.getInclusions());
 		centralConfigRepository.save(entity);
 	}
 
@@ -99,6 +102,9 @@ public class SettingsAndOtherServicesImpl {
 		dto.setLogoPath(entity.getLogoPath());
 		dto.setAccountName(entity.getAccountName());
 		dto.setCompanyName(entity.getCompanyName());
+		dto.setTnc(entity.getTnc());
+		dto.setQuotationTopCover(entity.getQuotationTopCover());
+		dto.setInclusions(entity.getInclusions());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

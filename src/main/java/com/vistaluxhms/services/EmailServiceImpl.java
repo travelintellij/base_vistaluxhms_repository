@@ -276,6 +276,13 @@ public class EmailServiceImpl {
 			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
 			mail.getModel().put("youtube", centralConfigEntity.getYoutubeLink());
 			mail.getModel().put("hotelName", centralConfigEntity.getHotelName());
+
+			mail.getModel().put("centralConfig", centralConfigEntity);
+
+			/*mail.getModel().put("quotationTopCover", centralConfigEntity.getQuotationTopCover());
+			mail.getModel().put("inclusions", centralConfigEntity.getInclusions());
+			mail.getModel().put("tnc", centralConfigEntity.getTnc());*/
+
 			freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 	    	//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
 	    	freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");

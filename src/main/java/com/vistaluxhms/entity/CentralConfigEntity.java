@@ -90,6 +90,15 @@ public class CentralConfigEntity {
     @Column(name = "companyName")
     private String companyName;
 
+    @Column(name = "quotationTopCover")
+    private String quotationTopCover;
+
+    @Column(name = "inclusions")
+    private String inclusions;
+
+    @Column(name = "tnc")
+    private String tnc;
+
 
     public Integer getId() {
         return id;
@@ -281,5 +290,29 @@ public class CentralConfigEntity {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getQuotationTopCover() {
+        return quotationTopCover;
+    }
+
+    public void setQuotationTopCover(String quotationTopCover) {
+        this.quotationTopCover = quotationTopCover;
+    }
+
+    public String getInclusions() {
+        return inclusions;
+    }
+
+    public void setInclusions(String inclusions) {
+        this.inclusions = inclusions;
+    }
+
+    public String getTnc() {
+        return tnc;
+    }
+
+    public void setTnc(String tnc) {
+        this.tnc = tnc;
     }
 }

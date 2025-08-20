@@ -2,6 +2,8 @@ package com.vistaluxhms.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Column;
+
 public class CentralConfigEntityDTO {
     private String hotelName;
     private String hotelAddress;
@@ -43,6 +45,11 @@ public class CentralConfigEntityDTO {
 
     private String accountName;
     private String companyName;
+
+    private String quotationTopCover;
+    private String inclusions;
+    private String tnc;
+
 
 
     public String getHotelName() {
@@ -235,5 +242,29 @@ public class CentralConfigEntityDTO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getQuotationTopCover() {
+        return quotationTopCover;
+    }
+
+    public void setQuotationTopCover(String quotationTopCover) {
+        this.quotationTopCover = quotationTopCover;
+    }
+
+    public String getInclusions() {
+        return inclusions;
+    }
+
+    public void setInclusions(String inclusions) {
+        this.inclusions = inclusions;
+    }
+
+    public String getTnc() {
+        return tnc;
+    }
+
+    public void setTnc(String tnc) {
+        this.tnc = tnc;
     }
 }
