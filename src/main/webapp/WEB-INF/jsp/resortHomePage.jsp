@@ -28,8 +28,10 @@
     }
 
 </style>
-<div class="form-container">
-    <h2>Welcome to Ashoka Resort Management System </h2>
+<div class="form-container" style="width:800px !important; margin:0 auto; display:block;">
+   <h2>
+           Welcome to ${empty hotelName ? "Hospitality Sales Management System" : hotelName.concat(" Management System")}
+       </h2>
 </div>
 
 <jsp:include page="footer.jsp" />

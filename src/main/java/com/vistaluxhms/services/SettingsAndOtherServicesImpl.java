@@ -21,15 +21,9 @@ public class SettingsAndOtherServicesImpl {
 	 * Fetch the existing central config (only 1 record is expected)
 	 */
 	public CentralConfigEntityDTO getCentralConfig() {
-		Optional<CentralConfigEntity> entityOpt = centralConfigRepository.findAll()
-				.stream()
-				.findFirst();
-
-		if (entityOpt.isPresent()) {
-			return convertEntityToDTO(entityOpt.get());
-		} else {
-			return new CentralConfigEntityDTO(); // Return an empty DTO if none exists
-		}
+		return Optional.ofNullable(centralConfigRepository.findTopByOrderByIdAsc())
+				.map(this::convertEntityToDTO)
+				.orElse(new CentralConfigEntityDTO());
 	}
 
 	/**
@@ -67,6 +61,16 @@ public class SettingsAndOtherServicesImpl {
 		entity.setYoutubeLink(dto.getYoutubeLink());
 		entity.setxLink(dto.getxLink());
 		entity.setLogoPath(dto.getLogoPath());
+		entity.setBaseUrl(dto.getBaseUrl());
+		entity.setEscalationEmail(dto.getEscalationEmail());
+		entity.setEscalationPhone(dto.getEscalationPhone());
+		entity.setWebsite(dto.getWebsite());
+		entity.setLogoPath(dto.getLogoPath());
+		entity.setAccountName(dto.getAccountName());
+		entity.setCompanyName(dto.getCompanyName());
+		entity.setTnc(dto.getTnc());
+		entity.setQuotationTopCover(dto.getQuotationTopCover());
+		entity.setInclusions(dto.getInclusions());
 		centralConfigRepository.save(entity);
 	}
 
@@ -91,6 +95,16 @@ public class SettingsAndOtherServicesImpl {
 		dto.setLinkedinLink(entity.getLinkedinLink());
 		dto.setYoutubeLink(entity.getYoutubeLink());
 		dto.setxLink(entity.getxLink());
+		dto.setBaseUrl(entity.getBaseUrl());
+		dto.setEscalationEmail(entity.getEscalationEmail());
+		dto.setEscalationPhone(entity.getEscalationPhone());
+		dto.setWebsite(entity.getWebsite());
+		dto.setLogoPath(entity.getLogoPath());
+		dto.setAccountName(entity.getAccountName());
+		dto.setCompanyName(entity.getCompanyName());
+		dto.setTnc(entity.getTnc());
+		dto.setQuotationTopCover(entity.getQuotationTopCover());
+		dto.setInclusions(entity.getInclusions());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

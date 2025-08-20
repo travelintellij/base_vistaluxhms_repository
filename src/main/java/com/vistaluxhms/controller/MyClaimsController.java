@@ -163,7 +163,8 @@ public class MyClaimsController {
                 Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
         modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
         modelView.addObject("DATE_SEL_OPTIONS", VistaluxConstants.DATE_SEL_OPTIONS);
-        List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        //List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        List<StatusEntity> listStatus = statusService.findByStatusObjAndActive(VistaluxConstants.TRAVEL_EXP_STATUS_OBJ,true);
         Map<Integer, String> TRAV_EXP_STATUS_MAP = listStatus.stream()
                 .collect(Collectors.toMap(
                         StatusEntity::getStatusId,       // key = statusId
@@ -310,7 +311,8 @@ public class MyClaimsController {
         modelView.addObject("CLAIM_TRAVEL_MODE",VistaluxConstants.CLAIM_TRAVEL_MODE);
         modelView.addObject("TRAV_EXP_DEF_STATUS", VistaluxConstants.TRAV_EXP_DEF_STATUS);
 
-        List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        //List<StatusEntity> listStatus = statusService.findAllActiveStatusList();
+        List<StatusEntity> listStatus = statusService.findByStatusObjAndActive(VistaluxConstants.TRAVEL_EXP_STATUS_OBJ,true);
         Map<Integer, String> TRAV_EXP_STATUS_MAP = listStatus.stream()
                 .collect(Collectors.toMap(
                         StatusEntity::getStatusId,       // key = statusId

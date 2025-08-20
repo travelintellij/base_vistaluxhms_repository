@@ -72,6 +72,33 @@ public class CentralConfigEntity {
     @Column(name = "logo_path")
     private String logoPath;
 
+    @Column(name = "baseUrl")
+    private String baseUrl;
+
+    @Column(name = "escalationEmail")
+    private String escalationEmail;
+
+    @Column(name = "escalationPhone")
+    private String escalationPhone;
+
+    @Column(name = "website")
+    private String website;
+
+    @Column(name = "accountName")
+    private String accountName;
+
+    @Column(name = "companyName")
+    private String companyName;
+
+    @Column(name = "quotationTopCover")
+    private String quotationTopCover;
+
+    @Column(name = "inclusions")
+    private String inclusions;
+
+    @Column(name = "tnc")
+    private String tnc;
+
 
     public Integer getId() {
         return id;
@@ -215,5 +242,77 @@ public class CentralConfigEntity {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getEscalationEmail() {
+        return escalationEmail;
+    }
+
+    public void setEscalationEmail(String escalationEmail) {
+        this.escalationEmail = escalationEmail;
+    }
+
+    public String getEscalationPhone() {
+        return escalationPhone;
+    }
+
+    public void setEscalationPhone(String escalationPhone) {
+        this.escalationPhone = escalationPhone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getQuotationTopCover() {
+        return quotationTopCover;
+    }
+
+    public void setQuotationTopCover(String quotationTopCover) {
+        this.quotationTopCover = quotationTopCover;
+    }
+
+    public String getInclusions() {
+        return inclusions;
+    }
+
+    public void setInclusions(String inclusions) {
+        this.inclusions = inclusions;
+    }
+
+    public String getTnc() {
+        return tnc;
+    }
+
+    public void setTnc(String tnc) {
+        this.tnc = tnc;
     }
 }

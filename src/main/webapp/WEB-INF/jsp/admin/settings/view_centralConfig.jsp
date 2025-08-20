@@ -102,6 +102,24 @@
                 width: 100%;
             }
         }
+        .three-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .three-columns fieldset {
+            min-height: 250px; /* adjust height if needed */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .three-columns textarea {
+            flex: 1;
+            resize: vertical; /* allow user to expand vertically */
+        }
+
     </style>
 </head>
 <body>
@@ -131,6 +149,31 @@
             <img id="logoPreview" style="margin-top: 10px; max-height: 60px; display: none;" />
         </div>
     </div>
+    <div class="form-group">
+        <label>Logo Path</label>
+        <div>
+            <form:input path="logoPath" class="input-field" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Base Url</label>
+        <div>
+            <form:input path="baseUrl" class="input-field" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Escalation Email</label>
+        <div>
+            <form:input path="escalationEmail" class="input-field" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Escalation Phone</label>
+        <div>
+            <form:input path="escalationPhone" class="input-field" />
+        </div>
+    </div>
 
     <div class="form-group">
         <label>Hotel Name</label>
@@ -146,12 +189,18 @@
         <label>Central Number</label>
         <form:input path="centralNumber" class="input-field" />
     </div>
-
     <div class="form-group">
         <label>Centralized Email</label>
         <form:input path="centralizedEmail" class="input-field" />
     </div>
-
+    <div class="form-group">
+            <label>Company Name</label>
+            <form:input path="companyName" class="input-field" />
+        </div>
+    <div class="form-group">
+        <label>Website</label>
+        <form:input path="website" class="input-field" />
+    </div>
     <div class="form-group">
         <label>GST Number</label>
         <form:input path="gstNumber" class="input-field" />
@@ -160,7 +209,10 @@
     <!-- Bank Details -->
     <fieldset>
         <legend>Bank Details</legend>
-
+        <div class="form-group">
+            <label>Account Name</label>
+            <form:input path="accountName" class="input-field" />
+        </div>
         <div class="form-group">
             <label>Bank Name</label>
             <form:input path="bankName" class="input-field" />
@@ -224,6 +276,30 @@
             <form:input path="xLink" class="input-field" />
         </div>
     </fieldset>
+<div class="form-container">
+    <h2>Quotation Configuration</h2>
+
+    <div class="three-columns">
+        <!-- Quotation Top Cover -->
+        <fieldset>
+            <legend>Quotation Top Cover</legend>
+            <form:textarea class="input-field" path="quotationTopCover" placeholder="Enter quotation top cover content here..." rows="12" />
+        </fieldset>
+
+        <!-- Inclusions -->
+        <fieldset>
+            <legend>Inclusions</legend>
+            <form:textarea class="input-field" path="inclusions" placeholder="Enter inclusions (use line breaks or bullet symbols)" rows="12" />
+        </fieldset>
+
+        <!-- Terms & Conditions -->
+        <fieldset>
+            <legend>Terms & Conditions</legend>
+            <form:textarea class="input-field" path="tnc" placeholder="Enter terms and conditions" rows="12" />
+        </fieldset>
+    </div>
+</div>
+
 
     <div class="btn-container">
         <button type="submit" class="btn-save">Save Configuration</button>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation - Ashoka Tiger Trail Resort</title>
+    <title>Quotation - ${hotelName}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,6 +67,9 @@
         .linkedin { background-color: #0077b5; }
         .email { background-color: #ff6600; }
         .website { background-color: #000; }
+        .twitter {
+            background-color: #1DA1F2;
+        }
         .whatsapp-button {
             text-align: center;
             margin-top: 20px;
@@ -90,18 +93,14 @@
 <body>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
-        <img
-                src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png"
-                alt="Ashoka's Tiger Trail Resort"
-                width="200" height="200"
-                style="display: block; margin: 0 auto; width: 200px; height: 200px;"
+        <img src="${logoUrl}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"
         />
     </div>
     <div class="content">
-        <h2 style="text-align:center">Exclusive Stay Quotation – Ashoka Tiger Trail Resort, Corbett</h2>
+        <h2 style="text-align:center">Exclusive Stay Quotation – ${hotelName}</h2>
 
         <p>Dear ${contactName},</p>
-        <p>We are pleased to share the quotation for your stay at Ashoka's Tiger Trail Resort, a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids' zone, and restaurant.</p>
+        ${centralConfig.quotationTopCover}
 
         <table>
             <tr>
@@ -130,20 +129,20 @@
             </#list>
               <tr>
                   <td colspan="6">&nbsp;</td>
-                  <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
-                    <td><font color="blue"><b> &#8377; ${grandTotalSum} </b></font></td>
+                  <th style="background-color: #2C3E50; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;" colspan="2">Grand Total :</th>
+                    <td style="text-align: center; font-weight: bold; color: #2C3E50; font-family: Arial, sans-serif;"> ${grandTotalSum} </b></font></td>
                </tr>
                <#if discount?number gt 0>
                <tr>
                     <td colspan="6">&nbsp;</td>
-                    <th style="background-color: #1E90FF; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;" colspan="2"> Discount :</th>
-                    <td>&#8377; ${discount} </td>
+                    <th style="background-color: #2C3E50; color: white; padding: 10px; text-align: center; border: 1px solid #ddd;" colspan="2"> Discount :</th>
+                    <td style="text-align: center; color: #E74C3C; font-weight: bold; font-family: Arial, sans-serif;">- ${discount} </td>
                </tr>
 
                <tr>
                    <td colspan="6">&nbsp;</td>
-                  <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
-                   <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${finalPrice}</span></td>
+                  <th style="background-color: #2C3E50; color: white; padding: 12px; text-align: center; border: 1px solid #ddd;" colspan="2">Final Price :</th>
+                   <td style="text-align: center; font-size: 20px; font-weight: bold; color: #27AE60; font-family: Arial, sans-serif;"> <span id="finalPrice"> ${finalPrice}</span></td>
                </tr>
                </#if>
         </table>
@@ -159,37 +158,24 @@
             <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
         </p>
 
-         <h2 style="font-weight: bold; margin-top: 20px;">Your Stay Includes</h2>
-            <ul style="color: #333; line-height: 1.6;">
-              <li>Stay in a well-appointed room with modern amenities</li>
-              <li>Meal plan as per your selected package</li>
-              <li>Evening high tea with snacks</li>
-              <li>Access to the swimming pool</li>
-              <li>Travel desk assistance for jungle safari (charges apply)</li>
-            </ul>
+        ${centralConfig.inclusions}
 
-        <h3>Terms & Conditions:</h3>
-        <ul>
-            <li>50% advance payment is required to confirm the booking.</li>
-            <li>Booking is refundable if canceled 7 days before check-in; non-refundable thereafter.</li>
-            <li>Cancellation policy varies for packages, groups, and special events. Please confirm before booking.</li>
-            <li>Prices are inclusive of GST and all applicable taxes.</li>
-            <li>Additional extras (e.g., activities, transport) can be arranged at an extra cost.</li>
-        </ul>
+        ${centralConfig.tnc}
+
         <hr/>
         <h3>Payment Details:</h3>
-        <p><strong>Bank Name:</strong> Yes Bank</p>
-        <p><strong>Account Name:</strong> VISTALUX</p>
-        <p><strong>Account Number:</strong> 1058-2690-0000-144</p>
-        <p><strong>IFSC Code:</strong> YESB0001058</p>
-        <p><strong>Branch Name:</strong> Vishvas Nagar</p>
+        <p><strong>Bank Name:</strong> ${centralConfig.bankName}</p>
+        <p><strong>Account Name:</strong> ${centralConfig.accountName}</p>
+        <p><strong>Account Number:</strong> ${centralConfig.accountNumber} </p>
+        <p><strong>IFSC Code:</strong> ${centralConfig.ifscCode}</p>
+        <p><strong>Branch Name:</strong> ${centralConfig.branch}</p>
 
         <hr/>
         <h3>Resort Contact Details:</h3>
-        <p><strong>Address:</strong> Ashoka's Tiger Trail Resort, Dhela, Jim Corbett National Park</p>
-        <p><strong>Phone:</strong> +91 9090762424</p>
-        <p><strong>Email:</strong> sales@vistaluxhotel.com</p>
-        <p><strong>GST No:</strong> 05AAYFV9284F1ZB</p>
+        <p><strong>Address:</strong> ${centralConfig.hotelAddress} </p>
+        <p><strong>Phone:</strong> ${centralConfig.centralNumber} </p>
+        <p><strong>Email:</strong> ${centralConfig.centralizedEmail} </p>
+        <p><strong>GST No:</strong> ${centralConfig.gstNumber} </p>
 
         <!-- WhatsApp Chat Button -->
         <div class="whatsapp-button">
@@ -197,16 +183,45 @@
         </div>
 
         <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://www.facebook.com/AshokaTigerTrail" class="facebook" target="_blank">Facebook</a>
-            <a href="https://www.instagram.com/ashoka_tiger_trail" class="instagram" target="_blank">Instagram</a>
-            <a href="https://www.linkedin.com/company/ashokastigertrailresort/" class="linkedin" target="_blank">LinkedIn</a>
-            <a href="mailto:sales@vistaluxhotel.com" class="email">Email</a>
-            <a href="https://www.ashokastigertrail.com" class="website" target="_blank">Website</a>
+        <!-- <div class="social-links">
+            <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+            <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+            <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+            <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+            <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+            <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
         </div>
+        -->
+        <div class="social-links">
+            <#if centralConfig.facebookLink?has_content>
+                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+            </#if>
+
+            <#if centralConfig.instagramLink?has_content>
+                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+            </#if>
+
+            <#if centralConfig.linkedinLink?has_content>
+                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+            </#if>
+
+            <#if centralConfig.xLink?has_content>
+                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+            </#if>
+
+
+            <#if centralConfig.centralizedEmail?has_content>
+                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+            </#if>
+
+            <#if centralConfig.website?has_content>
+                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+            </#if>
+        </div>
+
     </div>
     <div class="footer">
-        <p>We look forward to hosting you at Ashoka Tiger Trail Resort!</p>
+        <p>We look forward to hosting you at  ${centralConfig.hotelName} !!!</p>
     </div>
 </div>
 </body>

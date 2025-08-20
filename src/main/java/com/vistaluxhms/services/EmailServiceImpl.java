@@ -2,6 +2,7 @@ package com.vistaluxhms.services;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -21,7 +22,10 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 
+import com.vistaluxhms.entity.CentralConfigEntity;
+import com.vistaluxhms.model.CentralConfigEntityDTO;
 import com.vistaluxhms.model.EmailMessageVO;
 import com.vistaluxhms.model.Mail;
 import com.vistaluxhms.util.EmailConfig;
@@ -60,11 +64,15 @@ public class EmailServiceImpl {
 	@Autowired
 	private EmailConfig emailConfig;
 
-	
+	@Autowired
+	private ServletContext servletContext;
 	/*@Autowired
     private SimpleMailMessage preConfiguredMessage;
 	*/
-	
+
+	@Autowired
+	private SettingsAndOtherServicesImpl settingService;
+
 
 	@Value("${email.client.from}")
 	private String systemEmailFrom;
@@ -206,8 +214,19 @@ public class EmailServiceImpl {
 	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 	                StandardCharsets.UTF_8.name());
 
-
-	        //If you have any inline image then following code needs to be commented and add
+			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
+			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
+			mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
+			mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
+			mail.getModel().put("website", centralConfigEntity.getWebsite());
+			mail.getModel().put("facebook", centralConfigEntity.getFacebookLink());
+			mail.getModel().put("instagram", centralConfigEntity.getInstagramLink());
+			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
+			mail.getModel().put("youtube", centralConfigEntity.getYoutubeLink());
+			mail.getModel().put("companyName", centralConfigEntity.getCompanyName());
+			//If you have any inline image then following code needs to be commented and add
 	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
 	        //image files location for ftl template is different. 
 	        /*
@@ -215,8 +234,9 @@ public class EmailServiceImpl {
 	        //System.out.println("Path isss " + fileRes.getAbsolutePath());
 	        helper.addAttachment("udanchoo.png", fileRes);
 	         */
-        
-	        Template template = freemarkerConfig.getTemplate(templateName);
+			mail.getModel().put("logoCid", "ashokaLogo");
+
+			Template template = freemarkerConfig.getTemplate(templateName);
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getTo());
@@ -244,7 +264,26 @@ public class EmailServiceImpl {
 	    
 	    
 	    public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
-	    	freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
+			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
+			mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
+			mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
+			mail.getModel().put("website", centralConfigEntity.getWebsite());
+			mail.getModel().put("facebook", centralConfigEntity.getFacebookLink());
+			mail.getModel().put("instagram", centralConfigEntity.getInstagramLink());
+			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
+			mail.getModel().put("youtube", centralConfigEntity.getYoutubeLink());
+			mail.getModel().put("hotelName", centralConfigEntity.getHotelName());
+
+			mail.getModel().put("centralConfig", centralConfigEntity);
+
+			/*mail.getModel().put("quotationTopCover", centralConfigEntity.getQuotationTopCover());
+			mail.getModel().put("inclusions", centralConfigEntity.getInclusions());
+			mail.getModel().put("tnc", centralConfigEntity.getTnc());*/
+
+			freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 	    	//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
 	    	freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
 	    	freemarkerConfig.setAPIBuiltinEnabled(true);

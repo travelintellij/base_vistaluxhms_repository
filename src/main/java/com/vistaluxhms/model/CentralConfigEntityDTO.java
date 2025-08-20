@@ -2,6 +2,8 @@ package com.vistaluxhms.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Column;
+
 public class CentralConfigEntityDTO {
     private String hotelName;
     private String hotelAddress;
@@ -28,11 +30,27 @@ public class CentralConfigEntityDTO {
     private String youtubeLink;
     private String xLink;
 
+    private String baseUrl;
+
+    private String escalationEmail;
+    private String escalationPhone;
+
+    private String website;
+
     // For logo upload
     private MultipartFile logoFile; // Optional, if you want to save it as a blob
     // OR use MultipartFile in controller for better handling
 
     private String logoPath;
+
+    private String accountName;
+    private String companyName;
+
+    private String quotationTopCover;
+    private String inclusions;
+    private String tnc;
+
+
 
     public String getHotelName() {
         return hotelName;
@@ -176,5 +194,77 @@ public class CentralConfigEntityDTO {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getEscalationEmail() {
+        return escalationEmail;
+    }
+
+    public void setEscalationEmail(String escalationEmail) {
+        this.escalationEmail = escalationEmail;
+    }
+
+    public String getEscalationPhone() {
+        return escalationPhone;
+    }
+
+    public void setEscalationPhone(String escalationPhone) {
+        this.escalationPhone = escalationPhone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getQuotationTopCover() {
+        return quotationTopCover;
+    }
+
+    public void setQuotationTopCover(String quotationTopCover) {
+        this.quotationTopCover = quotationTopCover;
+    }
+
+    public String getInclusions() {
+        return inclusions;
+    }
+
+    public void setInclusions(String inclusions) {
+        this.inclusions = inclusions;
+    }
+
+    public String getTnc() {
+        return tnc;
+    }
+
+    public void setTnc(String tnc) {
+        this.tnc = tnc;
     }
 }

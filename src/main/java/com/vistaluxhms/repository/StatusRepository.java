@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface StatusRepository extends JpaRepository<StatusEntity, Integer>, JpaSpecificationExecutor<StatusEntity> {
 
-    List<StatusEntity> findByStatusObj(String statusObj);
+    List<StatusEntity> findByStatusObjAndActive(String statusObj,boolean active);
     List<StatusEntity> findByActiveTrue();
 }

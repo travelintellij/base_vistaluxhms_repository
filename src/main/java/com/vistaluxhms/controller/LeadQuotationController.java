@@ -502,6 +502,7 @@ public class LeadQuotationController {
     }
 
     private void notifyQuotationReceiverByEmail(LeadSystemQuotationEntityDTO quotationEntityDTO, List<String> recipientEmails, String templateName) {
+
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();

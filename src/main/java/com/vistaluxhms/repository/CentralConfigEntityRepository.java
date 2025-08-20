@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CentralConfigEntityRepository extends JpaRepository<CentralConfigEntity, Integer>, JpaSpecificationExecutor<CentralConfigEntity> {
-
+    CentralConfigEntity findTopByOrderByIdAsc();
 }
