@@ -71,6 +71,7 @@ public class SettingsAndOtherServicesImpl {
 		entity.setTnc(dto.getTnc());
 		entity.setQuotationTopCover(dto.getQuotationTopCover());
 		entity.setInclusions(dto.getInclusions());
+		entity.setUsp(dto.getUsp());
 		centralConfigRepository.save(entity);
 	}
 
@@ -105,6 +106,7 @@ public class SettingsAndOtherServicesImpl {
 		dto.setTnc(entity.getTnc());
 		dto.setQuotationTopCover(entity.getQuotationTopCover());
 		dto.setInclusions(entity.getInclusions());
+		dto.setUsp(entity.getUsp());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

@@ -120,6 +120,25 @@
             resize: vertical; /* allow user to expand vertically */
         }
 
+        .responsive-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .responsive-columns fieldset {
+            min-height: 250px; /* adjust height if needed */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .responsive-columns textarea {
+            flex: 1;
+            resize: vertical; /* allow user to expand vertically */
+        }
+
+
     </style>
 </head>
 <body>
@@ -279,7 +298,7 @@
 <div class="form-container">
     <h2>Quotation Configuration</h2>
 
-    <div class="three-columns">
+    <div class="responsive-columns">
         <!-- Quotation Top Cover -->
         <fieldset>
             <legend>Quotation Top Cover</legend>
@@ -296,6 +315,10 @@
         <fieldset>
             <legend>Terms & Conditions</legend>
             <form:textarea class="input-field" path="tnc" placeholder="Enter terms and conditions" rows="12" />
+        </fieldset>
+         <fieldset>
+            <legend>USP</legend>
+            <form:textarea class="input-field" path="usp" placeholder="Enter terms and conditions" rows="12" />
         </fieldset>
     </div>
 </div>

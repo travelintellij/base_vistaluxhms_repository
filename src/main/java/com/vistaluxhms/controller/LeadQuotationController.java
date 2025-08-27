@@ -103,6 +103,9 @@ public class LeadQuotationController {
     @Autowired
     private Configuration freemarkerConfig;
 
+    @Autowired
+    private SettingsAndOtherServicesImpl settingService;
+
     @ModelAttribute("QUOTATION_OBJ")
     public QuotationEntityDTO getQuotationFromSession(HttpSession session) {
         QuotationEntityDTO quotation = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ");
@@ -371,6 +374,9 @@ public class LeadQuotationController {
     private void generateQuotationPDF(LeadSystemQuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
         // Prepare data for the template
         Map<String, Object> model = new HashMap<>();
+
+        CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
         LeadSystemQuotationEntityDTO sessionQuotation = (LeadSystemQuotationEntityDTO) session.getAttribute(sessionKey);
@@ -394,6 +400,8 @@ public class LeadQuotationController {
         model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
         model.put("serviceAdvisorMobile", userObj.getMobile());
         model.put("remarks",quotationEntityDTO.getRemarks());
+
+        model.put("centralConfig", centralConfigEntity);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");

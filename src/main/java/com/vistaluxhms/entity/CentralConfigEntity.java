@@ -99,6 +99,9 @@ public class CentralConfigEntity {
     @Column(name = "tnc")
     private String tnc;
 
+    @Column(name = "usp")
+    private String usp;
+
 
     public Integer getId() {
         return id;
@@ -314,5 +317,13 @@ public class CentralConfigEntity {
 
     public void setTnc(String tnc) {
         this.tnc = tnc;
+    }
+
+    public String getUsp() {
+        return usp;
+    }
+
+    public void setUsp(String usp) {
+        this.usp = usp;
     }
 }

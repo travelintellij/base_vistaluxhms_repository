@@ -50,7 +50,7 @@ public class CentralConfigEntityDTO {
     private String inclusions;
     private String tnc;
 
-
+    private String usp;
 
     public String getHotelName() {
         return hotelName;
@@ -266,5 +266,13 @@ public class CentralConfigEntityDTO {
 
     public void setTnc(String tnc) {
         this.tnc = tnc;
+    }
+
+    public String getUsp() {
+        return usp;
+    }
+
+    public void setUsp(String usp) {
+        this.usp = usp;
     }
 }

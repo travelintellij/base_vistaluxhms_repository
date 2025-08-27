@@ -124,6 +124,8 @@ ADD COLUMN `quotationTopCover` TEXT NULL AFTER `x_link`,
 ADD COLUMN `inclusions` TEXT NULL AFTER `quotationTopCover`,
 ADD COLUMN `tnc` TEXT NULL AFTER `inclusions`;
 
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `usp` TEXT NULL AFTER `tnc`;
 
 
 ************************************************************ updated till below *****************
