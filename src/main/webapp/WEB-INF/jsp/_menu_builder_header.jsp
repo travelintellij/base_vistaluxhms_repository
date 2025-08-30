@@ -149,16 +149,13 @@
                         </ul>
                     </li>
          </sec:authorize>
-        <c:if test="${role == 'admin' || role == 'guest'}">
-             <li>
+         <li>
                  <a href="#">Quotation Management</a>
                  <ul class="submenu">
                      <li><a href="view_add_quotation_form">New System Quotation</a></li>
                      <li><a href="view_add_free_hand_quotation_form" style="color: yellow;">New Free Hand Quotation</a></li>
                  </ul>
              </li>
-         </c:if>
-
         <sec:authorize access="hasAnyRole('ADMIN','EVENT_MANAGE')">
             <li>
                 <a href="#">Event Management</a>
