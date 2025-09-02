@@ -376,6 +376,7 @@ CREATE TABLE `hotel_central_config` (
   `quotationTopCover` text,
   `inclusions` text,
   `tnc` text,
+  `usp` text,
   `centralized_email` varchar(150) DEFAULT NULL,
   `resort_gst_number` varchar(30) DEFAULT NULL,
   `last_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -389,7 +390,7 @@ CREATE TABLE `hotel_central_config` (
 
 LOCK TABLES `hotel_central_config` WRITE;
 /*!40000 ALTER TABLE `hotel_central_config` DISABLE KEYS */;
-INSERT INTO `hotel_central_config` VALUES (1,'https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png','http://ashokacrm.com','gm@gmail.com','9811462548','VISTALUX','Yes Bank','1058-2690-0000-144','YESB0001058','Vishvas Nagar','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Vistalux Resort ','Ashoka\'s Tiger Trail Resort, Dhela, Jim Corbett National Park','9090762424','www.ashokastigertrail.com','Vistalux',0,'https://www.facebook.com/AshokaTigerTrail','https://www.instagram.com/ashoka_tiger_trail/','https://www.linkedin.com/company/ashokastigertrailresort/','https://www.youtube.com/@ashokatigertrailresort','','<p>We are pleased to share the quotation for your stay at <b>Ashoka\'s Tiger Trail Resort, <i>Corbett</i></b> a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids\' zone, and restaurant.</p>',' <h2 style=\"font-weight: bold; margin-top: 20px;\">Inclusions</h2>\r\n            <ul style=\"color: #333; line-height: 1.6;\">\r\n              <li>Stay in a well-appointed room with modern amenities</li>\r\n              <li>Meal plan as per your selected package</li>\r\n              <li>Evening high tea with snacks</li>\r\n              <li>Access to the swimming pool</li>\r\n              <li>Travel desk assistance for jungle safari (charges apply)</li>\r\n            </ul>','<h2 style=\"font-weight: bold; margin-top: 20px;\">Terms and Conditions</h2>\r\n        <ul>\r\n            <li>50% advance payment is required to confirm the booking.</li>\r\n            <li>Booking is refundable if canceled 7 days before check-in; non-refundable thereafter.</li>\r\n            <li>Cancellation policy varies for packages, groups, and special events. Please confirm before booking.</li>\r\n            <li>Prices are inclusive of GST and all applicable taxes.</li>\r\n            <li>Additional extras (e.g., activities, transport) can be arranged at an extra cost.</li>\r\n        </ul>','sales@vistaluxhotel.com','05AAYFV9284F1ZB','2025-08-20 14:41:10');
+INSERT INTO `hotel_central_config` VALUES (1,'https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png','http://ashokacrm.com','gm@gmail.com','9811462548','VISTALUX','Yes Bank','1058-2690-0000-144','YESB0001058','Vishvas Nagar','sushil@udanchoo.com,sushil@digitalintellij.com, sushil@vistaluxhotel.com','Vistalux Resort ','Ashoka\'s Tiger Trail Resort, Dhela, Jim Corbett National Park','9090762424','www.ashokastigertrail.com','Vistalux',0,'https://www.facebook.com/AshokaTigerTrail','https://www.instagram.com/ashoka_tiger_trail/','https://www.linkedin.com/company/ashokastigertrailresort/','https://www.youtube.com/@ashokatigertrailresort','','<p>We are pleased to share the quotation for your stay at <b>Ashoka\'s Tiger Trail Resort, <i>Corbett</i></b> a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids\' zone, and restaurant.</p>',' <h2 style=\"font-weight: bold; margin-top: 20px;\">Inclusions</h2>\r\n            <ul style=\"color: #333; line-height: 1.6;\">\r\n              <li>Stay in a well-appointed room with modern amenities</li>\r\n              <li>Meal plan as per your selected package</li>\r\n              <li>Evening high tea with snacks</li>\r\n              <li>Access to the swimming pool</li>\r\n              <li>Travel desk assistance for jungle safari (charges apply)</li>\r\n            </ul>','<h2 style=\"font-weight: bold; margin-top: 20px;\">Terms and Conditions</h2>\r\n        <ul>\r\n            <li>50% advance payment is required to confirm the booking.</li>\r\n            <li>Booking is refundable if canceled 7 days before check-in; non-refundable thereafter.</li>\r\n            <li>Cancellation policy varies for packages, groups, and special events. Please confirm before booking.</li>\r\n            <li>Prices are inclusive of GST and all applicable taxes.</li>\r\n            <li>Additional extras (e.g., activities, transport) can be arranged at an extra cost.</li>\r\n        </ul>','<h2>Why Choose Us?</h2>\r\n    <ul>\r\n        <ul>\r\n            <li><b><span style=\"color: green;\">Prime Location:</span></b> Nestled in Dehala, our resort offers seamless access to Corbett’s wildlife and nature experiences.</li>\r\n            <li><b><span style=\"color: green;\">Gourmet Dining:</span></b> Enjoy a delightful culinary journey with our exclusive chef’s specialties at our multi-cuisine restaurant.</li>\r\n            <li><b><span style=\"color: green;\">Luxury Stay Options:</span></b> Choose from our Deluxe rooms or cozy cottages, designed for comfort and an immersive nature experience.</li>\r\n            <li><b><span style=\"color: green;\">Exclusive Experiences:</span></b> Make the most of your stay with nature walks, bonfire nights, and thrilling adventure activities.</li>\r\n            <li><b><span style=\"color: green;\">Eco-Friendly and Sustainable:</span></b> We believe in responsible tourism, ensuring a sustainable and green retreat for our guests.</li>\r\n        </ul>\r\n    </ul>','sales@vistaluxhotel.com','05AAYFV9284F1ZB','2025-08-27 12:56:19');
 /*!40000 ALTER TABLE `hotel_central_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,7 +533,7 @@ CREATE TABLE `lead_system_quotation` (
   KEY `fk_client_sq` (`clientId`),
   CONSTRAINT `fk_client_sq` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead` FOREIGN KEY (`leadId`) REFERENCES `lead_master` (`leadId`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -541,7 +542,7 @@ CREATE TABLE `lead_system_quotation` (
 
 LOCK TABLES `lead_system_quotation` WRITE;
 /*!40000 ALTER TABLE `lead_system_quotation` DISABLE KEYS */;
-INSERT INTO `lead_system_quotation` VALUES (21,61,1,15,12495,0,'','2025-08-20 14:18:22','2025-08-20 14:19:11');
+INSERT INTO `lead_system_quotation` VALUES (21,61,1,15,12495,0,'','2025-08-20 14:18:22','2025-08-20 14:19:11'),(22,61,2,15,36278,278,'','2025-08-30 09:11:23','2025-08-30 09:11:23');
 /*!40000 ALTER TABLE `lead_system_quotation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -573,7 +574,7 @@ CREATE TABLE `lead_system_quotation_room_details` (
   KEY `fk_room_category` (`roomCategoryId`),
   CONSTRAINT `fk_lsqid` FOREIGN KEY (`lsqid`) REFERENCES `lead_system_quotation` (`lsqid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_room_category` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -582,7 +583,7 @@ CREATE TABLE `lead_system_quotation_room_details` (
 
 LOCK TABLES `lead_system_quotation_room_details` WRITE;
 /*!40000 ALTER TABLE `lead_system_quotation_room_details` DISABLE KEYS */;
-INSERT INTO `lead_system_quotation_room_details` VALUES (66,21,4,1,2,0,0,0,'2025-08-25','2025-08-28',12495,0,0,0,12495);
+INSERT INTO `lead_system_quotation_room_details` VALUES (66,21,4,1,2,0,0,0,'2025-08-25','2025-08-28',12495,0,0,0,12495),(67,22,6,4,2,0,0,0,'2025-08-31','2025-09-04',27948,0,0,0,27948),(68,22,4,1,2,0,0,0,'2025-09-04','2025-09-06',8330,0,0,0,8330);
 /*!40000 ALTER TABLE `lead_system_quotation_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1089,4 +1090,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-20 20:27:09
+-- Dump completed on 2025-09-02 15:29:30

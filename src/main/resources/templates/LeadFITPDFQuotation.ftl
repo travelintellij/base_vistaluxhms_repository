@@ -121,11 +121,6 @@
                  break-before: avoid;
                  break-after: auto;
              }
-             .rover {
-                 page-break-inside: avoid; /* keep heading + first part together */
-             }
-
-
 
     </style>
 </head>
