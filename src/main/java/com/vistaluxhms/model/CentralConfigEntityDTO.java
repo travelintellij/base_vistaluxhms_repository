@@ -52,6 +52,8 @@ public class CentralConfigEntityDTO {
 
     private String usp;
 
+    private String hotelInfo;
+
     public String getHotelName() {
         return hotelName;
     }
@@ -274,5 +276,13 @@ public class CentralConfigEntityDTO {
 
     public void setUsp(String usp) {
         this.usp = usp;
+    }
+
+    public String getHotelInfo() {
+        return hotelInfo;
+    }
+
+    public void setHotelInfo(String hotelInfo) {
+        this.hotelInfo = hotelInfo;
     }
 }

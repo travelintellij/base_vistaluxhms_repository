@@ -72,6 +72,7 @@ public class SettingsAndOtherServicesImpl {
 		entity.setQuotationTopCover(dto.getQuotationTopCover());
 		entity.setInclusions(dto.getInclusions());
 		entity.setUsp(dto.getUsp());
+		entity.setHotelInfo(dto.getHotelInfo());
 		centralConfigRepository.save(entity);
 	}
 
@@ -107,6 +108,7 @@ public class SettingsAndOtherServicesImpl {
 		dto.setQuotationTopCover(entity.getQuotationTopCover());
 		dto.setInclusions(entity.getInclusions());
 		dto.setUsp(entity.getUsp());
+		dto.setHotelInfo(entity.getHotelInfo());
 		//dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

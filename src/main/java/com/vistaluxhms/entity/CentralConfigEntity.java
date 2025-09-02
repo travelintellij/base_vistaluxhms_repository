@@ -102,6 +102,10 @@ public class CentralConfigEntity {
     @Column(name = "usp")
     private String usp;
 
+    @Column(name = "hotelInfo")
+    private String hotelInfo;
+
+
 
     public Integer getId() {
         return id;
@@ -325,5 +329,13 @@ public class CentralConfigEntity {
 
     public void setUsp(String usp) {
         this.usp = usp;
+    }
+
+    public String getHotelInfo() {
+        return hotelInfo;
+    }
+
+    public void setHotelInfo(String hotelInfo) {
+        this.hotelInfo = hotelInfo;
     }
 }

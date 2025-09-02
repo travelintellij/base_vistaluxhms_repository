@@ -318,8 +318,13 @@
         </fieldset>
          <fieldset>
             <legend>USP</legend>
-            <form:textarea class="input-field" path="usp" placeholder="Enter terms and conditions" rows="12" />
+            <form:textarea class="input-field" path="usp" placeholder="Enter USP" rows="12" />
         </fieldset>
+         <fieldset>
+            <legend>Hotel Information</legend>
+            <form:textarea class="input-field" path="hotelInfo" placeholder="Enter Hotel Info" rows="12" />
+        </fieldset>
+
     </div>
 </div>
 

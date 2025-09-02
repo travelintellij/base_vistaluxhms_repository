@@ -128,6 +128,10 @@ ALTER TABLE `ashokadb`.`hotel_central_config`
 ADD COLUMN `usp` TEXT NULL AFTER `tnc`;
 
 
+ALTER TABLE `ashokadb`.`hotel_central_config`
+ADD COLUMN `hotelInfo` TEXT NULL AFTER `hotel_name`;
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,

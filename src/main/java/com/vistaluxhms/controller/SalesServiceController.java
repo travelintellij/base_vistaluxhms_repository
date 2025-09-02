@@ -70,6 +70,10 @@ public class SalesServiceController {
     @Autowired
     private Configuration freemarkerConfig;
 
+    @Autowired
+    private SettingsAndOtherServicesImpl settingService;
+
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -731,8 +735,12 @@ public class SalesServiceController {
     public void download_salesparter_rate(@RequestParam(value = "rateSessionMappingIds", required = false) List<Integer> rateSessionMappingIds,@ModelAttribute("SALES_PARTNER_OBJ") SalesPartnerEntityDto salesPartnerEntityDto, HttpServletResponse response) throws TemplateException, IOException {
 
         UserDetailsObj userObj = getLoggedInUser();
+        CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+
         SalesPartnerEntity entity = salesService.findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(entity);
+
+
 
         List<Map<String, Object>> sessionDetailsList = getSessionDetailsList(rateSessionMappingIds);
         //SessionRateMapHelperDTO sessionRateMapHelperDTO = getSessionDetailsList(rateSessionMappingIds);
@@ -796,6 +804,8 @@ public class SalesServiceController {
             freemarkerFriendlyMealMap.put(String.valueOf(entry.getKey()), entry.getValue());
         }
         model.put("mealPlanNames", freemarkerFriendlyMealMap);
+        model.put("centralConfig", centralConfigEntity);
+
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
         //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
