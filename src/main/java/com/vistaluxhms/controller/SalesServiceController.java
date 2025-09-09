@@ -805,6 +805,7 @@ public class SalesServiceController {
         }
         model.put("mealPlanNames", freemarkerFriendlyMealMap);
         model.put("centralConfig", centralConfigEntity);
+        model.put("serviceAdvisorMobile", userObj.getMobile());
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
