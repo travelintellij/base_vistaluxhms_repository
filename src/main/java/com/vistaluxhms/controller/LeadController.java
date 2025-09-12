@@ -404,7 +404,7 @@ public class LeadController {
             });
             leadService.saveLead(leadEntity);
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
-            modelView.setViewName("redirect:view_filter_leads?leadId="+leadEntity.getLeadId());
+            modelView.setViewName("redirect:view_filter_leads");
             if(orgLeadOwner!=newLeadOwner) {
                 notifyLeadCreationTargetAudience(leadRecorderObj,"LeadAssignmentConfirmation.ftl",false,false);
             }
