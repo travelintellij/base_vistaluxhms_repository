@@ -90,18 +90,14 @@
 <body>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
-        <img
-                src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png"
-                alt="Ashoka's Tiger Trail Resort"
-                width="200" height="200"
-                style="display: block; margin: 0 auto; width: 200px; height: 200px;"
-        />
+        <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka's Tiger Trail Resort" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />-->
+        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
     </div>
     <div class="content">
-        <h2 style="text-align:center">Exclusive Stay Quotation – Ashoka Tiger Trail Resort, Corbett</h2>
+        <h2 style="text-align:center">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
 
         <p>Dear ${contactName},</p>
-        <p>We are pleased to share the quotation for your stay at Ashoka's Tiger Trail Resort, a perfect destination for weddings, corporate events, and leisure retreats. Nestled in the serene village of Dhela, our resort offers a British-era themed experience with 43 elegantly designed rooms, a swimming pool, spa, kids' zone, and restaurant.</p>
+        ${centralConfig.quotationTopCover}
 
         <table>
             <tr>
@@ -159,55 +155,71 @@
             <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
         </p>
 
-         <h2 style="font-weight: bold; margin-top: 20px;">Your Stay Includes</h2>
-            <ul style="color: #333; line-height: 1.6;">
-              <li>Stay in a well-appointed room with modern amenities</li>
-              <li>Meal plan as per your selected package</li>
-              <li>Evening high tea with snacks</li>
-              <li>Access to the swimming pool</li>
-              <li>Travel desk assistance for jungle safari (charges apply)</li>
-            </ul>
+       ${centralConfig.inclusions}
 
-        <h3>Terms & Conditions:</h3>
-        <ul>
-            <li>50% advance payment is required to confirm the booking.</li>
-            <li>Booking is refundable if canceled 7 days before check-in; non-refundable thereafter.</li>
-            <li>Cancellation policy varies for packages, groups, and special events. Please confirm before booking.</li>
-            <li>Prices are inclusive of GST and all applicable taxes.</li>
-            <li>Additional extras (e.g., activities, transport) can be arranged at an extra cost.</li>
-        </ul>
+       ${centralConfig.tnc}
         <hr/>
+
         <h3>Payment Details:</h3>
-        <p><strong>Bank Name:</strong> Yes Bank</p>
-        <p><strong>Account Name:</strong> VISTALUX</p>
-        <p><strong>Account Number:</strong> 1058-2690-0000-144</p>
-        <p><strong>IFSC Code:</strong> YESB0001058</p>
-        <p><strong>Branch Name:</strong> Vishvas Nagar</p>
+               <p><strong>Bank Name:</strong> ${centralConfig.bankName}</p>
+               <p><strong>Account Name:</strong> ${centralConfig.accountName}</p>
+               <p><strong>Account Number:</strong> ${centralConfig.accountNumber} </p>
+               <p><strong>IFSC Code:</strong> ${centralConfig.ifscCode}</p>
+               <p><strong>Branch Name:</strong> ${centralConfig.branch}</p>
 
-        <hr/>
-        <h3>Resort Contact Details:</h3>
-        <p><strong>Address:</strong> Ashoka's Tiger Trail Resort, Dhela, Jim Corbett National Park</p>
-        <p><strong>Phone:</strong> +91 9090762424</p>
-        <p><strong>Email:</strong> sales@vistaluxhotel.com</p>
-        <p><strong>GST No:</strong> 05AAYFV9284F1ZB</p>
+               <hr/>
+               <h3>Resort Contact Details:</h3>
+               <p><strong>Address:</strong> ${centralConfig.hotelAddress} </p>
+               <p><strong>Phone:</strong> ${centralConfig.centralNumber} </p>
+               <p><strong>Email:</strong> ${centralConfig.centralizedEmail} </p>
+               <p><strong>GST No:</strong> ${centralConfig.gstNumber} </p>
 
-        <!-- WhatsApp Chat Button -->
-        <div class="whatsapp-button">
-            <a href="https://wa.me/${serviceAdvisorMobile}" target="_blank">Chat on WhatsApp</a>
-        </div>
+               <!-- WhatsApp Chat Button -->
+               <div class="whatsapp-button">
+                   <a href="https://wa.me/${serviceAdvisorMobile}" target="_blank">Chat on WhatsApp</a>
+               </div>
 
-        <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://www.facebook.com/AshokaTigerTrail" class="facebook" target="_blank">Facebook</a>
-            <a href="https://www.instagram.com/ashoka_tiger_trail" class="instagram" target="_blank">Instagram</a>
-            <a href="https://www.linkedin.com/company/ashokastigertrailresort/" class="linkedin" target="_blank">LinkedIn</a>
-            <a href="mailto:sales@vistaluxhotel.com" class="email">Email</a>
-            <a href="https://www.ashokastigertrail.com" class="website" target="_blank">Website</a>
-        </div>
-    </div>
-    <div class="footer">
-        <p>We look forward to hosting you at Ashoka Tiger Trail Resort!</p>
-    </div>
+               <!-- Social Media Links -->
+               <!-- <div class="social-links">
+                   <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+                   <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+                   <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+                   <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+                   <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+                   <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+               </div>
+               -->
+               <div class="social-links">
+                   <#if centralConfig.facebookLink?has_content>
+                       <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+                   </#if>
+
+                   <#if centralConfig.instagramLink?has_content>
+                       <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+                   </#if>
+
+                   <#if centralConfig.linkedinLink?has_content>
+                       <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+                   </#if>
+
+                   <#if centralConfig.xLink?has_content>
+                       <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+                   </#if>
+
+
+                   <#if centralConfig.centralizedEmail?has_content>
+                       <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+                   </#if>
+
+                   <#if centralConfig.website?has_content>
+                       <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+                   </#if>
+               </div>
+
+           </div>
+           <div class="footer">
+               <p>We look forward to hosting you at  ${centralConfig.hotelName} !!!</p>
+           </div>
 </div>
 </body>
 </html>

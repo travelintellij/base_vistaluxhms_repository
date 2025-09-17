@@ -202,8 +202,9 @@ public class EmailServiceImpl {
 	    	*/
 	    }
 	    
-	    
-	    public void sendEmailMessageUsingTemplate(Mail mail, String templateName) throws MessagingException, IOException, TemplateException {
+
+	    @Async
+		public void sendEmailMessageUsingTemplate(Mail mail, String templateName) throws MessagingException, IOException, TemplateException {
 	    	freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 	    	//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
 	    	freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
@@ -263,7 +264,8 @@ public class EmailServiceImpl {
 	    }
 	    
 	    
-	    public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
+	    @Async
+		public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
 			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
 			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
