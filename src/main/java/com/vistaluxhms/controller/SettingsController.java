@@ -225,5 +225,11 @@ public class SettingsController {
         return "redirect:view_form_manage_central_config";
     }
 
+    @RequestMapping("view_form_manage_event_forms")
+    public ModelAndView view_form_manage_event_forms(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
+        ModelAndView modelView = new ModelAndView("admin/settings/view_event_manage_forms");
+        return modelView;
+    }
+
 
 }

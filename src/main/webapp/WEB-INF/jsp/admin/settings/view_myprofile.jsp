@@ -67,6 +67,9 @@
             <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
                 <a href="view_form_manage_central_config" target="contentFrame">Central Config</a>
             </sec:authorize>
+            <sec:authorize access="hasAnyRole('ADMIN')">
+                <a href="view_form_manage_event_forms" target="contentFrame">Event Config</a>
+            </sec:authorize>
         </div>
 
         <!-- Right Content -->
