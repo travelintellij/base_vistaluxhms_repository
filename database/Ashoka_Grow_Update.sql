@@ -132,6 +132,33 @@ ALTER TABLE `ashokadb`.`hotel_central_config`
 ADD COLUMN `hotelInfo` TEXT NULL AFTER `hotel_name`;
 
 
+-- event details table (contains banner blob + text fields)
+CREATE TABLE event_details (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  event_type VARCHAR(50) NOT NULL UNIQUE,        -- 'WEDDING' or 'GROUP_EVENT'
+  banner_image LONGBLOB,
+  banner_mime_type VARCHAR(100),
+  resort_info TEXT,
+  celebration_highlight TEXT,
+  testimonial TEXT,
+  terms_conditions TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- gallery images table (up to 6 per event; image_index 1..6)
+CREATE TABLE event_images (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  event_id BIGINT NOT NULL,
+  image_index INT NOT NULL,                      -- 1..6
+  image_data LONGBLOB,
+  mime_type VARCHAR(100),
+  uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES event_details(id) ON DELETE CASCADE,
+  CONSTRAINT uniq_event_image UNIQUE (event_id, image_index)
+);
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,

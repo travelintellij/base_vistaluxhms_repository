@@ -4,6 +4,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<div class="image-upload-group">
+  <c:forEach var="i" begin="1" end="6" varStatus="loop">
+      <div class="image-slot">
+          <c:choose>
+              <c:when test="${not empty event.galleryImageDataUrls[loop.index]}">
+                  <img id="preview${i}" src="${event.galleryImageDataUrls[loop.index]}" alt="Image ${i}" />
+              </c:when>
+              <c:otherwise>
+                  <img id="preview${i}" src="" alt="No Image" />
+              </c:otherwise>
+          </c:choose>
+
+          <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+      </div>
+  </c:forEach>
+</div>
+
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -98,61 +116,60 @@
 <body>
   <!-- Tabs -->
   <div class="tabs">
-    <div class="tab active" onclick="switchForm(1)">Form 1</div>
-    <div class="tab" onclick="switchForm(2)">Form 2</div>
+    <div class="tab active" onclick="switchForm(1)">Wedding Configuration</div>
+    <div class="tab" onclick="switchForm(2)">Other Group Configuration</div>
   </div>
 
   <!-- Form 1 -->
-  <div id="form1" class="form-container active">
-    <form>
-      <h3>Form 1</h3>
+  <div id="form1" class="form-container active"  background-color: lightblue;>
+ <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-      <label>Banner Image</label>
-      <input type="file" name="banner1" accept="image/*" onchange="previewImage(this)">
-      <div class="image-slot"><img id="preview-banner1" src="" alt="No Image"></div>
+ <form:form method="post" modelAttribute="eventForm"  action="view_form_save_event_config_forms" enctype="multipart/form-data">
+     <h3>Wedding Event Form</h3>
+      <input type="hidden" name="eventType" value="wedding"/>
+     <!-- Banner Image -->
+     <label for="bannerImage">Banner Image</label>
+     <form:input path="bannerImage" type="file" accept="image/*" onchange="previewImage(this)" />
+     <div class="image-slot">
+        <img id="preview-banner1" src="${eventForm.bannerImageBase64}" alt="No Image">
+     </div>
 
-      <label>Upload up to 6 Images</label>
-      <div class="image-upload-group">
-        <div class="image-slot">
-          <img id="preview1-1" src="" alt="No Image">
-          <input type="file" name="image1-1" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview1-2" src="" alt="No Image">
-          <input type="file" name="image1-2" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview1-3" src="" alt="No Image">
-          <input type="file" name="image1-3" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview1-4" src="" alt="No Image">
-          <input type="file" name="image1-4" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview1-5" src="" alt="No Image">
-          <input type="file" name="image1-5" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview1-6" src="" alt="No Image">
-          <input type="file" name="image1-6" accept="image/*" onchange="previewImage(this)">
-        </div>
-      </div>
+     <!-- Gallery Images -->
+     <label>Upload up to 6 Images</label>
+<div class="image-upload-group">
+   <c:forEach var="i" begin="1" end="6">
+       <div class="image-slot">
+           <c:choose>
+               <c:when test="${not empty event.galleryMap[fn:toString(i)]}">
+                   <img id="preview${i}" src="${event.galleryMap[fn:toString(i)]}" alt="Image ${i}" />
+               </c:when>
+               <c:otherwise>
+                   <img id="preview${i}" src="" alt="No Image" />
+               </c:otherwise>
+           </c:choose>
+           <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+       </div>
+   </c:forEach>
+</div>
 
-      <label>Event Resort Information</label>
-      <textarea rows="4"></textarea>
 
-      <label>Celebration Highlights</label>
-      <textarea rows="3"></textarea>
+     <!-- Text Fields -->
+     <label for="resortInfo">Event Resort Information</label>
+     <form:textarea path="resortInfo" rows="4" cssClass="form-control"/>
 
-      <label>Testimonial Section</label>
-      <textarea rows="3"></textarea>
+     <label for="celebrationHighlight">Celebration Highlights</label>
+     <form:textarea path="celebrationHighlight" rows="3" cssClass="form-control"/>
 
-      <label>Terms and Conditions</label>
-      <textarea rows="3"></textarea>
+     <label for="testimonial">Testimonial Section</label>
+     <form:textarea path="testimonial" rows="3" cssClass="form-control"/>
 
-      <button type="submit" class="submit-btn">Submit Form 1</button>
-    </form>
+     <label for="termsConditions">Terms and Conditions</label>
+     <form:textarea path="termsConditions" rows="3" cssClass="form-control"/>
+
+     <!-- Submit -->
+     <button type="submit" class="submit-btn">Submit Wedding Event</button>
+ </form:form>
+
   </div>
 
   <!-- Form 2 -->
@@ -217,6 +234,7 @@
       document.getElementById('form' + formNumber).classList.add('active');
     }
 
+/*
     function previewImage(input) {
       const file = input.files[0];
       if (file) {
@@ -227,6 +245,24 @@
         }
         reader.readAsDataURL(file);
       }
+    }
+    */
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                // Case 1: Banner
+                if (input.name === 'bannerImage') {
+                    document.getElementById('preview-banner1').src = e.target.result;
+                }
+                // Case 2: Gallery images (image1..image6)
+                else if (input.name.startsWith("image")) {
+                    let index = input.name.replace("image", ""); // e.g. "image3" → "3"
+                    document.getElementById("preview" + index).src = e.target.result;
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
   </script>
 </body>
