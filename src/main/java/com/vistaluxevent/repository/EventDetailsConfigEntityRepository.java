@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface EventDetailsConfigEntityRepository extends JpaRepository<EventDetailsConfigEntity, Long> {
     Optional<EventDetailsConfigEntity> findByEventType(EventType eventType);
-    List<EventImageConfigEntity> findByEventDetailsConfigEntityOrderByImageIndex(EventDetailsConfigEntity eventDetails);
+    //List<EventImageConfigEntity> findByEventDetailsConfigEntityOrderByImageIndex(EventDetailsConfigEntity eventDetails);
 
 }

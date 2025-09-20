@@ -4,24 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-<div class="image-upload-group">
-  <c:forEach var="i" begin="1" end="6" varStatus="loop">
-      <div class="image-slot">
-          <c:choose>
-              <c:when test="${not empty event.galleryImageDataUrls[loop.index]}">
-                  <img id="preview${i}" src="${event.galleryImageDataUrls[loop.index]}" alt="Image ${i}" />
-              </c:when>
-              <c:otherwise>
-                  <img id="preview${i}" src="" alt="No Image" />
-              </c:otherwise>
-          </c:choose>
-
-          <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
-      </div>
-  </c:forEach>
-</div>
-
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -135,22 +117,23 @@
      </div>
 
      <!-- Gallery Images -->
-     <label>Upload up to 6 Images</label>
-<div class="image-upload-group">
-   <c:forEach var="i" begin="1" end="6">
-       <div class="image-slot">
-           <c:choose>
-               <c:when test="${not empty event.galleryMap[fn:toString(i)]}">
-                   <img id="preview${i}" src="${event.galleryMap[fn:toString(i)]}" alt="Image ${i}" />
-               </c:when>
-               <c:otherwise>
-                   <img id="preview${i}" src="" alt="No Image" />
-               </c:otherwise>
-           </c:choose>
-           <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
-       </div>
-   </c:forEach>
-</div>
+     <label>Upload up to 6 Images man</label>
+ <div class="image-upload-group">
+    <c:forEach var="i" begin="1" end="6">
+        <div class="image-slot">
+            <c:choose>
+                <c:when test="${not empty eventForm.galleryImageDataUrls[i-1]}">
+                    <img id="preview${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
+                </c:when>
+                <c:otherwise>
+                    <img id="preview${i}" src="" alt="No Image" />
+                </c:otherwise>
+            </c:choose>
+            <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+        </div>
+    </c:forEach>
+ </div>
+
 
 
      <!-- Text Fields -->

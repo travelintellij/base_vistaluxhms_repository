@@ -189,6 +189,8 @@ public class EventConfigServicesImpl {
 		 */
 		List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(entity);
 
+		System.out.println("Images Size of url is " + images.size());
+
 		List<String> gallery = new ArrayList<>(Collections.nCopies(6, null));
 		for (EventImageConfigEntity img : images) {
 			int idx = img.getImageIndex();
