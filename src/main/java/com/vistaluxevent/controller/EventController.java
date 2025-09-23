@@ -2,18 +2,17 @@ package com.vistaluxevent.controller;
 
 import com.lowagie.text.DocumentException;
 import com.vistaluxevent.entity.*;
+import com.vistaluxevent.model.EventDetailsConfigDTO;
 import com.vistaluxevent.model.EventMasterServiceDTO;
 import com.vistaluxevent.model.EventPackageEntityDTO;
 import com.vistaluxevent.model.FilterEventObj;
+import com.vistaluxevent.services.EventConfigServicesImpl;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.model.*;
-import com.vistaluxhms.services.ClientServicesImpl;
-import com.vistaluxhms.services.EmailServiceImpl;
-import com.vistaluxhms.services.UserDetailsServiceImpl;
-import com.vistaluxhms.services.VlxCommonServicesImpl;
+import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
 import freemarker.core.Configurable;
 import freemarker.template.Configuration;
@@ -73,6 +72,12 @@ public class EventController {
 
 	@Autowired
 	EmailServiceImpl emailService;
+
+	@Autowired
+	private SettingsAndOtherServicesImpl settingService;
+
+	@Autowired
+	private EventConfigServicesImpl eventConfigService;
 
 	//@Autowired
 	//EmailServiceImpl emailService;
@@ -695,6 +700,9 @@ public class EventController {
 
 	private void generateEventQuotationPDF(EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
 		// Prepare data for the template
+		CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+		EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails("wedding");
+
 		Map<String, Object> model = new HashMap<>();
 		UserDetailsObj userObj = getLoggedInUser();
 		model.put("guestName", eventPackageEntityDTO.getGuestName());
@@ -709,6 +717,9 @@ public class EventController {
 		model.put("discount", eventPackageEntityDTO.getDiscount());
 		model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 		model.put("remarks", eventPackageEntityDTO.getDescription());
+		model.put("centralConfig", centralConfigEntity);
+		model.put("eventConfig", eventDetailsConfigDTO);
+
 
 		List<Map<String, Object>> serviceList = new ArrayList<>();
 

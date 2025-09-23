@@ -158,10 +158,10 @@
 
 <div class="top-bar">
     <div class="logo">
-        <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />
+        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
     </div>
     <div class="address">
-        <p>Ashoka's Tiger Trail Resort | Corbett, Uttarakhand<br/>9090762424 | sales@vistaluxhotel.com </p>
+        <p>Ashoka's Tiger Trail Resort Logo| Corbett, Uttarakhand<br/>9090762424 | sales@vistaluxhotel.com </p>
     </div>
 </div>
 
