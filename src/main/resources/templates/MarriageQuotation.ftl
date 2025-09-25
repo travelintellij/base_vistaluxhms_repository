@@ -71,13 +71,16 @@
         }
 
         .photo-collage img {
-            width: 180px;
-            height: 120px;
-            object-fit: cover;
+            width: 180px;        /* fixed width */
+            height: 120px;       /* fixed height */
+            object-fit: cover;   /* maintains aspect ratio, crops extra */
             border-radius: 8px;
             border: 2px solid #f9d2e1;
             box-shadow: 2px 2px 6px #00000020;
         }
+
+
+
 
       .service-table {
           width: 100%; /* or set a fixed width like 600px */
@@ -183,15 +186,15 @@
 </div>
 <div class="section">
     <h2>Wedding Photo Inspirations</h2>
-    <div class="photo-collage" style="display: inline-block; text-align: center;">
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/26266fa6-ab2e-3ff6-626e-a6a4c1e76a38.jpg?fit=crop&amp;w=600&amp;q=80" alt="1" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/f2bd4644-fce8-e9d3-1d47-a7810598ef6b.jpg?fit=crop&amp;w=600&amp;q=80" alt="2" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/bcf9ae95-131d-ec42-265b-5e8103c99eb6.jpg?fit=crop&amp;w=600&amp;q=80" alt="3" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/74c33475-919e-0db5-b48c-a3321a7e3a80.jpg?fit=crop&amp;w=600&amp;q=80" alt="4" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/30a30b90-c2e2-fb39-19cd-ccdee149265b.jpg?fit=crop&amp;w=600&amp;q=80" alt="5" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/20fdc30d-9c37-1f24-ee09-d06b94838c98.jpg?fit=crop&amp;w=600&amp;q=80" alt="5" />
-
+    <div class="photo-collage">
+       <#list eventConfig.galleryImageDataUrls as img>
+           <#if img?? && img?has_content>
+               <img src="${img}" alt="Quotation Image"/>
+           </#if>
+       </#list>
     </div>
+
+
     <div style="page-break-after: always;"></div>
 </div>
 

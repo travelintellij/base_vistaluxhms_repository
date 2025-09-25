@@ -93,6 +93,13 @@
     .submit-btn:hover {
       background: #218838;
     }
+
+ .image-wrapper {
+     position: relative;   /* parent for absolute positioning */
+     display: inline-block;
+ }
+
+
   </style>
 </head>
 <body>
@@ -117,13 +124,14 @@
      </div>
 
      <!-- Gallery Images -->
-     <label>Upload up to 6 Images man</label>
+     <label>Upload up to 6 Images</label>
  <div class="image-upload-group">
     <c:forEach var="i" begin="1" end="6">
         <div class="image-slot">
             <c:choose>
                 <c:when test="${not empty eventForm.galleryImageDataUrls[i-1]}">
                     <img id="preview${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
+                     <button type="button" class="delete-btn" onclick="deleteImage(${i})">&times;</button>
                 </c:when>
                 <c:otherwise>
                     <img id="preview${i}" src="" alt="No Image" />
