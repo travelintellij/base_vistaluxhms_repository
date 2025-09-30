@@ -131,7 +131,7 @@
             <c:choose>
                 <c:when test="${not empty eventForm.galleryImageDataUrls[i-1]}">
                     <img id="preview${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
-                     <button type="button" class="delete-btn" onclick="deleteImage(${i})">&times;</button>
+                     <button type="button" class="delete-btn" onclick="deleteImageById(${eventForm.galleryImageIds[i-1]}, ${i})"">&times;</button>
                 </c:when>
                 <c:otherwise>
                     <img id="preview${i}" src="" alt="No Image" />
@@ -255,6 +255,29 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+     function deleteImageById(imageId, index) {
+            if (!confirm("Are you sure you want to delete this image?")) {
+                return;
+            }
+
+            fetch('<c:url value="/event/deleteImage"/>' + '?id=' + imageId, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Clear preview and file input
+                    document.getElementById('preview' + index).src = '';
+                    document.querySelector('input[name="image' + index + '"]').value = '';
+                } else {
+                    alert('Failed to delete image.');
+                }
+            })
+            .catch(err => {
+                console.error('Error deleting image:', err);
+                alert('An error occurred while deleting the image.');
+            });
+        }
   </script>
 </body>
 </html>

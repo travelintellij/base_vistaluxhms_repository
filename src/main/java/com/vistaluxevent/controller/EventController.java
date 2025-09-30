@@ -21,6 +21,7 @@ import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -882,6 +883,12 @@ public class EventController {
 	private boolean isValidEmail(String email) {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 		return email.matches(emailRegex);
+	}
+
+	@DeleteMapping("/event/deleteImage")
+	@ResponseBody
+	public ResponseEntity<String> deleteImageById(@RequestParam("id") Long id) {
+		return eventConfigService.deleteImageById(id);
 	}
 
 

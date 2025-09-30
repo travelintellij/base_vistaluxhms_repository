@@ -11,6 +11,7 @@ public class EventDetailsConfigDTO {
     private String bannerImageDataUrl;      // "data:image/png;base64,......" or null
     //private Map<Integer, String> galleryImageDataUrls = new HashMap<>(); // size up to 6; null or empty elements allowed
     private List galleryImageDataUrls; // size up to 6; null or empty elements allowed
+    private List galleryImageIds;
     // banner (for preview)
     private String bannerImageBase64;
 
@@ -178,5 +179,13 @@ public class EventDetailsConfigDTO {
                 ", testimonial='" + testimonial + '\'' +
                 ", termsConditions='" + termsConditions + '\'' +
                 '}';
+    }
+
+    public List getGalleryImageIds() {
+        return galleryImageIds;
+    }
+
+    public void setGalleryImageIds(List galleryImageIds) {
+        this.galleryImageIds = galleryImageIds;
     }
 }

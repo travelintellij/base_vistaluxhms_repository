@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -41,12 +42,13 @@ import java.util.stream.Collectors;
 public class EventConfigServicesImpl {
 
 	private final EventDetailsConfigEntityRepository detailsRepo;
-	private final EventImageConfigEntityRepository imageRepo;
 
+	@Autowired
+	EventImageConfigEntityRepository imageRepo;
 
 	public EventConfigServicesImpl(EventDetailsConfigEntityRepository detailsRepo, EventImageConfigEntityRepository imageRepo) {
 		this.detailsRepo = detailsRepo;
-		this.imageRepo = imageRepo;
+		//this.imageRepo = imageRepo;
 	}
 
 	@Transactional(readOnly = true)
@@ -146,13 +148,20 @@ public class EventConfigServicesImpl {
 
 	private static MultipartFile getMultipartForIndex(EventDetailsConfigDTO form, int index) {
 		switch (index) {
-			case 1: return form.getImage1();
-			case 2: return form.getImage2();
-			case 3: return form.getImage3();
-			case 4: return form.getImage4();
-			case 5: return form.getImage5();
-			case 6: return form.getImage6();
-			default: return null;
+			case 1:
+				return form.getImage1();
+			case 2:
+				return form.getImage2();
+			case 3:
+				return form.getImage3();
+			case 4:
+				return form.getImage4();
+			case 5:
+				return form.getImage5();
+			case 6:
+				return form.getImage6();
+			default:
+				return null;
 		}
 	}
 
@@ -188,6 +197,7 @@ public class EventConfigServicesImpl {
 
 		 */
 		List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(entity);
+		List<Long> imageIds = new ArrayList<>(Collections.nCopies(6, null));
 
 		System.out.println("Images Size of url is " + images.size());
 
@@ -197,10 +207,23 @@ public class EventConfigServicesImpl {
 			if (idx >= 1 && idx <= 6 && img.getImageData() != null) {
 				String mime = Optional.ofNullable(img.getMimeType()).orElse("image/jpeg");
 				gallery.set(idx - 1, "data:" + mime + ";base64," + Base64.getEncoder().encodeToString(img.getImageData()));
+				imageIds.set(idx - 1, img.getId()); // capture ID here
 			}
 		}
 		dto.setGalleryImageDataUrls(gallery);
+		dto.setGalleryImageIds(imageIds);
 
 		return dto;
 	}
+
+	public ResponseEntity<String> deleteImageById(Long id){
+		Optional<EventImageConfigEntity> imageOpt = imageRepo.findById(id);
+		if(imageOpt.isPresent()){
+			imageRepo.delete(imageOpt.get());
+			return ResponseEntity.ok("Deleted");
+		} else{
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 }
