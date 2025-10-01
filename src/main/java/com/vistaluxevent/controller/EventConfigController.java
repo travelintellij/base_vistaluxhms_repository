@@ -82,8 +82,10 @@ public class EventConfigController {
 	}
 
 	// Save/update (multipart/form-data). Only non-empty files replace existing images.
+	//@PostMapping(value = "view_form_save_event_config_forms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	//public ResponseEntity<String> saveEvent(
 	@PostMapping(value = "view_form_save_event_config_forms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<String> saveEvent(
+	public ModelAndView saveEvent(
 			@RequestParam(value = "eventType", required = true) String eventType ,
 			@RequestParam(value = "bannerImage", required = false) MultipartFile bannerImage,
 			@RequestParam(value = "image1", required = false) MultipartFile image1,
@@ -95,9 +97,9 @@ public class EventConfigController {
 			@RequestParam(value = "resortInfo", required = false) String resortInfo,
 			@RequestParam(value = "celebrationHighlight", required = false) String celebrationHighlight,
 			@RequestParam(value = "testimonial", required = false) String testimonial,
-			@RequestParam(value = "termsConditions", required = false) String termsConditions
+			@RequestParam(value = "termsConditions", required = false) String termsConditions, final RedirectAttributes redirectAttrib
 	) throws Exception {
-
+		ModelAndView modelView = new ModelAndView();
 		EventDetailsConfigDTO form = new EventDetailsConfigDTO();
 		form.setBannerImage(bannerImage);
 		form.setImage1(image1); form.setImage2(image2); form.setImage3(image3);
@@ -108,7 +110,10 @@ public class EventConfigController {
 		form.setTermsConditions(termsConditions);
 
 		eventService.saveOrUpdateEvent(eventType, form);
-		return ResponseEntity.ok("Saved");
+		redirectAttrib.addFlashAttribute("Success", "Record is updated successfully !! ");
+		modelView.setViewName("redirect:view_form_manage_event_forms?eventType=wedding");
+		return modelView;
+		//return ResponseEntity.ok("Saved");
 	}
 
 

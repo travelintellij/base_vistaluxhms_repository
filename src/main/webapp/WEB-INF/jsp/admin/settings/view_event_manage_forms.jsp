@@ -114,6 +114,11 @@
  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
  <form:form method="post" modelAttribute="eventForm"  action="view_form_save_event_config_forms" enctype="multipart/form-data">
+     <div align="center" style="margin:10px 0"><b>
+         <font color="green">${Success} </font>
+         <font color="red">${Error}</font>
+     </b></div>
+
      <h3>Wedding Event Form</h3>
       <input type="hidden" name="eventType" value="wedding"/>
      <!-- Banner Image -->

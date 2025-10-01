@@ -155,6 +155,39 @@
             color: #6a1b3f;
             font-weight: bold;
         }
+ .social-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e4405f; }
+        .linkedin { background-color: #0077b5; }
+        .email { background-color: #ff6600; }
+        .website { background-color: #000; }
+        .twitter {
+            background-color: #1DA1F2;
+        }
+        .whatsapp-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .whatsapp-button a {
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            display: inline-block;
+        }
 
     </style>
 </head>
@@ -199,56 +232,20 @@
 </div>
 
 <div class="section">
-    <h2 style="text-align: center; color: #2e6c80;">Welcome to Ashoka's Tiger Trail Resort – Corbett</h2>
+    <h2 style="text-align: center; color: #2e6c80;">Welcome to ${centralConfig.hotelName}</h2>
+${eventConfig.resortInfo}
 
-    <p style="font-size: 14px; line-height: 1.6;">
-        We are delighted to present our proposal for hosting your upcoming marriage celebration at <strong>Ashoka’s Tiger Trail Resort</strong>, nestled in the pristine wilderness of Jim Corbett National Park. Our resort, spread across lush landscapes and surrounded by nature, offers an ideal setting for a destination wedding that blends elegance with the tranquility of the forest.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        Whether you envision an intimate gathering or a grand celebration, our experienced hospitality team is committed to ensuring that every moment is seamlessly executed — from the décor to gourmet dining, from themed functions to personalized experiences.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        This proposal outlines the accommodations, event venues, services, and arrangements we would be honored to provide for your special occasion. Our aim is to offer a memorable, comfortable, and joyful experience for you and your guests.
-    </p>
-
-    <p style="font-size: 14px; line-height: 1.6;">
-        We look forward to being part of your most cherished celebration and delivering an event that is both unique and unforgettable.
-    </p>
 
     <!-- Highlights Box with Floral Background -->
     <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
         <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
-            <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Wedding Celebration Highlights</h3>
-            <ul style="margin: 0 0 0 18px; font-size: 14px; line-height: 1.6;">
-                <li>42 spacious rooms and luxury suites with modern amenities</li>
-                <li>Open-air lawns for Mehendi, Haldi, and Sangeet ceremonies</li>
-                <li>Indoor banquet hall ideal for formal functions or receptions</li>
-                <li>Scenic forest backdrops for couple photoshoots</li>
-                <li>Custom floral décor, mandap setups &amp; lighting themes</li>
-                <li>Dedicated bridal preparation suite &amp; guest hospitality desk</li>
-                <li>Live food counters, customizable veg/non-veg menus</li>
-                <li>Bonfire arrangements, wildlife safaris &amp; local experiences</li>
-            </ul>
+           ${eventConfig.celebrationHighlight}
         </div>
     </div>
 
-    <!-- Additional Testimonial -->
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        “The tranquil forest vibe added such uniqueness to our wedding. Our guests still talk about it!”<br/>
-        <strong>– Mr. Tiwari and Family, Delhi NCR</strong>
-    </div>
 
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        “Every detail was handled with care — from the decor to the food. The resort staff made us feel like royalty and our families were truly impressed.”<br/>
-        <strong>–  From a Recent Wedding Party,  Delhi NCR</strong>
-    </div>
+    ${eventConfig.testimonial}
 
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        "Organizing a destination wedding at Ashoka’s Tiger Trail Resort was an absolute delight. The resort team was proactive, professional, and handled every request with efficiency and grace. Our clients were extremely happy, and the event went off without a hitch. It’s rare to find a venue that combines natural beauty with such high standards of service."<br/>
-        <strong>–  Mr. Gopi, Corbett</strong>
-    </div>
 
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
@@ -333,19 +330,12 @@
         <#else>
             <li>GST and other applicable taxes will be charged extra.</li>
         </#if>
-        <li>Rates are subject to availability and change until confirmed.</li>
-        <li>Booking is confirmed only upon receiving advance payment.</li>
-        <li>Event decor and customizations are chargeable based on requirements.</li>
-        <li>Final guest count must be confirmed at least 10 days prior to the event.</li>
-        <li>Outdoor events are subject to weather; backup arrangements may be made if required.</li>
-        <li>Liquor services require valid permits, to be arranged separately.</li>
-        <li>External vendors are subject to resort approval.</li>
-        <li>Check-in and check-out times are as per resort policy.</li>
-        <li>The resort is not responsible for any personal loss or damage during the event.</li>
+      ${eventConfig.termsConditions}
     </ul>
     <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
 </div>
 
+<!--
 <div class="social-media" style="text-align: center; margin-top: 20px;">
     <h3>Connect With Us</h3>
     <p>
@@ -363,6 +353,33 @@
         </a>
     </p>
 </div>
+-->
+  <div class="social-links">
+            <#if centralConfig.facebookLink?has_content>
+                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+            </#if>
+
+            <#if centralConfig.instagramLink?has_content>
+                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+            </#if>
+
+            <#if centralConfig.linkedinLink?has_content>
+                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+            </#if>
+
+            <#if centralConfig.xLink?has_content>
+                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+            </#if>
+
+
+            <#if centralConfig.centralizedEmail?has_content>
+                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+            </#if>
+
+            <#if centralConfig.website?has_content>
+                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+            </#if>
+        </div>
 
 
 
