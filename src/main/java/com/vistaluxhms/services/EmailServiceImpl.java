@@ -24,6 +24,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 
+import com.vistaluxevent.model.EventDetailsConfigDTO;
+import com.vistaluxevent.services.EventConfigServicesImpl;
 import com.vistaluxhms.entity.CentralConfigEntity;
 import com.vistaluxhms.model.CentralConfigEntityDTO;
 import com.vistaluxhms.model.EmailMessageVO;
@@ -89,6 +91,8 @@ public class EmailServiceImpl {
 	@Value("${email.internal.valid}")
 	private boolean internalEmailNotifyActive;
 
+	@Autowired
+	private EventConfigServicesImpl eventConfigService;
 
 
 	/**
@@ -267,6 +271,7 @@ public class EmailServiceImpl {
 	    @Async
 		public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+			EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails("wedding");
 			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
 			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
 			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
@@ -280,6 +285,7 @@ public class EmailServiceImpl {
 			mail.getModel().put("hotelName", centralConfigEntity.getHotelName());
 
 			mail.getModel().put("centralConfig", centralConfigEntity);
+			mail.getModel().put("eventConfig", eventDetailsConfigDTO);
 
 			/*mail.getModel().put("quotationTopCover", centralConfigEntity.getQuotationTopCover());
 			mail.getModel().put("inclusions", centralConfigEntity.getInclusions());
