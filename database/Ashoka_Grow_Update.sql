@@ -159,6 +159,10 @@ CREATE TABLE event_images (
 );
 
 
+ALTER TABLE `ashokadb`.`event_images`
+ADD COLUMN `image_url` VARCHAR(500) NULL AFTER `image_data`;
+
+
 ************************************************************ updated till below *****************
 CREATE TABLE `ashokadb`.`my_claims` (
   `claimId` BIGINT NOT NULL,
