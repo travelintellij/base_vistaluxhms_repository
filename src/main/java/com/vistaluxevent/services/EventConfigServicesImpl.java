@@ -134,6 +134,19 @@ public class EventConfigServicesImpl {
 				img.setImageData(mf.getBytes());
 				img.setMimeType(Optional.ofNullable(mf.getContentType()).orElse("image/jpeg"));
 				img.setUploadedAt(LocalDateTime.now());
+				if(i==1)
+					img.setImageUrl(form.getImageUrl1());
+				else if(i==2)
+					img.setImageUrl(form.getImageUrl2());
+				else if(i==3)
+					img.setImageUrl(form.getImageUrl3());
+				else if(i==4)
+					img.setImageUrl(form.getImageUrl4());
+				else if(i==5)
+					img.setImageUrl(form.getImageUrl5());
+				else if(i==6)
+					img.setImageUrl(form.getImageUrl6());
+
 				imageRepo.save(img);
 			}
 		}

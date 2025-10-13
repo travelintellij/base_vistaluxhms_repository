@@ -85,7 +85,7 @@ public class EventConfigController {
 	//@PostMapping(value = "view_form_save_event_config_forms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	//public ResponseEntity<String> saveEvent(
 	@PostMapping(value = "view_form_save_event_config_forms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ModelAndView saveEvent(
+	/*public ModelAndView saveEvent(
 			@RequestParam(value = "eventType", required = true) String eventType ,
 			@RequestParam(value = "bannerImage", required = false) MultipartFile bannerImage,
 			@RequestParam(value = "image1", required = false) MultipartFile image1,
@@ -98,18 +98,37 @@ public class EventConfigController {
 			@RequestParam(value = "celebrationHighlight", required = false) String celebrationHighlight,
 			@RequestParam(value = "testimonial", required = false) String testimonial,
 			@RequestParam(value = "termsConditions", required = false) String termsConditions, final RedirectAttributes redirectAttrib
-	) throws Exception {
+	) throws Exception {*/
+	public ModelAndView saveEvent(EventDetailsConfigDTO eventDetailsConfigDTO,final RedirectAttributes redirectAttrib)throws Exception
+	{
 		ModelAndView modelView = new ModelAndView();
 		EventDetailsConfigDTO form = new EventDetailsConfigDTO();
-		form.setBannerImage(bannerImage);
-		form.setImage1(image1); form.setImage2(image2); form.setImage3(image3);
-		form.setImage4(image4); form.setImage5(image5); form.setImage6(image6);
-		form.setResortInfo(resortInfo);
-		form.setCelebrationHighlight(celebrationHighlight);
-		form.setTestimonial(testimonial);
-		form.setTermsConditions(termsConditions);
-
-		eventService.saveOrUpdateEvent(eventType, form);
+		//form.setBannerImage(bannerImage);
+		//form.setImage1(image1); form.setImage2(image2); form.setImage3(image3);
+		//form.setImage4(image4); form.setImage5(image5); form.setImage6(image6);
+		//form.setResortInfo(resortInfo);
+		//form.setCelebrationHighlight(celebrationHighlight);
+		//form.setTestimonial(testimonial);
+		//form.setTermsConditions(termsConditions);
+		//eventService.saveOrUpdateEvent(eventType, form);
+		form.setBannerImage(eventDetailsConfigDTO.getBannerImage());
+		form.setImage1(eventDetailsConfigDTO.getImage1());
+		form.setImage2(eventDetailsConfigDTO.getImage2());
+		form.setImage3(eventDetailsConfigDTO.getImage3());
+		form.setImage4(eventDetailsConfigDTO.getImage4());
+		form.setImage5(eventDetailsConfigDTO.getImage5());
+		form.setImage6(eventDetailsConfigDTO.getImage6());
+		form.setResortInfo(eventDetailsConfigDTO.getResortInfo());
+		form.setCelebrationHighlight(eventDetailsConfigDTO.getCelebrationHighlight());
+		form.setTestimonial(eventDetailsConfigDTO.getTestimonial());
+		form.setTermsConditions(eventDetailsConfigDTO.getTermsConditions());
+		form.setImageUrl1(eventDetailsConfigDTO.getImageUrl1());
+		form.setImageUrl2(eventDetailsConfigDTO.getImageUrl2());
+		form.setImageUrl3(eventDetailsConfigDTO.getImageUrl3());
+		form.setImageUrl4(eventDetailsConfigDTO.getImageUrl4());
+		form.setImageUrl5(eventDetailsConfigDTO.getImageUrl5());
+		form.setImageUrl6(eventDetailsConfigDTO.getImageUrl6());
+		eventService.saveOrUpdateEvent(eventDetailsConfigDTO.getEventType(), form);
 		redirectAttrib.addFlashAttribute("Success", "Record is updated successfully !! ");
 		modelView.setViewName("redirect:view_form_manage_event_forms?eventType=wedding");
 		return modelView;

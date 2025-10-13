@@ -29,6 +29,9 @@ public class EventImageConfigEntity {
     @Column(name = "mime_type")
     private String mimeType;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt = LocalDateTime.now();
 
@@ -78,5 +81,13 @@ public class EventImageConfigEntity {
 
     public void setUploadedAt(LocalDateTime uploadedAt) {
         this.uploadedAt = uploadedAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
