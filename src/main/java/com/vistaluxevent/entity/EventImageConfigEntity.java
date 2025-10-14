@@ -5,6 +5,7 @@ import com.vistaluxhms.util.EventType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 
 @Entity
@@ -89,5 +90,17 @@ public class EventImageConfigEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "EventImageConfigEntity{" +
+                "id=" + id +
+                ", eventDetails=" + eventDetails +
+                ", imageIndex=" + imageIndex +
+                ", mimeType='" + mimeType + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", uploadedAt=" + uploadedAt +
+                '}';
     }
 }

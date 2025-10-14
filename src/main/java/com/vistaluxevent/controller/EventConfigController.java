@@ -128,6 +128,8 @@ public class EventConfigController {
 		form.setImageUrl4(eventDetailsConfigDTO.getImageUrl4());
 		form.setImageUrl5(eventDetailsConfigDTO.getImageUrl5());
 		form.setImageUrl6(eventDetailsConfigDTO.getImageUrl6());
+
+
 		eventService.saveOrUpdateEvent(eventDetailsConfigDTO.getEventType(), form);
 		redirectAttrib.addFlashAttribute("Success", "Record is updated successfully !! ");
 		modelView.setViewName("redirect:view_form_manage_event_forms?eventType=wedding");

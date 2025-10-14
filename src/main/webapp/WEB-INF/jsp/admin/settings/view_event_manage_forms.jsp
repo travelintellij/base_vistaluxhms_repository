@@ -143,6 +143,7 @@
                 </c:otherwise>
             </c:choose>
             <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+            imageUrl${i}
             <form:input path="imageUrl${i}" name="imageUrl${i}"  placeholder="image${i}-url" style="width:250px;"/>
 
         </div>

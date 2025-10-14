@@ -134,20 +134,44 @@ public class EventConfigServicesImpl {
 				img.setImageData(mf.getBytes());
 				img.setMimeType(Optional.ofNullable(mf.getContentType()).orElse("image/jpeg"));
 				img.setUploadedAt(LocalDateTime.now());
-				if(i==1)
+
+
+				if(i==1 && form.getImageUrl1()!=null)
 					img.setImageUrl(form.getImageUrl1());
-				else if(i==2)
+				else if(i==2 && form.getImageUrl2()!=null)
 					img.setImageUrl(form.getImageUrl2());
-				else if(i==3)
+				else if(i==3 && form.getImageUrl3()!=null)
 					img.setImageUrl(form.getImageUrl3());
-				else if(i==4)
+				else if(i==4 && form.getImageUrl4()!=null)
 					img.setImageUrl(form.getImageUrl4());
-				else if(i==5)
+				else if(i==5 && form.getImageUrl5()!=null)
 					img.setImageUrl(form.getImageUrl5());
-				else if(i==6)
+				else if(i==6 && form.getImageUrl6()!=null)
 					img.setImageUrl(form.getImageUrl6());
 
 				imageRepo.save(img);
+			}else{
+
+				EventImageConfigEntity img = imageRepo.findByEventDetailsAndImageIndex(details, i)
+						.orElse(null);
+				if(i==1 && form.getImageUrl1()!=null)
+					img.setImageUrl(form.getImageUrl1());
+				else if(i==2 && form.getImageUrl2()!=null)
+					img.setImageUrl(form.getImageUrl2());
+				else if(i==3 && form.getImageUrl3()!=null)
+					img.setImageUrl(form.getImageUrl3());
+				else if(i==4 && form.getImageUrl4()!=null)
+					img.setImageUrl(form.getImageUrl4());
+				else if(i==5 && form.getImageUrl5()!=null)
+					img.setImageUrl(form.getImageUrl5());
+				else if(i==6 && form.getImageUrl6()!=null)
+					img.setImageUrl(form.getImageUrl6());
+
+				imageRepo.save(img);
+
+				/*for (int i = 1; i <= 6; i++) {
+
+				}*/
 			}
 		}
 	}
