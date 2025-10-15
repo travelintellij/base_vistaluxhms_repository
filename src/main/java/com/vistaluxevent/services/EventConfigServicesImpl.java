@@ -236,8 +236,6 @@ public class EventConfigServicesImpl {
 		List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(entity);
 		List<Long> imageIds = new ArrayList<>(Collections.nCopies(6, null));
 
-		System.out.println("Images Size of url is " + images.size());
-
 		List<String> gallery = new ArrayList<>(Collections.nCopies(6, null));
 		for (EventImageConfigEntity img : images) {
 			int idx = img.getImageIndex();
@@ -245,6 +243,25 @@ public class EventConfigServicesImpl {
 				String mime = Optional.ofNullable(img.getMimeType()).orElse("image/jpeg");
 				gallery.set(idx - 1, "data:" + mime + ";base64," + Base64.getEncoder().encodeToString(img.getImageData()));
 				imageIds.set(idx - 1, img.getId()); // capture ID here
+				if(idx==1){
+					dto.setImageUrl1(img.getImageUrl());
+				}
+				if(idx==2){
+					dto.setImageUrl2(img.getImageUrl());
+				}
+				if(idx==3){
+					dto.setImageUrl3(img.getImageUrl());
+				}
+				if(idx==4){
+					dto.setImageUrl4(img.getImageUrl());
+				}
+				if(idx==5){
+					dto.setImageUrl5(img.getImageUrl());
+				}
+				if(idx==6){
+					dto.setImageUrl6(img.getImageUrl());
+				}
+
 			}
 		}
 		dto.setGalleryImageDataUrls(gallery);

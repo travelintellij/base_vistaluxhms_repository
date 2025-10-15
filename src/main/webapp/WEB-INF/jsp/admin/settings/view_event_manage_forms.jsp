@@ -129,7 +129,7 @@
      </div>
 
      <!-- Gallery Images -->
-     <label>Upload up to 6 Images</label>
+     <label>Upload up to 6 Images (For PDF Quotation) </label>
  <div class="image-upload-group">
     <c:forEach var="i" begin="1" end="6">
         <div class="image-slot">
@@ -143,14 +143,13 @@
                 </c:otherwise>
             </c:choose>
             <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
-            imageUrl${i}
-            <form:input path="imageUrl${i}" name="imageUrl${i}"  placeholder="image${i}-url" style="width:250px;"/>
-
         </div>
-
-
     </c:forEach>
  </div>
+ <p><h3>Image URL is required for emails embedding.</h3></p>
+<c:forEach var="i" begin="1" end="6">
+    Image ${i} : <form:input path="imageUrl${i}" name="imageUrl${i}"  placeholder="image${i}-url" style="width:250px;"/> <br>
+</c:forEach>
 
 
 
