@@ -196,6 +196,68 @@
                 </ul>
             </li>
         </sec:authorize>
+       <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER','ASSET_ALLOWED')">
+           <li>
+               <a href="#">Asset Management</a>
+               <ul class="submenu">
+                   <li>
+                       <a href="#">Asset</a>
+                       <ul class="second-level">
+                           <!-- Add Asset only for ADMIN or ASSET_MANAGER -->
+                           <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
+                               <li><a href="${pageContext.request.contextPath}/add_asset">Add Asset</a></li>
+                           </sec:authorize>
+                           <!-- Manage Assets visible for everyone -->
+                           <li><a href="${pageContext.request.contextPath}/view_assets_list">Manage Assets</a></li>
+                       </ul>
+                   </li>
+
+
+                   <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
+                       <li>
+                           <a href="#">Category</a>
+                           <ul class="second-level">
+                               <li><a href="${pageContext.request.contextPath}/categories_add">Add Category</a></li>
+                               <li><a href="${pageContext.request.contextPath}/categories_manage">Manage Categories</a></li>
+                           </ul>
+                       </li>
+                   </sec:authorize>
+               </ul>
+           </li>
+       </sec:authorize>
+
+<sec:authorize access="hasAnyRole('ADMIN','DOCUMENT_MANAGER')">
+    <li>
+        <a href="#">Knowledge Repository</a>
+        <ul class="submenu">
+
+            <li>
+                <a href="#">Documents</a>
+                <ul class="second-level">
+                    <li><a href="${pageContext.request.contextPath}/add_document">Add Document</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="#">Category</a>
+                <ul class="second-level">
+                    <li><a href="${pageContext.request.contextPath}/add_documentcategory">Add Category</a></li>
+                    <li><a href="${pageContext.request.contextPath}/manage_documentcategories">Manage Categories</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</sec:authorize>
+       <sec:authorize access="hasRole('DOCUMENT_ALLOWED')">
+          <li>
+              <a href="#">Knowledge Repository</a>
+              <ul class="submenu">
+                  <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
+              </ul>
+          </li>
+       </sec:authorize>
 
 
         <li><a href="logout" class="logout">Logout</a></li>
