@@ -4,6 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<c:set var="eventType" value="${
+  not empty param.eventType ? param.eventType :
+  (not empty eventForm.eventType ? eventForm.eventType : 'wedding')
+}"/>
+
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -103,14 +109,25 @@
   </style>
 </head>
 <body>
+
+
+
   <!-- Tabs -->
-  <div class="tabs">
-    <div class="tab active" onclick="switchForm(1)">Wedding Configuration</div>
-    <div class="tab" onclick="switchForm(2)">Other Group Configuration</div>
-  </div>
+ <div class="tabs">
+   <a class="tab ${eventType == 'wedding' ? 'active' : ''}"
+      href="<c:url value='/view_form_manage_event_forms'><c:param name='eventType' value='wedding'/></c:url>">
+     Wedding Configuration
+   </a>
+
+   <a class="tab ${eventType == 'GROUP_EVENT' ? 'active' : ''}"
+      href="<c:url value='/view_form_manage_event_forms'><c:param name='eventType' value='GROUP_EVENT'/></c:url>">
+     Other Group Configuration
+   </a>
+ </div>
+
 
   <!-- Form 1 -->
-  <div id="form1" class="form-container active"  background-color: lightblue;>
+  <div id="form1" class="form-container ${eventType == 'wedding' ? 'active' : ''}"  background-color: lightblue;>
  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
  <form:form method="post" modelAttribute="eventForm"  action="view_form_save_event_config_forms" enctype="multipart/form-data">
@@ -173,56 +190,65 @@
   </div>
 
   <!-- Form 2 -->
-  <div id="form2" class="form-container">
-    <form>
-      <h3>Form 2</h3>
+  <div id="form2" class="form-container ${eventType == 'GROUP_EVENT' ? 'active' : ''}">
+   <form:form method="post" modelAttribute="eventForm"  action="view_form_save_event_config_forms" enctype="multipart/form-data">
+        <input type="hidden" name="eventType" value="GROUP_EVENT"/>
+        <div align="center" style="margin:10px 0"><b>
+            <font color="green">${Success} </font>
+            <font color="red">${Error}</font>
+        </b></div>
 
-      <label>Banner Image</label>
-      <input type="file" name="banner2" accept="image/*" onchange="previewImage(this)">
-      <div class="image-slot"><img id="preview-banner2" src="" alt="No Image"></div>
+        <h3>Wedding Event Form</h3>
 
-      <label>Upload up to 6 Images</label>
-      <div class="image-upload-group">
+        <!-- Banner Image -->
+        <label for="bannerImage">Banner Image</label>
+        <form:input path="bannerImage" type="file" accept="image/*" onchange="previewImage(this)" />
         <div class="image-slot">
-          <img id="preview2-1" src="" alt="No Image">
-          <input type="file" name="image2-1" accept="image/*" onchange="previewImage(this)">
+           <img id="preview-banner1" src="${eventForm.bannerImageBase64}" alt="No Image">
         </div>
-        <div class="image-slot">
-          <img id="preview2-2" src="" alt="No Image">
-          <input type="file" name="image2-2" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview2-3" src="" alt="No Image">
-          <input type="file" name="image2-3" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview2-4" src="" alt="No Image">
-          <input type="file" name="image2-4" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview2-5" src="" alt="No Image">
-          <input type="file" name="image2-5" accept="image/*" onchange="previewImage(this)">
-        </div>
-        <div class="image-slot">
-          <img id="preview2-6" src="" alt="No Image">
-          <input type="file" name="image2-6" accept="image/*" onchange="previewImage(this)">
-        </div>
-      </div>
 
-      <label>Event Resort Information</label>
-      <textarea rows="4"></textarea>
+        <!-- Gallery Images -->
+        <label>Upload up to 6 Images (For PDF Quotation) </label>
+    <div class="image-upload-group">
+       <c:forEach var="i" begin="1" end="6">
+           <div class="image-slot">
+               <c:choose>
+                   <c:when test="${not empty eventForm.galleryImageDataUrls[i-1]}">
+                       <img id="preview${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
+                        <button type="button" class="delete-btn" onclick="deleteImageById(${eventForm.galleryImageIds[i-1]}, ${i})"">&times;</button>
+                   </c:when>
+                   <c:otherwise>
+                       <img id="preview${i}" src="" alt="No Image" />
+                   </c:otherwise>
+               </c:choose>
+               <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+           </div>
+       </c:forEach>
+    </div>
+    <p><h3>Image URL is required for emails embedding.</h3></p>
+   <c:forEach var="i" begin="1" end="6">
+       Image ${i} : <form:input path="imageUrl${i}" name="imageUrl${i}"  placeholder="image${i}-url" style="width:250px;"/> <br>
+   </c:forEach>
 
-      <label>Celebration Highlights</label>
-      <textarea rows="3"></textarea>
 
-      <label>Testimonial Section</label>
-      <textarea rows="3"></textarea>
 
-      <label>Terms and Conditions</label>
-      <textarea rows="3"></textarea>
+        <!-- Text Fields -->
+        <label for="resortInfo">Event Resort Information</label>
+        <form:textarea path="resortInfo" rows="4" cssClass="form-control"/>
 
-      <button type="submit" class="submit-btn">Submit Form 2</button>
-    </form>
+        <label for="celebrationHighlight">Celebration Highlights</label>
+        <form:textarea path="celebrationHighlight" rows="3" cssClass="form-control"/>
+
+        <label for="testimonial">Testimonial Section</label>
+        <form:textarea path="testimonial" rows="3" cssClass="form-control"/>
+
+        <label for="termsConditions">Terms and Conditions</label>
+        <form:textarea path="termsConditions" rows="3" cssClass="form-control"/>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn">Submit Wedding Event</button>
+    </form:form>
+
   </div>
 
   <script>
