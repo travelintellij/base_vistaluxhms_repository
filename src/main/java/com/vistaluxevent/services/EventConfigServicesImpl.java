@@ -168,9 +168,12 @@ public class EventConfigServicesImpl {
 						img.setImageUrl(form.getImageUrl5());
 					else if (i == 6 && form.getImageUrl6() != null)
 						img.setImageUrl(form.getImageUrl6());
+
+					imageRepo.save(img);
 				}
 
-				imageRepo.save(img);
+
+
 
 				/*for (int i = 1; i <= 6; i++) {
 

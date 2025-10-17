@@ -143,6 +143,7 @@
      <form:input path="bannerImage" type="file" accept="image/*" onchange="previewImage(this)" />
      <div class="image-slot">
         <img id="preview-banner1" src="${eventForm.bannerImageBase64}" alt="No Image">
+
      </div>
 
      <!-- Gallery Images -->
@@ -202,9 +203,9 @@
 
         <!-- Banner Image -->
         <label for="bannerImage">Banner Image</label>
-        <form:input path="bannerImage" type="file" accept="image/*" onchange="previewImage(this)" />
+        <form:input path="bannerImage" type="file" accept="image/*" onchange="previewImageForm2(this)" />
         <div class="image-slot">
-           <img id="preview-banner1" src="${eventForm.bannerImageBase64}" alt="No Image">
+           <img id="preview-banner2" src="${eventForm.bannerImageBase64}" alt="No Image">
         </div>
 
         <!-- Gallery Images -->
@@ -214,14 +215,14 @@
            <div class="image-slot">
                <c:choose>
                    <c:when test="${not empty eventForm.galleryImageDataUrls[i-1]}">
-                       <img id="preview${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
-                        <button type="button" class="delete-btn" onclick="deleteImageById(${eventForm.galleryImageIds[i-1]}, ${i})"">&times;</button>
+                       <img id="preview2-${i}" src="${eventForm.galleryImageDataUrls[i-1]}" alt="Image ${i}" />
+                        <button type="button" class="delete-btn" onclick="deleteImageByIdForm2(${eventForm.galleryImageIds[i-1]}, ${i})"">&times;</button>
                    </c:when>
                    <c:otherwise>
-                       <img id="preview${i}" src="" alt="No Image" />
+                       <img id="preview2-${i}" src="" alt="No Image" />
                    </c:otherwise>
                </c:choose>
-               <input type="file" name="image${i}" accept="image/*" onchange="previewImage(this)">
+               <input type="file" name="image${i}" accept="image/*" onchange="previewImageForm2(this)">
            </div>
        </c:forEach>
     </div>
@@ -291,6 +292,24 @@
         }
     }
 
+    function previewImageForm2(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                // Banner
+                if (input.name === 'bannerImage') {
+                    document.getElementById('preview-banner2').src = e.target.result;
+                }
+                // Gallery (image1..image6)
+                else if (input.name.startsWith("image")) {
+                    let index = input.name.replace("image", "");
+                    document.getElementById("preview2-" + index).src = e.target.result;
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
      function deleteImageById(imageId, index) {
             if (!confirm("Are you sure you want to delete this image?")) {
                 return;
@@ -312,6 +331,18 @@
                 console.error('Error deleting image:', err);
                 alert('An error occurred while deleting the image.');
             });
+        }
+
+        function deleteImageByIdForm2(imageId, index) {
+          if (!confirm("Are you sure you want to delete this image?")) return;
+          fetch('<c:url value="/event/deleteImage"/>' + '?id=' + imageId, { method: 'DELETE' })
+            .then(r => { if (!r.ok) throw 0;
+              const img = document.getElementById('preview2-' + index);
+              if (img) img.src = '';
+              const input = document.querySelector(`#form2 input[name="image${index}"]`) || document.querySelector(`input[name="image${index}"]`);
+              if (input) input.value = '';
+            })
+            .catch(() => alert('Failed to delete image.'));
         }
   </script>
 </body>
