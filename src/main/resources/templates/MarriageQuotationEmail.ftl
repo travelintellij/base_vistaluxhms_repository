@@ -190,16 +190,31 @@
         </table>
     </div>
 
-    <div class="section">
-        <h2>Wedding Photo Inspirations</h2>
-         <div class="photo-collage">
-               <#list eventConfig.galleryImageDataUrls as img>
-                   <#if img?? && img?has_content>
-                       <img src="${img}" alt="Quotation Image"/>
-                   </#if>
-               </#list>
-            </div>
-    </div>
+<div class="section">
+  <h2>Wedding Photo Inspirations</h2>
+  <div class="photo-collage">
+    <#if eventConfig.imageUrl1?? && eventConfig.imageUrl1?has_content>
+      <img src="${eventConfig.imageUrl1}" alt="Quotation Image 1"/>
+    </#if>
+    <#if eventConfig.imageUrl2?? && eventConfig.imageUrl2?has_content>
+      <img src="${eventConfig.imageUrl2}" alt="Quotation Image 2"/>
+    </#if>
+    <#if eventConfig.imageUrl3?? && eventConfig.imageUrl3?has_content>
+      <img src="${eventConfig.imageUrl3}" alt="Quotation Image 3"/>
+    </#if>
+    <#if eventConfig.imageUrl4?? && eventConfig.imageUrl4?has_content>
+      <img src="${eventConfig.imageUrl4}" alt="Quotation Image 4"/>
+    </#if>
+    <#if eventConfig.imageUrl5?? && eventConfig.imageUrl5?has_content>
+      <img src="${eventConfig.imageUrl5}" alt="Quotation Image 5"/>
+    </#if>
+    <#if eventConfig.imageUrl6?? && eventConfig.imageUrl6?has_content>
+      <img src="${eventConfig.imageUrl6}" alt="Quotation Image 6"/>
+    </#if>
+  </div>
+</div>
+
+
 
 
 <div class="section">

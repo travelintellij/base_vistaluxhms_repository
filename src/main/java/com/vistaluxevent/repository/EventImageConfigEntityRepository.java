@@ -11,4 +11,5 @@ public interface EventImageConfigEntityRepository extends JpaRepository<EventIma
     Optional<EventImageConfigEntity> findByEventDetailsAndImageIndex(EventDetailsConfigEntity details, int imageIndex);
     List<EventImageConfigEntity> findByEventDetailsOrderByImageIndex(EventDetailsConfigEntity details);
     List<EventImageConfigEntity> findByEventDetails(EventDetailsConfigEntity eventDetails);
+    List<EventImageConfigEntity> findByEventDetails_IdOrderByImageIndex(Long id);
 }

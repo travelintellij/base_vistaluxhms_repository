@@ -92,6 +92,7 @@ public class EventConfigServicesImpl {
 
 	@Transactional
 	public void saveOrUpdateEvent(String eventTypeStr, EventDetailsConfigDTO form) throws IOException {
+		System.out.println("Event Type String is " + eventTypeStr);
 		EventType eventType = EventType.valueOf(eventTypeStr.toUpperCase());
 
 		EventDetailsConfigEntity details = detailsRepo.findByEventType(eventType).orElseGet(() -> {
@@ -154,20 +155,25 @@ public class EventConfigServicesImpl {
 
 				EventImageConfigEntity img = imageRepo.findByEventDetailsAndImageIndex(details, i)
 						.orElse(null);
-				if(i==1 && form.getImageUrl1()!=null)
-					img.setImageUrl(form.getImageUrl1());
-				else if(i==2 && form.getImageUrl2()!=null)
-					img.setImageUrl(form.getImageUrl2());
-				else if(i==3 && form.getImageUrl3()!=null)
-					img.setImageUrl(form.getImageUrl3());
-				else if(i==4 && form.getImageUrl4()!=null)
-					img.setImageUrl(form.getImageUrl4());
-				else if(i==5 && form.getImageUrl5()!=null)
-					img.setImageUrl(form.getImageUrl5());
-				else if(i==6 && form.getImageUrl6()!=null)
-					img.setImageUrl(form.getImageUrl6());
+				if(img!=null) {
+					if (i == 1 && form.getImageUrl1() != null)
+						img.setImageUrl(form.getImageUrl1());
+					else if (i == 2 && form.getImageUrl2() != null)
+						img.setImageUrl(form.getImageUrl2());
+					else if (i == 3 && form.getImageUrl3() != null)
+						img.setImageUrl(form.getImageUrl3());
+					else if (i == 4 && form.getImageUrl4() != null)
+						img.setImageUrl(form.getImageUrl4());
+					else if (i == 5 && form.getImageUrl5() != null)
+						img.setImageUrl(form.getImageUrl5());
+					else if (i == 6 && form.getImageUrl6() != null)
+						img.setImageUrl(form.getImageUrl6());
 
-				imageRepo.save(img);
+					imageRepo.save(img);
+				}
+
+
+
 
 				/*for (int i = 1; i <= 6; i++) {
 
@@ -233,10 +239,21 @@ public class EventConfigServicesImpl {
 		}
 
 		 */
-		List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(entity);
-		List<Long> imageIds = new ArrayList<>(Collections.nCopies(6, null));
+		Long detailsId = entity.getId();
 
-		System.out.println("Images Size of url is " + images.size());
+		// If the parent config isn't saved yet, there can't be images.
+		// Short-circuit to empty placeholders and return.
+		if (detailsId == null) {
+			dto.setGalleryImageDataUrls(Arrays.asList(null, null, null, null, null, null));
+			dto.setGalleryImageIds(Arrays.asList(null, null, null, null, null, null));
+			return dto;
+		}
+
+
+		System.out.println("Event Type Id is" + detailsId);
+
+		List<EventImageConfigEntity> images = imageRepo.findByEventDetails_IdOrderByImageIndex(detailsId);
+		List<Long> imageIds = new ArrayList<>(Collections.nCopies(6, null));
 
 		List<String> gallery = new ArrayList<>(Collections.nCopies(6, null));
 		for (EventImageConfigEntity img : images) {
@@ -245,6 +262,25 @@ public class EventConfigServicesImpl {
 				String mime = Optional.ofNullable(img.getMimeType()).orElse("image/jpeg");
 				gallery.set(idx - 1, "data:" + mime + ";base64," + Base64.getEncoder().encodeToString(img.getImageData()));
 				imageIds.set(idx - 1, img.getId()); // capture ID here
+				if(idx==1){
+					dto.setImageUrl1(img.getImageUrl());
+				}
+				if(idx==2){
+					dto.setImageUrl2(img.getImageUrl());
+				}
+				if(idx==3){
+					dto.setImageUrl3(img.getImageUrl());
+				}
+				if(idx==4){
+					dto.setImageUrl4(img.getImageUrl());
+				}
+				if(idx==5){
+					dto.setImageUrl5(img.getImageUrl());
+				}
+				if(idx==6){
+					dto.setImageUrl6(img.getImageUrl());
+				}
+
 			}
 		}
 		dto.setGalleryImageDataUrls(gallery);
