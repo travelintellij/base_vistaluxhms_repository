@@ -158,10 +158,11 @@
 
 <div class="top-bar">
     <div class="logo">
-        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
+        <!-- <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/> -->
+        <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
     </div>
     <div class="address">
-        <p>Ashoka's Tiger Trail Resort Logo| Corbett, Uttarakhand<br/>9090762424 | sales@vistaluxhotel.com </p>
+        <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
     </div>
 </div>
 
@@ -182,35 +183,21 @@
 
 
 <div class="section">
-    <h2>Venue &amp; Experience Overview</h2>
-    <p>
-        Thank you for considering <strong>Ashoka’s Tiger Trail Resort</strong> for your upcoming corporate event. Our resort offers a serene and focused environment ideal for strategic meetings, team-building sessions, workshops, or offsite retreats.
-    </p>
-    <p>
-        We are committed to delivering a seamless experience with the right mix of comfort, professionalism, and personalized service to ensure your event is impactful and productive.
-    </p>
+   <h2>Venue &amp; Experience Overview</h2>
+   ${eventConfig.resortInfo}
 
    <div class="highlight-box">
-          <h3>Event Highlights &amp; Offerings</h3>
-          <ul>
-              <li>42 well-appointed rooms with modern amenities</li>
-              <li>Indoor conference hall with AV equipment</li>
-              <li>Breakout spaces and outdoor lawns for team activities</li>
-              <li>Customizable meal plans (veg/non-veg)</li>
-              <li>Bonfire, wildlife safari &amp; nature walks for leisure</li>
-              <li>Dedicated event coordinator &amp; on-site support</li>
-          </ul>
+           ${eventConfig.celebrationHighlight}
       </div>
 <div style="page-break-after: always;"></div>
 <div class="section">
     <h2>Photo Gallery</h2>
     <div class="photo-collage">
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/89e9c291-2a41-cb74-5abc-40cd8bf54a78.jpeg?fit=crop&amp;w=600&amp;q=80" alt="5" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/93a3c3c9-b2c3-2b41-15d2-50f7aad8a631.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Team Meeting" />
-        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?fit=crop&amp;w=600&amp;q=80" alt="Conference" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/a6f572c5-8eb7-106b-ecab-4197919c936a.png?fit=crop&amp;w=600&amp;q=80" alt="Team Building" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/43c37228-758e-fc5d-335a-f89fa80f2fef.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
-        <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/8928c72a-cfa1-eebd-7881-0d2563bd4627.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
+       <#list eventConfig.galleryImageDataUrls as img>
+                  <#if img?? && img?has_content>
+                      <img src="${img}" alt="Quotation Image"/>
+                  </#if>
+              </#list>
     </div>
 </div>
 

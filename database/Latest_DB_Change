@@ -1,0 +1,1 @@
+UPDATE `ashokadb`.`eventtype` SET `eventTypeName` = 'GROUP_EVENT' WHERE (`eventTypeId` = '2');

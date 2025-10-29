@@ -199,7 +199,7 @@
             <font color="red">${Error}</font>
         </b></div>
 
-        <h3>Wedding Event Form</h3>
+        <h3>Event Form</h3>
 
         <!-- Banner Image -->
         <label for="bannerImage">Banner Image</label>
@@ -234,10 +234,10 @@
 
 
         <!-- Text Fields -->
-        <label for="resortInfo">Event Resort Information</label>
+        <label for="resortInfo">Venue and Experience Overview </label>
         <form:textarea path="resortInfo" rows="4" cssClass="form-control"/>
 
-        <label for="celebrationHighlight">Celebration Highlights</label>
+        <label for="celebrationHighlight">Event Highlights & Offering</label>
         <form:textarea path="celebrationHighlight" rows="3" cssClass="form-control"/>
 
         <label for="testimonial">Testimonial Section</label>

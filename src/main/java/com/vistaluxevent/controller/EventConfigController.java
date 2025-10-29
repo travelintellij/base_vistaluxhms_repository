@@ -132,7 +132,7 @@ public class EventConfigController {
 
 		eventService.saveOrUpdateEvent(eventDetailsConfigDTO.getEventType(), form);
 		redirectAttrib.addFlashAttribute("Success", "Record is updated successfully !! ");
-		modelView.setViewName("redirect:view_form_manage_event_forms?eventType=wedding");
+		modelView.setViewName("redirect:view_form_manage_event_forms?eventType="+eventDetailsConfigDTO.getEventType());
 		return modelView;
 		//return ResponseEntity.ok("Saved");
 	}
