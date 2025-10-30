@@ -151,7 +151,39 @@
             color: #6a1b3f;
             font-weight: bold;
         }
-
+.social-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e4405f; }
+        .linkedin { background-color: #0077b5; }
+        .email { background-color: #ff6600; }
+        .website { background-color: #000; }
+        .twitter {
+            background-color: #1DA1F2;
+        }
+        .whatsapp-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .whatsapp-button a {
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -201,21 +233,10 @@
     </div>
 </div>
 
+ ${eventConfig.testimonial}
+
     <!-- Additional Testimonial -->
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        "Ashoka's Tiger Trail Resort provided the perfect setting for our corporate retreat. The serene atmosphere helped our team stay focused, while the modern amenities and impeccable service ensured that our meetings were productive. The venue was spacious and well-equipped, and the team went above and beyond to tailor every aspect to our needs. Highly recommend for any corporate event!"<br/>
-        <strong>– Confidential, Ahmedabad</strong>
-    </div>
 
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        "We hosted our annual leadership meeting at Ashoka's Tiger Trail Resort, and it was an incredible experience. The combination of state-of-the-art conference facilities and the beautiful natural surroundings made it the ideal venue for our team-building exercises and strategic sessions. The staff was professional, accommodating, and ensured everything went smoothly. It was a memorable event that enhanced both productivity and morale."<br/>
-        <strong>–  From a Recent MICE Event,  Delhi NCR</strong>
-    </div>
-
-    <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-        "Ashoka Tiger Trail Resort provided the perfect setting for our corporate offsite. The serene surroundings and state-of-the-art conference facilities enabled us to focus on strategic planning and team-building activities. The staff was incredibly professional, ensuring every detail was handled seamlessly. A truly memorable experience that fostered collaboration and innovation among our team!"<br/>
-        <strong>– Sushil, Delhi NCR </strong>
-    </div>
 
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
@@ -297,35 +318,38 @@
         <#else>
             <li>GST and other applicable taxes will be charged extra.</li>
         </#if>
-        <li>Rates are subject to availability and change until confirmed.</li>
-        <li>Booking is confirmed only upon receiving advance payment.</li>
-        <li>Event decor and customizations are chargeable based on requirements.</li>
-        <li>Final guest count must be confirmed at least 10 days prior to the event.</li>
-        <li>Outdoor events are subject to weather; backup arrangements may be made if required.</li>
-        <li>Liquor services require valid permits, to be arranged separately.</li>
-        <li>External vendors are subject to resort approval.</li>
-        <li>Check-in and check-out times are as per resort policy.</li>
+         ${eventConfig.termsConditions}
     </ul>
-    <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
+    <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
 
-<div class="social-media" style="text-align: center; margin-top: 20px;">
-    <h3>Connect With Us</h3>
-    <p>
-        <a href="https://www.facebook.com/ashokatigertrail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" width="24" height="24" />
-        </a>
-        <a href="https://www.instagram.com/ashoka_tiger_trail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram" width="24" height="24" />
-        </a>
-        <a href="https://www.linkedin.com/company/ashokastigertrailresort/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" width="24" height="24" />
-        </a>
-        <a href="https://ashokastigertrail.com/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/fluency/48/domain.png" alt="Website" width="24" height="24" />
-        </a>
-    </p>
-</div>
+<div class="social-links">
+            <#if centralConfig.facebookLink?has_content>
+                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+            </#if>
+
+            <#if centralConfig.instagramLink?has_content>
+                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+            </#if>
+
+            <#if centralConfig.linkedinLink?has_content>
+                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+            </#if>
+
+            <#if centralConfig.xLink?has_content>
+                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+            </#if>
+
+
+            <#if centralConfig.centralizedEmail?has_content>
+                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+            </#if>
+
+            <#if centralConfig.website?has_content>
+                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+            </#if>
+        </div>
+
 
 
 
