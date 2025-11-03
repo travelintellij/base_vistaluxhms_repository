@@ -43,7 +43,7 @@
         }
 
         .header {
-            background-image: url('https://mcusercontent.com/b524536bce55ad238411aa638/images/5e424e73-2127-47ee-3a6c-f98219f37551.jpg');
+            background-image: url('https://www.dropbox.com/scl/fi/xs3dosdqug1agt8vtlvq3/event-banner-image.jpg?rlkey=m25hmn8go0etu58q1q6u30nyb&raw=1');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -135,10 +135,10 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo">
-            <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />
+            <img src="${centralConfig.logoPath}" alt="Ashoka"/>
         </div>
-        <div class="address">
-            <p>Ashoka's Tiger Trail Resort<br>Corbett, Uttarakhand<br>9090762424 | sales@vistaluxhotel.com</p>
+         <div class="address">
+            <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
         </div>
         <div style="clear: both;"></div>
     </div>
