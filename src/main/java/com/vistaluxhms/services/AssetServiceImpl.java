@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+
 @Service
 public class AssetServiceImpl {
 
@@ -41,6 +43,9 @@ public class AssetServiceImpl {
         return false;}
 
     public AssetDTO saveAsset(AssetDTO assetDTO) {
+        if (assetDTO.getCategoryId() == null) {
+            throw new IllegalArgumentException("Category must be selected before saving the asset.");
+        }
         AssetEntity entity = new AssetEntity();
 
 
@@ -49,9 +54,12 @@ public class AssetServiceImpl {
 
         entity.setCreationDate(new Date());
         entity.setAssetCost(assetDTO.getAssetCost());
-        entity.setCategory(assetDTO.getCategory());
+        Category category = categoryRepository.findById(assetDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Invalid category ID"));
+        entity.setCategory(category);
         entity.setActive(assetDTO.isActive());
         entity.setOwnerId(assetDTO.getAssetOwnerId());
+        entity.setDescription(assetDTO.getDescription());
 
 
         entity = assetRepository.save(entity);
@@ -99,9 +107,12 @@ public class AssetServiceImpl {
         dto.setAssetId(entity.getAssetId());
         dto.setAssetName(entity.getAssetName());
         dto.setAssetCost(entity.getAssetCost());
-        dto.setCategory(entity.getCategory());
-        dto.setActive(entity.isActive());
+        if (entity.getCategory() != null) {
+            dto.setCategory(entity.getCategory());
+            dto.setCategoryId(entity.getCategory().getCategoryId());
+        }        dto.setActive(entity.isActive());
         dto.setAssetCode(entity.getAssetCode());
+        dto.setDescription(entity.getDescription());
 
 
         if (entity.getCreationDate() != null) {
@@ -118,7 +129,7 @@ public class AssetServiceImpl {
         if (entity.getOwnerId() != null) {
             AshokaTeam owner = userRepository.findById(entity.getOwnerId()).orElse(null);
             dto.setAssetOwnerId(entity.getOwnerId());
-            dto.setAssetOwnerName(owner != null ? owner.getName() : "Unallocated");
+            dto.setAssetOwnerName(owner != null ? owner.getName() + " (" + owner.getUsername() + ")" : "Unallocated");
 
 
             AssetAllocation latestAllocation =
@@ -207,26 +218,24 @@ public class AssetServiceImpl {
     }
 
     public Page<AssetEntity> filterAssets(String assetCode, String assetName,
-                                          String category, Integer ownerId,
+                                         Integer categoryId, Integer ownerId,
                                           int page, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(sortBy));
 
 
         if (ownerId != null && ownerId == 0) ownerId = null;
-        if (category != null && category.trim().isEmpty()) category = null;
+        if (categoryId != null && categoryId == 0) categoryId = null;
         if (assetCode != null && assetCode.trim().isEmpty()) assetCode = null;
         if (assetName != null && assetName.trim().isEmpty()) assetName = null;
 
 
-        return assetRepository.findFilteredAssets(assetCode, assetName, category, ownerId, pageable);
+        return assetRepository.findFilteredAssets(assetCode, assetName, categoryId, ownerId, pageable);
     }
-    public List<String> getAllCategories() {
+    public List<Category> getAllCategories() {
+        return categoryRepository.findActiveCategories();
+    }
 
-        return categoryRepository.findAll()
-                .stream()
-                .map(Category::getCategoryName)
-                .collect(Collectors.toList());
-    }
+
     public List<AssetDTO> convertToDTO(List<AssetEntity> entities) {
         return entities.stream()
                 .map(this::convertToDTO)
@@ -236,5 +245,101 @@ public class AssetServiceImpl {
         return userRepository.findAllActiveUsers();
     }
 
+
+
+    public Page<AssetEntity> filterAssetsByStatus(
+            String assetCode,
+            String assetName,
+            Integer categoryId,
+            Integer ownerId,
+            boolean showActive,
+            int page,
+            int pageSize,
+            String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(sortBy).descending());
+
+        if (ownerId != null && ownerId == 0) ownerId = null;
+        if (categoryId != null && categoryId == 0) categoryId = null;
+        if (assetCode != null && assetCode.trim().isEmpty()) assetCode = null;
+        if (assetName != null && assetName.trim().isEmpty()) assetName = null;
+
+        return assetRepository.findFilteredAssetsByStatus(
+                assetCode, assetName, categoryId, ownerId, showActive, pageable);
+    }
+
+    public void setAssetActiveStatus(int assetId, boolean active) {
+        AssetEntity asset = assetRepository.findById(assetId).orElse(null);
+        if (asset != null) {
+            asset.setActive(active);
+            assetRepository.save(asset);
+        }
+    }
+
+
+    public void deactivateAsset(Integer assetId) {
+        AssetEntity asset = assetRepository.findById(assetId).orElse(null);
+        if (asset != null) {
+            asset.setActive(false);
+            assetRepository.save(asset);
+        }
+    }
+
+    public void activateAsset(Integer assetId) {
+        AssetEntity asset = assetRepository.findById(assetId).orElse(null);
+        if (asset != null) {
+            asset.setActive(true);
+            assetRepository.save(asset);
+        }
+    }
+
+
+/*
+    public AssetDTO saveAssetWithCategory(AssetDTO assetDTO) {
+        Category category = categoryRepository.findById(assetDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Invalid category selected"));
+
+        AssetEntity entity = new AssetEntity();
+        entity.setAssetId(assetDTO.getAssetId());
+        entity.setAssetName(assetDTO.getAssetName());
+        entity.setAssetCost(assetDTO.getAssetCost());
+        entity.setCategory(category);
+        entity.setActive(assetDTO.isActive());
+        entity.setOwnerId(assetDTO.getAssetOwnerId());
+        entity.setCreationDate(new Date());
+
+        entity = assetRepository.save(entity);
+
+        if (entity.getAssetCode() == null || entity.getAssetCode().trim().isEmpty()) {
+            String code = String.format("AST-%04d", entity.getAssetId());
+            entity.setAssetCode(code);
+            assetRepository.save(entity);
+        }
+
+        if (assetDTO.getAssetOwnerId() != null) {
+            AshokaTeam member = userRepository.findById(assetDTO.getAssetOwnerId()).orElse(null);
+            if (member != null) {
+                AssetAllocation allocation = new AssetAllocation();
+                allocation.setAsset(entity);
+                allocation.setAshokaTeam(member);
+                allocation.setAllocatedDate(new Date());
+                assetAllocationRepository.save(allocation);
+
+                AssetTransferHistory transfer = new AssetTransferHistory();
+                transfer.setAsset(entity);
+                transfer.setFromAshokaTeam(null);
+                transfer.setToAshokaTeam(member);
+                transfer.setTransferDate(new Date());
+                transfer.setRemarks("Initial allocation");
+                assetTransferHistoryRepository.save(transfer);
+            }
+        }
+
+        assetDTO.setAssetId(entity.getAssetId());
+        assetDTO.setAssetCode(entity.getAssetCode());
+        return assetDTO;
+    }
+
+ */
 }
 

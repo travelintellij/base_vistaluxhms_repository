@@ -27,16 +27,36 @@ public interface AssetRepository extends JpaRepository<AssetEntity, Integer> {
 
             "AND (:assetCode IS NULL OR a.assetCode LIKE CONCAT('%', :assetCode, '%')) " +
             "AND (:assetName IS NULL OR a.assetName LIKE CONCAT('%', :assetName, '%')) " +
-            "AND (:category IS NULL OR a.category = :category) " +
+            "AND (:categoryId IS NULL OR a.category.categoryId = :categoryId) " +
             "AND (:ownerId IS NULL OR a.ownerId = :ownerId)")
     Page<AssetEntity> findFilteredAssets(
             @Param("assetCode") String assetCode,
             @Param("assetName") String assetName,
-            @Param("category") String category,
+            @Param("categoryId") Integer categoryId,
             @Param("ownerId") Integer ownerId,
             Pageable pageable);
 
-    Page<AssetEntity> findByDeletedFalseAndOwnerIdAndCategory(Integer ownerId,String category, Pageable pageable);
 
 
+
+    List<AssetEntity> findByIsActive(boolean isActive);
+
+    @Query("SELECT a FROM AssetEntity a WHERE a.deleted = false " +
+            "AND a.isActive = :showActive " +
+            "AND (:assetCode IS NULL OR a.assetCode LIKE CONCAT('%', :assetCode, '%')) " +
+            "AND (:assetName IS NULL OR a.assetName LIKE CONCAT('%', :assetName, '%')) " +
+            "AND (:categoryId IS NULL OR a.category.categoryId = :categoryId) " +
+            "AND (:ownerId IS NULL OR a.ownerId = :ownerId)")
+    Page<AssetEntity> findFilteredAssetsByStatus(
+            @Param("assetCode") String assetCode,
+            @Param("assetName") String assetName,
+            @Param("categoryId") Integer categoryId,
+            @Param("ownerId") Integer ownerId,
+            @Param("showActive") boolean showActive,
+            Pageable pageable);
+
+
+    @Query("SELECT a FROM AssetEntity a WHERE a.ownerId = :userId AND a.deleted = false")
+    List<AssetEntity> findByOwnerIdAndDeletedFalse(@Param("userId") Integer userId);
 }
+

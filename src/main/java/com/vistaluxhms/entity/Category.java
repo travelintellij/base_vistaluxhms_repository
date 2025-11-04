@@ -17,6 +17,9 @@ public class Category {
     @Column(name =  "description")
     private String description;
 
+    @Column(name = "status")
+    private String status;
+
 
     public Integer getCategoryId() {
         return categoryId;
@@ -37,6 +40,19 @@ public class Category {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public boolean isEmpty() {
+        return this.categoryName == null || this.categoryName.trim().isEmpty();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

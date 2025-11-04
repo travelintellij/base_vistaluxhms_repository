@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Manage Categories</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
   #deleteModal {
       display: none;
@@ -76,22 +77,7 @@
           font-size: 32px;
       }
 
-      .add-link {
-          display: inline-block;
-          margin-bottom: 25px;
-          padding: 12px 22px;
-          background: #1abc9c;
-          color: white;
-          border-radius: 10px;
-          text-decoration: none;
-          font-weight: 700;
-          font-size: 17px;
-          transition: background 0.3s;
-      }
 
-      .add-link:hover {
-          background: #16a085;
-      }
 table {
     width: 100%;
     border-collapse: collapse;
@@ -136,75 +122,99 @@ table tr:hover {
       .delete-btn:hover {
           background: #c0392b;
       }
+
+      form.form-inline {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin-bottom: 25px;
+      }
+
+      form.form-inline .form-control {
+          min-width: 180px;
+      }
+
+      .btn-primary {
+          background-color: #3498db;
+          border: none;
+          font-weight: 600;
+          padding: 8px 18px;
+      }
+
+      .btn-primary:hover {
+          background-color: #2980b9;
+      }
+
+      .btn-secondary {
+          background-color: #95a5a6;
+          border: none;
+          font-weight: 600;
+          padding: 8px 18px;
+      }
+
+      .btn-secondary:hover {
+          background-color: #7f8c8d;
+      }
   </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
 <div class="container">
     <h2>Manage Categories</h2>
-    <a class="add-link" href="${pageContext.request.contextPath}/categories_add">Add New Category</a>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-        <c:forEach var="cat" items="${categories}">
-            <tr>
-                <td>${cat.categoryId}</td>
-                <td>${cat.categoryName}</td>
-                <td>${cat.description}</td>
-                <td>
-                        <button type="button" class="delete-btn" onclick="openDeleteModal(${cat.categoryId})">Delete</button>
+
+  <form action="categories_manage" method="get" class="form-inline mb-4">
+      <div class="form-group mr-3">
+          <label for="statusFilter" class="mr-2 font-weight-bold">Filter by Status:</label>
+          <select name="status" id="statusFilter" class="form-control">
+              <option value="Active" ${selectedStatus == 'Active' ? 'selected' : ''}>Active</option>
+              <option value="Inactive" ${selectedStatus == 'Inactive' ? 'selected' : ''}>Inactive</option>
+          </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary mr-2">Apply</button>
+
+      <a href="categories_manage" class="btn btn-secondary">Clear</a>
+  </form>
+  <table>
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Action</th>
+      </tr>
+      <c:forEach var="cat" items="${categories}">
+          <tr>
+              <td>${cat.categoryId}</td>
+              <td>${cat.categoryName}</td>
+              <td>${cat.description}</td>
+
+              <td>
+                  <span style="padding:6px 12px; border-radius:8px; color:white;
+                        background-color:${cat.status eq 'Active' ? '#28a745' : '#dc3545'};">
+                      ${cat.status}
+                  </span>
+              </td>
+
+            <td>
+                <c:choose>
+                    <c:when test="${cat.status eq 'Active'}">
+                        <form action="${pageContext.request.contextPath}/categories_deactivate/${cat.categoryId}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Deactivate</button>
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <form action="${pageContext.request.contextPath}/categories_activate/${cat.categoryId}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Activate</button>
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+          </tr>
+      </c:forEach>
+  </table>
 
 
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <div id="deleteModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete this category?</p>
-            <form id="deleteCategoryForm" method="post" action="">
-                <button type="submit" class="delete-btn">Yes, Delete</button>
-                <button type="button" class="cancel-btn">Cancel</button>
-            </form>
-        </div>
-    </div>
-</div>
-<script>
-    const modal = document.getElementById("deleteModal");
-    const span = modal.querySelector(".close");
-    const cancelBtn = modal.querySelector(".cancel-btn");
-    const deleteForm = document.getElementById("deleteCategoryForm");
-
-    function openDeleteModal(categoryId) {
-        // Set form action dynamically
-        deleteForm.action = '${pageContext.request.contextPath}/categories_delete/' + categoryId;
-        modal.style.display = "block";
-    }
-
-    // Close modal when clicking 'x'
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // Close modal when clicking 'Cancel'
-    cancelBtn.onclick = function() {
-        modal.style.display = "none";
-    }
-
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 </body>
 </html>

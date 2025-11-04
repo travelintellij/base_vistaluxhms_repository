@@ -24,8 +24,9 @@ public class AssetEntity {
     @Column(name = "asset_cost")
     private BigDecimal assetCost;
 
-    @Column(name = "category")
-    private String category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "is_active")
     private Boolean isActive = true;
@@ -41,6 +42,9 @@ public class AssetEntity {
 
     @OneToMany(mappedBy = "asset")
     private List<AssetAllocation> allocations;
+
+    @Column(name = "description")
+    private String description;
 
 
     public Integer getOwnerId() {
@@ -83,11 +87,11 @@ public class AssetEntity {
         this.assetCost = assetCost;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -110,5 +114,13 @@ public class AssetEntity {
     public Boolean isDeleted() { return deleted;}
 
     public void setisDeleted(Boolean isDeleted){ this.deleted = isDeleted;}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
 

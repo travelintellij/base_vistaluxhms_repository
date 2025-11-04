@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+background: linear-gradient(to bottom, #2196F3, #64B5F6);
             min-height: 100vh;
             display: flex;
          flex-direction:column;
@@ -77,26 +77,64 @@
             color: #495057;
         }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    margin-top: 25px;
+}
 
-        button {
-            width: 100%;
-            padding: 18px;
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #fff;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            background: linear-gradient(90deg, #ff416c, #ff4b2b);
-            transition: all 0.3s ease;
-        }
+.equal-btn {
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: #222;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
 
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255,75,43,0.5);
-        }
+/* Bright green Transfer button */
+.transfer-btn {
+    background: linear-gradient(90deg, #00FF66, #00CC44);
+    color: #000;
+    box-shadow: 0 0 12px rgba(0, 255, 100, 0.8);
+}
 
+.transfer-btn:hover {
+    background: linear-gradient(90deg, #00CC44, #00FF66);
+    box-shadow: 0 0 20px rgba(0, 255, 100, 1);
+}
+
+/* Glitter red Back button */
+.back-button {
+    background: linear-gradient(135deg, #FF4C4C, #FF1C1C, #FF6666);
+    background-size: 300% 300%;
+    color: #fff;
+    animation: glitter 3s infinite linear;
+    box-shadow: 0 0 15px rgba(255, 50, 50, 0.8);
+}
+
+.back-button:hover {
+    background: linear-gradient(135deg, #FF1C1C, #FF4C4C, #FF8080);
+    box-shadow: 0 0 25px rgba(255, 30, 30, 1);
+}
+
+/* Glitter shimmer animation */
+@keyframes glitter {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
         @media (max-width: 768px) {
             body { padding: 20px; }
@@ -113,7 +151,12 @@
 <div class="container">
 
 
-    <h1>Transfer Asset - <c:out value="${asset.assetName}" /></h1>
+   <h1>
+       Transfer Asset - <c:out value="${asset.assetName}" />
+       <c:if test="${not empty categoryName}">
+           (<c:out value="${categoryName}" />)
+       </c:if>
+   </h1>
     <div class="asset-header">
         <p><strong>Asset Name:</strong> <input type="text" id="assetName" name="assetName" readonly /></p>
         <p><strong>Asset Code:</strong> <input type="text" id="assetCode" name="assetCode" readonly /></p>
@@ -150,9 +193,11 @@
          <form:input path="transferDate" type="date" required="required"/>
         </div>
 
-<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">
-        <button type="submit">Transfer Asset</button>
-        </sec:authorize>
+        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">
+     <div class="button-container">
+         <button type="submit" class="transfer-btn equal-btn">Transfer Asset</button>
+         <a href="${pageContext.request.contextPath}/view_assets_list" class="back-button equal-btn">Back to Assets</a>
+     </div>
     </form:form>
 </div>
 <script>

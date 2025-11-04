@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +59,6 @@
             text-shadow: 1px 1px rgba(0,0,0,0.1);
         }
 
-        /* Table container */
         .table-container {
             overflow-x: auto;
             background: #fff0f5;
@@ -69,7 +69,6 @@
             margin: auto;
         }
 
-        /* Styled table */
         table.styled-table {
             width: 100%;
             border-collapse: collapse;
@@ -105,7 +104,6 @@
             transform: scale(1.02);
         }
 
-        /* Back button */
         a.back-btn {
             display: block;
             margin: 40px auto 0;
@@ -127,7 +125,6 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* Empty row */
         td.empty {
             text-align: center;
             font-style: italic;
@@ -135,12 +132,101 @@
             padding: 30px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             body { padding: 20px; font-size: 16px; }
             h2 { font-size: 28px; }
             table.styled-table th, table.styled-table td { font-size: 16px; padding: 12px; }
             a.back-btn { font-size: 18px; padding: 14px 28px; width: 220px; }
+        }
+
+        .view-btn {
+            background: linear-gradient(90deg, #ff9472, #ff6f61);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            overflow: auto;
+        }
+        .modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 111, 97, 0.4);
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content h2 {
+            color: #ff6f61;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal-content p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: #ff6f61;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .close:hover {
+            background: #ff3b2e;
+            transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.9);}
+            to {opacity: 1; transform: scale(1);}
+        }
+
+        .modal-content {
+            text-align: center;
+            background: #fffdfd;
+            border: 2px solid #ffb6b6;
+        }
+
+
+        .remarks-text {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+            background: #fff5f5;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ffd6d6;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -167,20 +253,32 @@
         <tbody>
             <c:forEach var="history" items="${historyList}">
                 <tr>
-                    <td>
-                        <c:choose>
-                            <c:when test="${history.fromAshokaTeam != null}">
-                                ${history.fromAshokaTeam.name}
-                            </c:when>
-                            <c:otherwise>
-                                N/A
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>${history.toAshokaTeam.name}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${history.fromAshokaTeam != null}">
+${history.fromAshokaTeam.name} (${history.fromAshokaTeam.username})                   </c:when>
+                        <c:otherwise>
+                            N/A
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${history.toAshokaTeam != null}">
+${history.toAshokaTeam.name} (${history.toAshokaTeam.username})              </c:when>
+                        <c:otherwise>
+                            N/A
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                     <td><fmt:formatDate value="${history.transferDate}" pattern="dd-MM-yyyy"/></td>
-                    <td><c:out value="${history.remarks}" default="-" /></td>
-                </tr>
+  <td>
+     <button class="view-btn"
+         onclick="openModal('${history.remarks != null ? history.remarks : "-"}')">
+         View Details
+     </button>
+  </td>
+             </tr>
             </c:forEach>
             <c:if test="${empty historyList}">
                 <tr>
@@ -193,6 +291,32 @@
 
 <a href="${pageContext.request.contextPath}/view_assets_list" class="back-btn">Back to Assets</a>
 
+
+
+<div id="detailsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Remarks</h2>
+<p id="modalRemarks" class="remarks-text"></p>  </div>
+</div>
+
+<script>
+function openModal(remarks) {
+    document.getElementById('modalRemarks').textContent = remarks;
+    document.getElementById('detailsModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('detailsModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('detailsModal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 </body>
 </html>
 

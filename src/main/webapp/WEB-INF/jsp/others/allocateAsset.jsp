@@ -21,7 +21,9 @@
     <label>Select Team Member:</label>
     <select name="assetOwnerId" required>
         <c:forEach items="${ashokaTeams}" var="member">
-            <option value="${member.userId}">${member.name}</option>
+            <option value="${member.userId}">
+                ${member.name} (${member.userId})
+            </option>
         </c:forEach>
     </select>
     <br><br>

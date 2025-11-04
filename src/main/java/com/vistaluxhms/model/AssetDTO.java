@@ -1,5 +1,7 @@
 package com.vistaluxhms.model;
 
+import com.vistaluxhms.entity.Category;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -11,12 +13,14 @@ public class AssetDTO {
 
     private LocalDate creationDate;
     private BigDecimal assetCost;
-    private String category;
-    private boolean isActive;
+    private Category category;
+    private boolean active;
     private Integer assetOwnerId;
     private String assetOwnerName;
     private String assetCode;
     private Date allocatedDate;
+    private Integer categoryId;
+    private String description;
 
 
     public AssetDTO() {
@@ -25,13 +29,13 @@ public class AssetDTO {
 
 
     public AssetDTO(int assetId, String assetName, LocalDate creationDate, BigDecimal assetCost,
-                    String category, boolean isActive, Integer assetOwnerId, String assetOwnerName) {
+                   Category category, boolean isActive, Integer assetOwnerId, String assetOwnerName) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.creationDate = creationDate;
         this.assetCost = assetCost;
         this.category = category;
-        this.isActive = isActive;
+        this.active = isActive;
         this.assetOwnerId = assetOwnerId;
         this.assetOwnerName = assetOwnerName;
     }
@@ -49,11 +53,16 @@ public class AssetDTO {
     public BigDecimal getAssetCost() { return assetCost; }
     public void setAssetCost(BigDecimal assetCost) { this.assetCost = assetCost; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { this.isActive = active; }
+    public boolean isActive() {
+        return active;}
+
+        public void setActive(boolean isActive) {
+            this.active = isActive;
+
+    }
 
     public Integer getAssetOwnerId() { return assetOwnerId; }
     public void setAssetOwnerId(Integer assetOwnerId) { this.assetOwnerId = assetOwnerId; }
@@ -70,6 +79,23 @@ public class AssetDTO {
 
     public void setAllocatedDate(Date allocatedDate) {
         this.allocatedDate = allocatedDate;
+    }
+
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 

@@ -183,13 +183,24 @@
          <input type="text" name="assetName" class="form-control" placeholder="Asset Name" value="${selectedAssetName}"/>
      </div>
      <div class="col-md-3">
-         <select name="category" class="form-select">
-             <option value="">-- Category --</option>
-             <c:forEach var="cat" items="${categories}">
-                 <option value="${cat}" ${cat == selectedCategory ? 'selected' : ''}>${cat}</option>
-             </c:forEach>
-         </select>
-     </div>
+         <select name="categoryId" class="form-select">
+              <option value="">Select Category</option>
+              <c:forEach var="cat" items="${categories}">
+                  <option value="${cat.categoryId}" ${selectedCategory == cat.categoryId ? 'selected' : ''}>
+                      ${cat.categoryName}
+                  </option>
+              </c:forEach>
+          </select>
+           </div>
+
+          <div class="col-md-3">
+              <select name="status" class="form-select">
+                  <option value="Active" <c:if test="${param.status == 'Active' || empty param.status}">selected</c:if>>Active</option>
+                  <option value="Deactivated" <c:if test="${param.status == 'Deactivated'}">selected</c:if>>Deactivated</option>
+              </select>
+          </div>
+
+
      <div class="col-md-3">
          <select name="ownerId" class="form-select">
              <option value="">-- Owner --</option>
@@ -200,7 +211,7 @@
      </div>
         <div class="col-12 text-center mt-2">
             <button type="submit" class="btn btn-primary">Apply</button>
-            <a href="${pageContext.request.contextPath}/view_assets_list" class="btn btn-secondary">Reset</a>
+            <a href="${pageContext.request.contextPath}/view_assets_list" class="btn btn-secondary">Clear</a>
         </div>
     </form>
 </div>
@@ -230,47 +241,63 @@
                 <tr>
                     <td>${asset.assetCode != null ? asset.assetCode : 'N/A'}</td>
                     <td>${asset.assetName != null ? asset.assetName : 'N/A'}</td>
-                    <td>${asset.category != null ? asset.category : 'N/A'}</td>
-                    <td>${asset.assetCost != null ? asset.assetCost : '0'}</td>
+                  <td>
+                   ${asset.category != null ? asset.category.categoryName : 'N/A'}
+                 </td>
+                 <td>${asset.assetCost != null ? asset.assetCost : '0'}</td>
                     <td>${asset.assetOwnerName != null ? asset.assetOwnerName : 'N/A'}</td>
-                    <td><fmt:formatDate value="${asset.allocatedDate}" pattern="yyyy-MM-dd"/></td>
+                    <td><fmt:formatDate value="${asset.allocatedDate}" pattern="dd-MM-yyyy"/></td>
+
                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">
                     <td>
                         <a href="${pageContext.request.contextPath}/assets_transfer_form/${asset.assetId}" class="btn btn-transfer">Transfer</a>
                         <a href="${pageContext.request.contextPath}/assets_transfer_history/${asset.assetId}" class="btn btn-history">History</a>
                         <a href="${pageContext.request.contextPath}/edit_asset/${asset.assetId}" class="btn btn-edit">Edit</a>
-                        <!-- updated View button -->
                         <button type="button" class="btn btn-info viewAssetBtn"
                                 data-bs-toggle="modal"
                                 data-bs-target="#viewAssetModal"
                                 data-code="${asset.assetCode}"
                                 data-name="${asset.assetName}"
-                                data-category="${asset.category}"
-                                data-cost="${asset.assetCost}"
+                          data-category="${asset.category != null ? asset.category.categoryName : 'N/A'}"
+                               data-cost="${asset.assetCost}"
                                 data-owner="${asset.assetOwnerName}"
-                                data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='yyyy-MM-dd'/>">
+                                data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='dd-MM-yyyy'/>"
+                               data-description="${fn:escapeXml(asset.description)}">
                            View
                         </button>
-                       <a href="#" class="btn btn-danger btn-sm delete-btn"
-                           data-asset-name="${asset.assetName}"
-                           data-url="${pageContext.request.contextPath}/delete_asset/${asset.assetId}">
-                           Delete
-                        </a>
+                       <c:choose>
+                           <c:when test="${asset.active}">
+                               <a href="#" class="btn btn-danger btn-sm toggle-status-btn"
+                                  data-asset-name="${asset.assetName}"
+                                  data-url="${pageContext.request.contextPath}/assets_deactivate/${asset.assetId}"
+                                  data-action="Deactivate">
+                                  Deactivate
+                               </a>
+                           </c:when>
+                           <c:otherwise>
+                               <a href="#" class="btn btn-success btn-sm toggle-status-btn"
+                                  data-asset-name="${asset.assetName}"
+                                  data-url="${pageContext.request.contextPath}/assets_activate/${asset.assetId}"
+                                  data-action="Activate">
+                                  Activate
+                               </a>
+                           </c:otherwise>
+                       </c:choose>
                     </td>
                     </sec:authorize>
                     <sec:authorize access="hasRole('ASSET_ALLOWED')">
                                         <td>
                                             <a href="${pageContext.request.contextPath}/assets_transfer_history/${asset.assetId}" class="btn btn-history">History</a>
-                                            <!-- updated View button -->
                                             <button type="button" class="btn btn-info viewAssetBtn"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#viewAssetModal"
                                                     data-code="${asset.assetCode}"
                                                     data-name="${asset.assetName}"
-                                                    data-category="${asset.category}"
-                                                    data-cost="${asset.assetCost}"
+                                                     data-category="${asset.category != null ? asset.category.categoryName : 'N/A'}"
+                                                     data-cost="${asset.assetCost}"
                                                     data-owner="${asset.assetOwnerName}"
-                                                    data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='yyyy-MM-dd'/>">
+                                                    data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='dd-MM-yyyy'/>"
+                                                     data-description="${fn:escapeXml(asset.description)}">
                                                 View
                                             </button>
                                         </td>
@@ -288,25 +315,24 @@
 <c:if test="${not empty totalPages && totalPages > 0}">
     <div class="pagination">
         <c:if test="${currentPage > 0}">
-            <a href="?page=${currentPage - 1}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&category=${selectedCategory}&ownerId=${selectedOwnerId}"
+            <a href="?page=${currentPage - 1}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&categoryId=${selectedCategoryId}&ownerId=${selectedOwnerId}&status=${param.status}"
                class="btn">Previous</a>
         </c:if>
 
         <c:forEach begin="0" end="${totalPages - 1}" var="i">
-            <a href="?page=${i}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&category=${selectedCategory}&ownerId=${selectedOwnerId}"
+            <a href="?page=${i}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&categoryId=${selectedCategoryId}&ownerId=${selectedOwnerId}&status=${param.status}"
                class="btn ${i eq currentPage ? 'active' : ''}">
                ${i + 1}
             </a>
         </c:forEach>
 
         <c:if test="${currentPage < totalPages - 1}">
-            <a href="?page=${currentPage + 1}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&category=${selectedCategory}&ownerId=${selectedOwnerId}"
+            <a href="?page=${currentPage + 1}&assetCode=${selectedAssetCode}&assetName=${selectedAssetName}&categoryId=${selectedCategoryId}&ownerId=${selectedOwnerId}&status=${param.status}"
                class="btn">Next</a>
         </c:if>
     </div>
 </c:if>
 
-<!-- Modal updated with Allocated Date row -->
 <div class="modal fade" id="viewAssetModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-md modal-dialog-centered">
     <div class="modal-content">
@@ -322,6 +348,7 @@
           <tr><th>Cost</th><td id="assetCost"></td></tr>
           <tr><th>Owner</th><td id="assetOwner"></td></tr>
           <tr><th>Allocated Date</th><td id="assetAllocatedDate"></td></tr>
+          <tr><th>Description</th><td id="assetDescription"></td></tr>
         </table>
       </div>
       <div class="modal-footer">
@@ -331,11 +358,11 @@
   </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title">Confirm Deletion</h5>
+        <h5 class="modal-title">Confirm Action</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body" id="deleteText">
@@ -344,7 +371,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <form id="deleteForm" method="post">
-          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          <button type="submit" class="btn btn-danger">Yes, confirm</button>
         </form>
       </div>
     </div>
@@ -356,23 +383,24 @@ document.addEventListener('DOMContentLoaded', function () {
   var deleteUrl = '';
   var deleteText = document.getElementById('deleteText');
   var deleteForm = document.getElementById('deleteForm');
-  var deleteModalEl = document.getElementById('deleteModal');
+  var deleteModalEl = document.getElementById('statusModal');
   var deleteModal = new bootstrap.Modal(deleteModalEl);
 
-  document.querySelectorAll('.delete-btn').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      deleteUrl = btn.getAttribute('data-url');
-      var name = btn.getAttribute('data-asset-name');
-      if (name) {
-        deleteText.textContent = 'Are you sure you want to delete "' + name + '" permanently?';
-      } else {
-        deleteText.textContent = 'Are you sure you want to delete this asset permanently?';
-      }
-      deleteForm.action = deleteUrl;
-      deleteModal.show();
-    });
-  });
+ document.querySelectorAll('.toggle-status-btn').forEach(function (btn) {
+   btn.addEventListener('click', function (e) {
+     e.preventDefault();
+     var action = btn.getAttribute('data-action');
+     var name = btn.getAttribute('data-asset-name');
+     var url = btn.getAttribute('data-url');
+
+     document.getElementById('deleteText').textContent =
+       'Are you sure you want to ' + action.toLowerCase() + ' "' + name + '"?';
+     document.getElementById('deleteForm').action = url;
+
+     var modal = new bootstrap.Modal(document.getElementById('statusModal'));
+     modal.show();
+   });
+ });
 });
 
 document.querySelectorAll('.viewAssetBtn').forEach(function (btn) {
@@ -383,6 +411,7 @@ document.querySelectorAll('.viewAssetBtn').forEach(function (btn) {
     document.getElementById('assetCost').innerText = btn.getAttribute('data-cost') || '0';
     document.getElementById('assetOwner').innerText = btn.getAttribute('data-owner') || 'N/A';
     document.getElementById('assetAllocatedDate').innerText = btn.getAttribute('data-allocated') || 'N/A';
+    document.getElementById('assetDescription').innerText = btn.getAttribute('data-description') || 'N/A';
   });
 });
 

@@ -52,11 +52,12 @@ public class AssetController {
     public ModelAndView viewAssetsList(
             @RequestParam(required = false) String assetCode,
             @RequestParam(required = false) String assetName,
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) Integer ownerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "assetId") String sortBy) {
+            @RequestParam(defaultValue = "assetId") String sortBy,
+        @RequestParam(required = false, defaultValue = "Active") String status) {
 
         ModelAndView modelView = new ModelAndView("others/viewAssets");
 
@@ -72,25 +73,25 @@ public class AssetController {
 
         if (assetCode != null && assetCode.trim().isEmpty()) assetCode = null;
         if (assetName != null && assetName.trim().isEmpty()) assetName = null;
-        if (category != null && category.trim().isEmpty()) category = null;
+        if (categoryId != null && categoryId == 0) categoryId = null;
         if (ownerId != null && ownerId == 0) ownerId = null;
 
 
         if (isAssetAllowed && !isAdmin) {
             ownerId = user.getUserId();
-            assetCode = null;
-            assetName = null;
-            category = null;
         }
+        boolean showActive = status.equalsIgnoreCase("Active");
 
 
-        Page<AssetEntity> filteredAssetsPage = assetService.filterAssets(
-                assetCode, assetName, category, ownerId, page, pageSize, sortBy);
+        Page<AssetEntity> filteredAssetsPage = assetService.filterAssetsByStatus(
+                assetCode, assetName, categoryId, ownerId, showActive, page, pageSize, sortBy);
         List<AssetDTO> filteredAssetsList = assetService.convertToDTO(filteredAssetsPage.getContent());
 
-
         Map<Integer, String> ashokaTeamMap = assetService.getAllAshokaTeamMembers().stream()
-                .collect(Collectors.toMap(e -> e.getUserId(), e -> e.getName()));
+                .collect(Collectors.toMap(
+                        e -> e.getUserId(),
+                        e -> e.getName() + " (" + e.getUsername() + ")"
+                ));
         modelView.addObject("ashokaTeamMap", ashokaTeamMap);
         modelView.addObject("categories", assetService.getAllCategories());
 
@@ -105,7 +106,7 @@ public class AssetController {
 
         modelView.addObject("selectedAssetCode", assetCode);
         modelView.addObject("selectedAssetName", assetName);
-        modelView.addObject("selectedCategory", category);
+        modelView.addObject("selectedCategory", categoryId);
         modelView.addObject("selectedOwnerId", ownerId);
 
         return modelView;
@@ -130,10 +131,11 @@ public class AssetController {
         AssetDTO assetDTO = new AssetDTO();
         assetDTO.setCreationDate(LocalDate.now());
         modelAndView.addObject("assetDTO", assetDTO);
-        Map<Integer, String> ashokaTeamMap = assetService.getAllAshokaTeamMembers().stream()
-                .collect(Collectors.toMap(AshokaTeam::getUserId, AshokaTeam::getName));
-        modelAndView.addObject("ashokaTeams", ashokaTeamMap);
-        List<Category> categories = categoryRepository.findAll();
+
+        List<AshokaTeam> ashokaTeams = assetService.getAllAshokaTeamMembers();
+        modelAndView.addObject("ashokaTeams", ashokaTeams);
+
+        List<Category> categories = categoryRepository.findActiveCategories();
         modelAndView.addObject("categories", categories);
         return modelAndView;
     }
@@ -144,19 +146,36 @@ public class AssetController {
     public ModelAndView saveAsset(@ModelAttribute("assetDTO") AssetDTO assetDTO,
                                   BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            ModelAndView mv = new ModelAndView("others/addAsset");
-            mv.addObject("ashokaTeams", assetService.getAllAshokaTeamMembers());
+        ModelAndView mv = new ModelAndView("others/addAsset");
+
+        mv.addObject("ashokaTeams", assetService.getAllAshokaTeamMembers());
+        mv.addObject("categories", categoryRepository.findActiveCategories());
+
+        if (assetDTO.getCategoryId() == null) {
+            mv.addObject("error", "Please select a category before saving!");
             return mv;
         }
 
         try {
+            Category category = categoryRepository.findById(assetDTO.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Invalid category selected"));
+
+            if (assetDTO.getAllocatedDate() == null) {
+                assetDTO.setAllocatedDate(new java.util.Date());
+            }
+
+            if (assetDTO.getAssetOwnerId() == null || assetDTO.getAssetOwnerId() == 0) {
+                assetDTO.setAssetOwnerId(
+                        userRepository.findByUsername("INI").get().getUserId()
+                );
+            }
+
+            assetDTO.setActive(true);
             assetService.saveAsset(assetDTO);
+
         } catch (Exception e) {
             e.printStackTrace();
-            ModelAndView mv = new ModelAndView("others/addAsset");
             mv.addObject("error", "Failed to save asset. Please try again.");
-            mv.addObject("ashokaTeams", assetService.getAllAshokaTeamMembers());
             return mv;
         }
 
@@ -196,28 +215,36 @@ public class AssetController {
             modelView.addObject("errorMessage", "Asset not found!");
             return modelView;
         }
+        AssetDTO assetDTO = assetService.convertToDTO(Collections.singletonList(asset)).get(0);
 
         TransferDTO transferDTO = new TransferDTO();
         transferDTO.setAssetId(assetId);
+        transferDTO.setFromAshokaTeamId(asset.getOwnerId());
 
         Integer currentOwnerId = asset.getOwnerId();
         AshokaTeam currentOwner = currentOwnerId != null ? userRepository.findById(currentOwnerId).orElse(null) : null;
 
         transferDTO.setFromAshokaTeamId(currentOwnerId != null ? currentOwnerId : 0);
-        String previousOwnerName = currentOwner != null ? currentOwner.getName() : "N/A";
+        String previousOwnerName = "Unallocated";
+        if (currentOwner != null) {
+            previousOwnerName = currentOwner.getName() + " (" + currentOwner.getUsername() + ")";
+        }
 
         Map<Integer, String> ownerMap = new LinkedHashMap<>();
         assetService.getAllAshokaTeamMembers().forEach(ashokaTeam -> {
             if (currentOwnerId == null || ashokaTeam.getUserId() != currentOwnerId) {
-                ownerMap.put(ashokaTeam.getUserId(), ashokaTeam.getName());
+                String displayName = ashokaTeam.getName() + " (" + ashokaTeam.getUsername() + ")";
+                ownerMap.put(ashokaTeam.getUserId(), displayName);
             }
         });
 
         modelView.addObject("transferDTO", transferDTO);
-        modelView.addObject("asset", asset);
+        modelView.addObject("asset", assetDTO);
         modelView.addObject("previousOwnerName", previousOwnerName);
         modelView.addObject("ownerMap", ownerMap);
         modelView.addObject("transferDate", LocalDate.now());
+        modelView.addObject("previousOwnerId",asset.getOwnerId());
+        modelView.addObject("categoryName", asset.getCategory() != null ? asset.getCategory().getCategoryName() : "No Category");
 
         return modelView;
     }
@@ -259,6 +286,24 @@ public class AssetController {
         ModelAndView modelView = new ModelAndView("others/transferHistory");
         List<AssetTransferHistory> historyList =
                 assetTransferHistoryRepository.findByAsset_AssetIdOrderByTransferDateDesc(assetId);
+
+        List<Map<String, Object>> formattedHistory = new ArrayList<>();
+        for (AssetTransferHistory history : historyList) {
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("fromUser", history.getFromAshokaTeam() != null
+                    ? history.getFromAshokaTeam().getName() + " (" + history.getFromAshokaTeam().getUsername() + ")"
+                    : "N/A");
+
+            map.put("toUser", history.getToAshokaTeam() != null
+                    ? history.getToAshokaTeam().getName() + " (" + history.getToAshokaTeam().getUsername() + ")"
+                    : "N/A");
+
+            map.put("transferDate", history.getTransferDate());
+            map.put("remarks", history.getRemarks());
+            formattedHistory.add(map);
+        }
+
         AssetEntity asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new RuntimeException("Asset not found"));
 
@@ -318,7 +363,7 @@ public class AssetController {
         AssetEntity asset = assetRepository.findById(assetId)
 
                 .orElseThrow(() -> new RuntimeException("Asset not found"));
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findActiveCategories();
         modelView.addObject("categories", categories);
         modelView.addObject("asset", asset);
         return modelView;
@@ -335,7 +380,7 @@ public class AssetController {
         if (bindingResult.hasErrors()) {
             modelView.setViewName("others/editAsset");
             modelView.addObject("asset", asset);
-            modelView.addObject("categories", categoryRepository.findAll());
+            modelView.addObject("categories", categoryRepository.findActiveCategories());
             return modelView;
         }
 
@@ -344,6 +389,7 @@ public class AssetController {
 
         existingAsset.setAssetName(asset.getAssetName());
         existingAsset.setAssetCost(asset.getAssetCost());
+        existingAsset.setDescription(asset.getDescription());
 
 
         if (asset.getCategory() != null && !asset.getCategory().isEmpty()) {
@@ -387,20 +433,57 @@ public class AssetController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
     @GetMapping("/categories_manage")
-    public ModelAndView listCategories() {
+    public ModelAndView listCategories(@RequestParam(value = "status", required = false) String status) {
         ModelAndView mv = new ModelAndView("others/manageCategories");
-        mv.addObject("categories", categoryRepository.findAll());
+
+        List<Category> categories;
+        if (status == null || status.isEmpty()) {
+            categories = categoryRepository.findByStatus("Active");
+            status = "Active";
+        } else {
+            categories = categoryRepository.findByStatus(status);
+        }
+
+        mv.addObject("categories", categories);
+        mv.addObject("selectedStatus", status);
         return mv;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
-    @PostMapping("/categories_delete/{id}")
-    public ModelAndView deleteCategory(@PathVariable Integer id) {
-        categoryRepository.deleteById(id);
+    @PostMapping("/categories_deactivate/{id}")
+    public ModelAndView deactivateCategory(@PathVariable Integer id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        category.setStatus("Inactive");
+        categoryRepository.save(category);
         return new ModelAndView("redirect:/categories_manage");
     }
 
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
+    @PostMapping("/categories_activate/{id}")
+    public ModelAndView activateCategory(@PathVariable Integer id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        category.setStatus("Active");
+        categoryRepository.save(category);
+        return new ModelAndView("redirect:/categories_manage");
+    }
+
+
+
+
+    @PostMapping("/assets_deactivate/{assetId}")
+    public ModelAndView deactivateAsset(@PathVariable Integer assetId) {
+        assetService.deactivateAsset(assetId);
+        return new ModelAndView("redirect:/view_assets_list?status=Active");
+    }
+
+    @PostMapping("/assets_activate/{assetId}")
+    public ModelAndView activateAsset(@PathVariable Integer assetId) {
+        assetService.activateAsset(assetId);
+        return new ModelAndView("redirect:/view_assets_list?status=Deactivated");
+    }
 }
 
 
