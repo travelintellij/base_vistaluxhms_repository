@@ -129,6 +129,39 @@
                 text-align: center;
             }
         }
+         .social-links {
+                            text-align: center;
+                            margin-top: 20px;
+                        }
+                        .social-links a {
+                            margin: 0 10px;
+                            text-decoration: none;
+                            color: white;
+                            padding: 10px 15px;
+                            border-radius: 5px;
+                            display: inline-block;
+                        }
+                        .facebook { background-color: #3b5998; }
+                        .instagram { background-color: #e4405f; }
+                        .linkedin { background-color: #0077b5; }
+                        .email { background-color: #ff6600; }
+                        .website { background-color: #000; }
+                        .twitter {
+                            background-color: #1DA1F2;
+                        }
+                        .whatsapp-button {
+                            text-align: center;
+                            margin-top: 20px;
+                        }
+                        .whatsapp-button a {
+                            background-color: #25D366;
+                            color: white;
+                            padding: 10px 20px;
+                            text-decoration: none;
+                            font-size: 16px;
+                            border-radius: 5px;
+                            display: inline-block;
+                        }
     </style>
 </head>
 <body>
@@ -158,56 +191,36 @@
     </div>
 
    <div class="section">
-       <h2>Venue &amp; Experience Overview</h2>
-       <p>
-           Thank you for considering <strong>Ashoka’s Tiger Trail Resort</strong> for your upcoming corporate event. Our resort offers a serene and focused environment ideal for strategic meetings, team-building sessions, workshops, or offsite retreats.
-       </p>
-       <p>
-           We are committed to delivering a seamless experience with the right mix of comfort, professionalism, and personalized service to ensure your event is impactful and productive.
-       </p>
-
-      <div class="highlight-box">
-             <h3>Event Highlights &amp; Offerings</h3>
-             <ul>
-                 <li>42 well-appointed rooms with modern amenities</li>
-                 <li>Indoor conference hall with AV equipment</li>
-                 <li>Breakout spaces and outdoor lawns for team activities</li>
-                 <li>Customizable meal plans (veg/non-veg)</li>
-                 <li>Bonfire, wildlife safari &amp; nature walks for leisure</li>
-                 <li>Dedicated event coordinator &amp; on-site support</li>
-             </ul>
-         </div>
+         ${eventConfig.resortInfo}
+         <div class="highlight-box">
+             ${eventConfig.celebrationHighlight}
+        </div>
 
    <div class="section">
-       <h2>Photo Gallery</h2>
-       <div class="photo-collage">
-           <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/89e9c291-2a41-cb74-5abc-40cd8bf54a78.jpeg?fit=crop&amp;w=600&amp;q=80" alt="5" />
-           <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/93a3c3c9-b2c3-2b41-15d2-50f7aad8a631.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Team Meeting" />
-           <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?fit=crop&amp;w=600&amp;q=80" alt="Conference" />
-           <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/a6f572c5-8eb7-106b-ecab-4197919c936a.png?fit=crop&amp;w=600&amp;q=80" alt="Team Building" />
-           <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/43c37228-758e-fc5d-335a-f89fa80f2fef.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
-           <img src="https://mcusercontent.com/b524536bce55ad238411aa638/images/8928c72a-cfa1-eebd-7881-0d2563bd4627.jpeg?fit=crop&amp;w=600&amp;q=80" alt="Networking" />
-       </div>
+     <h2>Photo Gallery</h2>
+     <div class="photo-collage">
+       <#if eventConfig.imageUrl1?? && eventConfig.imageUrl1?has_content>
+         <img src="${eventConfig.imageUrl1}" alt="Quotation Image 1"/>
+       </#if>
+       <#if eventConfig.imageUrl2?? && eventConfig.imageUrl2?has_content>
+         <img src="${eventConfig.imageUrl2}" alt="Quotation Image 2"/>
+       </#if>
+       <#if eventConfig.imageUrl3?? && eventConfig.imageUrl3?has_content>
+         <img src="${eventConfig.imageUrl3}" alt="Quotation Image 3"/>
+       </#if>
+       <#if eventConfig.imageUrl4?? && eventConfig.imageUrl4?has_content>
+         <img src="${eventConfig.imageUrl4}" alt="Quotation Image 4"/>
+       </#if>
+       <#if eventConfig.imageUrl5?? && eventConfig.imageUrl5?has_content>
+         <img src="${eventConfig.imageUrl5}" alt="Quotation Image 5"/>
+       </#if>
+       <#if eventConfig.imageUrl6?? && eventConfig.imageUrl6?has_content>
+         <img src="${eventConfig.imageUrl6}" alt="Quotation Image 6"/>
+       </#if>
+     </div>
    </div>
 
-
-   <!-- Additional Testimonial -->
-     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-         "Ashoka's Tiger Trail Resort provided the perfect setting for our corporate retreat. The serene atmosphere helped our team stay focused, while the modern amenities and impeccable service ensured that our meetings were productive. The venue was spacious and well-equipped, and the team went above and beyond to tailor every aspect to our needs. Highly recommend for any corporate event!"<br/>
-         <strong>– Confidential, Ahmedabad</strong>
-     </div>
-
-     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-         "We hosted our annual leadership meeting at Ashoka's Tiger Trail Resort, and it was an incredible experience. The combination of state-of-the-art conference facilities and the beautiful natural surroundings made it the ideal venue for our team-building exercises and strategic sessions. The staff was professional, accommodating, and ensured everything went smoothly. It was a memorable event that enhanced both productivity and morale."<br/>
-         <strong>–  From a Recent MICE Event,  Delhi NCR</strong>
-     </div>
-
-     <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-         "Ashoka Tiger Trail Resort provided the perfect setting for our corporate offsite. The serene surroundings and state-of-the-art conference facilities enabled us to focus on strategic planning and team-building activities. The staff was incredibly professional, ensuring every detail was handled seamlessly. A truly memorable experience that fostered collaboration and innovation among our team!"<br/>
-         <strong>– Sushil, Delhi NCR </strong>
-     </div>
-
-
+    ${eventConfig.testimonial}
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
 </div>
@@ -290,47 +303,48 @@
     </div>
 </#if>
 
-    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
-        <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
-            <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Terms and Conditions</h3>
-            <ul style="margin: 0 0 0 18px; font-size: 14px; line-height: 1.6;">
-                <#if gstIncluded>
-                            <li>All prices are inclusive of GST and other applicable taxes.</li>
-                        <#else>
-                            <li>GST and other applicable taxes will be charged extra.</li>
-                        </#if>
-                        <li>Rates are subject to availability and change until confirmed.</li>
-                        <li>Booking is confirmed only upon receiving advance payment.</li>
-                        <li>Event decor and customizations are chargeable based on requirements.</li>
-                        <li>Final guest count must be confirmed at least 10 days prior to the event.</li>
-                        <li>Outdoor events are subject to weather; backup arrangements may be made if required.</li>
-                        <li>Liquor services require valid permits, to be arranged separately.</li>
-                        <li>External vendors are subject to resort approval.</li>
-                        <li>Check-in and check-out times are as per resort policy.</li>
-                    </ul>
-                    <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
-            </ul>
-        </div>
-    </div>
+   <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
+           <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
+               <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Terms and Conditions</h3>
+               <ul style="margin: 0 0 0 18px; font-size: 14px; line-height: 1.6;">
+                   <#if gstIncluded>
+                               <li>All prices are inclusive of GST and other applicable taxes.</li>
+                           <#else>
+                               <li>GST and other applicable taxes will be charged extra.</li>
+                           </#if>
+                          ${eventConfig.termsConditions}
+                       </ul>
+                       <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
+               </ul>
+           </div>
+       </div>
+
+       <div class="social-links">
+               <#if centralConfig.facebookLink?has_content>
+                   <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+               </#if>
+
+               <#if centralConfig.instagramLink?has_content>
+                   <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+               </#if>
+
+               <#if centralConfig.linkedinLink?has_content>
+                   <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+               </#if>
+
+               <#if centralConfig.xLink?has_content>
+                   <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+               </#if>
 
 
-<div class="social-media" style="text-align: center; margin-top: 20px;">
-    <h3>Connect With Us</h3>
-    <p>
-        <a href="https://www.facebook.com/ashokatigertrail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" width="24" height="24" />
-        </a>
-        <a href="https://www.instagram.com/ashoka_tiger_trail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram" width="24" height="24" />
-        </a>
-        <a href="https://www.linkedin.com/company/ashokastigertrailresort/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" width="24" height="24" />
-        </a>
-        <a href="https://ashokastigertrail.com/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/fluency/48/domain.png" alt="Website" width="24" height="24" />
-        </a>
-    </p>
-</div>
+               <#if centralConfig.centralizedEmail?has_content>
+                   <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+               </#if>
+
+               <#if centralConfig.website?has_content>
+                   <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+               </#if>
+           </div>
 
 
 

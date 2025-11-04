@@ -838,7 +838,7 @@ public class EventController {
 				model.put("discount", eventPackageEntityDTO.getDiscount());
 				model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 				model.put("remarks", eventPackageEntityDTO.getDescription());
-
+				model.put("eventType", eventPackageEntityDTO.getEventType().getEventTypeName());
 				List<Map<String, Object>> serviceList = new ArrayList<>();
 
 				for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
