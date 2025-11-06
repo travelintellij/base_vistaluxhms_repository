@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.validation.Valid;
 import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,6 +47,8 @@ public class AssetController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private DocumentCategoryMasterRepository documentCategoryMasterRepository;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER','ASSET_ALLOWED')")
     @GetMapping("/view_assets_list")
@@ -156,6 +159,11 @@ public class AssetController {
             return mv;
         }
 
+        if (assetDTO.getAssetCost() == null || assetDTO.getAssetCost().compareTo(BigDecimal.ZERO) <= 0) {
+            mv.addObject("costError", "Asset cost must be greater than 0");
+            return mv;
+        }
+
         try {
             Category category = categoryRepository.findById(assetDTO.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Invalid category selected"));
@@ -178,6 +186,8 @@ public class AssetController {
             mv.addObject("error", "Failed to save asset. Please try again.");
             return mv;
         }
+
+
 
         return new ModelAndView("redirect:/view_assets_list");
     }
@@ -384,6 +394,14 @@ public class AssetController {
             return modelView;
         }
 
+        if (asset.getAssetCost() == null || asset.getAssetCost().compareTo(BigDecimal.ZERO) <= 0) {
+            modelView.setViewName("others/editAsset");
+            modelView.addObject("asset", asset);
+            modelView.addObject("categories", categoryRepository.findActiveCategories());
+            modelView.addObject("costError", "Asset cost must be greater than 0");
+            return modelView;
+        }
+
         AssetEntity existingAsset = assetRepository.findById(asset.getAssetId())
                 .orElseThrow(() -> new RuntimeException("Asset not found"));
 
@@ -472,13 +490,14 @@ public class AssetController {
 
 
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
     @PostMapping("/assets_deactivate/{assetId}")
     public ModelAndView deactivateAsset(@PathVariable Integer assetId) {
         assetService.deactivateAsset(assetId);
         return new ModelAndView("redirect:/view_assets_list?status=Active");
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
     @PostMapping("/assets_activate/{assetId}")
     public ModelAndView activateAsset(@PathVariable Integer assetId) {
         assetService.activateAsset(assetId);

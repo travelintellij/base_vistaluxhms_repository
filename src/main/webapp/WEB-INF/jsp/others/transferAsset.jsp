@@ -11,10 +11,10 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: linear-gradient(to bottom, #2196F3, #64B5F6);
+            background: linear-gradient(to bottom, #2196F3, #64B5F6);
             min-height: 100vh;
             display: flex;
-         flex-direction:column;
+            flex-direction:column;
             align-items: center;
         }
         .header{
@@ -77,64 +77,61 @@ background: linear-gradient(to bottom, #2196F3, #64B5F6);
             color: #495057;
         }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
-    margin-top: 25px;
-}
+     .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+       margin-top: 25px;
+       }
 
-.equal-btn {
-    flex: 1;
-    text-align: center;
-    padding: 14px 0;
-    font-size: 16px;
-    border-radius: 8px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    color: #222;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-}
+          .equal-btn {
+          flex: 1;
+          text-align: center;
+           padding: 14px 0;
+           font-size: 16px;
+           border-radius: 8px;
+           font-weight: 600;
+           border: none;
+           cursor: pointer;
+           text-decoration: none;
+           color: #222;
+           transition: all 0.3s ease;
+           box-sizing: border-box;
+           display: inline-block;
+           position: relative;
+            overflow: hidden;
+          }
 
-/* Bright green Transfer button */
-.transfer-btn {
+     .transfer-btn {
     background: linear-gradient(90deg, #00FF66, #00CC44);
     color: #000;
     box-shadow: 0 0 12px rgba(0, 255, 100, 0.8);
-}
+     }
 
-.transfer-btn:hover {
+    .transfer-btn:hover {
     background: linear-gradient(90deg, #00CC44, #00FF66);
     box-shadow: 0 0 20px rgba(0, 255, 100, 1);
-}
+      }
 
-/* Glitter red Back button */
-.back-button {
+    .back-button {
     background: linear-gradient(135deg, #FF4C4C, #FF1C1C, #FF6666);
     background-size: 300% 300%;
     color: #fff;
     animation: glitter 3s infinite linear;
     box-shadow: 0 0 15px rgba(255, 50, 50, 0.8);
-}
+    }
 
-.back-button:hover {
+    .back-button:hover {
     background: linear-gradient(135deg, #FF1C1C, #FF4C4C, #FF8080);
     box-shadow: 0 0 25px rgba(255, 30, 30, 1);
-}
+       }
 
-/* Glitter shimmer animation */
-@keyframes glitter {
+    @keyframes glitter {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
-}
+      }
 
         @media (max-width: 768px) {
             body { padding: 20px; }

@@ -8,14 +8,17 @@ import com.vistaluxhms.repository.DocumentCategoryMasterRepository;
 import com.vistaluxhms.repository.DocumentCategoryRepository;
 import com.vistaluxhms.services.DocumentCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.core.Authentication;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -178,14 +181,22 @@ public class DocumentCategoryController {
         out.close();
     }
 
-
     @GetMapping("/manage_documentcategories")
-    public ModelAndView manageDocumentCategories() {
+    public ModelAndView manageDocumentCategories(@RequestParam(value = "status", required = false) String status) {
         ModelAndView mv = new ModelAndView("others/manageDocumentcategories");
-        mv.addObject("documentCategories", documentService.getAllCategories());
+
+        List<DocumentCategoryMaster> categories;
+        if (status == null || status.isEmpty()) {
+            categories = documentCategoryMasterRepository.findByStatus("Active");
+            status = "Active";
+        } else {
+            categories = documentCategoryMasterRepository.findByStatus(status);
+        }
+
+        mv.addObject("documentCategories", categories);
+        mv.addObject("selectedStatus", status);
         return mv;
     }
-
 
     @GetMapping("/add_documentcategory")
     public ModelAndView addDocumentCategoryForm() {
@@ -206,5 +217,40 @@ public class DocumentCategoryController {
     public ModelAndView deleteDocumentCategory(@PathVariable Integer id) {
         documentService.deleteCategory(id);
         return new ModelAndView("redirect:/manage_documentcategories");
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')")
+    @PostMapping("/doc_categories_deactivate/{id}")
+    public ModelAndView deactivateDocumentCategory(@PathVariable Integer id) {
+        DocumentCategoryMaster category = documentCategoryMasterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Document Category not found"));
+        category.setStatus("Inactive");
+        documentCategoryMasterRepository.save(category);
+        return new ModelAndView("redirect:/manage_documentcategories?status=Active");
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')")
+    @PostMapping("/doc_categories_activate/{id}")
+    public ModelAndView activateDocumentCategory(@PathVariable Integer id) {
+        DocumentCategoryMaster category = documentCategoryMasterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Document Category not found"));
+        category.setStatus("Active");
+        documentCategoryMasterRepository.save(category);
+        return new ModelAndView("redirect:/manage_documentcategories?status=Inactive");
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','DOCUMENT_MANAGER')")
+    @PostMapping("/update_document_category")
+    @ResponseBody
+    public ResponseEntity<String> updateDocumentCategory(@ModelAttribute DocumentCategoryMaster category) {
+        DocumentCategoryMaster existingCategory = documentCategoryMasterRepository.findById(category.getId())
+                .orElseThrow(() -> new RuntimeException("Document Category not found"));
+
+        existingCategory.setCategoryName(category.getCategoryName());
+        existingCategory.setDescription(category.getDescription());
+
+        documentCategoryMasterRepository.save(existingCategory);
+
+        return ResponseEntity.ok("Category updated successfully");
     }
 }

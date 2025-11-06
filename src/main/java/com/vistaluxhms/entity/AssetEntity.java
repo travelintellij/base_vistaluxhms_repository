@@ -1,9 +1,11 @@
 package com.vistaluxhms.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.DecimalMin;
 
 @Entity
 @Table(name = "assets")
@@ -22,6 +24,7 @@ public class AssetEntity {
     private Date creationDate;
 
     @Column(name = "asset_cost")
+    @DecimalMin(value = "0.01", message = "Asset cost must be greater than 0")
     private BigDecimal assetCost;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +46,8 @@ public class AssetEntity {
     @OneToMany(mappedBy = "asset")
     private List<AssetAllocation> allocations;
 
-    @Column(name = "description")
+@Size(max = 200, message = "Description cannot exceed 200 characters")
+    @Column(name = "description", length = 200)
     private String description;
 
 

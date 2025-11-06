@@ -10,7 +10,7 @@
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: linear-gradient(to bottom, #2196F3, #64B5F6);
+        background: linear-gradient(to bottom, #2196F3, #64B5F6);
         min-height: 100vh;
     }
 
@@ -163,9 +163,13 @@ background: linear-gradient(to bottom, #2196F3, #64B5F6);
 
 
 
-            <label>Cost:</label>
-            <form:input path="assetCost" type="number" />
-            <form:errors path="assetCost" cssClass="error" />
+           <label>Cost:</label>
+           <form:input path="assetCost" type="number" step="0.01"
+                       value="${asset.assetCost != null ? asset.assetCost : ''}" />
+
+           <c:if test="${not empty costError}">
+               <span class="error-message">${costError}</span>
+           </c:if>
 
             <label>Description:</label>
             <form:textarea path="description" rows="4" cssClass="form-control" placeholder="Enter description"></form:textarea>

@@ -7,7 +7,7 @@
                   <title>Add Asset</title>
                   <style>
 
-                                    .error-message {
+                   .error-message {
                       color: red;
                       font-size: 16px;
                       margin-top: 5px;
@@ -108,10 +108,15 @@
                       </div>
 
 
-                      <div class="form-cell">
-                          <label for="assetCost">Asset Cost</label>
-                          <form:input path="assetCost" id="assetCost" type="number" step="0.01" />
-                      </div>
+                     <div class="form-cell">
+                         <label for="assetCost">Asset Cost</label>
+                         <form:input path="assetCost" id="assetCost" type="number" step="0.01"
+                                     value="${assetDTO.assetCost != null ? assetDTO.assetCost : ''}" />
+
+                         <c:if test="${not empty costError}">
+                             <span class="error-message">${costError}</span>
+                         </c:if>
+                     </div>
 
 
 
@@ -143,9 +148,10 @@
                               path="description"
                               id="description"
                               rows="6"
-                              placeholder="Enter asset description..."
+                              maxlength="200"
+                              placeholder="Enter asset description ..."
                               style="width: 100%; height: 150px; font-size: 18px; padding: 15px; border-radius: 12px; border: 2px solid #ccc; resize: vertical;" />
-                      </div>
+                            </div>
 
 
                       <div class="form-actions">
@@ -154,10 +160,8 @@
                           </sec:authorize>
                           <a href="${pageContext.request.contextPath}/view_assets_list" class="cancel-btn btn-cancel">Cancel</a>
                       </div>
-
                   </form:form>
               </div>
-
               </body>
               </html>
 

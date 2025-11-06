@@ -13,6 +13,49 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
 
+   /* --- Force dropdown button colors --- */
+   .dropdown-menu a.btn-transfer,
+   .dropdown-menu button.btn-transfer {
+     background-color: #43cea2 !important; /* Green */
+     color: #fff !important;
+   }
+
+   .dropdown-menu a.btn-history,
+   .dropdown-menu button.btn-history {
+     background-color: #185a9d !important; /* Blue */
+     color: #fff !important;
+   }
+
+   .dropdown-menu a.btn-edit,
+   .dropdown-menu button.btn-edit {
+     background-color: #ff7e5f !important; /* Orange */
+     color: #fff !important;
+   }
+
+   .dropdown-menu a.btn-view,
+   .dropdown-menu button.btn-view {
+     background-color: #17a2b8 !important; /* Teal */
+     color: #fff !important;
+   }
+
+   .dropdown-menu a.btn-deactivate,
+   .dropdown-menu button.btn-deactivate {
+     background-color: #e74c3c !important; /* Red */
+     color: #fff !important;
+   }
+
+   .dropdown-menu a.btn-activate,
+   .dropdown-menu button.btn-activate {
+     background-color: #28a745 !important; /* Green (for activate) */
+     color: #fff !important;
+   }
+
+   /* Hover shade tweak */
+   .dropdown-menu a.btn:hover,
+   .dropdown-menu button.btn:hover {
+     filter: brightness(0.9);
+   }
+
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -154,6 +197,172 @@
       cursor: not-allowed;
       box-shadow: none;
     }
+
+
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+
+    .dropdown .btn {
+      background-color: #185a9d;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      text-align: center;
+      padding: 0;
+      font-size: 20px;
+      line-height: 34px;
+    }
+
+    .dropdown .btn:hover {
+      background-color: #0f3c6a;
+    }
+
+    .dropdown-menu {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      padding: 8px 0;
+    }
+
+    .dropdown-item {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+
+    .dropdown-item:hover {
+      background-color: #e9f5ff;
+    }
+
+    .dropdown-toggle {
+      background-color: #007bff;
+      border: none;
+      font-size: 18px;
+      line-height: 1;
+      padding: 3px 8px;
+      border-radius: 50%;
+      color: white;
+    }
+
+    .dropdown-toggle:hover {
+      background-color: #0056b3;
+    }
+
+    .dropdown-menu {
+      min-width: 130px;
+    }
+
+    .dropdown-item {
+      font-weight: 500;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu {
+      min-width: 180px !important;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    .dropdown-menu .btn {
+      border-radius: 5px;
+      display: block;
+      width: 100%;
+      margin-bottom: 5px;
+      font-weight: 500;
+      text-align: center;
+      color: #fff !important;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dropdown-menu .btn-transfer {
+      background-color: #28a745; /* green */
+    }
+
+
+
+    .dropdown-menu .btn-edit {
+      background-color: #dc3545; /* red */
+    }
+
+
+    /* Optional hover effect */
+    .dropdown-menu .btn:hover {
+      opacity: 0.85;
+    }
+
+   .dropdown-menu .btn-transfer {
+     background-color: #43cea2 !important; /* Green */
+     border-color: #43cea2 !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-history,
+   .dropdown-menu .btn-info { /* covers "History" and default Bootstrap info */
+     background-color: #185a9d !important; /* Deep Blue */
+     border-color: #185a9d !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-edit {
+     background-color: #ff7e5f !important; /* Orange */
+     border-color: #ff7e5f !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-view {
+     background-color: #17a2b8 !important; /* Teal */
+     border-color: #17a2b8 !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-deactivate,
+   .dropdown-menu .btn-danger { /* covers both Deactivate and Bootstrap danger */
+     background-color: #e74c3c !important; /* Red */
+     border-color: #e74c3c !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-activate,
+   .dropdown-menu .btn-success { /* covers Activate and Bootstrap success */
+     background-color: #28a745 !important; /* Green */
+     border-color: #28a745 !important;
+     color: #fff !important;
+   }
+
+   /* Common hover style */
+   .dropdown-menu .btn:hover {
+     filter: brightness(0.9);
+     transform: scale(1.02);
+   }
+
+
+
+   .dropdown-menu .btn-history,
+   .dropdown-menu button.btn-history,
+   .dropdown-menu a.btn-history {
+     background-color: #6f42c1 !important;
+     border-color: #6f42c1 !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn-view,
+   .dropdown-menu button.btn-view,
+   .dropdown-menu a.btn-view {
+     background-color: #20c997 !important;
+     border-color: #20c997 !important;
+     color: #fff !important;
+   }
+
+   .dropdown-menu .btn:hover {
+     filter: brightness(0.9);
+     transform: scale(1.03);
+   }
     </style>
 </head>
 
@@ -249,41 +458,56 @@
                     <td><fmt:formatDate value="${asset.allocatedDate}" pattern="dd-MM-yyyy"/></td>
 
                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">
-                    <td>
-                        <a href="${pageContext.request.contextPath}/assets_transfer_form/${asset.assetId}" class="btn btn-transfer">Transfer</a>
-                        <a href="${pageContext.request.contextPath}/assets_transfer_history/${asset.assetId}" class="btn btn-history">History</a>
-                        <a href="${pageContext.request.contextPath}/edit_asset/${asset.assetId}" class="btn btn-edit">Edit</a>
-                        <button type="button" class="btn btn-info viewAssetBtn"
-                                data-bs-toggle="modal"
-                                data-bs-target="#viewAssetModal"
-                                data-code="${asset.assetCode}"
-                                data-name="${asset.assetName}"
-                          data-category="${asset.category != null ? asset.category.categoryName : 'N/A'}"
-                               data-cost="${asset.assetCost}"
-                                data-owner="${asset.assetOwnerName}"
-                                data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='dd-MM-yyyy'/>"
-                               data-description="${fn:escapeXml(asset.description)}">
-                           View
-                        </button>
-                       <c:choose>
-                           <c:when test="${asset.active}">
-                               <a href="#" class="btn btn-danger btn-sm toggle-status-btn"
-                                  data-asset-name="${asset.assetName}"
-                                  data-url="${pageContext.request.contextPath}/assets_deactivate/${asset.assetId}"
-                                  data-action="Deactivate">
-                                  Deactivate
-                               </a>
-                           </c:when>
-                           <c:otherwise>
-                               <a href="#" class="btn btn-success btn-sm toggle-status-btn"
-                                  data-asset-name="${asset.assetName}"
-                                  data-url="${pageContext.request.contextPath}/assets_activate/${asset.assetId}"
-                                  data-action="Activate">
-                                  Activate
-                               </a>
-                           </c:otherwise>
-                       </c:choose>
-                    </td>
+     <td>
+       <div class="dropdown">
+         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">⋮</button>
+         <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 150px;">
+           <li>
+             <a href="${pageContext.request.contextPath}/assets_transfer_form/${asset.assetId}" class="dropdown-item btn btn-transfer text-white mb-1 w-100">Transfer</a>
+           </li>
+           <li>
+             <a href="${pageContext.request.contextPath}/assets_transfer_history/${asset.assetId}" class="dropdown-item btn btn-history text-white mb-1 w-100">History</a>
+           </li>
+           <li>
+             <a href="${pageContext.request.contextPath}/edit_asset/${asset.assetId}" class="dropdown-item btn btn-edit text-white mb-1 w-100">Edit</a>
+           </li>
+           <li>
+             <button type="button" class="dropdown-item btn btn-info text-white mb-1 w-100 viewAssetBtn"
+                     data-bs-toggle="modal"
+                     data-bs-target="#viewAssetModal"
+                     data-code="${asset.assetCode}"
+                     data-name="${asset.assetName}"
+                     data-category="${asset.category != null ? asset.category.categoryName : 'N/A'}"
+                     data-cost="${asset.assetCost}"
+                     data-owner="${asset.assetOwnerName}"
+                     data-allocated="<fmt:formatDate value='${asset.allocatedDate}' pattern='dd-MM-yyyy'/>"
+                     data-description="${fn:escapeXml(asset.description)}">
+               View
+             </button>
+           </li>
+           <li>
+             <c:choose>
+               <c:when test="${asset.active}">
+                 <a href="#" class="dropdown-item btn btn-danger text-white w-100 toggle-status-btn"
+                    data-asset-name="${asset.assetName}"
+                    data-url="${pageContext.request.contextPath}/assets_deactivate/${asset.assetId}"
+                    data-action="Deactivate">
+                    Deactivate
+                 </a>
+               </c:when>
+               <c:otherwise>
+                 <a href="#" class="dropdown-item btn btn-success text-white w-100 toggle-status-btn"
+                    data-asset-name="${asset.assetName}"
+                    data-url="${pageContext.request.contextPath}/assets_activate/${asset.assetId}"
+                    data-action="Activate">
+                    Activate
+                 </a>
+               </c:otherwise>
+             </c:choose>
+           </li>
+         </ul>
+       </div>
+     </td>
                     </sec:authorize>
                     <sec:authorize access="hasRole('ASSET_ALLOWED')">
                                         <td>
