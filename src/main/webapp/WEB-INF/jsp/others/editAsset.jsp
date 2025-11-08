@@ -37,7 +37,7 @@
         font-size: 32px;
         font-weight: 700;
         color: #ff4b2b;
-        margin-bottom: 30px; /* Balanced space below heading */
+        margin-bottom: 30px;
     }
 
     label {
