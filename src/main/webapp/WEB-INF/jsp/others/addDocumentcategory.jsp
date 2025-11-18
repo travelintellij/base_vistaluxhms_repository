@@ -3,7 +3,7 @@
 <head>
     <title>Add Document Category</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #eef2f3; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background:  linear-gradient(135deg, #43cea2, #185a9d); }
         .container { max-width: 600px; margin: 60px auto; background: #fff; padding: 50px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         h2 { text-align: center; margin-bottom: 30px; color: #34495e; }
         form label { display: block; margin-bottom: 10px; font-weight: 700; }

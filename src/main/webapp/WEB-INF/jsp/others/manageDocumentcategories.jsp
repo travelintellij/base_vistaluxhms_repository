@@ -4,7 +4,7 @@
 <head>
     <title>Manage Document Categories</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f3f5; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #43cea2, #185a9d); margin: 0; }
         .container { max-width: 1100px; margin: 50px auto; background: #fff; padding: 50px; border-radius: 15px; }
         h2 { text-align: center; margin-bottom: 30px; color: #2c3e50; }
         .add-link { display: inline-block; margin-bottom: 20px; padding: 12px 20px; background: #1abc9c; color: white; border-radius: 8px; text-decoration: none; }

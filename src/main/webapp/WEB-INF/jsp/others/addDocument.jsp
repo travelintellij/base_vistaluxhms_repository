@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            background: linear-gradient(135deg, #43cea2, #185a9d);
             min-height: 100vh;
         }
 
@@ -19,7 +19,7 @@
             width: 100%;
             background-color: #fff;
             padding: 20px 0;
-            margin-bottom: 40px;
+            margin-bottom: 0px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
         }
 
@@ -37,7 +37,7 @@
             background: #fff;
             border-radius: 20px;
             padding: 50px 60px;
-            margin: 50px auto;
+            margin: 40px auto;
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
@@ -150,11 +150,17 @@
 </head>
 <body>
    <jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
-<div class="page-header-fullwidth">
-    <h2>Add New Document</h2>
+
 </div>
 
 <div class="container">
+   <h2>Add New Document</h2>
+<c:if test="${not empty errorMessage}">
+        <div style="color: red; font-weight: bold; margin-bottom: 20px; text-align:center;">
+            ${errorMessage}
+        </div>
+    </c:if>
+
     <form action="<c:url value='/save_document'/>" method="post" enctype="multipart/form-data">
         <div class="form-cell">
             <label for="categoryId">Category Name *</label>
@@ -167,20 +173,20 @@
         </div>
 
         <div class="form-cell">
-            <label for="file">File *</label>
-            <input type="file" id="file" name="file" required/>
+            <label for="documentName">Document Name *</label>
+            <input type="text" id="documentName" name="documentName"
+                   class="form-control" required placeholder="Enter Document Name"/>
         </div>
 
-       <div class="form-cell">
-           <label for="uploadedBy">Uploaded By *</label>
-           <select id="uploadedBy" name="uploadedBy" class="form-control" required>
 
-               <option value="" disabled selected>Select a user</option>
-               <c:forEach var="team" items="${ashokaTeams}">
-                   <option value="${team.key}">${team.value}</option>
-               </c:forEach>
-           </select>
-       </div>
+
+        <div class="form-cell">
+            <label for="file">File *</label>
+            <input type="file" id="file" name="file" required/>
+            <!-- Inline error message -->
+            <div id="fileError" style="color: red; font-weight: bold; margin-top: 8px;"></div>
+        </div>
+
 
         <c:if test="${fn:contains(userRoles,'ROLE_ADMIN') || fn:contains(userRoles,'DOCUMENT_MANAGER')}">
             <div class="form-cell">
@@ -199,6 +205,19 @@
 
     </form>
 </div>
+
+<script>
+document.getElementById("file").addEventListener("change", function() {
+    const file = this.files[0];
+    const errorDiv = document.getElementById("fileError");
+    errorDiv.textContent = ""; // clear previous error
+
+    if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
+        errorDiv.textContent = "File size should not exceed 5 MB";
+        this.value = ""; // clear the file input
+    }
+});
+</script>
 </body>
 </html>
 

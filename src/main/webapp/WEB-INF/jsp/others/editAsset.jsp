@@ -10,7 +10,7 @@
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(to bottom, #2196F3, #64B5F6);
+        background:linear-gradient(135deg, #43cea2, #185a9d);
         min-height: 100vh;
     }
 

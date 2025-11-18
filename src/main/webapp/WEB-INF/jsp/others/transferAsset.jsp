@@ -123,7 +123,7 @@
     }
 
     .back-button:hover {
-    background: linear-gradient(135deg, #FF1C1C, #FF4C4C, #FF8080);
+    background:linear-gradient(135deg, #43cea2, #185a9d);
     box-shadow: 0 0 25px rgba(255, 30, 30, 1);
        }
 

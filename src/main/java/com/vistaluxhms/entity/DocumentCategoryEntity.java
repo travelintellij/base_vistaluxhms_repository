@@ -48,6 +48,9 @@ public class DocumentCategoryEntity {
     @Column(name = "restricted", nullable = false)
     private boolean restricted = false;
 
+    @Column(name = "document_name")
+    private String documentName;
+
 
     public Integer getDocumentId() {
         return documentId;
@@ -128,6 +131,14 @@ public class DocumentCategoryEntity {
 
     public void setCategory(DocumentCategoryMaster category) {
         this.category = category;
+    }
+
+    public String getDocumentName() {
+        return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 }
 

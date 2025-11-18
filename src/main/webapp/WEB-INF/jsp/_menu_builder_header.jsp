@@ -250,7 +250,7 @@
         </ul>
     </li>
 </sec:authorize>
-       <sec:authorize access="hasRole('DOCUMENT_ALLOWED')">
+       <sec:authorize access="hasAnyRole('DOCUMENT_ALLOWED','RESTRICTED_DOC_ACCESS')">
           <li>
               <a href="#">Knowledge Repository</a>
               <ul class="submenu">

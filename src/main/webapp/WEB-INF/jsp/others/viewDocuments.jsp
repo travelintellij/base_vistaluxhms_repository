@@ -159,6 +159,65 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
 
+
+        .category-card {
+            background: #fff;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .category-header {
+            background: linear-gradient(90deg, #ffeb3b, #ffd54f);
+            color: #222;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px 25px;
+            border-bottom: 2px solid #f0c000;
+        }
+
+        table.category-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.category-table th, table.category-table td {
+            padding: 12px 18px;
+            font-size: 17px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        table.category-table th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #333;
+        }
+
+        table.category-table tr:hover {
+            background-color: #f1faff;
+        }
+
+        .doc-actions a {
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .doc-actions .view-btn { background: #43cea2; }
+        .doc-actions .view-btn:hover { background: #2bb07f; }
+        .doc-actions .download-btn { background: #185a9d; }
+        .doc-actions .download-btn:hover { background: #0f3c6a; }
+        .doc-actions .delete-btn { background: #e74c3c; }
+        .doc-actions .delete-btn:hover { background: #c0392b; }
+
+
     </style>
 </head>
 <body>
@@ -194,36 +253,43 @@
 </div>
 
 <div class="container mb-4" style="max-width:1000px;">
-    <table class="table table-striped table-hover">
-     <thead>
-            <tr>
-                <th>ID</th>
-                <th>Category Name</th>
-                <th>File Name</th>
-                <th>Uploaded By</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="doc" items="${documents}">
-                <c:if test="${!doc.restricted || fn:contains(userRoles,'ROLE_ADMIN') || fn:contains(userRoles,'ROLE_DOCUMENT_MANAGER')}">
+
+    <c:forEach var="entry" items="${groupedDocs}">
+        <div class="category-card">
+            <div class="category-header">
+                ${entry.key}
+            </div>
+
+            <table class="category-table">
+                <thead>
                     <tr>
-                        <td>${doc.documentId}</td>
-                        <td>${doc.categoryName}</td>
-                        <td>${doc.fileName}</td>
-                        <td>${ashokaTeams[doc.uploadedBy]}</td>
-                        <td>
-                            <a href="<c:url value='/download_document/${doc.documentId}'/>" class="download-btn">Download</a>
-                            <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')">
-                                <a href="#" class="delete-btn" onclick="openDeleteModal(${doc.documentId})">Delete</a>
-                            </sec:authorize>
-                            <a href="<c:url value='/view_document/${doc.documentId}'/>" target="_blank" class="view-btn">View</a>
-                        </td>
+                        <th style="width:10%;">ID</th>
+                        <th style="width:35%;">Document Name</th>
+                        <th style="width:35%;">File Name</th>
+                        <th style="width:20%;">Actions</th>
                     </tr>
-                </c:if>
-            </c:forEach>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <c:forEach var="doc" items="${entry.value}">
+                        <c:if test="${!doc.restricted || fn:contains(userRoles,'ROLE_ADMIN') || fn:contains(userRoles,'ROLE_RESTRICTED_DOC_ACCESS') || fn:contains(userRoles,'ROLE_DOCUMENT_MANAGER')}">
+                            <tr>
+                                <td>${doc.documentId}</td>
+                                <td>${doc.documentName}</td>
+                                <td>${doc.fileName}</td>
+                                <td class="doc-actions">
+                                    <a href="<c:url value='/download_document/${doc.documentId}'/>" class="download-btn">Download</a>
+                                    <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')">
+                                        <a href="#" class="delete-btn" onclick="openDeleteModal(${doc.documentId})">Delete</a>
+                                    </sec:authorize>
+                                    <a href="<c:url value='/view_document/${doc.documentId}'/>" target="_blank" class="view-btn">View</a>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </c:forEach>
 </div>
 
 <div id="deleteModal" class="modal">

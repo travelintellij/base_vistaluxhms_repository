@@ -11,11 +11,13 @@ public class DocumentCategoryDTO {
     private String fileName;
     private String fileType;
     private long fileSize;
-    private Integer uploadedBy;
+
     private Date uploadedDate;
     private byte[] fileData;
     private boolean restricted;
     private Integer categoryId;
+    private String documentName;
+    private Integer uploadedBy;
 
 
     public int getDocumentId() {
@@ -53,12 +55,7 @@ public class DocumentCategoryDTO {
         this.fileSize = fileSize;
     }
 
-    public Integer getUploadedBy() {
-        return uploadedBy;
-    }
-    public void setUploadedBy(Integer uploadedBy) {
-        this.uploadedBy = uploadedBy;
-    }
+
 
     public Date getUploadedDate() {
         return uploadedDate;
@@ -88,5 +85,21 @@ public class DocumentCategoryDTO {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getDocumentName() {
+        return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
+    }
+
+    public Integer getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(Integer uploadedBy) {
+        this.uploadedBy = uploadedBy;
     }
 }

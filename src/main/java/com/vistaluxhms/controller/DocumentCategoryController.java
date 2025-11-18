@@ -10,6 +10,7 @@ import com.vistaluxhms.services.DocumentCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,13 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import static com.vistaluxhms.services.DocumentCategoryServiceImpl.*;
 
 
 @Controller
@@ -49,44 +50,55 @@ public class DocumentCategoryController {
                 .anyMatch(role -> Arrays.asList(roles).contains(role));
     }
 
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER','ROLE_DOCUMENT_ALLOWED')")
     @GetMapping("/view_documents_list")
-    public ModelAndView viewDocumentsList(
-            @RequestParam(required = false) Integer categoryId,
-            Authentication authentication) {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER','ROLE_DOCUMENT_ALLOWED','ROLE_RESTRICTED_DOC_ACCESS')")
+    public ModelAndView viewDocumentsList(@RequestParam(required = false) Integer categoryId,
+                                          Authentication authentication) {
 
         List<DocumentCategoryDTO> documents;
 
+        // ✅ Get username from Authentication
+        String username = (authentication != null) ? authentication.getName() : null;
 
-        if (categoryId != null) {
-            documents = documentService.getDocumentsByCategory(categoryId);
+        if (username == null || username.equalsIgnoreCase("anonymousUser")) {
+            documents = Collections.emptyList();
+            System.out.println("🔴 No logged-in user");
         } else {
-            documents = documentService.getActiveDocuments(
-                    hasAnyRole(authentication, "ROLE_ADMIN", "ROLE_DOCUMENT_MANAGER")
-            );
+            // ✅ Fetch AshokaTeam user
+            AshokaTeam user = documentService.getUserByUsername(username);
+            System.out.println("🟢 Logged-in user: " + user.getName() + ", ID: " + user.getUserId());
+
+            if (categoryId != null) {
+                documents = documentService.getDocumentsByCategory(categoryId);
+            } else {
+                // Determine if user has access to restricted documents
+                documents = documentService.getDocumentsForUser(user); // NEW method
+            }
         }
+        // Group documents by category
+        Map<String, List<DocumentCategoryDTO>> groupedDocs = documents.stream()
+                .collect(Collectors.groupingBy(DocumentCategoryDTO::getCategoryName,
+                        LinkedHashMap::new, Collectors.toList()));
 
         ModelAndView mv = new ModelAndView("others/viewDocuments");
-
+        mv.addObject("groupedDocs", groupedDocs);
         mv.addObject("documents", documents);
 
+        // Pass users and roles to view
         Map<Integer, String> ashokaTeams = documentService.getAllAshokaTeamMembers()
                 .stream()
                 .collect(Collectors.toMap(AshokaTeam::getUserId, AshokaTeam::getName));
         mv.addObject("ashokaTeams", ashokaTeams);
 
-        mv.addObject("userRoles", authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(",")));
+        String rolesStr = authentication.getAuthorities().stream()
+                .map(a -> a.getAuthority())
+                .collect(Collectors.joining(","));
+        mv.addObject("userRoles", rolesStr);
 
-        List<DocumentCategoryMaster> categories = documentService.getAllCategories();
-        mv.addObject("categories", categories);
+        mv.addObject("categories", documentService.getActiveCategories());
 
         return mv;
     }
-
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')")
     @GetMapping("/add_document")
     public ModelAndView showAddDocumentForm(Authentication authentication) {
@@ -104,7 +116,7 @@ public class DocumentCategoryController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(",")));
 
-        List<DocumentCategoryMaster> categories = documentCategoryMasterRepository.findAll();
+        List<DocumentCategoryMaster> categories = documentCategoryMasterRepository.findByStatus("Active");
         mv.addObject("categories", categories);
 
         return mv;
@@ -115,9 +127,24 @@ public class DocumentCategoryController {
     public ModelAndView saveDocument(
             @RequestParam("file") MultipartFile file,
             @RequestParam("categoryId") Integer categoryId,
-            @RequestParam("uploadedBy") Integer uploadedBy,
-            @RequestParam(value = "restricted", required = false) boolean restricted) throws IOException {
+            @RequestParam String documentName,
+            @RequestParam(value = "restricted", required = false) boolean restricted,
+            Authentication authentication) throws IOException {
 
+
+        long MAX_SIZE = 5L * 1024 * 1024;
+        if (file == null || file.isEmpty()) {
+            ModelAndView mv = new ModelAndView("add_document");
+            mv.addObject("errorMessage", "Please choose a file to upload.");
+            mv.addObject("categories", documentCategoryMasterRepository.findAll());
+            return mv;
+        }
+        if (file.getSize() > MAX_SIZE) {
+            ModelAndView mv = new ModelAndView("add_document");
+            mv.addObject("errorMessage", "File size should not exceed 5 MB!");
+            mv.addObject("categories", documentCategoryMasterRepository.findAll());
+            return mv;
+        }
 
         DocumentCategoryMaster selectedCategory = documentCategoryMasterRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -126,19 +153,35 @@ public class DocumentCategoryController {
         DocumentCategoryDTO dto = new DocumentCategoryDTO();
         dto.setCategoryId(categoryId);
         dto.setCategoryName(selectedCategory.getCategoryName());
-        dto.setUploadedBy(uploadedBy);
+        dto.setDocumentName(documentName);
         dto.setFileName(file.getOriginalFilename());
         dto.setFileType(file.getContentType());
         dto.setFileSize(file.getSize());
         dto.setFileData(file.getBytes());
         dto.setRestricted(restricted);
+        String currentUsername = null;
+        if (SecurityContextHolder.getContext() != null &&
+                SecurityContextHolder.getContext().getAuthentication() != null) {
 
+            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+            System.out.println("🟢 Username from SecurityContext: " + currentUsername);
+        }
+
+        if (currentUsername == null || currentUsername.equalsIgnoreCase("anonymousUser")) {
+            currentUsername = "Sushil";
+            System.out.println("🟣 Using fallback username: " + currentUsername);
+        }
+
+        Integer userId = documentService.getUserIdByUsername(currentUsername);
+        System.out.println("🟢 Final UploadedBy userId: " + userId);
+
+        dto.setUploadedBy(userId);
         documentService.saveDocument(dto);
 
         return new ModelAndView("redirect:/view_documents_list");
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER','ROLE_DOCUMENT_ALLOWED')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER','ROLE_DOCUMENT_ALLOWED','ROLE_RESTRICTED_DOC_ACCESS')")
     @GetMapping("/download_document/{id}")
     public void downloadDocument(@PathVariable Integer id, HttpServletResponse response) throws IOException {
         DocumentCategoryDTO dto = documentService.getDocumentById(id);
@@ -239,7 +282,7 @@ public class DocumentCategoryController {
         return new ModelAndView("redirect:/manage_documentcategories?status=Inactive");
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','DOCUMENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')")
     @PostMapping("/update_document_category")
     @ResponseBody
     public ResponseEntity<String> updateDocumentCategory(@ModelAttribute DocumentCategoryMaster category) {

@@ -8,6 +8,9 @@ import com.vistaluxhms.repository.DocumentCategoryMasterRepository;
 import com.vistaluxhms.repository.DocumentCategoryRepository;
 import com.vistaluxhms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -37,12 +40,11 @@ public class DocumentCategoryServiceImpl {
         entity.setFileName(dto.getFileName());
         entity.setFileType(dto.getFileType());
         entity.setFileSize(dto.getFileSize());
-        entity.setUploadedBy(dto.getUploadedBy());
+        entity.setDocumentName(dto.getDocumentName());
         entity.setUploadedDate(new Date());
         entity.setFileData(dto.getFileData());
-
         entity.setRestricted(dto.isRestricted());
-
+        entity.setUploadedBy(dto.getUploadedBy());
         entity = documentCategoryRepository.save(entity);
 
         dto.setDocumentId(entity.getDocumentId());
@@ -74,10 +76,9 @@ public class DocumentCategoryServiceImpl {
         dto.setFileName(entity.getFileName());
         dto.setFileType(entity.getFileType());
         dto.setFileSize(entity.getFileSize());
-        dto.setUploadedBy(entity.getUploadedBy());
+        dto.setDocumentName(entity.getDocumentName());
         dto.setUploadedDate(entity.getUploadedDate());
         dto.setFileData(entity.getFileData());
-
         dto.setRestricted(entity.isRestricted());
         return dto;
     }
@@ -110,14 +111,22 @@ public class DocumentCategoryServiceImpl {
                 .collect(Collectors.toList());
     }
 
-    public List<DocumentCategoryDTO> getActiveDocuments(boolean isManager) {
+    public List<DocumentCategoryDTO> getActiveDocuments(boolean includeRestricted) {
         List<DocumentCategoryEntity> docs;
-        if (isManager) {
+
+        if (includeRestricted) {
+            // Admin + Manager + Restricted-Access users
             docs = documentCategoryRepository.findByDeletedFalse();
+            System.out.println("🔹 Fetching ALL active documents (restricted + unrestricted)");
         } else {
+            // Normal users → Only unrestricted
             docs = documentCategoryRepository.findByRestrictedFalseAndDeletedFalse();
+            System.out.println("🔹 Fetching ONLY unrestricted documents");
         }
-        return docs.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        return docs.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
 
@@ -148,10 +157,72 @@ public class DocumentCategoryServiceImpl {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    public Integer getUserIdByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(AshokaTeam::getUserId)
+                .orElse(null);
+    }
+
+    public List<DocumentCategoryMaster> getActiveCategories() {
+        return documentCategoryMasterRepository.findByStatus("Active");
+    }
+
+
+
+    // new helper method in service
+    public AshokaTeam getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+    public boolean userHasRestrictedAccess(AshokaTeam user) {
+        System.out.println("🟢 Checking roles for user: " + user.getName());
+        user.getRoles().forEach(r -> System.out.println("   - Role: " + r.getRoleName()));
+
+        return user.getRoles().stream()
+                .map(r -> r.getRoleName().toUpperCase())
+                .anyMatch(rn -> rn.equals("ADMIN")
+                        || rn.equals("DOCUMENT_MANAGER")
+                        || rn.equals("RESTRICTED_DOC_ACCESS"));
+    }
+
+    public List<DocumentCategoryDTO> getDocumentsForUser(AshokaTeam user) {
+        boolean hasAccess = userHasRestrictedAccess(user); // admins/managers/restricted
+        System.out.println("🟢 User has access to restricted docs: " + hasAccess);
+
+        // Fetch documents from repository
+        List<DocumentCategoryEntity> docs = documentCategoryRepository.findAllAccessible(hasAccess);
+
+        System.out.println("🟢 Fetched " + docs.size() + " documents from repository");
+        for (DocumentCategoryEntity d : docs) {
+            System.out.println("   - " + d.getDocumentName() + ", restricted=" + d.isRestricted() + ", deleted=" + d.isDeleted());
+        }
+
+        return docs.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    public AshokaTeam getLoggedInUserFromAuth(Authentication authentication) {
+        if (authentication == null) return null;
+
+        // Use authentication.getName() directly
+        String username = authentication.getName();
+
+        if (username == null || username.equalsIgnoreCase("anonymousUser")) {
+            return null;
+        }
+
+        AshokaTeam user = userRepository.findByUsername(username).orElse(null);
+
+        if (user == null) {
+            System.out.println("🔴 No AshokaTeam found for username: " + username);
+        } else {
+            System.out.println("🟢 Logged-in user found in service: " + user.getName() + ", ID: " + user.getUserId());
+        }
+
+        return user;
+    }
 }
-
-
-
 
 
 
