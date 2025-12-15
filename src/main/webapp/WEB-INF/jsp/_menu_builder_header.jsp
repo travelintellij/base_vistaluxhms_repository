@@ -252,7 +252,7 @@
 </sec:authorize>
        <sec:authorize access="hasAnyRole('DOCUMENT_ALLOWED','RESTRICTED_DOC_ACCESS')">
           <li>
-              <a href="#">Knowledge Repository</a>
+              <a href="#">Document Repository</a>
               <ul class="submenu">
                   <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
               </ul>
