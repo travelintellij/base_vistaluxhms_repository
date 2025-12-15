@@ -228,7 +228,7 @@
 
 <sec:authorize access="hasAnyRole('ADMIN','DOCUMENT_MANAGER')">
     <li>
-        <a href="#">Document Repository</a>
+        <a href="#">Knowledge Repository</a>
         <ul class="submenu">
 
             <li>
