@@ -261,14 +261,43 @@ public class AssetController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ASSET_MANAGER')")
     @PostMapping("/assets_transfer")
-    public ModelAndView handleTransfer(@ModelAttribute("transferDTO") TransferDTO transferDTO,
+    public ModelAndView handleTransfer(  @Valid @ModelAttribute("transferDTO") TransferDTO transferDTO,
                                        BindingResult bindingResult) {
 
 
         if (bindingResult.hasErrors()) {
+            ModelAndView mv = new ModelAndView("others/transferAsset");
 
-            return new ModelAndView("redirect:/assets_transfer_form/" + transferDTO.getAssetId());
+            AssetEntity asset = assetService.getAssetById(transferDTO.getAssetId());
+            AssetDTO assetDTO = assetService.convertToDTO(Collections.singletonList(asset)).get(0);
+
+            mv.addObject("transferDTO", transferDTO);
+            mv.addObject("asset", assetDTO);
+            mv.addObject("previousOwnerId", asset.getOwnerId());
+            mv.addObject("categoryName", asset.getCategory() != null ? asset.getCategory().getCategoryName() : "No Category");
+
+            // rebuild owner map
+            Map<Integer, String> ownerMap = new LinkedHashMap<>();
+            assetService.getAllAshokaTeamMembers().forEach(ashokaTeam -> {
+                //
+                if (ashokaTeam.getUserId() != asset.getOwnerId()
+) {
+                    ownerMap.put(ashokaTeam.getUserId(), ashokaTeam.getName() + " (" + ashokaTeam.getUsername() + ")");
+                }
+            });
+            mv.addObject("ownerMap", ownerMap);
+
+            String previousOwnerName = "Unallocated";
+            AshokaTeam currentOwner = userRepository.findById(asset.getOwnerId()).orElse(null);
+            if (currentOwner != null) {
+                previousOwnerName = currentOwner.getName() + " (" + currentOwner.getUsername() + ")";
+            }
+
+            mv.addObject("previousOwnerName", previousOwnerName);
+
+            return mv;
         }
+
 
         assetService.transferAsset(transferDTO);
 

@@ -139,6 +139,18 @@
             h1 { font-size: 28px; }
             label, select, input, textarea, button { font-size: 16px; padding: 12px; }
         }
+
+        .text-danger {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 5px;
+            display: block;
+            background: #ffe6e6;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ff0000;
+        }
     </style>
 </head>
 <body>
@@ -188,6 +200,8 @@
         <div class="form-section">
             <label>Transfer Date:</label>
          <form:input path="transferDate" type="date" required="required"/>
+         <form:errors path="transferDate" cssClass="text-danger"/>
+
         </div>
 
         <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">

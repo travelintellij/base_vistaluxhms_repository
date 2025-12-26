@@ -62,10 +62,10 @@
         .table-container {
             overflow-x: auto;
             background: #fff0f5;
-            padding: 40px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            max-width: 1200px;
+            max-width: 800px;
             margin: auto;
         }
 

@@ -2,12 +2,16 @@ package com.vistaluxhms.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
+
 
 public class TransferDTO {
     private Integer assetId;
     private Integer fromAshokaTeamId;
     private Integer toAshokaTeamId;
+
+    @PastOrPresent(message = "Transfer date cannot be a future date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transferDate;
     private String remarks;
