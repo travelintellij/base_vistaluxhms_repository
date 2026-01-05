@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Leads_Followup_Entity  {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected long leadFollowupId;
 
 	@ManyToOne(fetch = FetchType.EAGER)

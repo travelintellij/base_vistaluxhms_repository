@@ -246,7 +246,7 @@ border:2px solid white;
           </div>
           <form id = "loginForm" name="f" th:action="@{/login}" method="post" class="log-in" autocomplete="off">
           <div class="logo">
-           <img src="<c:url value='/resources/images/ashoka_logo.jpg'/>" alt="Ashoka Image" width="100%" height="100%" />
+          <img src="<c:url value='/resources/images/morni_logo.png'/>" alt="Morni Image" width="100%" height="100%" />
           </div>
 
             <p class="floating-label">Log in to your account:</p>
@@ -321,3 +321,4 @@ border:2px solid white;
 
   <script>
 </html>
+

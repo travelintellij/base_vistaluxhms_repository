@@ -12,7 +12,7 @@ import com.vistaluxhms.model.WorkLoadStatusVO;
 @Table(name = "workload_status")
 public class Workload_Status_Entity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 @Column(columnDefinition = "DEFAULT 0")
 	private int id;
 

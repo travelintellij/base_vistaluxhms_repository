@@ -16,7 +16,7 @@ import com.vistaluxhms.util.VistaluxConstants;
 @Table(name = "cities")
 public class City_Entity{
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int destinationId=0;
 
 	protected String cityName;

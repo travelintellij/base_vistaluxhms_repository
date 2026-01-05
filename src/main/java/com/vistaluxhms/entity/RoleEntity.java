@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @Table(name = "role")
 public class RoleEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int roleId;
 
 	private String roleName;

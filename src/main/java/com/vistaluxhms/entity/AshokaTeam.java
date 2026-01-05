@@ -26,7 +26,7 @@ import com.vistaluxhms.model.UserDetailsObj;
 @Table(name = "ashokateam")
 public class AshokaTeam {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int userId;
 
 	@Column(nullable = false,name="username", unique = true)

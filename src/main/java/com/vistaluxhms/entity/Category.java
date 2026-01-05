@@ -17,9 +17,8 @@ public class Category {
     @Column(name =  "description")
     private String description;
 
-    @Column(name = "status")
-    private String status;
-
+    @Column(name = "status", nullable = false)
+    private String status = "Active";
 
     public Integer getCategoryId() {
         return categoryId;
