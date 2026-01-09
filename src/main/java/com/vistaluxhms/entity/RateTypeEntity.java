@@ -5,7 +5,7 @@ import com.vistaluxhms.model.RateType_Obj;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RateType")
+@Table(name = "ratetype")
 public class RateTypeEntity {
 
     @Id
