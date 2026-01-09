@@ -476,7 +476,7 @@ public class QuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
+            String emailSubject = "Quotation: Morni Hills Resort | " + quotationEntityDTO.getGuestName() ;
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());

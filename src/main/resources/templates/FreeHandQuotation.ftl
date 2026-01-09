@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation - Ashoka Tiger Trail Resort</title>
+    <title>Quotation - Morni Hills Resort</title>
     <style>
         body {
             font-family: Arial, sans-serif;
