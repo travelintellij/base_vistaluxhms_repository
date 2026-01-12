@@ -476,7 +476,7 @@ public class QuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Morni Hills Resort | " + quotationEntityDTO.getGuestName() ;
+            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());
@@ -832,7 +832,7 @@ public class QuotationController {
 
     @RequestMapping(value = "process_fh_quotation", params = "whatsapp", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_fh_quotation_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                   BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                      BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
@@ -914,7 +914,7 @@ public class QuotationController {
 
     @RequestMapping(value = "process_fh_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_fh_quotation_email(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                   BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
         ModelAndView modelView = new ModelAndView();
