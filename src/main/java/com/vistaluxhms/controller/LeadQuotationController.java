@@ -131,7 +131,7 @@ public class LeadQuotationController {
 
     @RequestMapping(value="view_system_leads_quotes",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view_system_leads_quotes( @ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,
-                                           BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
+                                                  BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
 
         System.out.println("Lead id received is " + leadRecorderObj.getLeadId());
         ModelAndView modelView = new ModelAndView("quotation/view_lead_system_quote");
@@ -445,7 +445,7 @@ public class LeadQuotationController {
 
     @RequestMapping(value = "process_system_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_system_quotation_email(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
-                                                BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                       BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
         ModelAndView modelView = new ModelAndView();
@@ -514,7 +514,7 @@ public class LeadQuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Morni Hills Resort | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
+            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());
@@ -706,7 +706,7 @@ public class LeadQuotationController {
 
     @RequestMapping(value = "process_system_quotation", params = "EmailAndWhatsApp", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_system_quotation_email_and_whatsapp(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO quotationEntityDTO,
-                                                             BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                                    BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib) {
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
@@ -974,7 +974,7 @@ public class LeadQuotationController {
 
     @RequestMapping(value="view_fh_leads_quotes",method= {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView view_fh_leads_quotes( @ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,
-                                                  BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
+                                              BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib){
         ModelAndView modelView = new ModelAndView("quotation/view_lead_fh_quote");
         LeadEntity leadEntity = leadService.findLeadById(leadRecorderObj.getLeadId());
         leadRecorderObj.updateLeadVoFromEntity(leadEntity);
@@ -1124,18 +1124,18 @@ public class LeadQuotationController {
 
     @RequestMapping(value = "process_fh_lead_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_fh_lead_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
-                                             BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,BindingResult leadBindingResult, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                  BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj,BindingResult leadBindingResult, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("quotation/createLeadFHQuotation");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
         //modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
         //List<RateTypeEntity> listRateType = salesService.findAllActiveRateTypes(true);
         //Map<Integer, String> rateTypeMap = listRateType.stream()
-          //      .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
+        //      .collect(Collectors.toMap(RateTypeEntity::getRateTypeId, RateTypeEntity::getRateTypeName));
         //modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
         //List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
         //Map<Integer, String> roomTypeMap = listRoomType.stream()
-          //      .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+        //      .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
         //modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
         modelView.addObject("userName", userObj.getUsername());
@@ -1314,7 +1314,7 @@ public class LeadQuotationController {
 
     @RequestMapping(value = "process_fh_lead_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_fh_lead_quotation_save(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO leadFHQuotationEntityDTO,
-                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                       BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
 
         if(leadFHQuotationEntityDTO.getLfhqid()==null || leadFHQuotationEntityDTO.getLfhqid()==0){
@@ -1376,7 +1376,7 @@ public class LeadQuotationController {
     }
 
     public ModelAndView add_new_lead_fh_quotation(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
-                                                      BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+                                                  BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
         //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib) {
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
@@ -1453,4 +1453,5 @@ public class LeadQuotationController {
     }
 
 }
+
 
