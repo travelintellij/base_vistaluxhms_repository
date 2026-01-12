@@ -700,17 +700,34 @@ public class QuotationController {
                 quotationEntityDTO.setRoomDetails(new ArrayList<>());
             }
         }
-        List<QuotationRoomDetailsDTO> validRooms = quotationEntityDTO.getRoomDetails().stream()
-                .filter(room -> room.getRoomCategoryName() != null && !room.getRoomCategoryName().trim().isEmpty()
-                        && room.getMealPlanId() > 0)
-                .collect(Collectors.toList());
 
-        quotationEntityDTO.setRoomDetails(validRooms);
-        isValidRoomDetails(validRooms, result);
+        List<QuotationRoomDetailsDTO> roomDetails = quotationEntityDTO.getRoomDetails();
+
+        for (int i = 0; i < roomDetails.size(); i++) {
+            QuotationRoomDetailsDTO room = roomDetails.get(i);
+
+            if (room.getRoomCategoryId() <= 0) {
+                result.rejectValue(
+                        "roomDetails[" + i + "].roomCategoryId",
+                        "error.roomCategory",
+                        "Please select Room Category"
+                );
+                return view_add_free_hand_quotation_form(quotationEntityDTO, session, result);
+            }
+        }
+
+
+
+
+        boolean isRoomValid = isValidRoomDetails(roomDetails, result);
+
         validateClient(quotationEntityDTO, result);
-        if (result.hasErrors()) {
+
+        if (!isRoomValid || result.hasErrors()) {
             return view_add_free_hand_quotation_form(quotationEntityDTO, session, result);
-        } else {
+
+
+    } else {
             System.out.println("Audient Type  selected is " + quotationEntityDTO.getQuotationAudienceType());
             System.out.println(quotationEntityDTO.getGuestId() + "---" + quotationEntityDTO.getGuestName());
             if (quotationEntityDTO.getQuotationAudienceType() == 1) {
@@ -722,7 +739,7 @@ public class QuotationController {
 
             int grandTotalSum = 0;
             List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
-            for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
+            for (QuotationRoomDetailsDTO quotationRoomDTO : roomDetails) {
                 //quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
                 quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 grandTotalSum += quotationRoomDTO.getTotalPrice();
@@ -761,9 +778,21 @@ public class QuotationController {
         boolean isValid = true;
         LocalDate today = LocalDate.now();
 
+
+
+
         if (roomDetails != null) {
             for (int i = 0; i < roomDetails.size(); i++) {
                 QuotationRoomDetailsDTO room = roomDetails.get(i);
+
+                if (room.getRoomCategoryId() <= 0) {
+                    errors.rejectValue(
+                            "roomDetails[" + i + "].roomCategoryId",
+                            "error.roomCategory",
+                            "Room Category is required"
+                    );
+                    isValid = false;
+                }
 
                 // Validate Adults count
                 if (room.getAdults() < 1 && room.getNoOfChild() < 1) {
@@ -952,3 +981,5 @@ public class QuotationController {
 
 
 }
+
+

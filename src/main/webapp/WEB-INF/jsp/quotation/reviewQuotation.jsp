@@ -175,6 +175,12 @@ h2, h3 {
 
 <div class="container">
     <h2>Review Quotation</h2>
+    <c:if test="${not empty errors}">
+        <div style="color:red; font-weight:bold; text-align:center; margin:10px;">
+            <form:errors />
+        </div>
+    </c:if>
+
 
     <form:form method="post" action="process_quotation" modelAttribute="QUOTATION_OBJ">
         <!-- User Type Selection -->
@@ -302,3 +308,4 @@ h2, h3 {
 </form:form>
 
 <jsp:include page="../footer.jsp" />
+

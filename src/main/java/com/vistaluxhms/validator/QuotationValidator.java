@@ -67,6 +67,7 @@ public class QuotationValidator implements Validator {
 		
 	}
 
+
 	private void validateOccupancy(List<QuotationRoomDetailsDTO> roomDetailsList, Errors errors) {
 		List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
 
@@ -104,11 +105,23 @@ public class QuotationValidator implements Validator {
 		boolean isValid = true;
 		LocalDate today = LocalDate.now();
 
-		if (roomDetails != null) {
+
+
+        if (roomDetails != null) {
 			for (int i = 0; i < roomDetails.size(); i++) {
 				QuotationRoomDetailsDTO room = roomDetails.get(i);
 
-				// Validate Adults count
+                if (room.getRoomCategoryId() <= 0) {
+                    errors.rejectValue(
+                            "roomDetails[" + i + "].roomCategoryId",
+                            "error.roomDetails",
+                            "Room Category is required."
+                    );
+                    isValid = false;
+                }
+
+
+                // Validate Adults count
 				if (room.getAdults() < 1) {
 					errors.rejectValue("roomDetails[" + i + "].adults", "error.roomDetails", "Adults must be greater than zero.");
 					isValid = false;
@@ -162,3 +175,4 @@ public class QuotationValidator implements Validator {
 
 
 }
+
