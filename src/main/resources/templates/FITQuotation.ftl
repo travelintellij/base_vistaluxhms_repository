@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation -Ashoka Tiger Trails</title>
+    <title>Quotation - Ashoka Tiger Trail Resort</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,7 +90,7 @@
 <body>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
-        <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Morni Hills Resort" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />-->
+        <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka's Tiger Trail Resort" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />-->
         <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
     </div>
     <div class="content">
