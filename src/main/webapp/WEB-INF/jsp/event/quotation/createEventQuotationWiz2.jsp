@@ -530,7 +530,7 @@ h2, h3 {
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
    <button type="submit" class="btn btn-save" name="saveQuotation" id="saveQuotation" value="saveQuotation">Save Quotation</button>
    <button type="submit" class="btn btn-download" name="Download" id="Download" value="Download">Download Quotation</button>
-   <button type="submit" class="btn btn-email">Email Quotation</button>
+   <button type="submit" class="btn btn-email" name="Email" id="Email" value="Email">Email Quotation</button>
  </div>
 
 </div>

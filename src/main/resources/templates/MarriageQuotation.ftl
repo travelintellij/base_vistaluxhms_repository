@@ -332,7 +332,7 @@ ${eventConfig.resortInfo}
         </#if>
       ${eventConfig.termsConditions}
     </ul>
-    <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
+    <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
 
 <!--

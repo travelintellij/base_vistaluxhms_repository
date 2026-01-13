@@ -43,7 +43,7 @@
         }
 
         .header {
-            background-image: url('https://www.dropbox.com/scl/fi/es1lvnryfcb3d3edi3iy3/banner_image.jpg?rlkey=n1c83omswor5v7thtct9xu212&st=dnvnvkhu&raw=1');
+            background-image: url('https://www.dropbox.com/scl/fi/es1lvnryfcb3d3edi3iy3/banner_image.jpg?rlkey=n1c83omswor5v7thtct9xu212&raw=1');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

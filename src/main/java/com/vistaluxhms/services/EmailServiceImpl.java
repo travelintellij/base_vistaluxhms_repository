@@ -271,7 +271,13 @@ public class EmailServiceImpl {
 	    @Async
 		public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
-			EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails("wedding");
+			String eventType;
+			if(mail.getModel().get("eventType")!=null)
+				eventType = mail.getModel().get("eventType").toString();
+			else
+				eventType = "wedding";
+
+			EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails(eventType);
 			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
 			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
 			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());

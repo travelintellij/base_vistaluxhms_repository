@@ -702,7 +702,9 @@ public class EventController {
 	private void generateEventQuotationPDF(EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
 		// Prepare data for the template
 		CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
-		EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails("wedding");
+		System.out.println("CHG Event Type Name is " + eventPackageEntityDTO.getEventType().getEventTypeName());
+
+		EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails(eventPackageEntityDTO.getEventType().getEventTypeName());
 
 		Map<String, Object> model = new HashMap<>();
 		UserDetailsObj userObj = getLoggedInUser();
@@ -836,7 +838,7 @@ public class EventController {
 				model.put("discount", eventPackageEntityDTO.getDiscount());
 				model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 				model.put("remarks", eventPackageEntityDTO.getDescription());
-
+				model.put("eventType", eventPackageEntityDTO.getEventType().getEventTypeName());
 				List<Map<String, Object>> serviceList = new ArrayList<>();
 
 				for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
