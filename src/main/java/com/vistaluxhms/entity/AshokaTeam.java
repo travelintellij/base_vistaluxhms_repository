@@ -90,7 +90,7 @@ public class AshokaTeam {
 	protected boolean credentialsExpired;
 	protected boolean deleted;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ashokateam_role",
 		joinColumns = @JoinColumn(name = "userId"), 
 		inverseJoinColumns = @JoinColumn(name = "roleId"))
