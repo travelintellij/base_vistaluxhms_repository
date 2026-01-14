@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import java.beans.PropertyEditorSupport;
 import java.util.*;
 
@@ -114,6 +115,7 @@ public class UserController {
         } else {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
+            //AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
             try {
                 userDetailsService.createOrUpdateUser(ashokaTeamEntity);
                 userDTO.setUserId(ashokaTeamEntity.getUserId());
@@ -149,6 +151,7 @@ public class UserController {
         });
     }
 
+    @Transactional
     @PostMapping(value="edit_edit_user")
     public ModelAndView edit_edit_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
@@ -166,43 +169,58 @@ public class UserController {
             modelView = view_edit_user_form(userDTO, result);
         } else {
             AshokaTeam orgUserEntity = userDetailsService.findUserByID(userDTO.getUserId());
+
             if(!userDTO.getPassword().equals(orgUserEntity.getPassword())) {
-                userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword().trim()));
+                orgUserEntity.setPassword(passwordEncoder.encode(userDTO.getPassword().trim()));
             }
 
-            AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
-            ashokaTeamEntity.setUserId(userDTO.getUserId());
+            orgUserEntity.setAddress(userDTO.getAddress());
+            orgUserEntity.setDesignation(userDTO.getDesignation());
+            orgUserEntity.setDob(userDTO.getDob());
+            orgUserEntity.setDoj(userDTO.getDoj());
+            orgUserEntity.setEmail(userDTO.getEmail());
+            orgUserEntity.setName(userDTO.getName());
+            orgUserEntity.setShift(userDTO.getShift());
+            orgUserEntity.setType(userDTO.getType());
+            orgUserEntity.setUsername(userDTO.getUsername());
+            orgUserEntity.setMobile(userDTO.getMobile());
+            orgUserEntity.setFixedIncentive(userDTO.getFixedIncentive());
+            orgUserEntity.setPersonalEmail(userDTO.getPersonalEmail());
+            orgUserEntity.setPersonalMobile(userDTO.getPersonalMobile());
+            orgUserEntity.setPanCard(userDTO.getPanCard());
+            orgUserEntity.setAadharCard(userDTO.getAadharCard());
+            orgUserEntity.setGender(userDTO.getGender());
+            orgUserEntity.setMaritalStatus(userDTO.getMaritalStatus());
+            orgUserEntity.setRemarks(userDTO.getRemarks());
+            orgUserEntity.setActive(userDTO.isActive());
+            orgUserEntity.setAccountExpired(userDTO.isAccountExpired());
+            orgUserEntity.setAccountLocked(userDTO.isAccountLocked());
+            orgUserEntity.setCredentialsExpired(userDTO.isCredentialsExpired());
+            orgUserEntity.setDeleted(userDTO.isDeleted());
+            orgUserEntity.setLastWorkingDay(userDTO.getLastWorkingDay());
+
             Optional <RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream().filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
                     .findFirst();
 
-            if(existingPrivRoleOpt.isPresent()) {
+            if(existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null && !userDTO.getRoleName().isEmpty()) {
                 RoleEntity existingPrivRole = existingPrivRoleOpt.get();
-                System.out.println(existingPrivRole.getRoleId() + "-- " + userDTO.getRoleId());
+
+                if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)){
+                    userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
+                }
+                else if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)){
+                    userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
+                }
+
                 if(existingPrivRole.getRoleId()!=userDTO.getRoleId()) {
-                    if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)){
-                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
-                    }
-                    else if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)){
-                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
-                    }
                     RoleEntity newPrivRole = userDetailsService.findRoleById(userDTO.getRoleId());
-                    System.out.println("New Role Entity is "  + newPrivRole);
                     orgUserEntity.getRoles().remove(existingPrivRole);
                     orgUserEntity.getRoles().add(newPrivRole);
                 }
             }
-            try {
-                userDetailsService.createOrUpdateUser(ashokaTeamEntity);
-                userDTO.setUserId(ashokaTeamEntity.getUserId());
-                //modelView.addObject("userobj",userDTO);
-                //modelView.addObject("message","Success");
-                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
-                redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
-            } catch (Exception e) {
-                modelView.addObject("Error", "Error: Adding New User. Please contact Administrator !!! " );
-                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
-                e.printStackTrace();
-            }
+
+            modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
+            redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
         }
 
         return modelView;
