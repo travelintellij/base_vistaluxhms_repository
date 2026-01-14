@@ -514,7 +514,7 @@ public class EventController {
 			}
 
 			// Save the Entity (not DTO)
-			eventServices.saveEventPackage(eventPackageEntity);
+            eventServices.saveEventPackage(eventPackageEntity);
 			redirectAttrib.addFlashAttribute("Success", "Event Package Record is saved successfully.");
 		}
 		//modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
@@ -625,7 +625,8 @@ public class EventController {
 			}
 			syncServiceList(eventPackageEntity, eventPackageEntityDTO.getServices());
 			// Save the Entity (not DTO)
-			eventServices.saveEventPackage(eventPackageEntity);
+            eventPackageEntity.setCreatedBy(userObj.getUserId());
+            eventServices.saveEventPackage(eventPackageEntity);
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
