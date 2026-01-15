@@ -57,6 +57,18 @@
            </thead>
            <tbody>
                      <c:forEach items="${userList}" var="userRec">
+                           <c:set var="hasAdmin" value="false"/>
+                           <c:set var="hasUser" value="false"/>
+                            <c:forEach var="role" items="${userRec.roles}">
+                                    <c:if test="${role.roleName eq 'ADMIN'}">
+                                        <c:set var="hasAdmin" value="true"/>
+                                    </c:if>
+                                    <c:if test="${role.roleName eq 'USER'}">
+                                        <c:set var="hasUser" value="true"/>
+                                    </c:if>
+                              </c:forEach>
+
+
                          <tr>
                              <td>${userRec.userId}</td>
                              <td>${userRec.username}</td>
@@ -73,22 +85,36 @@
                              </td>
                               <td>
                                  <c:if test="${userRec.accountLocked eq true}">
-                                                          <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="True" />
-
-                                                      </c:if>
-                                                      <c:if test="${userRec.accountLocked eq false}">
-                                                          <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="False" />
-                                                      </c:if>
+                                    <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="True" />
+                                  </c:if>
+                                  <c:if test="${userRec.accountLocked eq false}">
+                                      <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="False" />
+                                  </c:if>
                              </td>
                              <td>
-                                 <form action="view_view_user" method="POST" style="display:inline;">
-                                                               <input type="hidden" name="userId" value="${userRec.userId}" />
-                                                               <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
-                                                       </form>
-                                                       <form action="view_edit_user_form" method="POST" style="display:inline;">
-                                                           <input type="hidden" name="userId" value="${userRec.userId}" />
-                                                           <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
-                                                       </form>
+                                    <form action="view_view_user" method="POST" style="display:inline;">
+                                           <input type="hidden" name="userId" value="${userRec.userId}" />
+                                           <c:if test="${LOGGED_IN_ROLE eq 'SUPERADMIN'}">
+                                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                           </c:if>
+                                           <c:if test="${LOGGED_IN_ROLE ne 'SUPERADMIN'}">
+                                                <c:if test="${not userRec.superAdmin}">
+                                                    <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                                </c:if>
+                                           </c:if>
+                                   </form>
+                                   <form action="view_edit_user_form" method="POST" style="display:inline;">
+                                       <input type="hidden" name="userId" value="${userRec.userId}" />
+                                       <c:if test="${LOGGED_IN_ROLE eq 'SUPERADMIN'}">
+                                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                                       </c:if>
+                                       <c:if test="${LOGGED_IN_ROLE ne 'SUPERADMIN'}">
+                                           <c:if test="${not userRec.superAdmin}">
+                                               <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                                           </c:if>
+                                      </c:if>
+                                   </form>
+
 
                              </td>
                          </tr>

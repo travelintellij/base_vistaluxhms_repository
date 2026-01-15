@@ -23,7 +23,8 @@ public class UserDetailsObj extends AshokaTeam implements UserDetails{
 	private String formattedDOJ;
 	private String formattedDOB;
 	private String formattedDOL;
-	
+	private boolean superAdmin;
+
     @Override
     public String getPassword() {
         return super.getPassword();
@@ -237,4 +238,12 @@ public class UserDetailsObj extends AshokaTeam implements UserDetails{
 	public void setFormattedDOL(String formattedDOL) {
 		this.formattedDOL = formattedDOL;
 	}
+
+    public boolean isSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        this.superAdmin = superAdmin;
+    }
 }
