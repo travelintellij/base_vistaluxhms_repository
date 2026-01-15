@@ -169,11 +169,11 @@ public class UserController {
             modelView = view_edit_user_form(userDTO, result);
         } else {
             AshokaTeam orgUserEntity = userDetailsService.findUserByID(userDTO.getUserId());
-            
+
             if(!userDTO.getPassword().equals(orgUserEntity.getPassword())) {
                 orgUserEntity.setPassword(passwordEncoder.encode(userDTO.getPassword().trim()));
             }
-            
+
             orgUserEntity.setAddress(userDTO.getAddress());
             orgUserEntity.setDesignation(userDTO.getDesignation());
             orgUserEntity.setDob(userDTO.getDob());
@@ -204,21 +204,21 @@ public class UserController {
 
             if(existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null && !userDTO.getRoleName().isEmpty()) {
                 RoleEntity existingPrivRole = existingPrivRoleOpt.get();
-                
+
                 if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)){
                     userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
                 }
                 else if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)){
                     userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
                 }
-                
+
                 if(existingPrivRole.getRoleId()!=userDTO.getRoleId()) {
                     RoleEntity newPrivRole = userDetailsService.findRoleById(userDTO.getRoleId());
                     orgUserEntity.getRoles().remove(existingPrivRole);
                     orgUserEntity.getRoles().add(newPrivRole);
                 }
             }
-            
+
             modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
             redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
         }
