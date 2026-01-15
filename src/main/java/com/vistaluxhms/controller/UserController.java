@@ -1,27 +1,17 @@
 package com.vistaluxhms.controller;
 
-import com.vistaluxhms.entity.*;
-import com.vistaluxhms.model.ClientEntityDTO;
-import com.vistaluxhms.model.RateType_Obj;
-import com.vistaluxhms.model.SalesPartnerEntityDto;
+import com.vistaluxhms.entity.AshokaTeam;
+import com.vistaluxhms.entity.RoleEntity;
 import com.vistaluxhms.model.UserDetailsObj;
-import com.vistaluxhms.repository.Vlx_City_Master_Repository;
-import com.vistaluxhms.services.ClientServicesImpl;
-import com.vistaluxhms.services.SalesRelatesServicesImpl;
 import com.vistaluxhms.services.UserDetailsServiceImpl;
-import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
 import com.vistaluxhms.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import java.beans.PropertyEditorSupport;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -199,23 +191,32 @@ public class UserController {
             orgUserEntity.setDeleted(userDTO.isDeleted());
             orgUserEntity.setLastWorkingDay(userDTO.getLastWorkingDay());
 
-            Optional <RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream().filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
-                    .findFirst();
+            Set<RoleEntity> roles = orgUserEntity.getRoles();
+            boolean isSuperAdmin = roles.stream()
+                    .anyMatch(role ->
+                            "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
+                    );
+            System.out.println("OUTSIDE DEBUG: " + userDTO.getRoleName());
 
-            if(existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null && !userDTO.getRoleName().isEmpty()) {
-                RoleEntity existingPrivRole = existingPrivRoleOpt.get();
+            if(!isSuperAdmin) {
+                System.out.println("INSIDE DEBUG: " + userDTO.getRoleName());
+                Optional<RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream().filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
+                        .findFirst();
 
-                if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)){
-                    userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
-                }
-                else if(userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)){
-                    userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
-                }
+                if (existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null && !userDTO.getRoleName().isEmpty()) {
+                    RoleEntity existingPrivRole = existingPrivRoleOpt.get();
 
-                if(existingPrivRole.getRoleId()!=userDTO.getRoleId()) {
-                    RoleEntity newPrivRole = userDetailsService.findRoleById(userDTO.getRoleId());
-                    orgUserEntity.getRoles().remove(existingPrivRole);
-                    orgUserEntity.getRoles().add(newPrivRole);
+                    if (userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)) {
+                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_ADMIN_CODE);
+                    } else if (userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_USER)) {
+                        userDTO.setRoleId(VistaluxConstants.BASIC_PRIV_USER_CODE);
+                    }
+
+                    if (existingPrivRole.getRoleId() != userDTO.getRoleId()) {
+                        RoleEntity newPrivRole = userDetailsService.findRoleById(userDTO.getRoleId());
+                        orgUserEntity.getRoles().remove(existingPrivRole);
+                        orgUserEntity.getRoles().add(newPrivRole);
+                    }
                 }
             }
 
