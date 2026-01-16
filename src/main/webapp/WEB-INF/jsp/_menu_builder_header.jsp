@@ -46,9 +46,10 @@
         <a href="view_workloadhome"><img id = "topLogo" src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
         <h1>AxisHMS Pro - Perfect Hotel CRM Solution</h1>
     </div>
-    <div class="welcome">
-        Welcome, ${userName} (${message})
-    </div>
+  <div class="welcome">
+      Welcome, <strong><sec:authentication property="principal.name"/></strong>
+  </div>
+
 </header>
 <nav>
     <ul>
