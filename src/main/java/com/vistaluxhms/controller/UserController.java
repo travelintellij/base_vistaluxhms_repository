@@ -93,6 +93,39 @@ public class UserController {
             }
         }
         userDetailsDTO.setPasswordConfirm(userEntity.getPassword());
+
+
+        AshokaTeam loggedUInUserEntity = userDetailsService.findUserByID(userObj.getUserId());
+        Set<RoleEntity> loggedInrole = loggedUInUserEntity.getRoles();
+        boolean isSuperAdmin = loggedInrole.stream()
+                .anyMatch(role ->
+                        "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
+                );
+        if(isSuperAdmin){
+            userObj.setSuperAdmin(true);
+            modelView.addObject("LOGGED_IN_ROLE","SUPERADMIN");
+        }
+        else {
+            for (RoleEntity role : loggedInrole) {
+                if ("PRIV".equals(role.getRoleTarget())) {
+                    if ("USER".equals(role.getRoleName())) {
+                        userObj.setRoleName("USER");
+                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        break; // Exit the loop once the condition is met
+                    } else if ("ADMIN".equals(role.getRoleName())) {
+                        userObj.setRoleName("ADMIN");
+                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        break; // Exit the loop once the condition is met
+                    }
+                }
+            }
+
+        }
+
+        System.out.println("Logged in User is " + userObj.getUserId() + " Role is " + userObj.getRoleName());
+        modelView.addObject("LOGGED_IN_USER",userObj);
+
+
         return modelView;
     }
     @PostMapping(value="create_create_user")
