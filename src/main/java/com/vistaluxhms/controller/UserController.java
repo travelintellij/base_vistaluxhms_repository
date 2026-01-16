@@ -149,8 +149,7 @@ public class UserController {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
         //implement the validation rule here.
-
-        System.out.println("Last Working Day is "  +userDTO.getLastWorkingDay());
+        //System.out.println("Last Working Day is "  +userDTO.getLastWorkingDay());
 
         userValidator.validate(userDTO,result);
         //System.out.println("User Details are " + userDTO);
@@ -196,10 +195,7 @@ public class UserController {
                     .anyMatch(role ->
                             "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
                     );
-            System.out.println("OUTSIDE DEBUG: " + userDTO.getRoleName());
-
             if(!isSuperAdmin) {
-                System.out.println("INSIDE DEBUG: " + userDTO.getRoleName());
                 Optional<RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream().filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
                         .findFirst();
 
@@ -231,7 +227,36 @@ public class UserController {
     public ModelAndView view_users_list(@ModelAttribute("USER_FILTERED_LIST") UserDetailsObj userDTO, BindingResult result ) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/user/viewUserListing");
-        UserDetailsObj user = getLoggedInUser();
+        modelView.addObject("LOGGED_IN_USER", userObj);
+
+        AshokaTeam loggedUInUserEntity = userDetailsService.findUserByID(userObj.getUserId());
+        Set<RoleEntity> roles = loggedUInUserEntity.getRoles();
+        boolean isSuperAdmin = roles.stream()
+                .anyMatch(role ->
+                        "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
+                );
+        if(isSuperAdmin){
+            modelView.addObject("LOGGED_IN_ROLE","SUPERADMIN");
+        }
+        else {
+            for (RoleEntity role : roles) {
+                if ("PRIV".equals(role.getRoleTarget())) {
+                    if ("USER".equals(role.getRoleName())) {
+                        userObj.setRoleName("USER");
+                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        break; // Exit the loop once the condition is met
+                    } else if ("ADMIN".equals(role.getRoleName())) {
+                        userObj.setRoleName("ADMIN");
+                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        break; // Exit the loop once the condition is met
+                    }
+                }
+            }
+
+        }
+
+        //modelView.addObject("LOGGED_IN_PERMISSIONS", loggedInUser.getPermissions());
+
         List<UserDetailsObj> listUserDTO= userDetailsService.findAllUsers();
         modelView.addObject("USER_FILTERED_LIST", listUserDTO);
         return modelView;

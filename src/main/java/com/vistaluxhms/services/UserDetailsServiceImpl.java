@@ -97,8 +97,17 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		List<UserDetailsObj> listUdnObj = new ArrayList<UserDetailsObj>();
 		Iterator<AshokaTeam>  itr = listUdnTeam.iterator();
 		while(itr.hasNext()) {
-			UserDetailsObj userObj = new UserDetailsObj(itr.next());
-			listUdnObj.add(userObj);
+			AshokaTeam userEntity = itr.next();
+            UserDetailsObj userObj = new UserDetailsObj(userEntity);
+            /**********Added later for super admin check block ************/
+            Set<RoleEntity> roles = userEntity.getRoles();
+            boolean isSuperAdmin = roles.stream()
+                    .anyMatch(role ->
+                            "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
+                    );
+            userObj.setSuperAdmin(isSuperAdmin);
+            /**************************************/
+            listUdnObj.add(userObj);
 		}
 		return listUdnObj;
 	}
