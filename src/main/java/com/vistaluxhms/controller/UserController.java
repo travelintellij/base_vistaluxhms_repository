@@ -121,11 +121,8 @@ public class UserController {
             }
 
         }
-
-        System.out.println("Logged in User is " + userObj.getUserId() + " Role is " + userObj.getRoleName());
+        //System.out.println("Logged in User is " + userObj.getUserId() + " Role is " + userObj.getRoleName());
         modelView.addObject("LOGGED_IN_USER",userObj);
-
-
         return modelView;
     }
     @PostMapping(value="create_create_user")
