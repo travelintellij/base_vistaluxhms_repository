@@ -17,7 +17,7 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
         List<SessionRateMappingEntity> findBySessionEntity_SessionIdAndActiveTrue(Integer sessionId);
 
         // Fetch mappings by rateTypeId
-        List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeId(Integer rateTypeId);
+        List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeIdAndActiveTrue(Integer rateTypeId);
 
         @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
                 "FROM SessionRateMappingEntity s " +

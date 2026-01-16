@@ -151,7 +151,7 @@ public class SessionServiceImpl {
 	}
 
 	public List<SessionRateMappingEntity> getMappingsByRateTypeId(int rateTypeId) {
-		return sessionRateMappingEntityRepository.findByRateTypeEntity_RateTypeId(rateTypeId);
+		return sessionRateMappingEntityRepository.findByRateTypeEntity_RateTypeIdAndActiveTrue(rateTypeId);
 	}
 
 	public SessionDetailsEntity getSessionDetails_Rate_And_Date_and_MealPlan(
