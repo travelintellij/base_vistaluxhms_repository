@@ -63,17 +63,44 @@
                 <div class="form-cell">
                           <div class="radio-group-container">
                             <label for="field4">User Type:</label>
-                            <div class="radio-group">
-                               <label>
-                                   <form:radiobutton path="roleName" name="roleName" value="USER" required="required" />
-                                   <span>USER</span>
-                               </label>
-                               <label>
-                                   <form:radiobutton path="roleName" name="roleName"  value="ADMIN" required="required" />
-                                   <span>ADMIN</span>
-                               </label>
-                           </div>
-                        </div>
+                            <c:if test="${LOGGED_IN_ROLE eq 'SUPERADMIN' && LOGGED_IN_USER.userId eq USER_OBJ.userId}">
+                                <div class="radio-group">
+                                <label>
+                                <span>SUPER ADMIN</span>
+                                <label>
+                                </div>
+                                </div>
+                            </c:if>
+
+                             <c:if test="${(LOGGED_IN_ROLE eq 'SUPERADMIN' && LOGGED_IN_USER.userId ne USER_OBJ.userId) || (LOGGED_IN_ROLE ne 'SUPERADMIN')}">
+                                    <div class="radio-group">
+                                       <label>
+
+                                           <c:if test="${LOGGED_IN_USER.roleName ne 'USER'}">
+                                                <form:radiobutton path="roleName" name="roleName" value="USER" required="required" />
+                                                <span>USER</span>
+                                            </c:if>
+                                            <c:if test="${LOGGED_IN_USER.roleName eq 'USER'}">
+                                                <form:radiobutton path="roleName" name="roleName" value="USER" required="required" disabled="true" />
+                                                <span>USER</span>
+                                            </c:if>
+
+
+
+                                       </label>
+                                       <label>
+                                           <c:if test="${LOGGED_IN_USER.roleName ne 'USER'}">
+                                                <form:radiobutton path="roleName" name="roleName"  value="ADMIN" required="required" />
+                                                <span>ADMIN</span>
+                                           </c:if>
+                                           <c:if test="${LOGGED_IN_USER.roleName eq 'USER'}">
+                                               <form:radiobutton path="roleName" name="roleName"  value="ADMIN" required="required" disabled="true" />
+                                               <span>ADMIN</span>
+                                          </c:if>
+                                       </label>
+                                   </div>
+                                </div>
+                            </c:if>
                 </div>
                 </div>
                 <div class="form-table">
