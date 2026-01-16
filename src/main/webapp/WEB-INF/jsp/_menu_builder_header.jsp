@@ -47,7 +47,7 @@
         <h1>AxisHMS Pro - Perfect Hotel CRM Solution</h1>
     </div>
   <div class="welcome">
-      Welcome, <strong><sec:authentication property="principal.name"/></strong>
+      Welcome, <strong><sec:authentication property="principal.username"/></strong>
   </div>
 
 </header>

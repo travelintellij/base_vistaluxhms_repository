@@ -153,8 +153,12 @@
         </script>
     </c:if>
 
-    <font color="green">${Success} </font>
-    <font color="red">${Error}</font>
+<c:if test="${not empty Success}">
+    <div style="color:green; font-weight:bold; margin-bottom:5px;">${Success}</div>
+</c:if>
+<c:if test="${not empty Error}">
+    <div style="color:red; font-weight:bold; margin-bottom:5px;">${Error}</div>
+</c:if>
 </b></div>
 
 <div class="form-container">
