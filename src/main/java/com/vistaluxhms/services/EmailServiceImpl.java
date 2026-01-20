@@ -272,7 +272,9 @@ public class EmailServiceImpl {
 		public void sendEmailMessageUsingTemplate_MultipleRecipients(Mail mail,String templateName) throws MessagingException, IOException, TemplateException {
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
 			String eventType;
-			if(mail.getModel().get("eventType")!=null)
+
+
+            if(mail.getModel().get("eventType")!=null)
 				eventType = mail.getModel().get("eventType").toString();
 			else
 				eventType = "wedding";
@@ -292,6 +294,7 @@ public class EmailServiceImpl {
 
 			mail.getModel().put("centralConfig", centralConfigEntity);
 			mail.getModel().put("eventConfig", eventDetailsConfigDTO);
+            mail.getModel().put("serviceAdvisorMobile",centralConfigEntity.getCentralNumber());
 
 			/*mail.getModel().put("quotationTopCover", centralConfigEntity.getQuotationTopCover());
 			mail.getModel().put("inclusions", centralConfigEntity.getInclusions());
@@ -404,7 +407,9 @@ public class EmailServiceImpl {
 	        MimeMessageHelper helper = new MimeMessageHelper(message,
 	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 	                StandardCharsets.UTF_8.name());
-	        
+
+
+
 	        //If you have any inline image then following code needs to be commented and add
 	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
 	        //image files location for ftl template is different. 
