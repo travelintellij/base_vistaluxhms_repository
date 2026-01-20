@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: ashokadb
+-- Host: localhost    Database: vanilla
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,NULL,'sushil@vistaluxhotel.com',9999441267,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Super Admin','Corbett',9090762424,'Super Admin',NULL,NULL,0,NULL,'sales@vistaluxhotel.com',NULL,'2026-01-13','sales@vistaluxhotel.com',9090762424,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,7 +553,7 @@ CREATE TABLE `event_service_cost_type` (
   `eventServiceCostTypeName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`eventServiceCostTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -562,6 +562,7 @@ CREATE TABLE `event_service_cost_type` (
 
 LOCK TABLES `event_service_cost_type` WRITE;
 /*!40000 ALTER TABLE `event_service_cost_type` DISABLE KEYS */;
+INSERT INTO `event_service_cost_type` VALUES (1,'PER_GUEST_PER_NIGHT',1),(2,'PER_GUEST_ONE_TIME',1),(3,'PER_GUEST_PER_DAY',1),(4,'PER_ROOM_ONE_TIME',1),(5,'PER_ROOM_PER_NIGHT',1),(6,'PER_DAY',1),(7,'PER_NIGHT',1),(8,'ONE_TIME',1),(9,'MANUAL',1);
 /*!40000 ALTER TABLE `event_service_cost_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -578,7 +579,7 @@ CREATE TABLE `eventtype` (
   `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`eventTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -587,6 +588,7 @@ CREATE TABLE `eventtype` (
 
 LOCK TABLES `eventtype` WRITE;
 /*!40000 ALTER TABLE `eventtype` DISABLE KEYS */;
+INSERT INTO `eventtype` VALUES (1,'Wedding','Wedding Event',1),(2,'GROUP_EVENT','Corporate Event management',1);
 /*!40000 ALTER TABLE `eventtype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1341,4 +1343,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-09 15:57:14
+-- Dump completed on 2026-01-20 11:14:27
