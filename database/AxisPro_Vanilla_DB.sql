@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Super Admin','Corbett',9090762424,'Super Admin',NULL,NULL,0,NULL,'sales@vistaluxhotel.com',NULL,'2026-01-13','sales@vistaluxhotel.com',9090762424,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Super Admin','Corbett',9090762424,'Super Admin',NULL,NULL,0,NULL,'sales@digitalintellij.com',NULL,'2026-01-13','sales@digitalintellij.com',9090762424,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1343,4 +1343,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-20 11:14:27
+-- Dump completed on 2026-01-20 11:24:57
