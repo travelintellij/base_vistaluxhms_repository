@@ -105,7 +105,7 @@
         background:#fff;
         box-shadow:0 4px 12px rgba(0,0,0,0.15);
         border-radius:8px;
-        overflow:hidden;
+        overflow:visible;
     }
     th, td { padding:12px 15px; text-align:left; }
     thead { background-color:#185a9d; color:#fff; font-weight:bold; }
