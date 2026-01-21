@@ -14,16 +14,17 @@
         }
 
         .header {
-            background-image: url('https://mcusercontent.com/b524536bce55ad238411aa638/images/5e424e73-2127-47ee-3a6c-f98219f37551.jpg?fit=crop&amp;w=1500&amp;q=80');
-	        background-repeat: no-repeat;
+            background-image: url('${eventConfig.bannerImageBase64}');
+            background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
             color: white;
             padding: 80px 30px 60px 30px;
             text-align: center;
             position: relative;
-    	    min-height: 100px; /* Ensures enough space for image visibility */
-    }
+            min-height: 100px;
+        }
+
 
         .header h1 {
             font-size: 36px;
