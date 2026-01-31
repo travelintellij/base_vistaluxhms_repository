@@ -3,196 +3,554 @@
 <head>
     <meta charset="UTF-8" />
     <title>Wedding Quotation</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            background-color: #fff7f9;
-            margin: 0;
-            padding: 0;
-            color: #6a1b3f;
-        }
-
-        .header {
-            background-image: url('${eventConfig.bannerImageBase64}');
-            background-size: cover;
-            background-position: center;
-	        background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 80px 30px 60px 30px;
-            text-align: center;
-            position: relative;
-	    min-height: 100px; /* Ensures enough space for image visibility */
-
-        }
-
-        .header h1 {
-            font-size: 36px;
-            text-shadow: 2px 2px 4px #00000050;
-        }
-
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 30px;
-        }
-
-        .logo img {
-            height: 200px;
-        }
-
-        .section {
-            padding: 15px;
-            border-bottom: 1px solid #f0b6c5;
-        }
-
-        .section h2, .section h3 {
-            color: #b4004e;
-        }
-
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .info-table td {
-            padding: 8px;
-            border: 1px solid #f0b6c5;
-        }
-
-        .photo-collage {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .photo-collage img {
-            width: 180px;        /* fixed width */
-            height: 120px;       /* fixed height */
-            object-fit: cover;   /* maintains aspect ratio, crops extra */
-            border-radius: 8px;
-            border: 2px solid #f9d2e1;
-            box-shadow: 2px 2px 6px #00000020;
-        }
+  <style>
 
 
 
+  .section {
+    margin: 20px 0;
+    padding: 0 40px;
+    border: none;
+    page-break-inside: auto;
+}
+.section h2 {
+    text-align: left;
+    font-size: 28px;
+    margin-bottom: 18px;
+}
 
-      .service-table {
-          width: 100%; /* or set a fixed width like 600px */
-          table-layout: fixed; /* makes column widths consistent */
-          border-collapse: collapse;
-          margin-top: 10px;
-      }
+.address::after {
+    content: "";
+    display: block;
+    width: 420px;              /* controls line length */
+    height: 2px;
+    background-color: #8b5a2b; /* brown-gold tone like sample */
+    margin-top: 10px;
+}
 
-      .service-table td, .service-table th {
-          border: 1px solid #ccc;
-          padding: 8px;
-          word-wrap: break-word; /* wrap long words */
-          white-space: normal;   /* allow text to wrap normally */
-          vertical-align: top;
-          text-align: left;
-      }
+h1, h2, h3,
+strong,
+th,
+.section h2,
+.footer h3,
+.header h1,
+.address,
+p strong {
+    color: #1f4d2b !important;
+}
 
-      /* Optional: make columns look symmetrical even if there's less text */
-      .service-table tr td {
-          height: auto;
-      }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
+a, a:visited, a:hover {
+    color: #1f4d2b !important;
+    text-decoration: none;
+}
 
-        .grid-box {
-            background-color: #fff0f5;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px #00000010;
-            text-align: center;
-        }
 
-        .footer {
-            padding: 25px 30px;
-            background-color: #fde9ef;
-            font-size: 14px;
-            color: #7a0040;
-        }
+.bg-image {
+    display: none;
+}
 
-        .total {
-            font-weight: bold;
-            text-align: right;
-            margin-top: 10px;
-        }
+@page {
+    size: A4;
+    margin-top: 10mm;
+    margin-left: 10mm;
+    margin-right: 30mm;
+    margin-bottom: 50mm;
 
-        .discount {
-            text-align: right;
-            color: #c2185b;
-            font-weight: bold;
-        }
+    background: url('file:///C:/Users/dell/Desktop/base_vistaluxhms_repository-master/base_vistaluxhms_repository/src/main/webapp/resources/images/marriage_floralbg.png')
+                no-repeat center center;
+    background-size: cover;
+}
 
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px 10px 30px;
-            background-color: #fff7f9;
-        }
 
-        .logo img {
-            height: 120px;
-        }
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
 
-        .address {
-            text-align: right;
-            font-size: 16px;
-            color: #6a1b3f;
-            font-weight: bold;
-        }
- .social-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .social-links a {
-            margin: 0 10px;
-            text-decoration: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .facebook { background-color: #3b5998; }
-        .instagram { background-color: #e4405f; }
-        .linkedin { background-color: #0077b5; }
-        .email { background-color: #ff6600; }
-        .website { background-color: #000; }
-        .twitter {
-            background-color: #1DA1F2;
-        }
-        .whatsapp-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .whatsapp-button a {
-            background-color: #25D366;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 5px;
-            display: inline-block;
-        }
+body {
+    background: transparent;
+}
 
-    </style>
+/* ===== EVENT INFORMATION TABLE FIX ===== */
+.info-table {
+    margin: 0 auto;                 /* centers the table */
+    border-collapse: collapse;      /* clean borders */
+    background: rgba(255,255,255,0.9);
+}
+
+.info-table td {
+    padding: 10px 16px;
+    border: 1px solid #d8cfa5;      /* visible table box */
+    white-space: nowrap;            /* keeps text in one line */
+    vertical-align: middle;
+}
+
+
+.section, .footer, .top-bar {
+    background: transparent;
+    border-radius: 0;      /* IMPORTANT */
+    box-shadow: none;     /* optional but cleaner */
+    border: none;
+}
+
+.content {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2, h3 {
+    text-align: left;
+}
+
+
+h1, h2, h3 {
+    font-weight: 800;
+     color: var(--brand-green);
+    text-shadow: none;
+}
+h1, h2, h3,
+strong,
+.section h2,
+.footer h3,
+.header h1 {
+    color: var(--brand-green) !important;
+}
+a,
+a:visited,
+a:hover {
+    color: var(--brand-green);
+    text-decoration: none;
+}
+
+.info-table td,
+.service-table td,
+.service-table th {
+    color: #2b1b0f;
+    font-weight: 600;
+}
+.top-bar {
+    width: 100%;
+    padding: 20px 40px;
+    background: rgba(255,255,255,0.85);
+}
+
+.logo {
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.logo img {
+    height: 90px;
+}
+
+.address {
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f4d2b;
+    line-height: 1.4;
+}
+
+
+/* ========== HEADER (NO BG IMAGE HERE) ========== */
+.header {
+    padding: 90px 30px 30px;
+    text-align: center;
+    background: transparent;
+}
+
+
+.header h1 {
+    font-size: 42px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--brand-green);
+    font-weight: 900;
+    text-shadow: none;
+}
+
+.header h1::after {
+    content: "✦ ✦ ✦";
+    display: block;
+    font-size: 16px;
+    margin-top: 14px;
+    color: #f0d28c;
+    letter-spacing: 10px;
+}
+
+
+/* ===== EVENT INFORMATION SPECIAL STYLING ===== */
+.section:first-of-type h2 {
+    text-align: center;
+    margin-left: 0;
+    font-size: 34px;
+}
+.section:first-of-type h2::after {
+    content: "";
+    display: block;
+    width: 320px;               /* line width */
+    height: 2px;
+    background-color: #8b5a2b;
+    margin: 12px auto 0;        /* center the line */
+}
+
+.section:first-of-type .info-table {
+    margin: 0 auto;              /* center table */
+}
+
+.section:first-of-type .info-table td {
+    font-size: 16px;             /* bigger text */
+    padding: 14px 22px;          /* bigger cells */
+}
+h1, h2 {
+    white-space: normal;
+}
+
+.header h1 {
+    white-space: nowrap; /* only main title */
+}
+
+
+/* ========== TABLES ========== */
+.info-table td,
+.service-table td,
+.service-table th {
+    color: #5a3a1b !important;      /* dark brown text */
+    border-color: #5a3a1b;          /* dark brown borders */
+}
+
+
+
+.total {
+    color: #2e6b3f !important;
+    font-weight: 800;
+}
+
+
+
+/* ========== FOOTER ========== */
+.footer {
+    margin: 25px 0;
+    padding: 28px 32px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 0;
+    color: var(--brand-green);
+}
+
+
+.footer ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.footer li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.social-links {
+    white-space: nowrap;       /* Force all links in one line */
+    text-align: center;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 5px 6px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 18px;
+    text-decoration: none;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    line-height: 1;
+}
+
+.address {
+    white-space: nowrap;
+    font-size: 14px;
+    text-align:left;
+ color: #5a3a1b !important;
+    font-weight: 700;
+}
+
+
+.content-area {
+    padding: 0;
+    margin: 0;
+    background: rgba(255,255,255,0.96);
+}
+
+
+
+.footer,
+.social-links {
+    page-break-inside: avoid;
+}
+.photo-collage {
+    text-align: center;
+    line-height: 0;   /* SAFE alternative */
+}
+
+.photo-collage img {
+    width: 45%;
+    height: 140px;          /* LOCK HEIGHT */
+    margin: 6px;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+
+.facebook {
+    background-color: #3b5998;
+    color: #ffffff;
+}
+
+.instagram {
+    background-color: #e4405f;
+    color: #ffffff;
+}
+
+.linkedin {
+    background-color: #0077b5;
+    color: #ffffff;
+}
+
+.twitter {
+    background-color: #1DA1F2;
+    color: #ffffff;
+}
+
+.email {
+    background-color: #f4e1a1;
+    color: #5a3a1b;   /* dark text for light bg */
+}
+
+.website {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+/* FORCE SOCIAL BUTTON TEXT TO STAY LIGHT */
+.social-links a.facebook,
+.social-links a.instagram,
+.social-links a.linkedin,
+.social-links a.twitter,
+.social-links a.website {
+    color: #ffffff !important;
+}
+
+/* Email button exception (light background) */
+.social-links a.email {
+    color: #5a3a1b !important;
+}
+.section:not(.event-info),
+.section:not(.event-info) h2,
+.section:not(.event-info) p,
+.section:not(.event-info) table,
+.footer,
+.footer p,
+.footer li {
+    text-align: left;
+}
+
+
+.welcome-heading {
+    text-align: left;
+    font-size: 18px;          /* readable, fits one line */
+    font-weight: 800;
+    white-space: nowrap;     /* keep one line */
+    letter-spacing: 0.5px;   /* tighter */
+}
+
+
+/* ===== EVENT INFORMATION CENTER (PDF SAFE) ===== */
+.event-info {
+    text-align: center;
+}
+
+.event-info h2 {
+    text-align: center;
+}
+
+.event-info table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== KEEP WELCOME SECTION ON ONE PAGE ===== */
+.welcome-section,
+.welcome-content {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* If PDF engine is aggressive */
+.welcome-section {
+    page-break-before: auto;
+    page-break-after: auto;
+}
+/* ===== WELCOME SECTION COLOR ===== */
+.welcome-section,
+.welcome-section p,
+.welcome-section div,
+.welcome-section span,
+.welcome-section li {
+    color: #5a3a1b !important;
+}
+/* ===== FORCE WELCOME HEADING + CONTENT ON SAME PAGE ===== */
+.welcome-block {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+/* Prevent heading orphaning */
+.welcome-heading {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+}
+.celebration-highlight {
+    page-break-inside: auto;
+}
+
+.section.cost-breakup {
+    page-break-inside: auto !important;
+}
+
+
+.section.cost-breakup h2 {
+    page-break-after: avoid !important;
+}
+
+.service-table,
+.service-table tr,
+.service-table td {
+    page-break-inside: auto !important;
+}
+
+.photo-block {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.photo-section {
+    page-break-inside: avoid;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.photo-section h2 {
+    text-align: center !important;
+    margin-bottom: 20px;
+}
+
+.photo-block {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+
+/* ===== COST BREAKUP TABLE – FINAL FIX ===== */
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.95);
+    table-layout: auto; /* IMPORTANT: let browser decide width */
+}
+
+.service-table th,
+.service-table td {
+    border: 1px solid #5a3a1b;
+    padding: 10px 14px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.service-table th {
+    background: rgba(245,235,200,0.95);
+    font-weight: 800;
+    text-align: left;
+}
+
+/* Column specific alignment */
+.service-table td:nth-child(3),
+.service-table th:nth-child(3) {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Prevent ugly word breaking */
+.service-table td:nth-child(2) {
+    white-space: nowrap;
+}
+
+.footer,
+.footer ul,
+.footer li,
+.footer p,
+.footer strong {
+    color: #5a3a1b !important;   /* dark brown */
+}
+
+/* ===== CONTENT CONTAINER (PDF SAFE) ===== */
+.content-box {
+    background: rgba(255,255,255,0.85);
+    border: 2px solid #d8cfa5;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    color: #5a3a1b;
+}
+
+.content-box ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.content-box li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.content-box {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+.celebration-highlight {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+.celebration-highlight h2 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+}
+
+</style>
+
+
 </head>
 <body>
 
+
+    <div class="content-area">
 <div class="top-bar">
     <div class="logo">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
@@ -201,15 +559,15 @@
     <div class="address">
         <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
     </div>
-</div>
+
 
 
 <div class="header">
     <h1>Wedding Quotation</h1>
 </div>
 
-<div class="section">
-    <h2>Event Information</h2>
+<div class="section event-info">
+  <h2>Event Information</h2>
     <table class="info-table">
         <tr><td><strong>Name:</strong></td><td>${guestName}</td></tr>
         <tr><td><strong>Event Dates:</strong></td><td>${eventStartDate} to ${eventEndDate}</td></tr>
@@ -217,46 +575,72 @@
         <tr><td><strong>No. of Guests:</strong></td><td>${baseGuestCount}</td></tr>
     </table>
 </div>
-<div class="section">
-    <h2>Wedding Photo Inspirations</h2>
-    <div class="photo-collage">
-       <#list eventConfig.galleryImageDataUrls as img>
-           <#if img?? && img?has_content>
-               <img src="${img}" alt="Quotation Image"/>
-           </#if>
-       </#list>
-    </div>
+<#-- SHOW PHOTO SECTION ONLY IF AT LEAST ONE IMAGE EXISTS -->
+<#if eventConfig.galleryImageDataUrls?? && eventConfig.galleryImageDataUrls?size gt 0>
 
+    <#assign hasValidImage = false />
+    <#list eventConfig.galleryImageDataUrls as img>
+        <#if img?? && img?has_content>
+            <#assign hasValidImage = true />
+            <#break>
+        </#if>
+    </#list>
 
-    <div style="page-break-after: always;"></div>
-</div>
+    <#if hasValidImage>
+        <div class="section photo-section">
+            <div class="photo-block">
+                <div class="content-box">
+                    <h2>Wedding Photo Inspirations</h2>
 
-<div class="section">
-    <h2 style="text-align: center; color: #2e6c80;">Welcome to ${centralConfig.hotelName}</h2>
-${eventConfig.resortInfo}
-
-
-    <!-- Highlights Box with Floral Background -->
-    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
-        <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
-           ${eventConfig.celebrationHighlight}
+                    <div class="photo-collage">
+                        <#list eventConfig.galleryImageDataUrls as img>
+                            <#if img?? && img?has_content>
+                                <img src="${img}" alt="Quotation Image"/>
+                            </#if>
+                        </#list>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </#if>
 
+</#if>
 
-    ${eventConfig.testimonial}
-
-
-    <!-- Page Break Before Next Section -->
-    <div style="page-break-after: always;"></div>
 </div>
 
+
+<div class="section welcome-section">
+    <div class="welcome-block">
+      <h2 class="welcome-heading">
+            Welcome to ${centralConfig.hotelName}
+        </h2>
+     <div class="content-box">
+        ${eventConfig.resortInfo}
+        ${eventConfig.testimonial}
+    </div>
+      </div>
+            </div>
+
+  <div class="section celebration-highlight">
+
+      <!-- Heading OUTSIDE container -->
+      <h2>Wedding Celebration Highlights</h2>
+
+      <!-- Content INSIDE container -->
+      <div class="content-box">
+      ${eventConfig.celebrationHighlight?replace(r"(?is)<h2.*?>.*?</h2>", "")}
+
+        </div>
+        </div>
 
 
 
 <#if showBreakup>
-    <div class="section">
-        <h2>Cost Breakup</h2>
+<div class="section cost-breakup">
+
+      <h2>Cost Breakup</h2>
+
+<div class="cost-table-wrapper">
         <table class="service-table">
             <thead>
                 <tr><th>Service Name</th><th>Cost Type</th><th>Amount (INR)</th></tr>
@@ -271,6 +655,7 @@ ${eventConfig.resortInfo}
             </#list>
             </tbody>
         </table>
+          </div>
         <#if discount &gt; 0>
             <div class="discount">Discount: ₹${discount?string["#,##0"]}</div>
         </#if>
@@ -322,8 +707,12 @@ ${eventConfig.resortInfo}
 </#if>
 
 
+
+
+
 <div class="footer">
     <h3>Terms and Conditions</h3>
+<div class="content-box">
     <ul>
         <#if gstIncluded>
             <li>All prices are inclusive of GST and other applicable taxes.</li>
@@ -334,7 +723,7 @@ ${eventConfig.resortInfo}
     </ul>
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
-
+</div>
 <!--
 <div class="social-media" style="text-align: center; margin-top: 20px;">
     <h3>Connect With Us</h3>
@@ -353,6 +742,7 @@ ${eventConfig.resortInfo}
         </a>
     </p>
 </div>
+
 -->
   <div class="social-links">
             <#if centralConfig.facebookLink?has_content>
@@ -379,9 +769,8 @@ ${eventConfig.resortInfo}
             <#if centralConfig.website?has_content>
                 <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
             </#if>
-        </div>
 
-
-
+</div>
+ </div>
 </body>
 </html>
