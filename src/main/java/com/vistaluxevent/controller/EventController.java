@@ -38,6 +38,8 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -711,7 +713,20 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		model.put("guestName", eventPackageEntityDTO.getGuestName());
 		formatRoomDates(eventPackageEntityDTO);
-		model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
+        // --- Load background image as Base64 ---
+        String imagePath = "src/main/webapp/resources/images/marriage_floralbg.png";
+        String bgImageBase64 = "";
+        try {
+            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+            bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+// --- Add to model ---
+        model.put("bgImageBase64", bgImageBase64);
+
+        model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
 		model.put("eventEndDate", eventPackageEntityDTO.getFormattedEndDate()); // Fetch dynamically as per your application
 
 		model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());

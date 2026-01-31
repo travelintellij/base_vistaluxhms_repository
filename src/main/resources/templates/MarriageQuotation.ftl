@@ -49,24 +49,33 @@ a, a:visited, a:hover {
 .bg-image {
     display: none;
 }
+.pdf-bg-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* fills page, preserves aspect ratio */
+    z-index: -1;        /* behind everything */
+    display: block;
+}
+
+
 
 @page {
-    size: A4;
-    margin-top: 10mm;
-    margin-left: 10mm;
-    margin-right: 30mm;
-    margin-bottom: 50mm;
-
-    background: url('file:///C:/Users/dell/Desktop/base_vistaluxhms_repository-master/base_vistaluxhms_repository/src/main/webapp/resources/images/marriage_floralbg.png')
-                no-repeat center center;
-    background-size: cover;
-}
+  size: A4;
+  margin-top: 5mm;
+  margin-left: 0;
+  margin-right: 5mm;
+  margin-bottom: 10mm; }
 
 
 html, body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    width: 100%;
+    height: 100%;
+    background: transparent; /* no white background */
 }
 
 body {
@@ -549,8 +558,10 @@ h1, h2 {
 </head>
 <body>
 
+<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 
-    <div class="content-area">
+
+ <div class="content-area">
 <div class="top-bar">
     <div class="logo">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
