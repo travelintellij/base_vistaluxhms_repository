@@ -9,7 +9,7 @@
 
   .section {
     margin: 20px 0;
-    padding: 0 40px;
+    padding: 0;
     border: none;
     page-break-inside: auto;
 }
@@ -53,22 +53,17 @@ a, a:visited, a:hover {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* fills page, preserves aspect ratio */
-    z-index: -1;        /* behind everything */
-    display: block;
+    width: 210mm;
+    height: 297mm;
+    object-fit: cover;
+    z-index: -1;
 }
-
 
 
 @page {
   size: A4;
-  margin-top: 5mm;
-  margin-left: 0;
-  margin-right: 5mm;
-  margin-bottom: 10mm; }
-
+  margin: 0;
+}
 
 html, body {
     margin: 0;
@@ -151,7 +146,7 @@ a:hover {
 }
 .top-bar {
     width: 100%;
-    padding: 20px 40px;
+    padding: 20px 0;
     background: rgba(255,255,255,0.85);
 }
 
@@ -173,9 +168,8 @@ a:hover {
 }
 
 
-/* ========== HEADER (NO BG IMAGE HERE) ========== */
 .header {
-    padding: 90px 30px 30px;
+    padding: 90px 0 30px;
     text-align: center;
     background: transparent;
 }
@@ -308,21 +302,30 @@ h1, h2 {
 .social-links {
     page-break-inside: avoid;
 }
-.photo-collage {
-    text-align: center;
-    line-height: 0;   /* SAFE alternative */
+.photo-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 10px;   /* space between photos */
+    table-layout: fixed;
+}
+.photo-table td {
+    width: 50%;
+    height: 120px;          /* smaller */
+    padding: 6px;           /* inner breathing */
 }
 
-.photo-collage img {
-    width: 45%;
-    height: 140px;          /* LOCK HEIGHT */
-    margin: 6px;
+.photo-table img {
+    width: 100%;
+    height: 120px;
     object-fit: cover;
-    display: inline-block;
-    vertical-align: top;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    border-radius: 8px;
 }
+.content-box {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 
 .facebook {
@@ -461,7 +464,7 @@ h1, h2 {
 .photo-section {
     page-break-inside: avoid;
     text-align: center;
-    padding: 30px 0;
+    padding: 40px 0;
 }
 
 .photo-section h2 {
@@ -552,6 +555,45 @@ h1, h2 {
     break-after: avoid !important;
 }
 
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    display: inline-block;
+    margin: 0 auto;
+}
+.photo-table {
+    margin: 0 auto;
+}
+.page-content {
+    width: 170mm;
+    margin: 20mm auto;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 35mm;   /* ✅ IMPORTANT */
+    box-sizing: border-box;
+}
+
+
+.photo-section {
+    text-align: center;
+}
+
+.photo-table {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.welcome-section {
+    margin: 0 auto;
+}
+
+.welcome-block {
+    max-width: 100%;
+}
+
+
 </style>
 
 
@@ -561,7 +603,10 @@ h1, h2 {
 <img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 
 
- <div class="content-area">
+
+<div class="content-area">
+  <div class="page-content">
+
 <div class="top-bar">
     <div class="logo">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
@@ -603,13 +648,25 @@ h1, h2 {
                 <div class="content-box">
                     <h2>Wedding Photo Inspirations</h2>
 
-                    <div class="photo-collage">
-                        <#list eventConfig.galleryImageDataUrls as img>
-                            <#if img?? && img?has_content>
-                                <img src="${img}" alt="Quotation Image"/>
+                <table class="photo-table">
+                    <#list eventConfig.galleryImageDataUrls?chunk(2) as row>
+                        <tr>
+                            <#list row as img>
+                                <td>
+                                    <#if img?? && img?has_content>
+                                        <img src="${img}" alt="Quotation Image"/>
+                                    </#if>
+                                </td>
+                            </#list>
+
+                            <#-- Fill empty cell if odd number of images -->
+                            <#if row?size < 2>
+                                <td></td>
                             </#if>
-                        </#list>
-                    </div>
+                        </tr>
+                    </#list>
+                </table>
+
                 </div>
             </div>
         </div>
@@ -782,6 +839,10 @@ h1, h2 {
             </#if>
 
 </div>
- </div>
+
+  </div>
+</div>
+
+
 </body>
 </html>

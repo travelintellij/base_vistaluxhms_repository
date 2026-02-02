@@ -31,15 +31,16 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Base64;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -713,20 +714,28 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		model.put("guestName", eventPackageEntityDTO.getGuestName());
 		formatRoomDates(eventPackageEntityDTO);
-        // --- Load background image as Base64 ---
-        String imagePath = "src/main/webapp/resources/images/marriage_floralbg.png";
+        String dropboxUrl = "https://www.dropbox.com/scl/fi/rl9nkavai2h9jcylews6s/marriage_floralbg.png?rlkey=kkg09gb3nr0td6oqryhsnkdjj&st=6v6pbxtq&raw=1";
         String bgImageBase64 = "";
-        try {
-            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-            bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
-        } catch (IOException e) {
+
+        try (InputStream in = new URL(dropboxUrl).openStream();
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+            byte[] data = new byte[1024];
+            int nRead;
+            while ((nRead = in.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+            byte[] bytes = buffer.toByteArray();
+            bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-// --- Add to model ---
         model.put("bgImageBase64", bgImageBase64);
-
-        model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
+		model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
 		model.put("eventEndDate", eventPackageEntityDTO.getFormattedEndDate()); // Fetch dynamically as per your application
 
 		model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
