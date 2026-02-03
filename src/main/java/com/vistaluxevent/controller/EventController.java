@@ -10,6 +10,7 @@ import com.vistaluxevent.services.EventConfigServicesImpl;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.ClientEntity;
+import javax.servlet.ServletContext;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.*;
@@ -747,9 +748,45 @@ public class EventController {
 		model.put("remarks", eventPackageEntityDTO.getDescription());
 		model.put("centralConfig", centralConfigEntity);
 		model.put("eventConfig", eventDetailsConfigDTO);
+        // ===== MENU IMAGES AS BASE64 (PDF SAFE) =====
+        List<String> menuImages = new ArrayList<>();
+
+        ServletContext context = session.getServletContext();
+
+        for (int i = 1; i <= 34; i++) {
+            String imagePath =
+                    "/resources/images/menu/menu_" +
+                            String.format("%02d", i) +
+                            ".jpeg";
+
+            try (InputStream is = context.getResourceAsStream(imagePath);
+                 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+                if (is == null) {
+                    continue; // skip missing images
+                }
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    baos.write(buffer, 0, bytesRead);
+                }
+
+                String base64 =
+                        "data:image/jpeg;base64," +
+                                Base64.getEncoder().encodeToString(baos.toByteArray());
+
+                menuImages.add(base64);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        model.put("menuImages", menuImages);
 
 
-		List<Map<String, Object>> serviceList = new ArrayList<>();
+        List<Map<String, Object>> serviceList = new ArrayList<>();
 
 		for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
 			Map<String, Object> serviceMap = new HashMap<>();

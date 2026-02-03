@@ -5,14 +5,13 @@
     <title>Wedding Quotation</title>
   <style>
 
-
-
-  .section {
+.section {
     margin: 20px 0;
     padding: 0;
     border: none;
     page-break-inside: auto;
 }
+
 .section h2 {
     text-align: left;
     font-size: 28px;
@@ -29,26 +28,25 @@
 }
 
 h1, h2, h3,
-strong,
-th,
-.section h2,
-.footer h3,
-.header h1,
-.address,
-p strong {
+    strong,
+    th,
+    .section h2,
+    .footer h3,
+    .header h1,
+    .address,
+     p strong {
     color: #1f4d2b !important;
 }
-
 
 a, a:visited, a:hover {
     color: #1f4d2b !important;
     text-decoration: none;
 }
 
-
 .bg-image {
     display: none;
 }
+
 .pdf-bg-img {
     position: fixed;
     top: 0;
@@ -58,7 +56,6 @@ a, a:visited, a:hover {
     object-fit: cover;
     z-index: -1;
 }
-
 
 @page {
   size: A4;
@@ -77,7 +74,6 @@ body {
     background: transparent;
 }
 
-/* ===== EVENT INFORMATION TABLE FIX ===== */
 .info-table {
     margin: 0 auto;                 /* centers the table */
     border-collapse: collapse;      /* clean borders */
@@ -90,7 +86,6 @@ body {
     white-space: nowrap;            /* keeps text in one line */
     vertical-align: middle;
 }
-
 
 .section, .footer, .top-bar {
     background: transparent;
@@ -234,16 +229,11 @@ h1, h2 {
     border-color: #5a3a1b;          /* dark brown borders */
 }
 
-
-
 .total {
     color: #2e6b3f !important;
     font-weight: 800;
 }
 
-
-
-/* ========== FOOTER ========== */
 .footer {
     margin: 25px 0;
     padding: 28px 32px;
@@ -251,7 +241,6 @@ h1, h2 {
     border-radius: 0;
     color: var(--brand-green);
 }
-
 
 .footer ul {
     padding-left: 20px;
@@ -289,25 +278,24 @@ h1, h2 {
     font-weight: 700;
 }
 
-
 .content-area {
     padding: 0;
     margin: 0;
     background: rgba(255,255,255,0.96);
 }
 
-
-
 .footer,
 .social-links {
     page-break-inside: avoid;
 }
+
 .photo-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 10px;   /* space between photos */
     table-layout: fixed;
 }
+
 .photo-table td {
     width: 50%;
     height: 120px;          /* smaller */
@@ -325,8 +313,6 @@ h1, h2 {
     margin-left: auto;
     margin-right: auto;
 }
-
-
 
 .facebook {
     background-color: #3b5998;
@@ -575,7 +561,6 @@ h1, h2 {
     box-sizing: border-box;
 }
 
-
 .photo-section {
     text-align: center;
 }
@@ -585,6 +570,7 @@ h1, h2 {
     max-width: 100%;
     margin: 0 auto;
 }
+
 .welcome-section {
     margin: 0 auto;
 }
@@ -593,19 +579,61 @@ h1, h2 {
     max-width: 100%;
 }
 
+/* ===== MENU PAGE ===== */
+.menu-page {
+    page-break-before: always;
+    width: 210mm;
+    margin: 0;
+    padding: 20mm;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* 2x2 grid */
+.menu-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.menu-grid td {
+    width: 50%;
+    padding: 8mm;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Image size control */
+.menu-grid img {
+    width: 100%;
+    max-width: 75mm;
+    max-height: 90mm;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #d8cfa5;
+    background: #ffffff;
+    padding: 4px;
+}
+
+.menu-page {
+    position: relative;
+    background: transparent;
+}
+
+.menu-page .pdf-bg-img {
+    display: none !important;
+}
 
 </style>
-
-
 </head>
+
 <body>
+    <div class="content-area">
+        <img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 
-<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
-
-
-
-<div class="content-area">
-  <div class="page-content">
+     <div class="page-content">
 
 <div class="top-bar">
     <div class="logo">
@@ -615,8 +643,6 @@ h1, h2 {
     <div class="address">
         <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
     </div>
-
-
 
 <div class="header">
     <h1>Wedding Quotation</h1>
@@ -671,11 +697,8 @@ h1, h2 {
             </div>
         </div>
     </#if>
-
 </#if>
-
 </div>
-
 
 <div class="section welcome-section">
     <div class="welcome-block">
@@ -697,18 +720,13 @@ h1, h2 {
       <!-- Content INSIDE container -->
       <div class="content-box">
       ${eventConfig.celebrationHighlight?replace(r"(?is)<h2.*?>.*?</h2>", "")}
-
+         </div>
         </div>
-        </div>
-
-
 
 <#if showBreakup>
 <div class="section cost-breakup">
-
-      <h2>Cost Breakup</h2>
-
-<div class="cost-table-wrapper">
+     <h2>Cost Breakup</h2>
+   <div class="cost-table-wrapper">
         <table class="service-table">
             <thead>
                 <tr><th>Service Name</th><th>Cost Type</th><th>Amount (INR)</th></tr>
@@ -732,7 +750,6 @@ h1, h2 {
 <#else>
     <div class="section">
         <h2>Services Included</h2>
-
         <#if services?size <= 5>
             <table class="service-table">
                 <tbody>
@@ -774,10 +791,6 @@ h1, h2 {
     </div>
 </#if>
 
-
-
-
-
 <div class="footer">
     <h3>Terms and Conditions</h3>
 <div class="content-box">
@@ -792,6 +805,31 @@ h1, h2 {
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
 </div>
+</div> <!-- END page-content -->
+</div> <!-- END content-area -->
+
+<#if menuImages?? && menuImages?size gt 0>
+    <#list menuImages?chunk(4) as pageImages>
+        <div class="menu-page">
+            <table class="menu-grid">
+                <#list pageImages?chunk(2) as row>
+                    <tr>
+                        <#list row as img>
+                            <td>
+                                <img src="${img}" alt="Menu"/>
+                            </td>
+                        </#list>
+                        <#if row?size < 2>
+                            <td></td>
+                        </#if>
+                    </tr>
+                </#list>
+            </table>
+        </div>
+    </#list>
+</#if>
+
+
 <!--
 <div class="social-media" style="text-align: center; margin-top: 20px;">
     <h3>Connect With Us</h3>
@@ -829,20 +867,14 @@ h1, h2 {
                 <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
             </#if>
 
-
-            <#if centralConfig.centralizedEmail?has_content>
+             <#if centralConfig.centralizedEmail?has_content>
                 <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
             </#if>
 
             <#if centralConfig.website?has_content>
                 <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
             </#if>
-
-</div>
-
-  </div>
-</div>
-
+     </div>
 
 </body>
 </html>
