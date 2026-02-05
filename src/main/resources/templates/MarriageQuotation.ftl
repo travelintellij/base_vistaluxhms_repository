@@ -579,51 +579,20 @@ h1, h2 {
     max-width: 100%;
 }
 
-/* ===== MENU PAGE ===== */
+/* ===== FULL PAGE MENU IMAGE ===== */
 .menu-page {
     page-break-before: always;
     width: 210mm;
+    height: 297mm;
     margin: 0;
-    padding: 20mm;
-    box-sizing: border-box;
-    position: relative;
+    padding: 0;
 }
 
-/* 2x2 grid */
-.menu-grid {
+.menu-page img {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.menu-grid td {
-    width: 50%;
-    padding: 8mm;
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* Image size control */
-.menu-grid img {
-    width: 100%;
-    max-width: 75mm;
-    max-height: 90mm;
-    height: auto;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;   /* fills page */
     display: block;
-    margin: 0 auto;
-    border: 1px solid #d8cfa5;
-    background: #ffffff;
-    padding: 4px;
-}
-
-.menu-page {
-    position: relative;
-    background: transparent;
-}
-
-.menu-page .pdf-bg-img {
-    display: none !important;
 }
 
 </style>
@@ -791,7 +760,7 @@ h1, h2 {
     </div>
 </#if>
 
-<div class="footer">
+<div class="footer after-menu">
     <h3>Terms and Conditions</h3>
 <div class="content-box">
     <ul>
@@ -805,29 +774,25 @@ h1, h2 {
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
 </div>
+
 </div> <!-- END page-content -->
 </div> <!-- END content-area -->
 
+<#-- ===== MENU IMAGES (AFTER TERMS) ===== -->
+
 <#if menuImages?? && menuImages?size gt 0>
-    <#list menuImages?chunk(4) as pageImages>
+
+    <#list menuImages as img>
+
         <div class="menu-page">
-            <table class="menu-grid">
-                <#list pageImages?chunk(2) as row>
-                    <tr>
-                        <#list row as img>
-                            <td>
-                                <img src="${img}" alt="Menu"/>
-                            </td>
-                        </#list>
-                        <#if row?size < 2>
-                            <td></td>
-                        </#if>
-                    </tr>
-                </#list>
-            </table>
+            <img src="${img}" alt="Menu Page"/>
         </div>
+
     </#list>
+
 </#if>
+
+
 
 
 <!--
