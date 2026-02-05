@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
@@ -753,7 +754,9 @@ public class EventController {
 
         ServletContext context = session.getServletContext();
 
-        for (int i = 1; i <= 34; i++) {
+
+
+        for (int i = 1; i <= 18; i++) {
             String imagePath =
                     "/resources/images/menu/menu_" +
                             String.format("%02d", i) +
@@ -954,6 +957,7 @@ public class EventController {
 	public ResponseEntity<String> deleteImageById(@RequestParam("id") Long id) {
 		return eventConfigService.deleteImageById(id);
 	}
+
 
 
 }
