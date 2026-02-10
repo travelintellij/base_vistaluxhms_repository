@@ -76,7 +76,15 @@ public class ClientController {
         if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), clientEntityDto.getCityName())) {
             result.rejectValue("cityName", "city.error");
         }
+        // CHECK DUPLICATE MOBILE
+        if (clientService.isMobileExists(clientEntityDto.getMobile())) {
+
+            result.rejectValue("mobile", "mobile.error", "Mobile number already exists");
+
+        }
+
         if (result.hasErrors()) {
+
             // If there are validation errors, return the form view with errors
             modelView = view_add_client_form(clientEntityDto, result);
         } else {
@@ -247,6 +255,18 @@ public ModelAndView view_clients_list(@ModelAttribute("CLIENT_OBJ") ClientEntity
                 salesPartnerEntity.setEmailId(clientEntity.getEmailId());
             }
             clientEntity.setSalesPartner(salesPartnerEntity);
+            ClientEntity oldClient = clientService.findClientById(clientEntityDto.getClientId());
+
+            if (!oldClient.getMobile().equals(clientEntityDto.getMobile())
+                    && clientService.isMobileExists(clientEntityDto.getMobile())) {
+
+                result.rejectValue("mobile", "mobile.error", "Mobile already exists");
+
+            }
+            if (result.hasErrors()) {
+                modelView = view_edit_client_form(clientEntityDto, result);
+            }
+
             clientService.saveClient(clientEntity);
             redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");

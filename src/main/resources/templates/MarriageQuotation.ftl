@@ -38,11 +38,6 @@ h1, h2, h3,
     color: #1f4d2b !important;
 }
 
-a, a:visited, a:hover {
-    color: #1f4d2b !important;
-    text-decoration: none;
-}
-
 .bg-image {
     display: none;
 }
@@ -125,12 +120,6 @@ strong,
 .footer h3,
 .header h1 {
     color: var(--brand-green) !important;
-}
-a,
-a:visited,
-a:hover {
-    color: var(--brand-green);
-    text-decoration: none;
 }
 
 .info-table td,
@@ -252,9 +241,27 @@ h1, h2 {
     line-height: 1.5;
 }
 
+/* ===== FINAL SOCIAL BUTTON FIX ===== */
+
 .social-links {
-    white-space: nowrap;       /* Force all links in one line */
+    width: 100%;
     text-align: center;
+    white-space: normal !important;   /* allow wrapping */
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 6px 6px;
+    padding: 8px 14px;
+}
+
+/* Position on menu page */
+.menu-page .social-links {
+    position: absolute;
+    bottom: 10mm;
+    left: 0;
+    right: 0;
+    z-index: 100 !important;
 }
 
 .social-links a {
@@ -271,7 +278,7 @@ h1, h2 {
 }
 
 .address {
-    white-space: nowrap;
+
     font-size: 14px;
     text-align:left;
  color: #5a3a1b !important;
@@ -553,13 +560,19 @@ h1, h2 {
     margin: 0 auto;
 }
 .page-content {
+    position: relative;
     width: 170mm;
     margin: 20mm auto;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 35mm;   /* ✅ IMPORTANT */
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;   /* ✅ IMPORTANT */
     box-sizing: border-box;
 }
+
+.footer {
+    page-break-inside: avoid;
+}
+
 
 .photo-section {
     text-align: center;
@@ -583,35 +596,280 @@ h1, h2 {
 .menu-page {
     page-break-before: always;
     width: 210mm;
-    height: 297mm;
+    height: 297mm;   /* full page */
+    position: relative;
+    overflow: hidden;
     margin: 0;
     padding: 0;
 }
 
 .menu-page img {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 22mm);
     object-fit: cover;   /* fills page */
     display: block;
 }
+.social-links {
+    page-break-before: auto;
+}
 
+.menu-page {
+    position: relative;
+}
+
+
+/* ===== DISABLE BACKGROUND ON MENU PAGES ONLY ===== */
+.menu-page,
+.menu-page * {
+    background: transparent !important;
+}
+
+/* Hide fixed background when menu appears */
+.menu-page ~ .pdf-bg-img,
+.menu-page .pdf-bg-img {
+    display: none !important;
+}
+
+/* Kill background behind menu pages */
+body:has(.menu-page) .pdf-bg-img {
+    display: none !important;
+}
+/* Hide background when menu section starts */
+.menu-section ~ .pdf-bg-img {
+    display: none !important;
+}
+
+/* ===== FIX SOCIAL LINKS VISIBILITY ON MENU PAGE ===== */
+
+.menu-page {
+
+    background: rgb(255,255,255) !important;
+    position: relative;
+    z-index: 1;   /* lower */
+}
+
+/* Put menu image above white bg */
+.menu-page img {
+    position: relative;
+    z-index: 5;
+}
+
+
+/* Restore button colors */
+.menu-page .social-links a {
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* ===== FINAL SOCIAL BUTTON FORCE FIX ===== */
+
+.menu-page .social-links {
+    position: absolute;
+    bottom: 12mm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 999 !important;
+}
+
+.social-links {
+    width: 100%;
+    white-space: normal !important;
+}
+
+.social-links a {
+    display: inline-block !important;
+    min-width: 90px;
+    margin: 6px 6px;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: #fff !important;
+}
+
+/* Button colors (force) */
+.social-links a.facebook  { background: #3b5998 !important; }
+.social-links a.instagram { background: #e4405f !important; }
+.social-links a.linkedin  { background: #0077b5 !important; }
+.social-links a.twitter   { background: #1DA1F2 !important; }
+.social-links a.website   { background: #333333 !important; }
+.social-links a.email     { background: #f4e1a1 !important; color:#5a3a1b !important; }
+
+/* ===== LETTERHEAD ADDRESS FORMAT ===== */
+
+.address p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.address p::first-line {
+    font-weight: 800;     /* Bold hotel name */
+    font-size: 16px;
+}
+
+/* Align logo + address side by side */
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+.address {
+    flex-grow: 1;
+}
+
+
+/* ===== FORCE LETTERHEAD LOOK WITHOUT HTML CHANGE ===== */
+
+.address {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    max-width: 500px;
+}
+
+/* Make first part (hotel name) look like heading */
+.address p {
+    font-weight: 600;
+}
+
+/* Enlarge first line (hotel name part) */
+.address p::first-line {
+    font-size: 20px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #1f4d2b !important;
+}
+
+/* Improve spacing with logo */
+.top-bar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 18px 20px !important;
+}
+
+/* ===== FIX LETTERHEAD SIZE + COLOR ===== */
+
+.address p::first-line {
+    font-size: 14px !important;      /* small heading */
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: none !important;
+    color: #1f3c88 !important;       /* blue color */
+}
+
+.address {
+    max-width: 420px !important;     /* prevent full width */
+    white-space: normal !important; /* allow proper wrapping */
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+}
+
+/* Reduce header height */
+.top-bar {
+    padding: 10px 20px !important;
+}
+
+/* ===== FINAL LETTERHEAD OVERRIDE (DO NOT REMOVE) ===== */
+
+.address {
+    color: #5a3a1b !important;      /* brown */
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    max-width: 480px !important;
+    white-space: normal !important;
+}
+
+/* Reset paragraph */
+.address p {
+    margin: 0 !important;
+    font-weight: 500 !important;
+    white-space: normal !important;
+}
+
+/* Hotel name = first line */
+.address p::first-line {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #5a3a1b !important;      /* brown */
+    letter-spacing: 0.4px !important;
+    text-transform: none !important;
+}
+
+/* Keep address + pin in one line */
+.address p br + * {
+    display: block;
+    white-space: nowrap !important;
+}
+
+/* Keep phone + email in one line */
+.address p br + * + * {
+    display: block;
+    white-space: nowrap !important;
+}
+
+/* Fix header spacing */
+.top-bar {
+    padding: 10px 18px !important;
+    align-items: center !important;
+}
+
+/* ===== FIX EXTRA GAP BETWEEN ADDRESS LINES ===== */
+.address p {
+    line-height: 1.4 !important;   /* tighter lines */
+}
+
+.address br {
+    display: block;
+    content: "";
+    margin: 0;
+    line-height: 0;
+}
+/* ===== EXTRA STRONG HOTEL NAME BOLD ===== */
+.address p::first-line {
+    font-weight: 900 !important;
+    font-size: 17px !important;
+
+    /* Fake bold effect */
+    text-shadow:
+        0.4px 0 #5a3a1b,
+       -0.4px 0 #5a3a1b,
+        0 0.4px #5a3a1b,
+        0 -0.4px #5a3a1b;
+
+    letter-spacing: 0.6px;
+}
 </style>
 </head>
 
 <body>
     <div class="content-area">
-        <img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
+
 
      <div class="page-content">
+             <img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 
 <div class="top-bar">
     <div class="logo">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
         <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
     </div>
-    <div class="address">
-        <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
-    </div>
+   <div class="address">
+       <p>
+           ${centralConfig.hotelName}<br/>
+           ${centralConfig.hotelAddress}<br/>
+           ${centralConfig.centralNumber} ${centralConfig.centralizedEmail}
+       </p>
+   </div>
 
 <div class="header">
     <h1>Wedding Quotation</h1>
@@ -776,24 +1034,18 @@ h1, h2 {
 </div>
 
 </div> <!-- END page-content -->
-</div> <!-- END content-area -->
+
 
 <#-- ===== MENU IMAGES (AFTER TERMS) ===== -->
 
-<#if menuImages?? && menuImages?size gt 0>
 
-    <#list menuImages as img>
+<div class="menu-section">
+<#list menuImages as img>
 
         <div class="menu-page">
             <img src="${img}" alt="Menu Page"/>
-        </div>
 
-    </#list>
-
-</#if>
-
-
-
+<#if img_index == (menuImages?size - 1)>
 
 <!--
 <div class="social-media" style="text-align: center; margin-top: 20px;">
@@ -840,6 +1092,13 @@ h1, h2 {
                 <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
             </#if>
      </div>
+  </#if>
+ </div>
+</#list>
+</div>
 
+
+
+</div> <!-- END content-area -->
 </body>
 </html>
