@@ -848,6 +848,20 @@ body:has(.menu-page) .pdf-bg-img {
 
     letter-spacing: 0.6px;
 }
+
+/* Prevent empty cost breakup from forcing page break */
+.section.cost-breakup {
+    page-break-before: auto !important;
+    page-break-after: auto !important;
+    min-height: auto !important;
+    margin-bottom: 0 !important;
+}
+
+/* Keep terms with previous content */
+.footer.after-menu {
+    page-break-before: auto !important;
+}
+
 </style>
 </head>
 
@@ -950,14 +964,23 @@ body:has(.menu-page) .pdf-bg-img {
          </div>
         </div>
 
-<#if showBreakup>
+<#if showBreakup && services?? && services?size gt 0>
+
 <div class="section cost-breakup">
      <h2>Cost Breakup</h2>
+
    <div class="cost-table-wrapper">
+
         <table class="service-table">
+
             <thead>
-                <tr><th>Service Name</th><th>Cost Type</th><th>Amount (INR)</th></tr>
+                <tr>
+                    <th>Service Name</th>
+                    <th>Cost Type</th>
+                    <th>Amount (INR)</th>
+                </tr>
             </thead>
+
             <tbody>
             <#list services as service>
                 <tr>
@@ -967,47 +990,25 @@ body:has(.menu-page) .pdf-bg-img {
                 </tr>
             </#list>
             </tbody>
+
         </table>
-          </div>
-        <#if discount &gt; 0>
-            <div class="discount">Discount: ₹${discount?string["#,##0"]}</div>
-        </#if>
-        <div class="total">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div>
+
+   </div>
+
+    <#if discount gt 0>
+        <div class="discount">
+            Discount: ₹${discount?string["#,##0"]}
+        </div>
+    </#if>
+
+    <div class="total">
+        Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
     </div>
-<#else>
-    <div class="section">
-        <h2>Services Included</h2>
-        <#if services?size <= 5>
-            <table class="service-table">
-                <tbody>
-                    <#list services as service>
-                        <tr>
-                            <td>${service.name}</td>
-                        </tr>
-                    </#list>
-                </tbody>
-            </table>
-        <#else>
-            <table class="service-table">
-                <tbody>
-                    <#list services?chunk(2) as row>
-                        <tr>
-                            <#list row as service>
-                                <td>${service.name}</td>
-                            </#list>
-                            <#if row?size < 2>
-                                <#list 1..(2 - row?size) as i>
-                                    <td></td> <!-- Empty cell for alignment -->
-                                </#list>
-                            </#if>
-                        </tr>
-                    </#list>
-                </tbody>
-            </table>
-        </#if>
-        <div class="total" style="margin-top:20px;">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div>
-    </div>
+
+</div>
+
 </#if>
+
 
 <#if remarks?? && remarks?has_content>
     <div class="section" style="margin-top: 30px;">
