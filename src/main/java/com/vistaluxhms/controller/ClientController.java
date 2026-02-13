@@ -331,30 +331,51 @@ public class ClientController {
 
     @GetMapping("/exportClientsExcel")
     public void exportExcel(
+            @RequestParam(required = false) Long clientId,
             @RequestParam(required = false) Integer cityId,
             @RequestParam(required = false) Long salesPartnerId,
             @RequestParam(required = false) String clientName,
+            @RequestParam(required = false) Boolean b2b,
+            @RequestParam(required = false) Boolean active,
             HttpServletResponse response) throws Exception {
 
         ClientEntityDTO filter = new ClientEntityDTO();
 
-        // Manually build filter (safe)
+        // Client ID
+        if (clientId != null && clientId != 0) {
+            filter.setClientId(clientId);
+        }
+
+        // Name
+        if (clientName != null && !clientName.trim().isEmpty()) {
+            filter.setClientName(clientName);
+        }
+
+        // B2B
+        if (b2b != null) {
+            filter.setB2b(b2b);
+        }
+
+        // Active / Inactive
+        if (active != null) {
+            filter.setActive(active);
+        }
+
+        // City
         if (cityId != null && cityId != 0) {
             City_Entity city = new City_Entity();
             city.setDestinationId(cityId);
             filter.setCity(city);
         }
 
+        // Sales Partner
         if (salesPartnerId != null && salesPartnerId != 0) {
             SalesPartnerEntity sp = new SalesPartnerEntity();
             sp.setSalesPartnerId(salesPartnerId);
             filter.setSalesPartner(sp);
         }
 
-        if (clientName != null && !clientName.trim().isEmpty()) {
-            filter.setClientName(clientName);
-        }
-
+        // 🔥 Get filtered list (no manual loop)
         List<ClientEntity> list =
                 clientService.getClientsForExcel(filter);
 
@@ -372,32 +393,54 @@ public class ClientController {
     }
 
 
+
     @GetMapping("/exportClientsPdf")
     public void exportPdf(
+            @RequestParam(required = false) Long clientId,
             @RequestParam(required = false) Integer cityId,
             @RequestParam(required = false) Long salesPartnerId,
             @RequestParam(required = false) String clientName,
+            @RequestParam(required = false) Boolean b2b,
+            @RequestParam(required = false) Boolean active,
             HttpServletResponse response) throws Exception {
 
         ClientEntityDTO filter = new ClientEntityDTO();
 
-        // Manually build filter (safe)
+        // Client ID
+        if (clientId != null && clientId != 0) {
+            filter.setClientId(clientId);
+        }
+
+        // Name
+        if (clientName != null && !clientName.trim().isEmpty()) {
+            filter.setClientName(clientName);
+        }
+
+        // B2B
+        if (b2b != null) {
+            filter.setB2b(b2b);
+        }
+
+        // Active / Inactive
+        if (active != null) {
+            filter.setActive(active);
+        }
+
+        // City
         if (cityId != null && cityId != 0) {
             City_Entity city = new City_Entity();
             city.setDestinationId(cityId);
             filter.setCity(city);
         }
 
+        // Sales Partner
         if (salesPartnerId != null && salesPartnerId != 0) {
             SalesPartnerEntity sp = new SalesPartnerEntity();
             sp.setSalesPartnerId(salesPartnerId);
             filter.setSalesPartner(sp);
         }
 
-        if (clientName != null && !clientName.trim().isEmpty()) {
-            filter.setClientName(clientName);
-        }
-
+        // 🔥 Get filtered list (no manual loop)
         List<ClientEntity> list =
                 clientService.getClientsForPdf(filter);
 
@@ -412,6 +455,7 @@ public class ClientController {
                 response.getOutputStream()
         );
     }
+
 
 
 }

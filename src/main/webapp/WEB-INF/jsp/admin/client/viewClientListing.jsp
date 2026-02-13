@@ -121,16 +121,16 @@
                 <input type="button" class="clear-filter-btn" value="Clear Filter">
             </a>
 
-    <a href="${pageContext.request.contextPath}/exportClientsExcel?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityName=${CLIENT_OBJ.cityName}&city.destinationId=${CLIENT_OBJ.city.destinationId}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}"
-    class="export-btn excel">
-    Export Excel
-    </a>
+<a class="export-btn"
+   href="${pageContext.request.contextPath}/exportClientsExcel?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityId=${CLIENT_OBJ.city.destinationId}&salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">
+   Export Excel
+</a>
 
+<a class="export-btn pdf"
+   href="${pageContext.request.contextPath}/exportClientsPdf?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityId=${CLIENT_OBJ.city.destinationId}&salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">
+   Export PDF
+</a>
 
-    <a href="${pageContext.request.contextPath}/exportClientsPdf?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityName=${CLIENT_OBJ.cityName}&city.destinationId=${CLIENT_OBJ.city.destinationId}&salesPartner.salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}"
-    class="export-btn pdf">
-    Export PDF
-    </a>
 
 
 
