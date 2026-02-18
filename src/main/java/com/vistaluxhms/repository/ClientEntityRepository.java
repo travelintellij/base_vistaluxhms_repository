@@ -19,5 +19,6 @@ public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long
     ClientEntity findFirstBySalesPartner_salesPartnerIdAndSalesPartnerFlag(Long salesPartnerId, Boolean salesPartnerFlag);
     boolean existsByMobile(Long mobile);
 
+    boolean existsByMobileAndSalesPartnerFlag(Long mobile, Boolean salesPartnerFlag);
 
 }

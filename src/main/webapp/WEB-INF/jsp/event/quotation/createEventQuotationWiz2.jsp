@@ -387,6 +387,7 @@ h2, h3 {
                 </b>
             </div>
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
+
         <form:hidden path="id" />
         <form:hidden path="guestId" />
         <form:hidden path="baseGuestCount" />
@@ -442,7 +443,7 @@ h2, h3 {
     </font>
     <h3>List of Services</h3>
 
-    <div class="table-container">
+<div id="servicesSection" class="table-container">
       <table class="styled-table" id="service-table">
         <thead>
           <tr>
@@ -455,7 +456,7 @@ h2, h3 {
           </tr>
         </thead>
         <tbody id="services-table-body">
-        <c:forEach var="service" items="${eventPackageEntityDTO.services}" varStatus="status">
+        <c:forEach var="service" items="${EVENT_PACKAGE.services}" varStatus="status">
             <tr>
                 <td><form:input path="services[${status.index}].serviceName" class= "input-field"  style="width:450px;" /></td>
               <td>
@@ -476,7 +477,6 @@ h2, h3 {
             </tr>
         </c:forEach>
           <!-- Add more rows -->
-        </tr>
     </tbody>
       </table>
 <!-- Template Row (completely outside of <table>) -->
@@ -486,7 +486,7 @@ h2, h3 {
 
 <button type="button" onclick="addServiceRow()">Add Service</button>
 
- <div class="summary-container">
+<div id="summarySection" class="summary-container">
    <table class="styled-table">
     <tr>
     <td rowspan="3" style="vertical-align: top; padding-right: 20px;">
@@ -505,21 +505,37 @@ h2, h3 {
        <td><strong>Grand Total</strong></td>
        <td id="grandTotal">${eventPackageEntityDTO.grand_total_cost}</td>
      </tr>
-     <tr>
-       <th>Show Cost Breakup</th>
-       <td>
-         <div class="custom-checkbox">
-           <form:checkbox path="showBreakup" id="showBreakup" cssClass="styled-checkbox" />
-         </div>
-       </td>
-       <td><strong>Discount</strong></td>
-       <td>
-         <form:input path="discount" cssClass="input-field" id="discountInput" />
-         <div id="discountError" style="color:red; font-size: 12px;"></div>
-       </td>
-     </tr>
-     <tr>
-       <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
+<tr>
+   <th>Show Cost Breakup</th>
+   <td>
+     <div class="custom-checkbox">
+       <form:checkbox path="showBreakup" id="showBreakup" />
+     </div>
+   </td>
+
+   <td><strong>Discount</strong></td>
+   <td>
+     <form:input path="discount" cssClass="input-field" id="discountInput" />
+     <div id="discountError" style="color:red; font-size: 12px;"></div>
+   </td>
+</tr>
+
+<tr>
+   <th>Hide Cost</th>
+   <td>
+     <div class="custom-checkbox">
+<form:checkbox path="hideCost" id="hideCost"/>
+
+     </div>
+   </td>
+
+   <td></td>
+   <td></td>
+</tr>
+
+  <tr id="finalTotalRow">
+    <td colspan="3"><strong>Final Amount</strong></td>
+
        <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
 
      </tr>
@@ -629,6 +645,34 @@ function deleteRow(button) {
       finalAmountEl.textContent = finalAmount;
     });
   });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const showBreakup = document.getElementById("showBreakup");
+    const hideCost = document.getElementById("hideCost");
+
+    function handleCheckboxChange(changed) {
+
+        if (changed === showBreakup && showBreakup.checked) {
+            hideCost.checked = false;
+        }
+
+        if (changed === hideCost && hideCost.checked) {
+            showBreakup.checked = false;
+        }
+    }
+
+    showBreakup.addEventListener("change", function () {
+        handleCheckboxChange(showBreakup);
+    });
+
+    hideCost.addEventListener("change", function () {
+        handleCheckboxChange(hideCost);
+    });
+
+});
 </script>
 
 

@@ -97,11 +97,15 @@ public class ClientController {
             result.rejectValue("cityName", "city.error");
         }
         // CHECK DUPLICATE MOBILE
-        if (clientService.isMobileExists(clientEntityDto.getMobile())) {
+        if (clientService.isMobileExistsForClient(clientEntityDto.getMobile())) {
 
-            result.rejectValue("mobile", "mobile.error", "Mobile number already exists");
-
+            result.rejectValue(
+                    "mobile",
+                    "mobile.error",
+                    "Mobile already exists"
+            );
         }
+
 
         if (result.hasErrors()) {
 

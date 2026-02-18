@@ -21,6 +21,11 @@ public class EventPackageEntity {
     protected int createdBy;
     protected int grand_total_cost;
     protected int discount;
+
+
+    @Column(name = "hide_cost")
+    protected boolean hideCost = false;
+
     protected boolean gstIncluded=true;
     protected boolean showBreakup=true;
 
@@ -62,6 +67,8 @@ public class EventPackageEntity {
         this.grand_total_cost = eventPackageEntityDTO.getGrand_total_cost();
         this.discount = eventPackageEntityDTO.getDiscount();
         this.gstIncluded = eventPackageEntityDTO.isGstIncluded();
+        this.hideCost = eventPackageEntityDTO.isHideCost();   // ✅ ADD
+
         this.showBreakup = eventPackageEntityDTO.isShowBreakup();
         this.eventStartDate = eventPackageEntityDTO.getEventStartDate();
         this.eventEndDate = eventPackageEntityDTO.getEventEndDate();
@@ -233,5 +240,14 @@ public class EventPackageEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean isHideCost() {
+        return hideCost;
+    }
+
+    public void setHideCost(boolean hideCost) {
+        this.hideCost = hideCost;
+    }
+
 
 }

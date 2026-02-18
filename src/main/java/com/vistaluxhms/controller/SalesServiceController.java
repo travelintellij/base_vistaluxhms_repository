@@ -157,6 +157,18 @@ public class SalesServiceController {
         if(!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), salesPartnerDto.getCityName())) {
             result.rejectValue("cityName", "city.error");
         }
+
+        // Check duplicate mobile in Sales Partner
+        if (salesRelatedServices.isSalesPartnerMobileExists(
+                salesPartnerDto.getMobile())) {
+
+            result.rejectValue(
+                    "mobile",
+                    "mobile.error",
+                    "Mobile already exists in Sales Partner"
+            );
+        }
+
         if (result.hasErrors()) {
             // If there are validation errors, return the form view with errors
             modelView = view_add_sales_partner_form(salesPartnerDto, result);
@@ -169,7 +181,12 @@ public class SalesServiceController {
             ClientEntityDTO clientEntityDTO = new ClientEntityDTO();
             clientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
             ClientEntity clientEntity = new ClientEntity(clientEntityDTO);
+            // Check duplicate in Client
+            // Only check in SalesPartner
+
+
             clientService.saveClient(clientEntity);
+
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
         }
@@ -273,6 +290,27 @@ public class SalesServiceController {
         if(!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), salesPartnerDto.getCityName())) {
             result.rejectValue("cityName", "city.error");
         }
+
+        // Check duplicate mobile in Sales Partner (Edit)
+        if (salesRelatedServices.isSalesPartnerMobileExists(
+                salesPartnerDto.getMobile())) {
+
+            SalesPartnerEntity old =
+                    salesService.findSalesPartnerById(
+                            salesPartnerDto.getSalesPartnerId()
+                    );
+
+            if(old.getMobile() != salesPartnerDto.getMobile()){
+
+
+                result.rejectValue(
+                        "mobile",
+                        "mobile.error",
+                        "Mobile already exists in Sales Partner"
+                );
+            }
+        }
+
         if (result.hasErrors()) {
             // If there are validation errors, return the form view with errors
             modelView = view_edit_sales_partner_form(salesPartnerDto, result);
@@ -291,7 +329,15 @@ public class SalesServiceController {
                 ClientEntityDTO clientEntityDTO = new ClientEntityDTO(clientEntity);
                 ClientEntityDTO updatedClientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
                 clientEntity = new ClientEntity(updatedClientEntityDTO);
+                ClientEntity oldClient =
+                        clientService.findClientEntityForSalesPartnerId(
+                                salesPartnerEntity.getSalesPartnerId()
+                        );
+
+
+
                 clientService.saveClient(clientEntity);
+
             }
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
@@ -830,6 +876,8 @@ public class SalesServiceController {
         response.getOutputStream().write(pdfBytes);
         response.getOutputStream().flush();
     }
+
+
 
 
 }

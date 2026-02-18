@@ -848,20 +848,6 @@ body:has(.menu-page) .pdf-bg-img {
 
     letter-spacing: 0.6px;
 }
-
-/* Prevent empty cost breakup from forcing page break */
-.section.cost-breakup {
-    page-break-before: auto !important;
-    page-break-after: auto !important;
-    min-height: auto !important;
-    margin-bottom: 0 !important;
-}
-
-/* Keep terms with previous content */
-.footer.after-menu {
-    page-break-before: auto !important;
-}
-
 </style>
 </head>
 
@@ -964,36 +950,35 @@ body:has(.menu-page) .pdf-bg-img {
          </div>
         </div>
 
-<#if showBreakup && services?? && services?size gt 0>
+<#-- ================= COST DISPLAY LOGIC ================= -->
+
+<#-- CASE 1 : Show Breakup -->
+<#if showBreakup?? && showBreakup>
 
 <div class="section cost-breakup">
-     <h2>Cost Breakup</h2>
+    <h2>Cost Breakup</h2>
 
-   <div class="cost-table-wrapper">
+    <table class="service-table">
+        <thead>
+        <tr>
+            <th>Service Name</th>
+            <th>Cost Type</th>
+            <th>Amount (INR)</th>
+        </tr>
+        </thead>
 
-        <table class="service-table">
-
-            <thead>
-                <tr>
-                    <th>Service Name</th>
-                    <th>Cost Type</th>
-                    <th>Amount (INR)</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            <#list services as service>
-                <tr>
-                    <td>${service.name}</td>
-                    <td>${service.costType}</td>
-                    <td>${service.amount?string["#,##0"]}</td>
-                </tr>
-            </#list>
-            </tbody>
-
-        </table>
-
-   </div>
+        <tbody>
+        <#list services as service>
+            <tr>
+                <td>${service.name}</td>
+                <td>${service.costType}</td>
+                <td>
+                    ₹ ${service.amount?string["#,##0"]}
+                </td>
+            </tr>
+        </#list>
+        </tbody>
+    </table>
 
     <#if discount gt 0>
         <div class="discount">
@@ -1007,7 +992,51 @@ body:has(.menu-page) .pdf-bg-img {
 
 </div>
 
+
+<#-- CASE 2 : Hide Cost -->
+<#elseif hideCost?? && hideCost>
+
+<div class="section">
+    <h2>Services Included</h2>
+
+    <table class="service-table">
+        <tbody>
+        <#list services as service>
+            <tr>
+                <td>${service.name}</td>
+            </tr>
+        </#list>
+        </tbody>
+    </table>
+
+</div>
+
+
+<#-- CASE 3 : Default (Only Total) -->
+<#else>
+
+<div class="section">
+    <h2>Services Included</h2>
+
+    <table class="service-table">
+        <tbody>
+        <#list services as service>
+            <tr>
+                <td>${service.name}</td>
+            </tr>
+        </#list>
+     </tbody>
+    </table>
+
+    <div class="total" style="margin-top:20px;">
+        Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
+    </div>
+
+</div>
+
 </#if>
+
+<#-- ================= END COST LOGIC ================= -->
 
 
 <#if remarks?? && remarks?has_content>

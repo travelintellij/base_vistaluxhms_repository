@@ -37,6 +37,20 @@
         opacity: .98; /* Adjust the opacity for the background image */
     }
 
+    /* Highlight Validation Errors */
+    .error {
+        display: inline-block;
+        background-color: #ffe6e6;   /* Light red background */
+        color: #b30000;              /* Dark red text */
+        font-weight: bold;
+        padding: 5px 10px;
+        border: 1px solid #ff4d4d;
+        border-radius: 4px;
+        margin-top: 4px;
+        font-size: 13px;
+    }
+
+
 </style>
 <div class="form-container-wrapper" style="background: transparent !important;">
     <div class="form-container">

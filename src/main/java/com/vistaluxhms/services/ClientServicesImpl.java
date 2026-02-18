@@ -428,4 +428,13 @@ public class ClientServicesImpl {
         return filterClientsForExport(filter);
     }
 
+
+    public boolean isMobileExistsForClient(Long mobile) {
+        return clientRepository.existsByMobileAndSalesPartnerFlag(mobile, false);
+    }
+
+    public boolean isMobileExistsForSalesPartnerClient(Long mobile) {
+        return clientRepository.existsByMobileAndSalesPartnerFlag(mobile, true);
+    }
+
 }
