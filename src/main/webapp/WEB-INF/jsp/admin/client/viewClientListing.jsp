@@ -31,10 +31,7 @@
         z-index: -1; /* Place the overlay behind the content */
     }
 
-    /* Optional: If you want to adjust the opacity of the image to make it more subtle */
-    body {
-        opacity: .98; /* Adjust the opacity for the background image */
-    }
+
     .export-btn{
         padding:6px 12px;
         background:#2e7d32;
@@ -50,6 +47,26 @@
 
     .export-btn:hover{
         opacity:0.9;
+    }
+
+    .form-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        align-items: center !important;
+    }
+
+    .form-group {
+        flex: 1 1 200px !important;
+        min-width: 200px !important;
+    }
+
+    .form-actions {
+        flex: 1 1 250px !important;
+        min-width: 250px !important;
+        display: flex !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
     }
 
 
@@ -130,11 +147,7 @@
    href="${pageContext.request.contextPath}/exportClientsPdf?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityId=${CLIENT_OBJ.city.destinationId}&salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">
    Export PDF
 </a>
-
-
-
-
-        </div>
+ </div>
 
         </div>
     </form:form>
