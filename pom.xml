@@ -17,7 +17,7 @@
 		<hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
 		<spring-data-jpa.version>2.2.6.RELEASE</spring-data-jpa.version>
 		<spring-security.version>5.3.0.RELEASE</spring-security.version>
-		<mysql-connector.version>8.0.17</mysql-connector.version>
+		<mysql-connector.version>8.0.33</mysql-connector.version>
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
@@ -50,6 +50,12 @@
 			<version>${mysql-connector.version}</version>
 
 
+		</dependency>
+		<!-- PostgreSQL dependency (for local testing) -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.6.0</version>
 		</dependency>
 		<!-- Related to Spring security -->
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>
