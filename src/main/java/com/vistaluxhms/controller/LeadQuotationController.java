@@ -631,7 +631,22 @@ public class LeadQuotationController {
             long nettPrice = quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount();
             whatsAppMessageDTO.setFinalPrice((int)nettPrice);
             whatsAppMessageDTO.setNoOfRooms(quotationEntityDTO.getRoomDetails().size());
-            whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO);
+
+            DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            String queryDetails  = "Total Rooms: " + String.valueOf(quotationEntityDTO.getRoomDetails().size()) ;
+            for(int i=0;i<quotationEntityDTO.getRoomDetails().size();i++){
+                queryDetails = queryDetails + "\r\nRoom " + (i+1) +"\r\n";
+                LeadSystemQuotationRoomDetailsEntity roomDetailsDTO = quotationEntityDTO.getRoomDetails().get(i);
+                queryDetails = queryDetails + "Room Category: " + roomDetailsDTO.getRoomCategoryId() + "\r\n";
+                queryDetails = queryDetails + "Adults : " + (roomDetailsDTO.getAdults() + roomDetailsDTO.getExtraBed()) + " | Children: " +  (roomDetailsDTO.getCnb() + roomDetailsDTO.getCwb()) + "\r\n";
+                String formattedCheckInDate = roomDetailsDTO.getCheckInDate().format(formatter);
+                String formattedCheckOutDate = roomDetailsDTO.getCheckOutDate().format(formatter);
+                queryDetails = queryDetails + "Check In: " +  formattedCheckInDate + " | Check Out: " + formattedCheckOutDate +"\r\n";
+                queryDetails = queryDetails + "Meal Plan : " + roomDetailsDTO.getMealPlanId();
+                queryDetails = queryDetails + "\r\n-----------";
+            }
+
+            whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO,queryDetails);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
