@@ -1,5 +1,6 @@
 package com.vistaluxhms.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vistaluxhms.model.WhatsAppMessageDTO;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,10 +99,32 @@ public class WhatsAppMessagingService {
 
 
     public void sendStayQuotationMessage(WhatsAppMessageDTO dto,String queryDetails) {
+
         try {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("country_code", "91");
+            payload.put("mobile", normalizeMobile(dto.getRecipientMobile()));
+            payload.put("wid", "27559");
+            payload.put("type", "text");
 
+            Map<String, String> bodyValues = new HashMap<>();
+            bodyValues.put("1", dto.getRecipientName());
+            bodyValues.put("2", String.valueOf(dto.getNoOfRooms()));
+            bodyValues.put("3", dto.getGuestDetails());
+            bodyValues.put("4", String.valueOf(dto.getFinalPrice()));
+            bodyValues.put("5", dto.getQueryOwnerName() + " | " + dto.getQueryOwnerMobile());
 
+            payload.put("bodyValues", bodyValues);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonBody = mapper.writeValueAsString(payload);
+            System.out.println("Final Json body is " + jsonBody);
+            execute(jsonBody);
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        /*
+        try {
             String jsonBody =
                     "{\n" +
                             "  \"country_code\": \"91\",\n" +
@@ -122,6 +145,8 @@ public class WhatsAppMessagingService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+             */
     }
 
 
