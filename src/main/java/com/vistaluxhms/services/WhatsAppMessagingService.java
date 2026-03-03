@@ -104,7 +104,7 @@ public class WhatsAppMessagingService {
             Map<String, Object> payload = new HashMap<>();
             payload.put("country_code", "91");
             payload.put("mobile", normalizeMobile(dto.getRecipientMobile()));
-            payload.put("wid", "27559");
+            payload.put("wid", "27614");
             payload.put("type", "text");
 
             Map<String, String> bodyValues = new HashMap<>();

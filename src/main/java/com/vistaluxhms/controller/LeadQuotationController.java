@@ -765,6 +765,8 @@ public class LeadQuotationController {
         return modelView;
     }
 
+
+
     @RequestMapping(value = "process_system_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView process_system_quotation_save(@ModelAttribute("LEAD_SYSTEM_QUOTATION_OBJ") LeadSystemQuotationEntityDTO leadSystemQuotationEntityDTO,
                                                       BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
@@ -1282,6 +1284,7 @@ public class LeadQuotationController {
         return modelView;
     }
 
+
     private void notifyQuotationReceiverByEmail(LeadFreeHandQuotationEntityDTO quotationEntityDTO, List<String> recipientEmails, String templateName) {
         if (emailNotifyActive) {
             Mail mail = new Mail();
@@ -1325,6 +1328,135 @@ public class LeadQuotationController {
             System.out.println("Email Notification DISABLE. ");
         }
     }
+
+
+    @RequestMapping(value = "process_fh_lead_quotation", params = "whatsapp", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_fh_lead_quotation_whatsapp(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(String.valueOf(quotationEntityDTO.getClientEntity().getMobile()));
+        sessionQuotation.setEmail(quotationEntityDTO.getClientEntity().getEmailId());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:review_process_create_lead_fh_quotation");
+        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getClientEntity().getEmailId(), result);
+        if (result.hasErrors()) {
+            modelView =review_process_create_lead_fh_quotation(quotationEntityDTO, result,  leadRecorderObj,  leadBindingresult,  session, redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewLeadFHQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+        formatRoomDates(quotationEntityDTO);
+        notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
+        System.out.println("Quotation Sent Successfully!! ");
+        redirectAttrib.addFlashAttribute("Success", "Quotation Sending request is added in queue successfully !! ");
+        //session.removeAttribute(sessionKey);
+        return modelView;
+    }
+
+
+
+
+    private void notifyFreeHandQuotationReceiverByWhatsapp(LeadFreeHandQuotationEntityDTO quotationEntityDTO) {
+        UserDetailsObj user = getLoggedInUser();
+        System.out.println("Sharing Quotation via Whats app");
+        try {
+            WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
+            whatsAppMessageDTO.setRecipientMobile("91" + quotationEntityDTO.getClientEntity().getMobile());
+            whatsAppMessageDTO.setRecipientName(quotationEntityDTO.getClientEntity().getClientName());
+            String guestDetails = generateGuestDetailsFH(quotationEntityDTO.getRoomDetails());
+            whatsAppMessageDTO.setGuestDetails(guestDetails);
+            whatsAppMessageDTO.setQueryOwnerName(user.getUsername());
+            whatsAppMessageDTO.setQueryOwnerMobile(String.valueOf(user.getMobile()));
+            whatsAppMessageDTO.setQueryOwnerEmail(user.getEmail());
+            long nettPrice = quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount();
+            whatsAppMessageDTO.setFinalPrice((int)nettPrice);
+            int totalRooms = 0;
+            for (LeadFreeHandQuotationRoomDetailsEntity roomDetail : quotationEntityDTO.getRoomDetails()) {
+                totalRooms += roomDetail.getNoOfRooms();
+            }
+            whatsAppMessageDTO.setNoOfRooms(totalRooms);
+
+            System.out.println("Whats app DTO to send is : " + whatsAppMessageDTO);
+            whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO,"not applicable");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private String generateGuestDetailsFH(List<LeadFreeHandQuotationRoomDetailsEntity> roomDetailsList) {
+        int totalAdults = 0;
+        int totalChildren = 0;
+
+        for (LeadFreeHandQuotationRoomDetailsEntity room : roomDetailsList) {
+            totalAdults += room.getAdults();
+            totalChildren += room.getNoOfChild();
+        }
+        return totalAdults + " Adults and " + totalChildren + " Children";
+    }
+
+
+
+
+    @RequestMapping(value = "process_fh_lead_quotation", params = "EmailAndWhatsApp", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView process_fh_lead_quotation_email_and_whatapp(@ModelAttribute("LEAD_FH_QUOTATION_OBJ") LeadFreeHandQuotationEntityDTO quotationEntityDTO,
+                                                        BindingResult result,@ModelAttribute("LEAD_OBJ") LeadEntityDTO leadRecorderObj, BindingResult leadBindingresult, HttpSession session, final RedirectAttributes redirectAttrib) {
+        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        LeadFreeHandQuotationEntityDTO sessionQuotation = (LeadFreeHandQuotationEntityDTO) session.getAttribute(sessionKey);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(String.valueOf(quotationEntityDTO.getClientEntity().getMobile()));
+        sessionQuotation.setEmail(quotationEntityDTO.getClientEntity().getEmailId());
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+        modelView.setViewName("redirect:review_process_create_lead_fh_quotation");
+        redirectAttrib.addFlashAttribute("LEAD_SYSTEM_QUOTATION_OBJ", quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("LEAD_OBJ", leadRecorderObj);
+        leadRecorderObj.setLeadId(quotationEntityDTO.getLeadEntity().getLeadId());
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getClientEntity().getEmailId(), result);
+        if (result.hasErrors()) {
+            modelView =review_process_create_lead_fh_quotation(quotationEntityDTO, result,  leadRecorderObj,  leadBindingresult,  session, redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewLeadFHQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+        formatRoomDates(quotationEntityDTO);
+        notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
+        notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
+        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
+        //session.removeAttribute(sessionKey);
+        return modelView;
+    }
+
+
+
+
+
 
 
     @RequestMapping(value = "process_fh_lead_quotation", params = "SaveQuotation", method = {RequestMethod.GET, RequestMethod.POST})
