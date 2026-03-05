@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface SalesPartnerEntityRepository extends JpaRepository<SalesPartnerEntity, Long>, JpaSpecificationExecutor<SalesPartnerEntity> {
+public interface SalesPartnerEntityRepository
+        extends JpaRepository<SalesPartnerEntity, Long>, JpaSpecificationExecutor<SalesPartnerEntity> {
     List<SalesPartnerEntity> findByActive(boolean active);
+
     List<SalesPartnerEntity> findByActiveOrderBySalesPartnerShortNameAsc(boolean active);
+
+    java.util.Optional<SalesPartnerEntity> findBySalesPartnerName(String name);
 }

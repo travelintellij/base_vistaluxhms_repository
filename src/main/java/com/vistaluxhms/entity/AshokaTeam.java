@@ -29,54 +29,53 @@ public class AshokaTeam {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int userId;
 
-	@Column(nullable = false,name="username", unique = true)
+	@Column(nullable = false, name = "username", unique = true)
 	protected String username;
 
-	@Column(nullable = false,name="password", unique = false)
+	@Column(nullable = false, name = "password", unique = false)
 	protected String password;
 
-	/*@Column(nullable = false,name="roles", unique = false)
-	private String roles;
-
+	/*
+	 * @Column(nullable = false,name="roles", unique = false)
+	 * private String roles;
+	 * 
 	 */
 
-	@Column(nullable = false,name="active", unique = false)
-	protected boolean active=true;
-	
-	@Column(nullable = false,name="name", unique = false)
+	@Column(nullable = false, name = "active", unique = false)
+	protected boolean active = true;
+
+	@Column(nullable = false, name = "name", unique = false)
 	protected String name;
-	
-	@Column(nullable = false,name="address", unique = false)
+
+	@Column(nullable = true, name = "address", unique = false)
 	protected String address;
 
 	protected long mobile;
-	
-	@Column(nullable = false,name="type", unique = false)
+
+	@Column(nullable = true, name = "type", unique = false)
 	protected String type;
-	
-	
-	@Column(nullable = false,name="shift", unique = false)
+
+	@Column(nullable = true, name = "shift", unique = false)
 	protected String shift;
-	
-	@Column(nullable = false,name="fixedincentive", unique = false)
+
+	@Column(nullable = false, name = "fixedincentive", unique = false)
 	protected long fixedIncentive;
-	
-	@Column(nullable = false,name="dob", unique = false)
+
+	@Column(nullable = true, name = "dob", unique = false)
 	protected Date dob;
-	
-	@Column(nullable = false,name="doj", unique = false)
+
+	@Column(nullable = true, name = "doj", unique = false)
 	protected Date doj;
-	
-	@Column(nullable = false,name="designation", unique = false)
+
+	@Column(nullable = true, name = "designation", unique = false)
 	protected String designation;
-	
-	
-	@Column(nullable = true,name="Email", unique = false)
+
+	@Column(nullable = true, name = "Email", unique = false)
 	protected String email;
-	
-	@Column(nullable = true,name="lastWorkingDay", unique = false)
+
+	@Column(nullable = true, name = "lastWorkingDay", unique = false)
 	protected Date lastWorkingDay;
-	
+
 	protected String personalEmail;
 	protected long personalMobile;
 	protected String panCard;
@@ -84,26 +83,26 @@ public class AshokaTeam {
 	protected String gender;
 	protected String maritalStatus;
 	protected String remarks;
-	
+
 	protected boolean accountExpired;
-	protected boolean accountLocked ;
+	protected boolean accountLocked;
 	protected boolean credentialsExpired;
 	protected boolean deleted;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "ashokateam_role",
-		joinColumns = @JoinColumn(name = "userId"), 
-		inverseJoinColumns = @JoinColumn(name = "roleId"))
+	@JoinTable(name = "ashokateam_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	protected Set<RoleEntity> roles = new HashSet<RoleEntity>();
 
 	/*
-	@ManyToMany(targetEntity = Tg_Leads_Recorder_Entity.class,fetch = FetchType.LAZY)
-    Set<Tg_Leads_Recorder_Entity> leads = new HashSet<>();
-    
-    @ManyToMany(targetEntity = Udn_Deals_Recorder_Entity.class,fetch = FetchType.LAZY)
-    Set<Udn_Deals_Recorder_Entity> deals = new HashSet<>();
-
-
+	 * @ManyToMany(targetEntity = Tg_Leads_Recorder_Entity.class,fetch =
+	 * FetchType.LAZY)
+	 * Set<Tg_Leads_Recorder_Entity> leads = new HashSet<>();
+	 * 
+	 * @ManyToMany(targetEntity = Udn_Deals_Recorder_Entity.class,fetch =
+	 * FetchType.LAZY)
+	 * Set<Udn_Deals_Recorder_Entity> deals = new HashSet<>();
+	 * 
+	 * 
 	 */
 	public Date getLastWorkingDay() {
 		return lastWorkingDay;
@@ -116,12 +115,11 @@ public class AshokaTeam {
 	public String getEmail() {
 		return email;
 	}
-	
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getDesignation() {
 		return designation;
 	}
@@ -194,136 +192,137 @@ public class AshokaTeam {
 		this.doj = doj;
 	}
 
-
-	public AshokaTeam() {}
+	public AshokaTeam() {
+	}
 
 	public void updateUserEntityFromVoExcludingRoles(UserDetailsObj userDetailsObj) {
 		this.userId = userDetailsObj.getUserId();
-		this.active=true;
-		this.address=userDetailsObj.getAddress();
-		this.designation=userDetailsObj.getDesignation();
-		this.dob=userDetailsObj.getDob();
-		this.doj=userDetailsObj.getDoj();
-		this.email=userDetailsObj.getEmail();
-		this.name=userDetailsObj.getName();
-		this.password=userDetailsObj.getPassword();
-		this.shift=userDetailsObj.getShift();
-		this.type=userDetailsObj.getType();
-		this.username=userDetailsObj.getUsername();
-		this.mobile=userDetailsObj.getMobile();
-		this.fixedIncentive=userDetailsObj.getFixedIncentive();
+		this.active = true;
+		this.address = userDetailsObj.getAddress();
+		this.designation = userDetailsObj.getDesignation();
+		this.dob = userDetailsObj.getDob();
+		this.doj = userDetailsObj.getDoj();
+		this.email = userDetailsObj.getEmail();
+		this.name = userDetailsObj.getName();
+		this.password = userDetailsObj.getPassword();
+		this.shift = userDetailsObj.getShift();
+		this.type = userDetailsObj.getType();
+		this.username = userDetailsObj.getUsername();
+		this.mobile = userDetailsObj.getMobile();
+		this.fixedIncentive = userDetailsObj.getFixedIncentive();
 		this.personalEmail = userDetailsObj.getPersonalEmail();
-		this.personalMobile= userDetailsObj.getPersonalMobile();
-		this.panCard= userDetailsObj.getPanCard();
-		this.aadharCard= userDetailsObj.getAadharCard();
-		this.gender= userDetailsObj.getGender();
-		this.maritalStatus= userDetailsObj.getMaritalStatus();
-		this.remarks= userDetailsObj.getRemarks();
-		this.active=userDetailsObj.isActive();
-		this.accountExpired=userDetailsObj.isAccountExpired();
-		this.accountLocked=userDetailsObj.isAccountLocked() ;
-		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
-		this.deleted=userDetailsObj.isDeleted();
-		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
-		//this.roles = userDetailsObj.getRoles();
+		this.personalMobile = userDetailsObj.getPersonalMobile();
+		this.panCard = userDetailsObj.getPanCard();
+		this.aadharCard = userDetailsObj.getAadharCard();
+		this.gender = userDetailsObj.getGender();
+		this.maritalStatus = userDetailsObj.getMaritalStatus();
+		this.remarks = userDetailsObj.getRemarks();
+		this.active = userDetailsObj.isActive();
+		this.accountExpired = userDetailsObj.isAccountExpired();
+		this.accountLocked = userDetailsObj.isAccountLocked();
+		this.credentialsExpired = userDetailsObj.isCredentialsExpired();
+		this.deleted = userDetailsObj.isDeleted();
+		this.lastWorkingDay = userDetailsObj.getLastWorkingDay();
+		// this.roles = userDetailsObj.getRoles();
 
 	}
-	
+
 	public AshokaTeam(AshokaTeam userDetailsObj) {
 		this.userId = userDetailsObj.getUserId();
-		this.active=true;
-		this.address=userDetailsObj.getAddress();
-		this.designation=userDetailsObj.getDesignation();
-		this.dob=userDetailsObj.getDob();
-		this.doj=userDetailsObj.getDoj();
-		this.email=userDetailsObj.getEmail();
-		this.name=userDetailsObj.getName();
-		this.password=userDetailsObj.getPassword();
-		this.shift=userDetailsObj.getShift();
-		this.type=userDetailsObj.getType();
-		this.username=userDetailsObj.getUsername();
-		this.mobile=userDetailsObj.getMobile();
-		this.fixedIncentive=userDetailsObj.getFixedIncentive();
+		this.active = true;
+		this.address = userDetailsObj.getAddress();
+		this.designation = userDetailsObj.getDesignation();
+		this.dob = userDetailsObj.getDob();
+		this.doj = userDetailsObj.getDoj();
+		this.email = userDetailsObj.getEmail();
+		this.name = userDetailsObj.getName();
+		this.password = userDetailsObj.getPassword();
+		this.shift = userDetailsObj.getShift();
+		this.type = userDetailsObj.getType();
+		this.username = userDetailsObj.getUsername();
+		this.mobile = userDetailsObj.getMobile();
+		this.fixedIncentive = userDetailsObj.getFixedIncentive();
 		this.personalEmail = userDetailsObj.getPersonalEmail();
-		this.personalMobile= userDetailsObj.getPersonalMobile();
-		this.panCard= userDetailsObj.getPanCard();
-		this.aadharCard= userDetailsObj.getAadharCard();
-		this.gender= userDetailsObj.getGender();
-		this.maritalStatus= userDetailsObj.getMaritalStatus();
-		this.remarks= userDetailsObj.getRemarks();
-		this.active=userDetailsObj.isActive();
+		this.personalMobile = userDetailsObj.getPersonalMobile();
+		this.panCard = userDetailsObj.getPanCard();
+		this.aadharCard = userDetailsObj.getAadharCard();
+		this.gender = userDetailsObj.getGender();
+		this.maritalStatus = userDetailsObj.getMaritalStatus();
+		this.remarks = userDetailsObj.getRemarks();
+		this.active = userDetailsObj.isActive();
 		this.roles = userDetailsObj.getRoles();
-		this.accountExpired=userDetailsObj.isAccountExpired();
-		this.accountLocked=userDetailsObj.isAccountLocked() ;
-		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
+		this.accountExpired = userDetailsObj.isAccountExpired();
+		this.accountLocked = userDetailsObj.isAccountLocked();
+		this.credentialsExpired = userDetailsObj.isCredentialsExpired();
 		this.roles = userDetailsObj.getRoles();
-		this.deleted=userDetailsObj.isDeleted();
-		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
+		this.deleted = userDetailsObj.isDeleted();
+		this.lastWorkingDay = userDetailsObj.getLastWorkingDay();
 	}
-	
-	
+
 	public AshokaTeam(@Valid UserDetailsObj userDetailsObj) {
 		this.userId = userDetailsObj.getUserId();
-		this.active=true;
-		this.address=userDetailsObj.getAddress();
-		this.designation=userDetailsObj.getDesignation();
-		this.dob=userDetailsObj.getDob();
-		this.doj=userDetailsObj.getDoj();
-		this.email=userDetailsObj.getEmail();
-		this.name=userDetailsObj.getName();
-		this.password=userDetailsObj.getPassword();
-		this.shift=userDetailsObj.getShift();
-		this.type=userDetailsObj.getType();
-		this.username=userDetailsObj.getUsername();
-		this.mobile=userDetailsObj.getMobile();
-		this.fixedIncentive=userDetailsObj.getFixedIncentive();
+		this.active = true;
+		this.address = userDetailsObj.getAddress();
+		this.designation = userDetailsObj.getDesignation();
+		this.dob = userDetailsObj.getDob();
+		this.doj = userDetailsObj.getDoj();
+		this.email = userDetailsObj.getEmail();
+		this.name = userDetailsObj.getName();
+		this.password = userDetailsObj.getPassword();
+		this.shift = userDetailsObj.getShift();
+		this.type = userDetailsObj.getType();
+		this.username = userDetailsObj.getUsername();
+		this.mobile = userDetailsObj.getMobile();
+		this.fixedIncentive = userDetailsObj.getFixedIncentive();
 		this.personalEmail = userDetailsObj.getPersonalEmail();
-		this.personalMobile= userDetailsObj.getPersonalMobile();
-		this.panCard= userDetailsObj.getPanCard();
-		this.aadharCard= userDetailsObj.getAadharCard();
-		this.gender= userDetailsObj.getGender();
-		this.maritalStatus= userDetailsObj.getMaritalStatus();
-		this.remarks= userDetailsObj.getRemarks();
-		this.active=userDetailsObj.isActive();
-		this.lastWorkingDay=userDetailsObj.getLastWorkingDay();
-		this.accountExpired=userDetailsObj.isAccountExpired();
-		this.accountLocked=userDetailsObj.isAccountLocked() ;
-		this.credentialsExpired=userDetailsObj.isCredentialsExpired();
+		this.personalMobile = userDetailsObj.getPersonalMobile();
+		this.panCard = userDetailsObj.getPanCard();
+		this.aadharCard = userDetailsObj.getAadharCard();
+		this.gender = userDetailsObj.getGender();
+		this.maritalStatus = userDetailsObj.getMaritalStatus();
+		this.remarks = userDetailsObj.getRemarks();
+		this.active = userDetailsObj.isActive();
+		this.lastWorkingDay = userDetailsObj.getLastWorkingDay();
+		this.accountExpired = userDetailsObj.isAccountExpired();
+		this.accountLocked = userDetailsObj.isAccountLocked();
+		this.credentialsExpired = userDetailsObj.isCredentialsExpired();
 
-		if(userDetailsObj.getRoleName()!=null && userDetailsObj.getRoleName().trim().length()>0) {
-	  		this.roles = new HashSet<RoleEntity>();
+		if (userDetailsObj.getRoleName() != null && userDetailsObj.getRoleName().trim().length() > 0) {
+			this.roles = new HashSet<RoleEntity>();
 			RoleEntity entity = new RoleEntity();
-	  		if(userDetailsObj.getRoleName().equalsIgnoreCase("ADMIN")) {
-	        		entity.setRoleId(1);
-	        		this.getRoles().add(entity);
-	        	}
-	        	else {
-	        		entity.setRoleId(2);
-	        		this.getRoles().add(entity);
-	        	}
-	        }
+			if (userDetailsObj.getRoleName().equalsIgnoreCase("ADMIN")) {
+				entity.setRoleId(1);
+				this.getRoles().add(entity);
+			} else {
+				entity.setRoleId(2);
+				this.getRoles().add(entity);
+			}
+		}
 	}
 
 	public int getUserId() {
 		return userId;
 	}
+
 	public void setUserId(int id) {
 		this.userId = id;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	public String toString() {
-		
+
 		String attribValue = "";
 		attribValue = attribValue + "0.  User ID -> " + userId + "\n";
 		attribValue = attribValue + "1.  Login ID -> " + username + "\n";
 		attribValue = attribValue + "2.  Password -> " + password + "\n";
-		
+
 		attribValue = attribValue + "3.  Full Name -> " + name + "\n";
 		attribValue = attribValue + "4.  Address -> " + address + "\n";
 		attribValue = attribValue + "5.  Email  -> " + email + "\n";
@@ -334,20 +333,20 @@ public class AshokaTeam {
 		attribValue = attribValue + "10.  Fixed Incentive -> " + fixedIncentive + "\n";
 		attribValue = attribValue + "11.  Date of Birth -> " + dob + "\n";
 		attribValue = attribValue + "12.  Date of Joining -> " + doj + "\n";
-		
+
 		attribValue = attribValue + "13.  Account Expired -> " + accountExpired + "\n";
 		attribValue = attribValue + "14.  Account Locked -> " + accountLocked + "\n";
 		attribValue = attribValue + "15.  Credentials Expired  -> " + credentialsExpired + "\n";
-		
-		
+
 		attribValue = attribValue + "16.  Roles -> " + roles + "\n";
-		return attribValue; 
+		return attribValue;
 	}
 
 	public boolean isActive() {
 
 		return active;
 	}
+
 	public void setActive(boolean active) {
 		this.active = active;
 	}
@@ -457,24 +456,21 @@ public class AshokaTeam {
 	}
 
 	/*
-	public Set<Tg_Leads_Recorder_Entity> getLeads() {
-		return leads;
-	}
+	 * public Set<Tg_Leads_Recorder_Entity> getLeads() {
+	 * return leads;
+	 * }
+	 * 
+	 * public void setLeads(Set<Tg_Leads_Recorder_Entity> leads) {
+	 * this.leads = leads;
+	 * }
+	 * 
+	 * public Set<Udn_Deals_Recorder_Entity> getDeals() {
+	 * return deals;
+	 * }
+	 * 
+	 * public void setDeals(Set<Udn_Deals_Recorder_Entity> deals) {
+	 * this.deals = deals;
+	 * }
+	 */
 
-	public void setLeads(Set<Tg_Leads_Recorder_Entity> leads) {
-		this.leads = leads;
-	}
-
-	public Set<Udn_Deals_Recorder_Entity> getDeals() {
-		return deals;
-	}
-
-	public void setDeals(Set<Udn_Deals_Recorder_Entity> deals) {
-		this.deals = deals;
-	}
-	*/
-	
-	
-			
 }
-

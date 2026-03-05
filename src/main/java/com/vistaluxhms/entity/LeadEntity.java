@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -15,30 +14,30 @@ import java.util.Set;
 
 @Entity
 @Table(name = "lead_master")
-public class LeadEntity extends AuditModel{
+public class LeadEntity extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "leadId")
     protected Long leadId;
 
+    /**
+     * The client this lead belongs to.
+     * In automated sync, this is auto-created before the lead is saved.
+     */
     @ManyToOne
     @JoinColumn(name = "clientId", nullable = false)
     protected ClientEntity client;
 
-
-    @ManyToMany(targetEntity = AshokaTeam.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "leads_team_map",
-            joinColumns = {@JoinColumn(name="leadId")},
-            inverseJoinColumns = {@JoinColumn(name="userId")})
+    @ManyToMany(targetEntity = AshokaTeam.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "leads_team_map", joinColumns = { @JoinColumn(name = "leadId") }, inverseJoinColumns = {
+            @JoinColumn(name = "userId") })
     protected Set<AshokaTeam> team = new HashSet<AshokaTeam>();
 
-
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "leadEntity")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "leadEntity")
     @OrderBy("created_At DESC")
     @JsonBackReference
     private Set<Leads_Followup_Entity> leadFollowupEntityList = new HashSet<Leads_Followup_Entity>();
-
 
     @Column(name = "adults", nullable = false)
     protected int adults;
@@ -52,13 +51,17 @@ public class LeadEntity extends AuditModel{
     @Column(name = "compChild")
     protected int compChild;
 
-
     @Column(name = "clientRemarks")
     protected String clientRemarks;
 
     @Column(name = "internalRemarks")
     protected String internalRemarks;
 
+    /**
+     * Check-In and Check-Out dates.
+     * For Meta leads, SocialMediaLeadService defaults these to tomorrow
+     * and tomorrow + 7 days respectively.
+     */
     @Temporal(TemporalType.DATE)
     @Column(name = "checkInDate")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -82,7 +85,7 @@ public class LeadEntity extends AuditModel{
     protected boolean flagged;
 
     @Column(name = "FIT")
-    protected boolean fit=true;
+    protected boolean fit = true;
 
     @Column(name = "groupEvent")
     protected boolean groupEvent;
@@ -90,25 +93,21 @@ public class LeadEntity extends AuditModel{
     @Column(name = "Marriage")
     protected boolean marriage;
 
-
     @Column(name = "Others")
     protected boolean others;
 
     @Column(name = "leadCreationClientInformed")
-    protected boolean leadCreationClientInformed=true;
-
+    protected boolean leadCreationClientInformed = true;
 
     @Column(name = "leadOwner", nullable = false)
     protected int leadOwner;
-
-
 
     public LeadEntity() {
     }
 
     public LeadEntity(LeadEntityDTO leadRecorderObj) {
-        //this.client = leadRecorderObj.getClient();
-        //this.team = leadRecorderObj.getTeam();
+        // this.client = leadRecorderObj.getClient();
+        // this.team = leadRecorderObj.getTeam();
         this.adults = leadRecorderObj.getAdults();
         this.cwb = leadRecorderObj.getCwb();
         this.cnb = leadRecorderObj.getCnb();
@@ -129,7 +128,6 @@ public class LeadEntity extends AuditModel{
         this.leadOwner = leadRecorderObj.getLeadOwner();
     }
 
-
     // Getters and Setters
     public Long getLeadId() {
         return leadId;
@@ -146,7 +144,6 @@ public class LeadEntity extends AuditModel{
     public void setClient(ClientEntity client) {
         this.client = client;
     }
-
 
     public int getAdults() {
         return adults;
@@ -179,7 +176,6 @@ public class LeadEntity extends AuditModel{
     public void setCompChild(int compChild) {
         this.compChild = compChild;
     }
-
 
     public String getClientRemarks() {
         return clientRemarks;
@@ -269,8 +265,6 @@ public class LeadEntity extends AuditModel{
         this.marriage = marriage;
     }
 
-
-
     public boolean isOthers() {
         return others;
     }
@@ -286,9 +280,6 @@ public class LeadEntity extends AuditModel{
     public void setLeadCreationClientInformed(boolean leadCreationClientInformed) {
         this.leadCreationClientInformed = leadCreationClientInformed;
     }
-
-
-
 
     public Set<AshokaTeam> getTeam() {
         return team;
@@ -306,10 +297,10 @@ public class LeadEntity extends AuditModel{
         this.leadOwner = leadOwner;
     }
 
-
     public Set<Leads_Followup_Entity> getLeadFollowupEntityList() {
         return leadFollowupEntityList;
     }
+
     public void setLeadFollowupEntityList(Set<Leads_Followup_Entity> leadFollowupEntityList) {
         this.leadFollowupEntityList = leadFollowupEntityList;
     }

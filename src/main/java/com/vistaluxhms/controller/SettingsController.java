@@ -54,12 +54,11 @@ public class SettingsController {
     @Autowired
     SettingsAndOtherServicesImpl configService;
 
-
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
@@ -72,13 +71,13 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/view_myprofile");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView;
     }
 
@@ -87,13 +86,13 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/my_profile");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView; // resolves to /WEB-INF/views/my_profile.jsp
     }
 
@@ -102,71 +101,73 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/view_changepassword");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView;
     }
 
     @RequestMapping("update_update_password")
-    public ModelAndView update_update_password(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result, ModelMap model) {
+    public ModelAndView update_update_password(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result, ModelMap model) {
         ModelAndView modelView = new ModelAndView("admin/settings/view_changepassword");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         validator.validate(userDetailsObj, result);
         try {
-            if(result.hasErrors()) {
-                modelView.addObject("Error","Error: While updating password. ");
-            }else {
+            if (result.hasErrors()) {
+                modelView.addObject("Error", "Error: While updating password. ");
+            } else {
                 AshokaTeam userEntity = userDetailsService.findUserByID(getLoggedInUser().getUserId());
-                //userEntity.setPassword(userDetailsObj.getPasswordConfirm());
+                // userEntity.setPassword(userDetailsObj.getPasswordConfirm());
                 userEntity.setPassword(passwordEncoder.encode(userDetailsObj.getChangedPassword().trim()));
                 userDetailsService.createOrUpdateUser(userEntity);
-                modelView.addObject("Success","Your password is updated Successfully!!");
+                modelView.addObject("Success", "Your password is updated Successfully!!");
             }
-        }
-        catch(RecordNotFoundException rnfe) {
+        } catch (RecordNotFoundException rnfe) {
             rnfe.printStackTrace();
         }
-        //UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
+        // UserDetailsObj userObj = (UserDetailsObj)
+        // userDetailsService.loadUserByUsername(username);
         return modelView;
     }
 
     @RequestMapping("view_form_manage_permissions")
-    public ModelAndView view_form_manage_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
+    public ModelAndView view_form_manage_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/view_user_permissions");
 
-        Map<String, List<RoleEntity>> roleEntityMap= userDetailsService.find_All_Roles();
+        Map<String, List<RoleEntity>> roleEntityMap = userDetailsService.find_All_Roles();
         List<UserDetailsObj> userList = userDetailsService.findAllActiveUsers();
 
-        modelView.addObject("ROLE_OBJ",roleEntityMap);
+        modelView.addObject("ROLE_OBJ", roleEntityMap);
         System.out.println("Active Users List is " + userList);
-        modelView.addObject("ACTIVE_USERS_LIST",userList);
+        modelView.addObject("ACTIVE_USERS_LIST", userList);
 
         return modelView;
     }
 
-
     @RequestMapping("update_update_user_permissions")
-    public ModelAndView update_update_user_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
-        ModelAndView modelView = view_form_manage_permissions(userDetailsObj,result);
+    public ModelAndView update_update_user_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result) {
+        ModelAndView modelView = view_form_manage_permissions(userDetailsObj, result);
         try {
             userDetailsService.updateUserPermissions(userDetailsObj);
             modelView.addObject("Success", "Permission Records are updated successfully.");
@@ -186,7 +187,8 @@ public class SettingsController {
     }
 
     @RequestMapping("view_form_manage_central_config")
-    public ModelAndView view_form_manage_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
+    public ModelAndView view_form_manage_central_config(
+            @ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
         ModelAndView modelAndView = new ModelAndView("admin/settings/view_centralConfig");
 
         centralConfigDTO = configService.getCentralConfig();
@@ -194,38 +196,82 @@ public class SettingsController {
             centralConfigDTO = new CentralConfigEntityDTO(); // Empty DTO for first time
         }
         modelAndView.addObject("CENTRAL_CONFIG_OBJ", centralConfigDTO);
+
+        // Provide active users for the Default Lead Owner dropdown
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = activeUsersList.stream().collect(
+                java.util.stream.Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelAndView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+
         return modelAndView;
 
     }
 
-
-
-
-
     @PostMapping("create_edit_central_config")
-    public String create_edit_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
-                             @RequestParam("logoFile") MultipartFile logoFile,
-                             HttpServletRequest request,final RedirectAttributes redirectAttrib) {
+    public String create_edit_central_config(
+            @ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
+            @RequestParam("logoFile") MultipartFile logoFile,
+            HttpServletRequest request, final RedirectAttributes redirectAttrib) {
 
         try {
             if (!logoFile.isEmpty()) {
                 String uploadDir = request.getServletContext().getRealPath(VistaluxConstants.LOGO_PATH);
                 File dir = new File(uploadDir);
-                if (!dir.exists()) dir.mkdirs();
+                if (!dir.exists())
+                    dir.mkdirs();
                 Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
                 logoFile.transferTo(filePath.toFile());
             }
-            //centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
+            // centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator +
+            // VistaluxConstants.LOGO_FILE_NAME);
             configService.saveOrUpdateCentralConfig(centralConfigDTO);
-            redirectAttrib.addFlashAttribute("Success","Configuration is updated Successfully!!. ");
+            redirectAttrib.addFlashAttribute("Success", "Configuration is updated Successfully!!. ");
         } catch (Exception e) {
-            redirectAttrib.addFlashAttribute("Error","Configuration updation Failed. !!. ");
+            redirectAttrib.addFlashAttribute("Error", "Configuration updation Failed. !!. ");
             e.printStackTrace();
         }
         return "redirect:view_form_manage_central_config";
     }
 
+    @Autowired
+    private CentralConfigEntityRepository centralConfigRepo;
 
+    /**
+     * Display the Meta Token Management page.
+     * Fetches current Page ID and Permanent Access Token from Central
+     * Configuration.
+     */
+    @RequestMapping("view_form_meta_token")
+    public ModelAndView viewFormMetaToken() {
+        ModelAndView modelView = new ModelAndView("admin/settings/view_meta_token");
+        CentralConfigEntity config = centralConfigRepo.findTopByOrderByIdAsc();
+        if (config != null) {
+            modelView.addObject("metaPageId", config.getMetaPageId());
+            modelView.addObject("metaPageAccessToken", config.getMetaPageAccessToken());
+        }
+        return modelView;
+    }
 
+    @PostMapping("save_meta_token")
+    public String saveMetaToken(@RequestParam("metaPageId") String metaPageId,
+            @RequestParam("metaPageAccessToken") String metaPageAccessToken,
+            final RedirectAttributes redirectAttrib) {
+        try {
+            CentralConfigEntity config = centralConfigRepo.findTopByOrderByIdAsc();
+            if (config == null) {
+                config = new CentralConfigEntity();
+                config.setHotelName("Default");
+                config.setHotelAddress("Default");
+            }
+            config.setMetaPageId(metaPageId);
+            config.setMetaPageAccessToken(metaPageAccessToken);
+            centralConfigRepo.save(config);
+            redirectAttrib.addFlashAttribute("Success", "Meta Token saved successfully!");
+        } catch (Exception e) {
+            redirectAttrib.addFlashAttribute("Error", "Failed to save Meta Token.");
+            e.printStackTrace();
+        }
+        return "redirect:view_form_meta_token";
+    }
 
 }

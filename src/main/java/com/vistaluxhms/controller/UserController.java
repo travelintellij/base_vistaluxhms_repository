@@ -39,7 +39,7 @@ public class UserController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
@@ -48,32 +48,34 @@ public class UserController {
         return userObj;
     }
 
-
     @RequestMapping("view_view_user")
     public ModelAndView view_view_User(@RequestParam("userId") int userId) {
         ModelAndView mapview = new ModelAndView();
-        //mapview.addObject("userRole", userObj.getRoles());
+        // mapview.addObject("userRole", userObj.getRoles());
         UserDetailsObj userDetailsDTO = new UserDetailsObj();
 
         AshokaTeam userEntity = userDetailsService.findUserByID(userId);
         userDetailsDTO.updateUserVoFromEntity(userEntity);
         mapview.addObject("USER_OBJ", userDetailsDTO);
-        //System.out.println("Entity REtreived is " + userEntity);
-        //UserDetailsObj userDetailsObj = new UserDetailsObj(userEntity);
-        //mapview.addObject("userobj",userDetailsObj);
+        // System.out.println("Entity REtreived is " + userEntity);
+        // UserDetailsObj userDetailsObj = new UserDetailsObj(userEntity);
+        // mapview.addObject("userobj",userDetailsObj);
         mapview.setViewName("admin/user/Admin_View_User");
         return mapview;
     }
 
     @RequestMapping("view_add_user_form")
-    public ModelAndView view_add_user_form(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsDTO, BindingResult result) {
+    public ModelAndView view_add_user_form(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsDTO,
+            BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/user/Admin_Add_User");
+        modelView.addObject("LOGGED_IN_USER", userObj);
         return modelView;
     }
 
     @RequestMapping("view_edit_user_form")
-    public ModelAndView view_edit_user_form(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsDTO, BindingResult result) {
+    public ModelAndView view_edit_user_form(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsDTO,
+            BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/user/Admin_Edit_User");
         AshokaTeam userEntity = userDetailsService.findUserByID(userDetailsDTO.getUserId());
@@ -92,67 +94,85 @@ public class UserController {
                 }
             }
         }
-        userDetailsDTO.setPasswordConfirm(userEntity.getPassword());
 
+        // FIX: Clear password fields so the hashed password is not shown in the UI
+        userDetailsDTO.setPassword("");
+        userDetailsDTO.setPasswordConfirm("");
 
         AshokaTeam loggedUInUserEntity = userDetailsService.findUserByID(userObj.getUserId());
         Set<RoleEntity> loggedInrole = loggedUInUserEntity.getRoles();
         boolean isSuperAdmin = loggedInrole.stream()
-                .anyMatch(role ->
-                        "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
-                );
-        if(isSuperAdmin){
+                .anyMatch(role -> "SUPERADMIN".equalsIgnoreCase(role.getRoleName()));
+        if (isSuperAdmin) {
             userObj.setSuperAdmin(true);
-            modelView.addObject("LOGGED_IN_ROLE","SUPERADMIN");
-        }
-        else {
+            modelView.addObject("LOGGED_IN_ROLE", "SUPERADMIN");
+        } else {
             for (RoleEntity role : loggedInrole) {
                 if ("PRIV".equals(role.getRoleTarget())) {
                     if ("USER".equals(role.getRoleName())) {
                         userObj.setRoleName("USER");
-                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        modelView.addObject("LOGGED_IN_ROLE", userObj.getRoleName());
                         break; // Exit the loop once the condition is met
                     } else if ("ADMIN".equals(role.getRoleName())) {
                         userObj.setRoleName("ADMIN");
-                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        modelView.addObject("LOGGED_IN_ROLE", userObj.getRoleName());
                         break; // Exit the loop once the condition is met
                     }
                 }
             }
 
         }
-        //System.out.println("Logged in User is " + userObj.getUserId() + " Role is " + userObj.getRoleName());
-        modelView.addObject("LOGGED_IN_USER",userObj);
+        // System.out.println("Logged in User is " + userObj.getUserId() + " Role is " +
+        // userObj.getRoleName());
+        modelView.addObject("LOGGED_IN_USER", userObj);
         return modelView;
     }
-    @PostMapping(value="create_create_user")
-    public ModelAndView create_create_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-        ModelAndView modelView = new ModelAndView();
-        //implement the validation rule here.
-        userValidator.validate(userDTO,result);
-        if (result.hasErrors()) {
-            // If there are validation errors, return the form view with errors
-            modelView = view_add_user_form(userDTO, result);
-        } else {
-            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
-            //AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
-            try {
-                userDetailsService.createOrUpdateUser(ashokaTeamEntity);
-                userDTO.setUserId(ashokaTeamEntity.getUserId());
-                //modelView.addObject("userobj",userDTO);
-                modelView.addObject("message","Success");
-                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
-                redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
-            } catch (Exception e) {
-                modelView.addObject("Error", "Error: Adding New User. Please contact Administrator !!! " );
-                modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
-                e.printStackTrace();
-            }
+
+    @PostMapping(value = "create_create_user")
+    public ModelAndView create_create_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result,
+            final RedirectAttributes redirectAttrib) {
+
+        // 1. Check if username already exists to provide a friendly error message
+        if (userDetailsService.findUserByUserName(userDTO.getUsername()).isPresent()) {
+            result.rejectValue("username", "error.user", "This username is already taken. Please choose another.");
         }
 
-        return modelView;
+        userValidator.validate(userDTO, result);
+
+        if (result.hasErrors()) {
+            // Return to form - USER_OBJ and result are already in the model
+            ModelAndView modelView = view_add_user_form(userDTO, result);
+            modelView.addObject("USER_OBJ", userDTO);
+            return modelView;
+        }
+
+        try {
+            // FIX: DO NOT encode the password on the DTO directly.
+            // If you do, and an error occurs later, the encoded string (60 chars)
+            // is shown in the UI password field.
+            String rawPassword = userDTO.getPassword();
+            AshokaTeam ashokaTeamEntity = new AshokaTeam(userDTO);
+            ashokaTeamEntity.setPassword(passwordEncoder.encode(rawPassword));
+
+            // Ensure mandatory fields have values
+            if (ashokaTeamEntity.getType() == null)
+                ashokaTeamEntity.setType("GENERAL");
+            if (ashokaTeamEntity.getShift() == null)
+                ashokaTeamEntity.setShift("GENERAL");
+
+            userDetailsService.createOrUpdateUser(ashokaTeamEntity);
+
+            redirectAttrib.addFlashAttribute("Success", "User '" + userDTO.getName() + "' created successfully.");
+            return new ModelAndView("redirect:view_users_list");
+
+        } catch (Exception e) {
+            // If DB save fails (e.g. unique constraint), return to form safely
+            ModelAndView modelView = view_add_user_form(userDTO, result);
+            modelView.addObject("USER_OBJ", userDTO);
+            modelView.addObject("Error", "Error: " + e.getMessage());
+            e.printStackTrace();
+            return modelView;
+        }
     }
 
     @InitBinder
@@ -174,15 +194,16 @@ public class UserController {
     }
 
     @Transactional
-    @PostMapping(value="edit_edit_user")
-    public ModelAndView edit_edit_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result, final RedirectAttributes redirectAttrib) {
+    @PostMapping(value = "edit_edit_user")
+    public ModelAndView edit_edit_user(@ModelAttribute("USER_OBJ") UserDetailsObj userDTO, BindingResult result,
+            final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
-        //implement the validation rule here.
-        //System.out.println("Last Working Day is "  +userDTO.getLastWorkingDay());
+        // implement the validation rule here.
+        // System.out.println("Last Working Day is " +userDTO.getLastWorkingDay());
 
-        userValidator.validate(userDTO,result);
-        //System.out.println("User Details are " + userDTO);
+        userValidator.validate(userDTO, result);
+        // System.out.println("User Details are " + userDTO);
 
         if (result.hasErrors()) {
             System.out.println(result);
@@ -191,7 +212,9 @@ public class UserController {
         } else {
             AshokaTeam orgUserEntity = userDetailsService.findUserByID(userDTO.getUserId());
 
-            if(!userDTO.getPassword().equals(orgUserEntity.getPassword())) {
+            // FIX: Only update password if a new one is provided.
+            // If the field is empty, keep the existing one.
+            if (userDTO.getPassword() != null && !userDTO.getPassword().trim().isEmpty()) {
                 orgUserEntity.setPassword(passwordEncoder.encode(userDTO.getPassword().trim()));
             }
 
@@ -222,14 +245,14 @@ public class UserController {
 
             Set<RoleEntity> roles = orgUserEntity.getRoles();
             boolean isSuperAdmin = roles.stream()
-                    .anyMatch(role ->
-                            "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
-                    );
-            if(!isSuperAdmin) {
-                Optional<RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream().filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
+                    .anyMatch(role -> "SUPERADMIN".equalsIgnoreCase(role.getRoleName()));
+            if (!isSuperAdmin) {
+                Optional<RoleEntity> existingPrivRoleOpt = orgUserEntity.getRoles().stream()
+                        .filter(role -> role.getRoleTarget().equalsIgnoreCase("PRIV"))
                         .findFirst();
 
-                if (existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null && !userDTO.getRoleName().isEmpty()) {
+                if (existingPrivRoleOpt.isPresent() && userDTO.getRoleName() != null
+                        && !userDTO.getRoleName().isEmpty()) {
                     RoleEntity existingPrivRole = existingPrivRoleOpt.get();
 
                     if (userDTO.getRoleName().equals(VistaluxConstants.BASIC_PRIV_ADMIN)) {
@@ -246,7 +269,7 @@ public class UserController {
                 }
             }
 
-            modelView.setViewName("redirect:view_view_user?userId="+userDTO.getUserId());
+            modelView.setViewName("redirect:view_view_user?userId=" + userDTO.getUserId());
             redirectAttrib.addFlashAttribute("Success", "User record is updated successfully.");
         }
 
@@ -254,7 +277,8 @@ public class UserController {
     }
 
     @RequestMapping("view_users_list")
-    public ModelAndView view_users_list(@ModelAttribute("USER_FILTERED_LIST") UserDetailsObj userDTO, BindingResult result ) {
+    public ModelAndView view_users_list(@ModelAttribute("USER_FILTERED_LIST") UserDetailsObj userDTO,
+            BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("admin/user/viewUserListing");
         modelView.addObject("LOGGED_IN_USER", userObj);
@@ -262,22 +286,19 @@ public class UserController {
         AshokaTeam loggedUInUserEntity = userDetailsService.findUserByID(userObj.getUserId());
         Set<RoleEntity> roles = loggedUInUserEntity.getRoles();
         boolean isSuperAdmin = roles.stream()
-                .anyMatch(role ->
-                        "SUPERADMIN".equalsIgnoreCase(role.getRoleName())
-                );
-        if(isSuperAdmin){
-            modelView.addObject("LOGGED_IN_ROLE","SUPERADMIN");
-        }
-        else {
+                .anyMatch(role -> "SUPERADMIN".equalsIgnoreCase(role.getRoleName()));
+        if (isSuperAdmin) {
+            modelView.addObject("LOGGED_IN_ROLE", "SUPERADMIN");
+        } else {
             for (RoleEntity role : roles) {
                 if ("PRIV".equals(role.getRoleTarget())) {
                     if ("USER".equals(role.getRoleName())) {
                         userObj.setRoleName("USER");
-                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        modelView.addObject("LOGGED_IN_ROLE", userObj.getRoleName());
                         break; // Exit the loop once the condition is met
                     } else if ("ADMIN".equals(role.getRoleName())) {
                         userObj.setRoleName("ADMIN");
-                        modelView.addObject("LOGGED_IN_ROLE",userObj.getRoleName());
+                        modelView.addObject("LOGGED_IN_ROLE", userObj.getRoleName());
                         break; // Exit the loop once the condition is met
                     }
                 }
@@ -285,12 +306,11 @@ public class UserController {
 
         }
 
-        //modelView.addObject("LOGGED_IN_PERMISSIONS", loggedInUser.getPermissions());
+        // modelView.addObject("LOGGED_IN_PERMISSIONS", loggedInUser.getPermissions());
 
-        List<UserDetailsObj> listUserDTO= userDetailsService.findAllUsers();
+        List<UserDetailsObj> listUserDTO = userDetailsService.findAllUsers();
         modelView.addObject("USER_FILTERED_LIST", listUserDTO);
         return modelView;
     }
-
 
 }

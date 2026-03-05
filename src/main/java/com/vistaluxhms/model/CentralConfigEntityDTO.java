@@ -54,6 +54,8 @@ public class CentralConfigEntityDTO {
 
     private String hotelInfo;
 
+    private Integer defaultLeadOwnerId;
+
     public String getHotelName() {
         return hotelName;
     }
@@ -284,5 +286,13 @@ public class CentralConfigEntityDTO {
 
     public void setHotelInfo(String hotelInfo) {
         this.hotelInfo = hotelInfo;
+    }
+
+    public Integer getDefaultLeadOwnerId() {
+        return defaultLeadOwnerId;
+    }
+
+    public void setDefaultLeadOwnerId(Integer defaultLeadOwnerId) {
+        this.defaultLeadOwnerId = defaultLeadOwnerId;
     }
 }

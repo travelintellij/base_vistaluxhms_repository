@@ -432,10 +432,22 @@
                                 <div
                                     style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; flex-wrap: wrap;">
                                     <button onclick="toggleSidebar()">Open Filters</button>
-                                    <button id="syncIgBtn" class="sync-ig-btn" onclick="syncInstagramLeads()">
-                                        <span class="spinner"></span>
-                                        <span class="btn-text">&#9889; Sync Social Media Leads</span>
-                                    </button>
+
+                                    <div
+                                        style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 6px; padding: 4px; background: #f8f9fa;">
+                                        <select id="campaignFormSelect" class="form-control"
+                                            style="border: none; background: transparent; padding: 6px; margin-right: 10px; font-weight: 500;">
+                                            <option value="">-- Select Campaign Form --</option>
+                                            <c:forEach items="${ACTIVE_META_FORMS}" var="form">
+                                                <option value="${form.campaignFormId}">${form.formName}
+                                                    (${form.campaignName})</option>
+                                            </c:forEach>
+                                        </select>
+                                        <button id="syncIgBtn" class="sync-ig-btn" onclick="syncInstagramLeads()">
+                                            <span class="spinner"></span>
+                                            <span class="btn-text">&#9889; Sync Leads</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <!-- Toast notification -->
                                 <div id="syncToast" class="sync-toast"></div>
@@ -652,11 +664,18 @@
                         </script>
                         <script>
                             function syncInstagramLeads() {
+                                var select = document.getElementById('campaignFormSelect');
+                                var formId = select.value;
+                                if (!formId) {
+                                    showSyncToast('Please select a Campaign Form first.', 'error');
+                                    return;
+                                }
+
                                 var btn = document.getElementById('syncIgBtn');
                                 btn.classList.add('loading');
                                 btn.disabled = true;
 
-                                fetch('<%= request.getContextPath() %>/sync_instagram_leads')
+                                fetch('<%= request.getContextPath() %>/sync_instagram_leads?campaignFormId=' + formId)
                                     .then(function (response) { return response.json(); })
                                     .then(function (data) {
                                         btn.classList.remove('loading');

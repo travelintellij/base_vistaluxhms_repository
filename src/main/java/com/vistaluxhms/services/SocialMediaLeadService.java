@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.LeadEntity;
+import com.vistaluxhms.entity.SalesPartnerEntity;
 import com.vistaluxhms.repository.ClientEntityRepository;
 import com.vistaluxhms.repository.LeadEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,22 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Service for handling Meta (Facebook/Instagram) Lead Ads synchronization.
+ * 
+ * Logic Added:
+ * 1. Automated Lead Fetching: Connects to Meta Graph API using Page Access
+ * Token.
+ * 2. Client Conversion: Every synced lead is automatically converted into a
+ * ClientEntity.
+ * 3. Default Sales Partner: Assigns "Digital Marketing" as the default sales
+ * partner.
+ * 4. Default Dates: Sets default Check-In (tomorrow) and Check-Out (+7 days)
+ * since Meta forms lack travel dates.
+ * 5. Deduplication: Tracks imported Meta Lead IDs in 'social_lead_log' table.
+ */
 @Service
-public class InstagramLeadService {
+public class SocialMediaLeadService {
 
     @Value("${meta.page.access.token:}")
     private String pageAccessToken;
@@ -44,11 +59,29 @@ public class InstagramLeadService {
     private EntityManager entityManager;
 
     @Autowired
+    private com.vistaluxhms.repository.CentralConfigEntityRepository centralConfigRepository;
+
+    @Autowired
     private org.springframework.context.ApplicationContext applicationContext;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String GRAPH_API_BASE = "https://graph.facebook.com/";
+
+    @Autowired
+    private com.vistaluxhms.repository.CampaignFormRepository campaignFormRepository;
+
+    @Autowired
+    private com.vistaluxhms.repository.SalesPartnerEntityRepository salesPartnerRepository;
+
+    @Autowired
+    private EmailServiceImpl emailService;
+
+    @Autowired
+    private com.vistaluxhms.repository.UserRepository userRepository;
+
+    @Autowired
+    private SettingsAndOtherServicesImpl settingsService;
 
     /**
      * Fetches new leads from Meta (Facebook/Instagram) Lead Ads API
@@ -56,14 +89,33 @@ public class InstagramLeadService {
      *
      * @return List of newly imported lead details
      */
-    public List<Map<String, String>> fetchAndImportLeads() {
+    public List<Map<String, String>> fetchAndImportLeads(Long campaignFormId) {
         List<Map<String, String>> importedLeads = new ArrayList<>();
 
         try {
+            com.vistaluxhms.entity.CampaignFormEntity formConfig = campaignFormRepository.findById(campaignFormId)
+                    .orElse(null);
+            if (formConfig == null) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("status", "Error");
+                errorMap.put("message", "Campaign Form not found with ID: " + campaignFormId);
+                importedLeads.add(errorMap);
+                return importedLeads;
+            }
+
+            com.vistaluxhms.entity.CentralConfigEntity centralConfig = centralConfigRepository.findTopByOrderByIdAsc();
+            String activeFormId = formConfig.getFormId();
+            String activeAccessToken = (centralConfig != null && centralConfig.getMetaPageAccessToken() != null)
+                    ? centralConfig.getMetaPageAccessToken()
+                    : pageAccessToken;
+
+            String activeApiVersion = (centralConfig != null && centralConfig.getMetaGraphApiVersion() != null)
+                    ? centralConfig.getMetaGraphApiVersion()
+                    : apiVersion;
 
             // Fetch leads from Meta API
-            String apiUrl = GRAPH_API_BASE + apiVersion + "/" + leadFormId
-                    + "/leads?access_token=" + pageAccessToken
+            String apiUrl = GRAPH_API_BASE + activeApiVersion + "/" + activeFormId
+                    + "/leads?access_token=" + activeAccessToken
                     + "&limit=50&fields=id,created_time,field_data,platform";
 
             String response = makeGetRequest(apiUrl);
@@ -71,11 +123,11 @@ public class InstagramLeadService {
             JsonNode dataArray = rootNode.get("data");
 
             if (dataArray == null || !dataArray.isArray()) {
-                System.out.println("[InstagramLeadService] No data array in API response");
+                System.out.println("[SocialMediaLeadService] No data array in API response");
                 return importedLeads;
             }
 
-            System.out.println("[InstagramLeadService] Found " + dataArray.size() + " leads from Meta API");
+            System.out.println("[SocialMediaLeadService] Found " + dataArray.size() + " leads from Meta API");
 
             for (JsonNode leadNode : dataArray) {
                 String metaLeadId = leadNode.get("id").asText();
@@ -84,7 +136,7 @@ public class InstagramLeadService {
 
                 // Check if this lead has already been imported
                 if (isLeadAlreadyImported(metaLeadId)) {
-                    System.out.println("[InstagramLeadService] Lead " + metaLeadId + " already imported, skipping");
+                    System.out.println("[SocialMediaLeadService] Lead " + metaLeadId + " already imported, skipping");
                     continue;
                 }
 
@@ -95,12 +147,12 @@ public class InstagramLeadService {
                 fieldData.put("platform", platform);
 
                 try {
-                    Map<String, String> result = applicationContext.getBean(InstagramLeadService.class)
+                    Map<String, String> result = applicationContext.getBean(SocialMediaLeadService.class)
                             .processAndImportLead(fieldData);
                     importedLeads.add(result);
                 } catch (Exception ex) {
                     System.err.println(
-                            "[InstagramLeadService] Error importing lead " + metaLeadId + ": " + ex.getMessage());
+                            "[SocialMediaLeadService] Error importing lead " + metaLeadId + ": " + ex.getMessage());
                 }
             }
 
@@ -111,7 +163,7 @@ public class InstagramLeadService {
             }
 
         } catch (Exception e) {
-            System.err.println("[InstagramLeadService] Error fetching leads: " + e.getMessage());
+            System.err.println("[SocialMediaLeadService] Error fetching leads: " + e.getMessage());
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("status", "Error");
             errorMap.put("message", e.getMessage());
@@ -139,10 +191,67 @@ public class InstagramLeadService {
         fieldData.put("source", sourceName);
         fieldData.put("status", "Imported Successfully");
 
-        System.out.println("[InstagramLeadService] Imported lead: " + fieldData.getOrDefault("full_name", "Unknown")
+        System.out.println("[SocialMediaLeadService] Imported lead: " + fieldData.getOrDefault("full_name", "Unknown")
                 + " from " + sourceName + " -> CRM Lead #" + lead.getLeadId());
 
+        // Notify the default lead owner (admin) via email
+        notifyLeadOwner(lead, client, sourceName);
+
         return fieldData;
+    }
+
+    /**
+     * Notify the default lead owner (admin) via email when a new lead is imported.
+     * For now, the default lead owner is always "admin".
+     * This will be enhanced later to support round-robin or rule-based assignment.
+     */
+    private void notifyLeadOwner(LeadEntity lead, ClientEntity client, String source) {
+        try {
+            // Get the default lead owner ID from Central Config
+            int leadOwnerId = lead.getLeadOwner(); // This was already set from config in createLead
+            com.vistaluxhms.entity.AshokaTeam ownerUser = userRepository.findById(leadOwnerId).orElse(null);
+
+            if (ownerUser == null) {
+                System.out.println("[SocialMediaLeadService] Lead owner (ID: " + leadOwnerId
+                        + ") not found. Skipping notification.");
+                return;
+            }
+
+            String ownerEmail = ownerUser.getEmail();
+
+            if (ownerEmail == null || ownerEmail.trim().isEmpty()) {
+                System.out.println("[SocialMediaLeadService] Lead owner has no email. Skipping notification.");
+                return;
+            }
+
+            String clientName = client.getClientName() != null ? client.getClientName() : "Unknown";
+            String leadId = "ATT-" + lead.getLeadId();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MMM-yyyy HH:mm");
+
+            String subject = "New Lead Assigned: " + clientName + " [" + leadId + "]";
+            String body = "Hello " + ownerUser.getName() + ",\n\n"
+                    + "A new lead has been automatically imported and assigned to you.\n\n"
+                    + "Lead Details:\n"
+                    + "-------------------------------\n"
+                    + "Lead ID       : " + leadId + "\n"
+                    + "Client Name   : " + clientName + "\n"
+                    + "Client Mobile : " + (client.getMobile() != null ? client.getMobile() : "N/A") + "\n"
+                    + "Client Email  : " + (client.getEmailId() != null ? client.getEmailId() : "N/A") + "\n"
+                    + "Source        : " + source + "\n"
+                    + "Imported At   : " + sdf.format(new java.util.Date()) + "\n"
+                    + "-------------------------------\n\n"
+                    + "Please log in to the CRM and take action on this lead.\n\n"
+                    + "Regards,\nAxisHMS Pro - CRM System";
+
+            emailService.sendMail(ownerEmail, subject, body);
+            System.out.println("[SocialMediaLeadService] Lead owner notification sent to: " + ownerEmail + " for Lead #"
+                    + lead.getLeadId());
+
+        } catch (Exception e) {
+            // Never let email failure break the lead sync process
+            System.out.println("[SocialMediaLeadService] Failed to send lead owner notification: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -169,14 +278,15 @@ public class InstagramLeadService {
 
                     try {
                         results.add(
-                                applicationContext.getBean(InstagramLeadService.class).processAndImportLead(fieldData));
+                                applicationContext.getBean(SocialMediaLeadService.class)
+                                        .processAndImportLead(fieldData));
                     } catch (Exception ex) {
-                        System.err.println("[InstagramLeadService] Pagination lead error: " + ex.getMessage());
+                        System.err.println("[SocialMediaLeadService] Pagination lead error: " + ex.getMessage());
                     }
                 }
             }
         } catch (Exception e) {
-            System.err.println("[InstagramLeadService] Pagination error: " + e.getMessage());
+            System.err.println("[SocialMediaLeadService] Pagination error: " + e.getMessage());
         }
         return results;
     }
@@ -218,7 +328,7 @@ public class InstagramLeadService {
                 mobile = Long.parseLong(phone);
             }
         } catch (NumberFormatException e) {
-            System.err.println("[InstagramLeadService] Invalid phone: " + phone);
+            System.err.println("[SocialMediaLeadService] Invalid phone: " + phone);
         }
 
         // Try to find existing client by email
@@ -257,11 +367,21 @@ public class InstagramLeadService {
             client.setActive(true);
             client.setB2b(false);
             client.setSalesPartnerFlag(false);
+
+            // Assign Default Sales Partner: "Digital Marketing"
+            client.setSalesPartner(getOrCreateDefaultSalesPartner());
+
             client = clientRepository.save(client);
             System.out.println(
-                    "[InstagramLeadService] Created new client: " + name + " (ID: " + client.getClientId() + ")");
+                    "[SocialMediaLeadService] Created new client: " + name + " (ID: " + client.getClientId() + ")");
         } else {
-            System.out.println("[InstagramLeadService] Found existing client: " + client.getClientName() + " (ID: "
+            // Even if existing client, ensure sales partner is set for this source if not
+            // already
+            if (client.getSalesPartner() == null) {
+                client.setSalesPartner(getOrCreateDefaultSalesPartner());
+                client = clientRepository.save(client);
+            }
+            System.out.println("[SocialMediaLeadService] Found existing client: " + client.getClientName() + " (ID: "
                     + client.getClientId() + ")");
         }
 
@@ -279,7 +399,19 @@ public class InstagramLeadService {
         lead.setCnb(0);
         lead.setCompChild(0);
         lead.setLeadStatus(1); // Open
-        lead.setLeadOwner(1); // Default admin user
+
+        // Use default lead owner from Central Config, fallback to 1 (admin)
+        int defaultOwnerId = 1;
+        try {
+            com.vistaluxhms.model.CentralConfigEntityDTO config = settingsService.getCentralConfig();
+            if (config != null && config.getDefaultLeadOwnerId() != null) {
+                defaultOwnerId = config.getDefaultLeadOwnerId();
+            }
+        } catch (Exception e) {
+            System.out
+                    .println("[SocialMediaLeadService] Could not read default lead owner from config, using admin (1)");
+        }
+        lead.setLeadOwner(defaultOwnerId);
         lead.setQualified(false);
         lead.setFlagged(false);
         lead.setFit(true);
@@ -287,6 +419,17 @@ public class InstagramLeadService {
         lead.setMarriage(false);
         lead.setOthers(false);
         lead.setLeadCreationClientInformed(false);
+
+        // Set Default Check-In and Check-Out Dates
+        // Default: Check-in = Tomorrow, Check-out = Tomorrow + 7 days
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, 1);
+        Date defaultCheckIn = cal.getTime();
+        cal.add(Calendar.DAY_OF_YEAR, 7);
+        Date defaultCheckOut = cal.getTime();
+
+        lead.setCheckInDate(defaultCheckIn);
+        lead.setCheckOutDate(defaultCheckOut);
 
         // Build remarks from all the lead form data
         StringBuilder remarks = new StringBuilder();
@@ -343,6 +486,22 @@ public class InstagramLeadService {
 
         leadRepository.save(lead);
         return lead;
+    }
+
+    /**
+     * Get or Create the default Sales Partner "Digital Marketing"
+     */
+    private SalesPartnerEntity getOrCreateDefaultSalesPartner() {
+        return salesPartnerRepository.findBySalesPartnerName("Digital Marketing")
+                .orElseGet(() -> {
+                    SalesPartnerEntity sp = new SalesPartnerEntity();
+                    sp.setSalesPartnerName("Digital Marketing");
+                    sp.setSalesPartnerShortName("DIGITAL");
+                    sp.setActive(true);
+                    sp.setDescription("Default partner for Social Media Leads");
+                    sp.setReference("System Generated");
+                    return salesPartnerRepository.save(sp);
+                });
     }
 
     /**
@@ -428,7 +587,7 @@ public class InstagramLeadService {
             query.setParameter(5, new java.sql.Timestamp(System.currentTimeMillis()));
             query.executeUpdate();
         } catch (Exception e) {
-            System.err.println("[InstagramLeadService] Error logging lead: " + e.getMessage());
+            System.err.println("[SocialMediaLeadService] Error logging lead: " + e.getMessage());
         }
     }
 
@@ -449,7 +608,7 @@ public class InstagramLeadService {
                     .executeUpdate();
         } catch (Exception e) {
             // Table might already exist, that's fine
-            System.out.println("[InstagramLeadService] Tracking table check: " + e.getMessage());
+            System.out.println("[SocialMediaLeadService] Tracking table check: " + e.getMessage());
         }
     }
 
@@ -487,17 +646,4 @@ public class InstagramLeadService {
         return result;
     }
 
-    /**
-     * Automated cron job to fetch and import leads every 15 minutes.
-     */
-    @org.springframework.scheduling.annotation.Scheduled(cron = "0 0/15 * * * ?")
-    public void scheduledLeadSync() {
-        System.out.println("[InstagramLeadService] Automating scheduled lead sync at: " + new java.util.Date());
-        try {
-            List<Map<String, String>> imported = fetchAndImportLeads();
-            System.out.println("[InstagramLeadService] Scheduled sync complete. Imported leads: " + imported.size());
-        } catch (Exception e) {
-            System.err.println("[InstagramLeadService] Scheduled sync failed: " + e.getMessage());
-        }
-    }
 }

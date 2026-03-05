@@ -4,7 +4,6 @@ import com.vistaluxhms.model.ClientEntityDTO;
 
 import javax.persistence.*;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -48,7 +47,6 @@ public class CentralConfigEntity {
     // Email & GST
     @Column(name = "centralized_email")
     private String centralizedEmail;
-
 
     @Column(name = "resort_gst_number")
     private String gstNumber;
@@ -105,7 +103,27 @@ public class CentralConfigEntity {
     @Column(name = "hotelInfo")
     private String hotelInfo;
 
+    // Meta / Instagram Lead Ads Configuration
+    @Column(name = "meta_app_id")
+    private String metaAppId;
 
+    @Column(name = "meta_app_secret")
+    private String metaAppSecret;
+
+    @Column(name = "meta_page_id")
+    private String metaPageId;
+
+    @Column(name = "meta_page_access_token", length = 1000)
+    private String metaPageAccessToken;
+
+    @Column(name = "meta_lead_form_id")
+    private String metaLeadFormId;
+
+    @Column(name = "meta_graph_api_version")
+    private String metaGraphApiVersion;
+
+    @Column(name = "default_lead_owner_id")
+    private Integer defaultLeadOwnerId;
 
     public Integer getId() {
         return id;
@@ -337,5 +355,61 @@ public class CentralConfigEntity {
 
     public void setHotelInfo(String hotelInfo) {
         this.hotelInfo = hotelInfo;
+    }
+
+    public String getMetaAppId() {
+        return metaAppId;
+    }
+
+    public void setMetaAppId(String metaAppId) {
+        this.metaAppId = metaAppId;
+    }
+
+    public String getMetaAppSecret() {
+        return metaAppSecret;
+    }
+
+    public void setMetaAppSecret(String metaAppSecret) {
+        this.metaAppSecret = metaAppSecret;
+    }
+
+    public String getMetaPageId() {
+        return metaPageId;
+    }
+
+    public void setMetaPageId(String metaPageId) {
+        this.metaPageId = metaPageId;
+    }
+
+    public String getMetaPageAccessToken() {
+        return metaPageAccessToken;
+    }
+
+    public void setMetaPageAccessToken(String metaPageAccessToken) {
+        this.metaPageAccessToken = metaPageAccessToken;
+    }
+
+    public String getMetaLeadFormId() {
+        return metaLeadFormId;
+    }
+
+    public void setMetaLeadFormId(String metaLeadFormId) {
+        this.metaLeadFormId = metaLeadFormId;
+    }
+
+    public String getMetaGraphApiVersion() {
+        return metaGraphApiVersion;
+    }
+
+    public void setMetaGraphApiVersion(String metaGraphApiVersion) {
+        this.metaGraphApiVersion = metaGraphApiVersion;
+    }
+
+    public Integer getDefaultLeadOwnerId() {
+        return defaultLeadOwnerId;
+    }
+
+    public void setDefaultLeadOwnerId(Integer defaultLeadOwnerId) {
+        this.defaultLeadOwnerId = defaultLeadOwnerId;
     }
 }

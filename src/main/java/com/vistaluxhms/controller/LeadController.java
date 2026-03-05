@@ -59,6 +59,9 @@ public class LeadController {
     @Autowired
     WhatsAppMessagingService whatsAppService;
 
+    @Autowired
+    com.vistaluxhms.repository.CampaignFormRepository campaignFormRepository;
+
     @Value("${email.client.valid}")
     private boolean emailClientNotifyActive;
 
@@ -274,6 +277,9 @@ public class LeadController {
         Map<Integer, String> activeUsersMap = (Map<Integer, String>) activeUsersList.stream().collect(
                 Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
         modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+
+        List<CampaignFormEntity> activeMetaForms = campaignFormRepository.findActiveByFormType("META");
+        modelView.addObject("ACTIVE_META_FORMS", activeMetaForms);
 
         // filterLeadValidator.validate(filterObj, result);
         if (result.hasErrors()) {
