@@ -167,11 +167,8 @@
                                         suggestions: $.map($.parseJSON(response), function (item) {
                                             return { value: item.cityName, data: item.destinationId };
                                         })
-
                                     };
                                 }
                             });
-
-
                         </script>
                         <jsp:include page="../../footer.jsp" />

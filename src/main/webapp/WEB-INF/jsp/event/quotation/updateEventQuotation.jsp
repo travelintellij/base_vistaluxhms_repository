@@ -443,45 +443,79 @@ h2, h3 {
     <h3>List of Services</h3>
 
     <div class="table-container">
-      <table class="styled-table" id="service-table">
-        <thead>
-          <tr>
-            <th>Service Name</th>
-            <th>Service Cost Type</th>
-            <th>Base Cost</th>
-            <th>Quantity</th>
-            <th>Total Cost</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="services-table-body">
-        <c:forEach var="service" items="${eventPackageEntityDTO.services}" varStatus="status">
-            <form:hidden path="services[${status.index}].id" />
-            <tr>
-                <td><form:input path="services[${status.index}].serviceName" class= "input-field"  style="width:450px;" /></td>
-              <td>
-              <form:select path="services[${status.index}].eventServiceCostTypeEntity"
-                                      items="${LIST_SERVICE_COST_TYPE}"
-                                      itemValue="eventServiceCostTypeId"
-                                      itemLabel="eventServiceCostTypeName"
-                                      cssClass="form-control"/>
-              </td>
-
-              <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" min="0" type="number" required="required"/></td>
-              <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
-              <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
-              <td>
-              <button type="button" onclick="submitTo('delete_delete_package_service',${EVENT_PACKAGE.id}, '${service.id}',this)" style="background-color: #ff4d4d; border: none; color: white; padding: 8px 16px;text-align: center; text-decoration: none; display: inline-block;font-size: 14px; margin: 4px 2px; border-radius: 6px; cursor: pointer;">
-                      Delete
-              </button>
+     <table class="styled-table" id="service-table">
+       <thead>
+         <tr>
+           <th>Service Name</th>
+           <th>Service Cost Type</th>
+           <th>Base Cost</th>
+           <th>Quantity</th>
+           <th>Total Cost</th>
+           <th>Action</th>
+         </tr>
+       </thead>
 
 
+<tbody id="services-table-body">
+<tbody id="services-table-body">
 
-            </tr>
-        </c:forEach>
-          <!-- Add more rows -->
-        </tr>
-    </tbody>
+<c:forEach var="service"
+           items="${eventPackageEntityDTO.services}"
+           varStatus="status">
+
+  <form:hidden path="services[${status.index}].id" />
+
+  <tr>
+
+    <td>
+      <form:input path="services[${status.index}].serviceName"
+                  class="input-field"
+                  style="width:450px;" />
+    </td>
+
+    <td>
+      <form:select path="services[${status.index}].eventServiceCostTypeEntity"
+                   items="${LIST_SERVICE_COST_TYPE}"
+                   itemValue="eventServiceCostTypeId"
+                   itemLabel="eventServiceCostTypeName"
+                   cssClass="form-control"/>
+    </td>
+
+    <td>
+      <form:input path="services[${status.index}].costPerUnit"
+                  class="input-field"
+                  style="width:100px;" />
+    </td>
+
+    <td>
+      <form:input path="services[${status.index}].quantity"
+                  class="input-field"
+                  style="width:100px;" />
+    </td>
+
+    <td>
+      <form:input path="services[${status.index}].totalCost"
+                  class="input-field"
+                  style="width:100px;" />
+    </td>
+
+    <td>
+      <button type="button"
+              onclick="submitTo('delete_delete_package_service',
+               ${EVENT_PACKAGE.id},
+               '${service.id}',this)">
+        Delete
+      </button>
+    </td>
+
+  </tr>
+
+</c:forEach>
+
+
+</tbody>
+
+
       </table>
 <!-- Template Row (completely outside of <table>) -->
 
@@ -489,8 +523,7 @@ h2, h3 {
 
 
 <button type="button" onclick="addServiceRow()">Add Service</button>
-
- <div class="summary-container">
+<div class="summary-container">
    <table class="styled-table">
     <tr>
     <td rowspan="3" style="vertical-align: top; padding-right: 20px;">
@@ -522,14 +555,23 @@ h2, h3 {
          <div id="discountError" style="color:red; font-size: 12px;"></div>
        </td>
      </tr>
+
+     <tr>
+        <th>Hide Cost</th>
+        <td>
+          <div class="custom-checkbox">
+            <form:checkbox path="hideCost" id="hideCost" cssClass="styled-checkbox" />
+          </div>
+        </td>
+     </tr>
+
      <tr>
        <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
        <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost - eventPackageEntityDTO.discount}</td>
 
      </tr>
    </table>
-
- </div>
+  </div>
  <div class="action-buttons">
    <button type="submit" class="btn btn-recalc" name="recalculate" id="recalculate" value="recalculate">Re-Calculate</button>
    <button type="submit" class="btn btn-save" name="updateQuotation" id="updateQuotation" value="updateQuotation">Save Quotation</button>
@@ -565,25 +607,59 @@ h2, h3 {
    }
 
 function addServiceRow() {
-const serviceIndex = document.querySelector("#service-table tbody").rows.length;
 
-  const tableBody = document.querySelector("#services-table-body");
+    const tableBody = document.querySelector("#services-table-body");
+    const serviceIndex = tableBody.rows.length;
 
-  const newRow = document.createElement("tr");
+    const selectHTML = createServiceCostTypeSelect(serviceIndex);
 
-  const selectHTML = createServiceCostTypeSelect(serviceIndex);
+    const newRow = document.createElement("tr");
 
-  newRow.innerHTML = `
-    <td><input name="services[\${serviceIndex}].serviceName" class="input-field" style="width:450px;" /></td>
-    <td>\${selectHTML}</td>
-    <td><input name="services[\${serviceIndex}].costPerUnit" class="input-field" style="width:100px;" min="0" required="true" type="number" /></td>
-    <td><input name="services[\${serviceIndex}].quantity" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
-    <td><input name="services[\${serviceIndex}].totalCost" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
-    <td><input type="button" value="Delete" onclick="deleteRow(this)" /></td>
-  `;
-  tableBody.appendChild(newRow);
-  serviceIndex++;
+    // ALWAYS show full fields on screen
+    newRow.innerHTML = `
+      <td>
+        <input name="services[${serviceIndex}].serviceName"
+               class="input-field"
+               style="width:450px;" />
+      </td>
+
+      <td>${selectHTML}</td>
+
+      <td>
+        <input name="services[${serviceIndex}].costPerUnit"
+               class="input-field"
+               style="width:100px;"
+               min="0"
+               type="number" />
+      </td>
+
+      <td>
+        <input name="services[${serviceIndex}].quantity"
+               class="input-field"
+               style="width:100px;"
+               min="0"
+               type="number"/>
+      </td>
+
+      <td>
+        <input name="services[${serviceIndex}].totalCost"
+               class="input-field"
+               style="width:100px;"
+               min="0"
+               type="number"/>
+      </td>
+
+      <td>
+        <input type="button"
+               value="Delete"
+               onclick="deleteRow(this)" />
+      </td>
+    `;
+
+    tableBody.appendChild(newRow);
 }
+
+
 
 
 function deleteRow(button) {
@@ -651,6 +727,34 @@ function setDeleteIndex(index) {
       document.getElementById('myForm').submit();
       }
   }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const showBreakup = document.getElementById("showBreakup");
+    const hideCost = document.getElementById("hideCost");
+
+    function handleCheckboxChange(changed) {
+
+        if (changed === showBreakup && showBreakup.checked) {
+            hideCost.checked = false;
+        }
+
+        if (changed === hideCost && hideCost.checked) {
+            showBreakup.checked = false;
+        }
+    }
+
+    showBreakup.addEventListener("change", function () {
+        handleCheckboxChange(showBreakup);
+    });
+
+    hideCost.addEventListener("change", function () {
+        handleCheckboxChange(hideCost);
+    });
+
+});
 </script>
 
 

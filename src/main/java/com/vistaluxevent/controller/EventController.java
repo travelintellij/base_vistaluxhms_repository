@@ -10,6 +10,7 @@ import com.vistaluxevent.services.EventConfigServicesImpl;
 import com.vistaluxevent.services.EventServicesImpl;
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.ClientEntity;
+import javax.servlet.ServletContext;
 import com.vistaluxhms.entity.LeadEntity;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.*;
@@ -31,7 +32,11 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Base64;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -362,7 +367,21 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		isValidEventDates(eventPackageEntityDTO.getEventStartDate(), eventPackageEntityDTO.getEventEndDate(),result);
 		List<EventServiceCostTypeEntity> listServiceCostType = eventServices.findActiveEventServiceCostType(true);;
-		if (result.hasErrors()) {
+
+        // ❌ Prevent both options together
+        if (eventPackageEntityDTO.isShowBreakup() && eventPackageEntityDTO.isHideCost()) {
+
+            result.reject("cost.option.error",
+                    "Please select either Show Breakup OR Hide Cost, not both.");
+
+            modelView.setViewName("event/quotation/createEventQuotationWiz2");
+            modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
+            modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
+
+            return modelView;
+        }
+
+        if (result.hasErrors()) {
 			modelView.addObject("org.springframework.validation.BindingResult.EVENT_PACKAGE", result); // Very important
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
@@ -488,7 +507,9 @@ public class EventController {
 			eventPackageEntity.setGrand_total_cost(eventPackageEntityDTO.getGrand_total_cost());
 			eventPackageEntity.setDiscount(eventPackageEntityDTO.getDiscount());
 			eventPackageEntity.setGstIncluded(eventPackageEntityDTO.isGstIncluded());
-			eventPackageEntity.setShowBreakup(eventPackageEntityDTO.isShowBreakup());
+            eventPackageEntity.setHideCost(eventPackageEntityDTO.isHideCost());
+
+            eventPackageEntity.setShowBreakup(eventPackageEntityDTO.isShowBreakup());
 			eventPackageEntity.setEventStartDate(eventPackageEntityDTO.getEventStartDate());
 			eventPackageEntity.setEventEndDate(eventPackageEntityDTO.getEventEndDate());
 			eventPackageEntity.setNumberOfRooms(eventPackageEntityDTO.getNumberOfRooms());
@@ -619,7 +640,9 @@ public class EventController {
 			return modelView;
 		} else {
 			EventPackageEntity eventPackageEntity = new EventPackageEntity(eventPackageEntityDTO);
-			if (eventPackageEntityDTO.getEventType() != null && eventPackageEntityDTO.getEventType().getEventTypeId() != 0) {
+            eventPackageEntity.setHideCost(eventPackageEntityDTO.isHideCost());
+
+            if (eventPackageEntityDTO.getEventType() != null && eventPackageEntityDTO.getEventType().getEventTypeId() != 0) {
 				EventTypeEntity eventTypeEntity = eventServices.findEventTypeById(eventPackageEntityDTO.getEventType().getEventTypeId());
 				eventPackageEntity.setEventType(eventTypeEntity);
 			}
@@ -711,30 +734,105 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		model.put("guestName", eventPackageEntityDTO.getGuestName());
 		formatRoomDates(eventPackageEntityDTO);
+        String dropboxUrl = "https://www.dropbox.com/scl/fi/rl9nkavai2h9jcylews6s/marriage_floralbg.png?rlkey=kkg09gb3nr0td6oqryhsnkdjj&st=6v6pbxtq&raw=1";
+        String bgImageBase64 = "";
+
+        try (InputStream in = new URL(dropboxUrl).openStream();
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+            byte[] data = new byte[1024];
+            int nRead;
+            while ((nRead = in.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+            byte[] bytes = buffer.toByteArray();
+            bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        model.put("bgImageBase64", bgImageBase64);
 		model.put("eventStartDate", eventPackageEntityDTO.getFormattedStartDate()); // Fetch dynamically as per your application
 		model.put("eventEndDate", eventPackageEntityDTO.getFormattedEndDate()); // Fetch dynamically as per your application
 
 		model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
 		model.put("baseGuestCount", eventPackageEntityDTO.getBaseGuestCount());
-		model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
+        model.put("hideCost", eventPackageEntityDTO.isHideCost()); // ✅ ADD
+
+        model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
 		model.put("gstIncluded", eventPackageEntityDTO.isGstIncluded());
 		model.put("discount", eventPackageEntityDTO.getDiscount());
 		model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 		model.put("remarks", eventPackageEntityDTO.getDescription());
 		model.put("centralConfig", centralConfigEntity);
 		model.put("eventConfig", eventDetailsConfigDTO);
+        // ===== MENU IMAGES AS BASE64 (PDF SAFE) =====
+        List<String> menuImages = new ArrayList<>();
+
+        ServletContext context = session.getServletContext();
 
 
-		List<Map<String, Object>> serviceList = new ArrayList<>();
 
-		for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
-			Map<String, Object> serviceMap = new HashMap<>();
-			serviceMap.put("name", entity.getServiceName());
-			serviceMap.put("costType", entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName()); // assuming getName() exists
-			serviceMap.put("amount", entity.getTotalCost());
-			serviceList.add(serviceMap);
-		}
-		model.put("services", serviceList);  // now accessible in FreeMarker as "services"
+        for (int i = 1; i <= 18; i++) {
+            String imagePath =
+                    "/resources/images/menu/menu_" +
+                            String.format("%02d", i) +
+                            ".jpeg";
+
+            try (InputStream is = context.getResourceAsStream(imagePath);
+                 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+                if (is == null) {
+                    continue; // skip missing images
+                }
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    baos.write(buffer, 0, bytesRead);
+                }
+
+                String base64 =
+                        "data:image/jpeg;base64," +
+                                Base64.getEncoder().encodeToString(baos.toByteArray());
+
+                menuImages.add(base64);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        model.put("menuImages", menuImages);
+
+
+        List<Map<String, Object>> serviceList = new ArrayList<>();
+
+        boolean showBreakup = eventPackageEntityDTO.isShowBreakup();
+        boolean hideCost = eventPackageEntityDTO.isHideCost();
+
+        for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
+
+            Map<String, Object> serviceMap = new HashMap<>();
+
+            serviceMap.put("name", entity.getServiceName());
+            serviceMap.put("costType",
+                    entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName());
+
+            // ✅ Only send amount when breakup is enabled
+            if (showBreakup && !hideCost) {
+                serviceMap.put("amount", entity.getTotalCost());
+            } else {
+                serviceMap.put("amount", null); // hide
+            }
+
+            serviceList.add(serviceMap);
+        }
+
+        model.put("services", serviceList);  // now accessible in FreeMarker as "services"
 		// Load the Freemarker template
 		freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 		//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
@@ -834,7 +932,9 @@ public class EventController {
 
 				model.put("numberOfRooms", eventPackageEntityDTO.getNumberOfRooms());
 				model.put("baseGuestCount", eventPackageEntityDTO.getBaseGuestCount());
-				model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
+                model.put("hideCost", eventPackageEntityDTO.isHideCost()); // ✅ ADD
+
+                model.put("showBreakup", eventPackageEntityDTO.isShowBreakup());
 				model.put("gstIncluded", eventPackageEntityDTO.isGstIncluded());
 				model.put("discount", eventPackageEntityDTO.getDiscount());
 				model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
@@ -842,14 +942,27 @@ public class EventController {
 				model.put("eventType", eventPackageEntityDTO.getEventType().getEventTypeName());
 				List<Map<String, Object>> serviceList = new ArrayList<>();
 
-				for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
-					Map<String, Object> serviceMap = new HashMap<>();
-					serviceMap.put("name", entity.getServiceName());
-					serviceMap.put("costType", entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName()); // assuming getName() exists
-					serviceMap.put("amount", entity.getTotalCost());
-					serviceList.add(serviceMap);
-				}
-				model.put("services", serviceList);
+                boolean showBreakup = eventPackageEntityDTO.isShowBreakup();
+                boolean hideCost = eventPackageEntityDTO.isHideCost();
+
+                for (EventPackageServiceEntity entity : eventPackageEntityDTO.getServices()) {
+
+                    Map<String, Object> serviceMap = new HashMap<>();
+
+                    serviceMap.put("name", entity.getServiceName());
+                    serviceMap.put("costType",
+                            entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName());
+
+                    if (showBreakup && !hideCost) {
+                        serviceMap.put("amount", entity.getTotalCost());
+                    } else {
+                        serviceMap.put("amount", null);
+                    }
+
+                    serviceList.add(serviceMap);
+                }
+
+                model.put("services", serviceList);
 
 				mail.setModel(model);
 				//emailService.sendEmailMessageUsingTemplate(mail,templateName);
@@ -893,6 +1006,7 @@ public class EventController {
 	public ResponseEntity<String> deleteImageById(@RequestParam("id") Long id) {
 		return eventConfigService.deleteImageById(id);
 	}
+
 
 
 }

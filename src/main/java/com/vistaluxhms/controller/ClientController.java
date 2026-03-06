@@ -12,6 +12,7 @@ import com.vistaluxhms.services.UserDetailsServiceImpl;
 import com.vistaluxhms.services.VlxCommonServicesImpl;
 import com.vistaluxhms.util.VistaluxConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,6 +51,18 @@ public class ClientController {
 
     @Autowired
     SalesRelatesServicesImpl salesService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+
+        binder.registerCustomEditor(
+                Integer.class,
+                new CustomNumberEditor(Integer.class, true));
+
+        binder.registerCustomEditor(
+                int.class,
+                new CustomNumberEditor(Integer.class, true));
+    }
 
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -88,7 +104,17 @@ public class ClientController {
                 result.rejectValue("cityName", "city.error");
             }
         }
+        // CHECK DUPLICATE MOBILE
+        if (clientService.isMobileExistsForClient(clientEntityDto.getMobile())) {
+
+            result.rejectValue(
+                    "mobile",
+                    "mobile.error",
+                    "Mobile already exists");
+        }
+
         if (result.hasErrors()) {
+
             // If there are validation errors, return the form view with errors
             modelView = view_add_client_form(clientEntityDto, result);
         } else {
@@ -194,7 +220,6 @@ public class ClientController {
             modelView.addObject("CLIENT_FILTERED_LIST", clientDTOFilteredList);
             modelView.addObject("currentPage", page);
             modelView.addObject("totalPages", clientFilteredPage.getTotalPages());
-            modelView.addObject("totalClients", clientFilteredPage.getTotalElements());
             modelView.addObject("pageSize", pageSize);
 
             modelView.addObject("maxPages", clientFilteredPage.getTotalPages());
@@ -285,6 +310,18 @@ public class ClientController {
                 salesPartnerEntity.setEmailId(clientEntity.getEmailId());
             }
             clientEntity.setSalesPartner(salesPartnerEntity);
+            ClientEntity oldClient = clientService.findClientById(clientEntityDto.getClientId());
+
+            if (!oldClient.getMobile().equals(clientEntityDto.getMobile())
+                    && clientService.isMobileExists(clientEntityDto.getMobile())) {
+
+                result.rejectValue("mobile", "mobile.error", "Mobile already exists");
+
+            }
+            if (result.hasErrors()) {
+                modelView = view_edit_client_form(clientEntityDto, result);
+            }
+
             clientService.saveClient(clientEntity);
             redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
             modelView.setViewName("redirect:view_clients_list");
@@ -329,4 +366,124 @@ public class ClientController {
         return result;
     }
 
+    @GetMapping("/exportClientsExcel")
+    public void exportExcel(
+            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = false) Integer cityId,
+            @RequestParam(required = false) Long salesPartnerId,
+            @RequestParam(required = false) String clientName,
+            @RequestParam(required = false) Boolean b2b,
+            @RequestParam(required = false) Boolean active,
+            HttpServletResponse response) throws Exception {
+
+        ClientEntityDTO filter = new ClientEntityDTO();
+
+        // Client ID
+        if (clientId != null && clientId != 0) {
+            filter.setClientId(clientId);
+        }
+
+        // Name
+        if (clientName != null && !clientName.trim().isEmpty()) {
+            filter.setClientName(clientName);
+        }
+
+        // B2B
+        if (b2b != null) {
+            filter.setB2b(b2b);
+        }
+
+        // Active / Inactive
+        if (active != null) {
+            filter.setActive(active);
+        }
+
+        // City
+        if (cityId != null && cityId != 0) {
+            City_Entity city = new City_Entity();
+            city.setDestinationId(cityId);
+            filter.setCity(city);
+        }
+
+        // Sales Partner
+        if (salesPartnerId != null && salesPartnerId != 0) {
+            SalesPartnerEntity sp = new SalesPartnerEntity();
+            sp.setSalesPartnerId(salesPartnerId);
+            filter.setSalesPartner(sp);
+        }
+
+        // 🔥 Get filtered list (no manual loop)
+        List<ClientEntity> list = clientService.getClientsForExcel(filter);
+
+        response.setContentType(
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=clients.xlsx");
+
+        clientService.exportClientsToExcel(
+                list,
+                response.getOutputStream());
+    }
+
+    @GetMapping("/exportClientsPdf")
+    public void exportPdf(
+            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = false) Integer cityId,
+            @RequestParam(required = false) Long salesPartnerId,
+            @RequestParam(required = false) String clientName,
+            @RequestParam(required = false) Boolean b2b,
+            @RequestParam(required = false) Boolean active,
+            HttpServletResponse response) throws Exception {
+
+        ClientEntityDTO filter = new ClientEntityDTO();
+
+        // Client ID
+        if (clientId != null && clientId != 0) {
+            filter.setClientId(clientId);
+        }
+
+        // Name
+        if (clientName != null && !clientName.trim().isEmpty()) {
+            filter.setClientName(clientName);
+        }
+
+        // B2B
+        if (b2b != null) {
+            filter.setB2b(b2b);
+        }
+
+        // Active / Inactive
+        if (active != null) {
+            filter.setActive(active);
+        }
+
+        // City
+        if (cityId != null && cityId != 0) {
+            City_Entity city = new City_Entity();
+            city.setDestinationId(cityId);
+            filter.setCity(city);
+        }
+
+        // Sales Partner
+        if (salesPartnerId != null && salesPartnerId != 0) {
+            SalesPartnerEntity sp = new SalesPartnerEntity();
+            sp.setSalesPartnerId(salesPartnerId);
+            filter.setSalesPartner(sp);
+        }
+
+        // 🔥 Get filtered list (no manual loop)
+        List<ClientEntity> list = clientService.getClientsForPdf(filter);
+
+        response.setContentType("application/pdf");
+
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=clients.pdf");
+
+        clientService.exportClientsToPdf(
+                list,
+                response.getOutputStream());
+    }
 }

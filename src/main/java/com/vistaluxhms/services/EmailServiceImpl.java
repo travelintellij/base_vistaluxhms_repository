@@ -94,6 +94,10 @@ public class EmailServiceImpl {
 	@Autowired
 	private EventConfigServicesImpl eventConfigService;
 
+    @Value("${email.reply.to}")
+    private String replyToEmail;
+
+
 
 	/**
      * This method will send compose and send the message 
@@ -263,6 +267,7 @@ public class EmailServiceImpl {
 	        helper.setText(html, true);
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
+            helper.setReplyTo(replyToEmail);
 
 	       mailSender.send(message);
 	    }
@@ -341,6 +346,7 @@ public class EmailServiceImpl {
 	        helper.setText(html, true);
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
+            helper.setReplyTo(replyToEmail);
 	       mailSender.send(message);
 	    }
 
@@ -510,6 +516,7 @@ public class EmailServiceImpl {
 				MimeMessage message = mailSender.createMimeMessage();
 				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 				helper.setFrom(systemEmailFrom);
+                helper.setReplyTo(replyToEmail);
 				helper.setTo(to.split("[,;]")); // handles multiple emails separated by , or ;
 				if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
 					message.setRecipients(Message.RecipientType.BCC, emailNotifyBcc);
@@ -522,6 +529,10 @@ public class EmailServiceImpl {
 			}
 		}
 	}
+
+
+
+
 
 
 }

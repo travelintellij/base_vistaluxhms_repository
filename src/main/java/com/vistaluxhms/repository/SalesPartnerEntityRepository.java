@@ -13,4 +13,6 @@ public interface SalesPartnerEntityRepository
     List<SalesPartnerEntity> findByActiveOrderBySalesPartnerShortNameAsc(boolean active);
 
     java.util.Optional<SalesPartnerEntity> findBySalesPartnerName(String name);
+
+    boolean existsByMobile(Long mobile);
 }

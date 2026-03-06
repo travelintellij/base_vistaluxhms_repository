@@ -176,4 +176,8 @@ public class SalesRelatesServicesImpl {
 	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId) {
 		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeId);
 	}
+
+    public boolean isSalesPartnerMobileExists(Long mobile){
+        return salesPartnerRepository.existsByMobile(mobile);
+    }
 }

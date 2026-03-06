@@ -12,6 +12,8 @@ public class EventPackageEntityDTO extends EventPackageEntity {
     private String formattedEndDate;
     private boolean update;
     private String deleteIndex;
+    private boolean hideCost;
+
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
@@ -33,6 +35,8 @@ public class EventPackageEntityDTO extends EventPackageEntity {
         this.setGuestName(eventPackageEntity.getGuestName());
         this.setMobile(eventPackageEntity.getMobile());
         this.setQuotationAudienceType(eventPackageEntity.getQuotationAudienceType());
+        this.setHideCost(eventPackageEntity.isHideCost()); // ✅ ADD
+
         this.setShowBreakup(eventPackageEntity.isShowBreakup());
         this.setId(eventPackageEntity.getId());
         this.setPackageName(eventPackageEntity.getPackageName());
@@ -73,4 +77,13 @@ public class EventPackageEntityDTO extends EventPackageEntity {
     public void setDeleteIndex(String deleteIndex) {
         this.deleteIndex = deleteIndex;
     }
+
+    public boolean isHideCost() {
+        return hideCost;
+    }
+
+    public void setHideCost(boolean hideCost) {
+        this.hideCost = hideCost;
+    }
+
 }
