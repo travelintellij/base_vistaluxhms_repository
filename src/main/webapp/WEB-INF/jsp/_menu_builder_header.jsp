@@ -171,6 +171,7 @@
                                                         style="color: yellow;">New Free Hand Quotation</a></li>
                                             </ul>
                                         </li>
+                                        <!-- ===== START: ADDED FOR LEAD SYNC - CAMPAIGN MANAGEMENT MENU ===== -->
                                         <sec:authorize access="hasAnyRole('ADMIN','CAMPAIGN_MANAGE')">
                                             <li>
                                                 <a href="#">Campaign Management</a>
@@ -185,6 +186,7 @@
                                                 </ul>
                                             </li>
                                         </sec:authorize>
+                                        <!-- ===== END: ADDED FOR LEAD SYNC ===== -->
                                         <sec:authorize access="hasAnyRole('ADMIN','EVENT_MANAGE')">
                                             <li>
                                                 <a href="#">Event Management</a>

@@ -59,7 +59,7 @@ public class LeadController {
     @Autowired
     WhatsAppMessagingService whatsAppService;
 
-    @Autowired
+    @Autowired // ===== ADDED FOR LEAD SYNC =====
     com.vistaluxhms.repository.CampaignFormRepository campaignFormRepository;
 
     @Value("${email.client.valid}")
@@ -278,8 +278,12 @@ public class LeadController {
                 Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
         modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
 
-        List<CampaignFormEntity> activeMetaForms = campaignFormRepository.findActiveByFormType("META");
+        // ===== START: ADDED FOR LEAD SYNC - LOAD ACTIVE META FORMS FOR SYNC DROPDOWN
+        // =====
+        List<com.vistaluxhms.entity.CampaignFormEntity> activeMetaForms = campaignFormRepository
+                .findActiveByFormType("META");
         modelView.addObject("ACTIVE_META_FORMS", activeMetaForms);
+        // ===== END: ADDED FOR LEAD SYNC =====
 
         // filterLeadValidator.validate(filterObj, result);
         if (result.hasErrors()) {

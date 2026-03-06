@@ -197,11 +197,12 @@ public class SettingsController {
         }
         modelAndView.addObject("CENTRAL_CONFIG_OBJ", centralConfigDTO);
 
-        // Provide active users for the Default Lead Owner dropdown
+        // ===== START: ADDED FOR LEAD SYNC - LOAD ACTIVE USERS FOR OWNER DROPDOWN =====
         List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
         Map<Integer, String> activeUsersMap = activeUsersList.stream().collect(
                 java.util.stream.Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
         modelAndView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+        // ===== END: ADDED FOR LEAD SYNC =====
 
         return modelAndView;
 

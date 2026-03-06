@@ -54,7 +54,9 @@ public class CentralConfigEntityDTO {
 
     private String hotelInfo;
 
+    // ===== START: ADDED FOR LEAD SYNC =====
     private Integer defaultLeadOwnerId;
+    // ===== END: ADDED FOR LEAD SYNC =====
 
     public String getHotelName() {
         return hotelName;
@@ -288,6 +290,7 @@ public class CentralConfigEntityDTO {
         this.hotelInfo = hotelInfo;
     }
 
+    // ===== START: GETTER/SETTER ADDED FOR LEAD SYNC =====
     public Integer getDefaultLeadOwnerId() {
         return defaultLeadOwnerId;
     }
@@ -295,4 +298,5 @@ public class CentralConfigEntityDTO {
     public void setDefaultLeadOwnerId(Integer defaultLeadOwnerId) {
         this.defaultLeadOwnerId = defaultLeadOwnerId;
     }
+    // ===== END: GETTER/SETTER ADDED FOR LEAD SYNC =====
 }

@@ -73,7 +73,7 @@ public class SettingsAndOtherServicesImpl {
 		entity.setInclusions(dto.getInclusions());
 		entity.setUsp(dto.getUsp());
 		entity.setHotelInfo(dto.getHotelInfo());
-		entity.setDefaultLeadOwnerId(dto.getDefaultLeadOwnerId());
+		entity.setDefaultLeadOwnerId(dto.getDefaultLeadOwnerId()); // ===== ADDED FOR LEAD SYNC =====
 		centralConfigRepository.save(entity);
 	}
 
@@ -110,7 +110,7 @@ public class SettingsAndOtherServicesImpl {
 		dto.setInclusions(entity.getInclusions());
 		dto.setUsp(entity.getUsp());
 		dto.setHotelInfo(entity.getHotelInfo());
-		dto.setDefaultLeadOwnerId(entity.getDefaultLeadOwnerId());
+		dto.setDefaultLeadOwnerId(entity.getDefaultLeadOwnerId()); // ===== ADDED FOR LEAD SYNC =====
 		// dto.setLogoFile(entity.getLogoFile());
 		return dto;
 	}

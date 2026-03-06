@@ -265,7 +265,7 @@
                             </div>
                         </fieldset>
 
-                        <!-- Default Lead Owner for Social Media Imports -->
+                        <!-- ===== START: ADDED FOR LEAD SYNC - LEAD IMPORT SETTINGS ===== -->
                         <fieldset>
                             <legend>Lead Import Settings</legend>
                             <div class="form-group">
@@ -290,6 +290,7 @@
                                 </div>
                             </div>
                         </fieldset>
+                        <!-- ===== END: ADDED FOR LEAD SYNC ===== -->
 
                         <div class="form-group">
                             <label>Global Watcher Emails</label>

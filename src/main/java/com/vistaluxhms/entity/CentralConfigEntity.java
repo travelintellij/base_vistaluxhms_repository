@@ -113,6 +113,7 @@ public class CentralConfigEntity {
     @Column(name = "meta_page_id")
     private String metaPageId;
 
+    // ===== START: ADDED FOR LEAD SYNC =====
     @Column(name = "meta_page_access_token", length = 1000)
     private String metaPageAccessToken;
 
@@ -124,6 +125,7 @@ public class CentralConfigEntity {
 
     @Column(name = "default_lead_owner_id")
     private Integer defaultLeadOwnerId;
+    // ===== END: ADDED FOR LEAD SYNC =====
 
     public Integer getId() {
         return id;
@@ -356,7 +358,7 @@ public class CentralConfigEntity {
     public void setHotelInfo(String hotelInfo) {
         this.hotelInfo = hotelInfo;
     }
-
+    // ===== START: ADDED FOR LEAD SYNC =====
     public String getMetaAppId() {
         return metaAppId;
     }
@@ -381,6 +383,7 @@ public class CentralConfigEntity {
         this.metaPageId = metaPageId;
     }
 
+    // ===== START: GETTERS/SETTERS ADDED FOR LEAD SYNC =====
     public String getMetaPageAccessToken() {
         return metaPageAccessToken;
     }
@@ -412,4 +415,5 @@ public class CentralConfigEntity {
     public void setDefaultLeadOwnerId(Integer defaultLeadOwnerId) {
         this.defaultLeadOwnerId = defaultLeadOwnerId;
     }
+    // ===== END: GETTERS/SETTERS ADDED FOR LEAD SYNC =====
 }
