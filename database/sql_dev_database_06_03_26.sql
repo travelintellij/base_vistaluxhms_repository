@@ -1386,14 +1386,16 @@ CREATE TABLE `social_lead_log` (
 
 DROP TABLE IF EXISTS `campaign_form`;
 CREATE TABLE `campaign_form` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `campaign_name` varchar(255) DEFAULT NULL,
-  `form_name` varchar(255) DEFAULT NULL,
-  `platform_form_id` varchar(100) DEFAULT NULL,
-  `form_type` varchar(50) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT '1',
+  `campaignFormId` bigint NOT NULL AUTO_INCREMENT,
+  `formName` varchar(150) NOT NULL,
+  `formType` varchar(50) NOT NULL,
+  `formId` varchar(255) NOT NULL,
+  `campaignName` varchar(255) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`campaignFormId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
