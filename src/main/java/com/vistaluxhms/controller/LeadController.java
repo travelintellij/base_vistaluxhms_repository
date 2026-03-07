@@ -93,8 +93,11 @@ public class LeadController {
         modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
         List<WorkLoadStatusVO> lead_wl_statusList = commonService
                 .find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
-        Map<Integer, String> leadStatusMap = (Map<Integer, String>) lead_wl_statusList.stream().collect(
-                Collectors.toMap(WorkLoadStatusVO::getWorkloadStatusId, WorkLoadStatusVO::getWorkloadStatusName));
+        Map<Integer, String> leadStatusMap = new LinkedHashMap<>();
+        if (lead_wl_statusList != null) {
+            lead_wl_statusList.forEach(
+                    status -> leadStatusMap.put(status.getWorkloadStatusId(), status.getWorkloadStatusName()));
+        }
         modelView.addObject("LEAD_STATUS_MAP", leadStatusMap);
 
         modelView.addObject("userName", userObj.getUsername());

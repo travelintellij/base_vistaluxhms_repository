@@ -139,6 +139,7 @@ public class SalesRelatesServicesImpl {
 					sp.setSalesPartnerName("Digital Marketing");
 					sp.setSalesPartnerShortName("DIGITAL MARKETING");
 					sp.setActive(true);
+					sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
 					sp.setDescription("Default partner for Social Media Leads");
 					sp.setReference("System Generated");
 					return salesPartnerRepository.save(sp);
@@ -177,7 +178,7 @@ public class SalesRelatesServicesImpl {
 		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeId);
 	}
 
-    public boolean isSalesPartnerMobileExists(Long mobile){
-        return salesPartnerRepository.existsByMobile(mobile);
-    }
+	public boolean isSalesPartnerMobileExists(Long mobile) {
+		return salesPartnerRepository.existsByMobile(mobile);
+	}
 }
