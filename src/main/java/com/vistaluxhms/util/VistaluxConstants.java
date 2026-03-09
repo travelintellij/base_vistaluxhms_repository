@@ -9,7 +9,7 @@ public interface VistaluxConstants {
     public static final String DESTINATION_ALL_CTRY_CODE = "ALL";
     public static final int DESTINATION_ALL_CITIES = 50000;
     public static final String DEFAULT_PAGE_SIZE = "20";
-    public static final int DEFAULT_CITY_ID = 501;
+    public static final int DEFAULT_CITY_ID = 8;
 
     public static final String BASIC_PRIV_ADMIN = "ADMIN";
     public static final String BASIC_PRIV_USER = "USER";

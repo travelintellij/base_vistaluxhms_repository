@@ -2,6 +2,8 @@ package com.vistaluxhms.controller;
 
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
+// ADDED: Import WhatsAppResult to capture success/failure from WhatsApp send operations
+import com.vistaluxhms.model.WhatsAppResult;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -148,7 +150,12 @@ public class LeadController {
                     whatsAppMessageDTO.setQueryOwnerName(leadOwner.getUsername());
                     whatsAppMessageDTO.setQueryOwnerMobile("+91" + leadOwner.getMobile());
                     whatsAppMessageDTO.setQueryOwnerEmail(leadOwner.getEmail());
-                    whatsAppService.sendQueryRegistrationMessage(whatsAppMessageDTO);
+                    WhatsAppResult whatsAppResult = whatsAppService.sendQueryRegistrationMessage(whatsAppMessageDTO);
+                    if (!whatsAppResult.isSuccess()) {
+                        redirectAttrib.addFlashAttribute("WhatsAppError",
+                                "Lead created successfully, but WhatsApp notification failed: "
+                                        + whatsAppResult.getErrorMessage());
+                    }
                 }
                 // notifyLeadCreationSms(leadRecorderObj);
             }
