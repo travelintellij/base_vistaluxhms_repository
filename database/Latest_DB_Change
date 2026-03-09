@@ -3,5 +3,5 @@
 UPDATE `ashokadb`.`eventtype` SET `eventTypeName` = 'GROUP_EVENT' WHERE (`eventTypeId` = '2');
 
 2)
-ALTER TABLE `ashokadb`.`event_package`
-CHANGE COLUMN `hide_cost` `hide_cost` TINYINT NULL DEFAULT 1 ;
+ALTER TABLE event_package
+ADD COLUMN hide_cost TINYINT DEFAULT 1
