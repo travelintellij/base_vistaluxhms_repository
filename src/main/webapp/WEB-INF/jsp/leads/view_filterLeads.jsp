@@ -5,12 +5,13 @@
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-                        <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
+                        <link rel="stylesheet"
+                            href="<%= request.getContextPath() %>/resources/css/stylesfilter.css?v=3">
                         <script src="<c:url value=" /resources/core/jquery.1.10.2.min.js" />"></script>
                         <script src="<c:url value=" /resources/core/jquery.autocomplete.min.js" />"></script>
                         <%--=====AI MODIFICATION START=====Change: Removed old blue/green inline styles. All styling now
-                            comes from stylesfilter.css (Grand Suite theme). Only page-specific overrides below. Reason:
-                            Theme alignment - charcoal/gold/ivory throughout Scope: view_filterLeads.jsp --%>
+                            comes from stylesfilter.css (Grand Suite theme). Reason: Theme alignment -
+                            charcoal/gold/ivory throughout Scope: view_filterLeads.jsp --%>
                             <style>
                                 /* Page-specific: clean ivory background, no heavy image */
                                 body {
@@ -18,235 +19,22 @@
                                     background-image: none;
                                 }
 
-                                /* Modal Background */
-                                .modal {
-                                    display: none;
-                                    position: fixed;
-                                    z-index: 1050;
-                                    left: 0;
-                                    top: 0;
-                                    width: 100vw;
-                                    height: 100vh;
-                                    background-color: rgba(0, 0, 0, 0.5);
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                }
-
-                                .modal-content {
-                                    position: relative;
-                                    background-color: #fff;
-                                    width: 60%;
-                                    max-width: 800px;
-                                    min-height: 300px;
-                                    max-height: 80vh;
-                                    overflow-y: auto;
-                                    border-radius: 10px;
-                                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                                    padding: 20px;
-                                    margin: auto;
-                                }
-
-                                .modal-header {
-                                    padding: 15px;
-                                    font-size: 18px;
-                                    font-weight: bold;
-                                    background-color: #007bff;
-                                    color: white;
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                    border-top-left-radius: 10px;
-                                    border-top-right-radius: 10px;
-                                    position: relative;
-                                }
-
-                                .close {
-                                    color: white;
-                                    font-size: 28px;
-                                    font-weight: bold;
-                                    cursor: pointer;
-                                    transition: color 0.3s;
-                                    margin-left: auto;
-                                }
-
-                                .close:hover {
-                                    color: #000;
-                                }
-
-                                .modal-body {
-                                    padding: 20px;
-                                    font-size: 16px;
-                                    line-height: 1.5;
-                                }
-
-                                .modal-footer {
-                                    padding: 10px;
-                                    background-color: #f1f1f1;
-                                    border-bottom-left-radius: 10px;
-                                    border-bottom-right-radius: 10px;
-                                    text-align: right;
-                                }
-
-                                /* Dropdown styles */
-                                .dropdown {
-                                    position: relative;
-                                    display: inline-block;
-                                    font-family: Arial, sans-serif;
-                                }
-
-                                .dropbtn {
-                                    background-color: #007bff;
-                                    color: white;
-                                    padding: 8px 16px;
-                                    font-size: 14px;
-                                    border: none;
-                                    cursor: pointer;
-                                    border-radius: 4px;
-                                    transition: background 0.3s ease;
-                                }
-
-                                .dropbtn:hover {
-                                    background-color: #0056b3;
-                                }
-
-                                .dropdown-content {
-                                    display: none;
-                                    position: absolute;
-                                    background-color: #ffffff;
-                                    min-width: 200px;
-                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                                    z-index: 1000;
-                                    border-radius: 6px;
-                                    top: 100%;
-                                    left: 0;
-                                    padding: 0;
-                                }
-
-                                .dropdown:hover .dropdown-content {
-                                    display: block;
-                                }
-
-                                .dropdown-content a,
-                                .dropdown-content .dropdown-button {
-                                    display: block;
-                                    padding: 10px 16px;
-                                    color: #333;
-                                    text-decoration: none;
-                                    font-size: 14px;
-                                    background: #fff;
-                                    border: none;
-                                    text-align: left;
-                                    cursor: pointer;
-                                    width: 100%;
-                                    box-sizing: border-box;
-                                    transition: background 0.2s ease;
-                                }
-
-                                .dropdown-content a:hover,
-                                .dropdown-content .dropdown-button:hover {
-                                    background-color: #f2f2f2;
-                                }
-
-                                .submenu {
-                                    position: relative;
-                                }
-
-                                .submenu-content {
-                                    display: none;
-                                    position: absolute;
-                                    left: 100%;
-                                    top: 0;
-                                    min-width: 220px;
-                                    background-color: #ffffff;
-                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                                    z-index: 1001;
-                                    border-radius: 6px;
-                                }
-
-                                .submenu:hover .submenu-content {
-                                    display: block;
-                                }
-
-                                .submenu-content a {
-                                    padding: 10px 16px;
-                                    font-size: 14px;
-                                    color: #333;
-                                    text-decoration: none;
-                                    display: block;
-                                    white-space: nowrap;
-                                }
-
-                                .submenu-content a:hover {
-                                    background-color: #f2f2f2;
-                                }
-
-                                /* Instagram Sync Button */
-                                .sync-ig-btn {
-                                    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-                                    color: white;
-                                    border: none;
-                                    padding: 8px 18px;
-                                    font-size: 14px;
-                                    font-weight: 600;
-                                    border-radius: 6px;
-                                    cursor: pointer;
-                                    transition: all 0.3s ease;
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 6px;
-                                    box-shadow: 0 2px 8px rgba(131, 58, 180, 0.3);
-                                }
-
-                                .sync-ig-btn:hover {
-                                    transform: translateY(-1px);
-                                    box-shadow: 0 4px 12px rgba(131, 58, 180, 0.5);
-                                }
-
-                                .sync-ig-btn:disabled {
-                                    opacity: 0.7;
-                                    cursor: not-allowed;
-                                    transform: none;
-                                }
-
-                                .sync-ig-btn .spinner {
-                                    display: none;
-                                    width: 14px;
-                                    height: 14px;
-                                    border: 2px solid rgba(255, 255, 255, 0.3);
-                                    border-top-color: #fff;
-                                    border-radius: 50%;
-                                    animation: spin 0.8s linear infinite;
-                                }
-
-                                .sync-ig-btn.loading .spinner {
-                                    display: inline-block;
-                                }
-
-                                .sync-ig-btn.loading .btn-text {
-                                    display: none;
-                                }
-
-                                @keyframes spin {
-                                    to {
-                                        transform: rotate(360deg);
-                                    }
-                                }
-
-                                /* Sync toast notification */
+                                /* Toast notification styles */
                                 .sync-toast {
-                                    position: fixed;
-                                    top: 100px;
-                                    right: 20px;
-                                    padding: 14px 24px;
-                                    border-radius: 8px;
+                                    visibility: hidden;
+                                    min-width: 250px;
+                                    background-color: #333;
                                     color: #fff;
-                                    font-weight: 600;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 16px;
+                                    position: fixed;
+                                    z-index: 2000;
+                                    left: 50%;
+                                    bottom: 30px;
+                                    transform: translateX(-50%);
                                     font-size: 14px;
-                                    z-index: 9999;
-                                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-                                    transform: translateX(120%);
-                                    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
                                 }
 
                                 .sync-toast.show {
@@ -268,7 +56,7 @@
                             <%--=====AI MODIFICATION END=====--%>
 
 
-                                <div class="page-container" style="display: flex; height: 100vh; overflow: hidden;">
+                                <div class="page-container" style="display: flex; min-height: calc(100vh - 100px);">
                                     <!-- Sidebar -->
                                     <div id="filter-sidebar" class="filter-sidebar"
                                         style="width: 0; transition: 0.3s; overflow-x: hidden; background: #FFFFFF; height: calc(100% - 110px); position: fixed; z-index: 1000; left: 0; top: 108px; box-shadow: 4px 0 16px rgba(27,42,61,0.1); border-right: 2px solid #C9A84C;">
@@ -394,7 +182,7 @@
 
                                     <!-- Main Content -->
                                     <div class="main-content"
-                                        style="margin-left: 0; flex: 1; padding: 15px; overflow-y: auto; transition: 0.3s;">
+                                        style="margin-left: 0; flex: 1; padding: 15px; transition: 0.3s;">
                                         <div
                                             style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; flex-wrap: wrap;">
                                             <button onclick="toggleSidebar()">Open Filters</button>

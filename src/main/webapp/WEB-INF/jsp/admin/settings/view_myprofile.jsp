@@ -31,6 +31,7 @@
                                         background-color: #f8f9fa;
                                         padding: 20px 10px;
                                         border-right: 1px solid #ccc;
+                                        overflow-y: auto;
                                     }
 
                                     .sidebar a {
@@ -54,14 +55,14 @@
                                         width: 100%;
                                     }
 
-                                    /* ===== AI MODIFICATION START ===== */
-                                    /* Change: Added styles for dropdown toggle in sidebar */
-                                    /* Reason: Communication Channels menu needs a collapsible dropdown */
-                                    /* Scope: Settings sidebar - Communication Channels feature */
-                                    .dropdown-toggle {
+                                    /* Sidebar dropdown styles */
+                                    .sidebar-dropdown {
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .sidebar-dropdown .dropdown-toggle {
                                         display: block;
                                         padding: 10px 15px;
-                                        margin-bottom: 2px;
                                         background-color: #d6e0f0;
                                         color: #000;
                                         text-decoration: none;
@@ -70,32 +71,41 @@
                                         font-weight: bold;
                                     }
 
-                                    .dropdown-toggle:hover {
+                                    .sidebar-dropdown .dropdown-toggle:hover {
                                         background-color: #c0cfe0;
                                     }
 
-                                    .dropdown-toggle::after {
+                                    .sidebar-dropdown .dropdown-toggle::after {
                                         content: ' \25BC';
                                         font-size: 10px;
                                         float: right;
+                                        margin-top: 4px;
                                     }
 
-                                    .dropdown-content {
+                                    .sidebar-dropdown .dropdown-items {
                                         display: none;
+                                        margin-top: 4px;
                                         padding-left: 15px;
                                     }
 
-                                    .dropdown-content.show {
+                                    .sidebar-dropdown .dropdown-items.open {
                                         display: block;
                                     }
 
-                                    .dropdown-content a {
-                                        font-size: 13px;
+                                    .sidebar-dropdown .dropdown-items a {
+                                        display: block;
                                         padding: 8px 12px;
                                         margin-bottom: 4px;
+                                        background-color: #e9ecef;
+                                        color: #000;
+                                        text-decoration: none;
+                                        border-radius: 4px;
+                                        font-size: 13px;
                                     }
 
-                                    /* ===== AI MODIFICATION END ===== */
+                                    .comm-sub-items a:hover {
+                                        background-color: #ced4da;
+                                    }
                                 </style>
                             </head>
 
@@ -122,39 +132,26 @@
                                             <a href="view_form_meta_token" target="contentFrame">Meta Token</a>
                                         </sec:authorize>
 
-                                        <!-- ===== AI MODIFICATION START ===== -->
-                                        <!-- Change: Added Communication Channels dropdown menu -->
-                                        <!-- Reason: User requested a separate dropdown for Email and WhatsApp config -->
-                                        <!-- Scope: Settings sidebar - Communication Channels feature -->
-                                        <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
-                                            <div class="dropdown-toggle"
-                                                onclick="toggleDropdown('commChannelsDropdown', this)">
-                                                Communication Channels
-                                            </div>
-                                            <div id="commChannelsDropdown" class="dropdown-content">
-                                                <a href="view_form_email_config" target="contentFrame">Email Config</a>
-                                                <a href="view_form_whatsapp_config" target="contentFrame">WhatsApp
-                                                    Config</a>
+                                        <!-- Communication Channels Dropdown -->
+                                        <sec:authorize access="hasAnyRole('ADMIN', 'SUPERADMIN')">
+                                            <div class="sidebar-dropdown">
+                                                <div class="dropdown-toggle"
+                                                    onclick="var items = this.nextElementSibling; items.classList.toggle('open');">
+                                                    Communication Channels
+                                                </div>
+                                                <div class="dropdown-items">
+                                                    <a href="view_form_email_config" target="contentFrame">Email
+                                                        Config</a>
+                                                    <a href="view_form_whatsapp_config" target="contentFrame">WhatsApp
+                                                        Config</a>
+                                                </div>
                                             </div>
                                         </sec:authorize>
-                                        <!-- ===== AI MODIFICATION END ===== -->
                                     </div>
                                     <!-- Right Content -->
                                     <iframe name="contentFrame" class="content-frame"
                                         src="settings_my_profile"></iframe>
                                 </div>
-
-                                <!-- ===== AI MODIFICATION START ===== -->
-                                <!-- Change: Added JavaScript for dropdown toggle -->
-                                <!-- Reason: Enables collapsible dropdown behavior for Communication Channels -->
-                                <!-- Scope: Settings sidebar - Communication Channels feature -->
-                                <script>
-                                    function toggleDropdown(id, toggleEl) {
-                                        var content = document.getElementById(id);
-                                        content.classList.toggle('show');
-                                    }
-                                </script>
-                                <!-- ===== AI MODIFICATION END ===== -->
                             </body>
 
                             </html>

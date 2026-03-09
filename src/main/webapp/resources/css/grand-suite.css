@@ -132,10 +132,10 @@ body {
     background-image: none !important;
     opacity: 1 !important;
     height: auto !important;
-    min-height: 100vh;
-    /* Flexbox layout ensures footer sticks to the bottom of the viewport */
-    display: flex !important;
-    flex-direction: column !important;
+    /* Absolute Positioning Sticky Footer Strategy */
+    position: relative !important;
+    min-height: 100vh !important;
+    padding-bottom: 60px !important;
 }
 
 /* Neutralize the body::after watermark overlay used across many JSP pages */
@@ -431,15 +431,20 @@ a:hover {
 
 /* ===== FOOTER ===== */
 .gs-footer {
-    background: var(--gs-white);
-    border-top: 1px solid var(--gs-beige);
-    padding: var(--gs-space-4) var(--gs-space-6);
-    text-align: center;
-    color: var(--gs-text-muted);
-    font-size: var(--gs-text-xs);
-    /* Push footer to bottom when content is shorter than viewport */
-    margin-top: auto;
-    flex-shrink: 0;
+    background: var(--gs-white) !important;
+    border-top: 1px solid var(--gs-beige) !important;
+    padding: var(--gs-space-4) var(--gs-space-6) !important;
+    text-align: center !important;
+    color: var(--gs-text-muted) !important;
+    font-size: var(--gs-text-xs) !important;
+    /* Absolute Positioning Sticky Footer */
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 60px !important;
+    box-sizing: border-box !important;
+    z-index: 50 !important;
 }
 
 .gs-footer-brand {
@@ -658,12 +663,24 @@ a:hover {
 /* ===== TABLES ===== */
 .gs-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    /* Required for border-radius on elements without overflow: hidden */
+    border-spacing: 0;
     font-size: var(--gs-text-sm);
     background: var(--gs-white);
     border-radius: var(--gs-radius-md);
-    overflow: hidden;
+    overflow: visible;
+    /* CRITICAL: Fixed dropdown cutoff issue */
     box-shadow: var(--gs-shadow-card);
+}
+
+/* Ensure rounded corners persist without overflow:hidden */
+.gs-table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--gs-radius-md);
+}
+
+.gs-table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--gs-radius-md);
 }
 
 .gs-table thead {
@@ -1080,4 +1097,171 @@ a:hover {
         padding: var(--gs-space-4);
         margin: var(--gs-space-3);
     }
+}
+
+
+/* ===== GLOBAL BUTTON OVERRIDES =====
+   Styles ALL native HTML buttons, input[submit], and input[button]
+   elements to match the Grand Suite gold theme — eliminates white
+   unstyled buttons across AxisProDev and merged pages.
+   ============================================================ */
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+button:not(.gs-modal-close):not(.gs-actions-btn):not(.dropdown-toggle) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 24px;
+    font-family: var(--gs-font-body);
+    font-size: var(--gs-text-sm);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--gs-text-on-gold);
+    background: var(--gs-gold);
+    border: 1px solid var(--gs-gold-dark);
+    border-radius: var(--gs-radius-sm);
+    cursor: pointer;
+    transition: all var(--gs-transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+button:not(.gs-modal-close):not(.gs-actions-btn):not(.dropdown-toggle):hover {
+    background: var(--gs-gold-dark);
+    color: var(--gs-white);
+    transform: translateY(-1px);
+    box-shadow: var(--gs-shadow-elevated);
+}
+
+input[type="submit"]:active,
+input[type="button"]:active,
+input[type="reset"]:active,
+button:not(.gs-modal-close):not(.gs-actions-btn):not(.dropdown-toggle):active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Links styled as buttons (commonly used for View/Add pages) */
+a.btn,
+a[class*="btn-"],
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 24px;
+    font-family: var(--gs-font-body);
+    font-size: var(--gs-text-sm);
+    font-weight: 500;
+    color: var(--gs-text-on-gold) !important;
+    background: var(--gs-gold) !important;
+    border: 1px solid var(--gs-gold-dark) !important;
+    border-radius: var(--gs-radius-sm) !important;
+    cursor: pointer;
+    transition: all var(--gs-transition-base);
+    text-decoration: none !important;
+}
+
+a.btn:hover,
+a[class*="btn-"]:hover,
+.btn:hover {
+    background: var(--gs-gold-dark) !important;
+    color: var(--gs-white) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--gs-shadow-elevated);
+}
+
+/* Bootstrap btn overrides */
+.btn-primary {
+    background: var(--gs-gold) !important;
+    border-color: var(--gs-gold-dark) !important;
+    color: var(--gs-text-on-gold) !important;
+}
+
+.btn-primary:hover {
+    background: var(--gs-gold-dark) !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-success {
+    background: var(--gs-success) !important;
+    border-color: var(--gs-success) !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-success:hover {
+    background: #2E7358 !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-danger {
+    background: var(--gs-danger) !important;
+    border-color: var(--gs-danger) !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-danger:hover {
+    background: #A03030 !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-info {
+    background: var(--gs-charcoal) !important;
+    border-color: var(--gs-charcoal) !important;
+    color: var(--gs-beige) !important;
+}
+
+.btn-info:hover {
+    background: var(--gs-gold-dark) !important;
+    color: var(--gs-white) !important;
+}
+
+.btn-default,
+.btn-secondary {
+    background: transparent !important;
+    color: var(--gs-charcoal) !important;
+    border: 1px solid var(--gs-beige) !important;
+}
+
+.btn-default:hover,
+.btn-secondary:hover {
+    background: var(--gs-ivory) !important;
+    border-color: var(--gs-charcoal) !important;
+}
+
+
+/* ===== FOOTER FIX FOR SHORT PAGES =====
+   Ensures footer always stays at the bottom by making all main
+   content wrappers expand to fill available vertical space.
+   The body uses display:flex + flex-direction:column + min-height:100vh
+   so any direct child with flex-grow:1 will push the footer down.
+   ============================================================ */
+.gs-page-content,
+form[action],
+.container,
+.container-fluid {
+    flex-grow: 1 !important;
+}
+
+/* Legacy table/form based pages: ensure the content between
+   header/nav and footer fills available vertical space */
+body>table,
+body>form,
+body>.container,
+body>div:not(.gs-header):not(.gs-nav):not(.gs-footer):not([class*="modal"]) {
+    flex-grow: 1 !important;
 }

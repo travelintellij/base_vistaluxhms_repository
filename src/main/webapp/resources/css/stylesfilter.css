@@ -116,15 +116,16 @@
 }
 
 .clear-filter-btn {
-    background-color: transparent !important;
+    background-color: var(--gs-gold, #C9A84C) !important;
     color: var(--gs-charcoal, #1B2A3D) !important;
-    border: 1px solid var(--gs-beige, #E8E4DE) !important;
+    border: 1px solid var(--gs-gold-dark, #B08E30) !important;
     padding: 8px 18px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: var(--gs-text-sm, 0.8125rem);
     font-family: var(--gs-font-body, 'DM Sans', sans-serif);
+    font-weight: 500;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: var(--gs-radius-sm, 4px);
@@ -132,9 +133,10 @@
 }
 
 .clear-filter-btn:hover {
-    background-color: var(--gs-ivory, #FAF8F5) !important;
-    border-color: var(--gs-charcoal, #1B2A3D) !important;
+    background-color: var(--gs-gold-dark, #B08E30) !important;
+    color: var(--gs-white, #FFFFFF) !important;
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(201, 168, 76, 0.3);
 }
 
 .clear-filter-btn:active {
@@ -458,7 +460,8 @@
     margin-left: 0;
     flex: 1;
     padding: 15px;
-    overflow-y: auto;
+    overflow: visible;
+    /* Prevents action dropdowns from being clipped/scrolled inside */
     transition: margin-left 0.3s ease;
 }
 
@@ -495,12 +498,24 @@ button:hover {
 /* ===== TABLE STYLES (Global) ===== */
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    /* Required for border-radius to work without overflow: hidden */
+    border-spacing: 0;
     margin-top: 12px;
     box-shadow: var(--gs-shadow-card, 0 1px 3px rgba(27, 42, 61, 0.06));
     border-radius: var(--gs-radius-md, 8px);
-    overflow: hidden;
+    overflow: visible;
+    /* CRITICAL: Allows dropdowns inside table to extend past table boundaries */
     font-family: var(--gs-font-body, 'DM Sans', sans-serif);
+}
+
+/* Maintain rounded corners at the top since overflow: hidden is gone */
+table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--gs-radius-md, 8px);
+}
+
+table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--gs-radius-md, 8px);
 }
 
 table thead {
