@@ -54,4 +54,22 @@ public class LeadFreeHandQuotationEntityDTO extends LeadFreeHandQuotationEntity 
         this.roomDetails = leadFHQuotationEntity.getRoomDetails();
     }
 
+
+    @Override
+    public String toString() {
+        return "LeadFreeHandQuotationEntityDTO{" +
+                "roomDetailsDTO=" + roomDetailsDTO +
+                ", guestName='" + guestName + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", lfhqid=" + lfhqid +
+                ", leadEntity=" + leadEntity +
+                ", clientEntity=" + clientEntity +
+                ", versionId=" + versionId +
+                ", grandTotal=" + grandTotal +
+                ", discount=" + discount +
+                ", remarks='" + remarks + '\'' +
+                ", roomDetails=" + roomDetails +
+                '}';
+    }
 }
