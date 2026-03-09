@@ -299,6 +299,45 @@
             <form:input path="xLink" class="input-field" />
         </div>
     </fieldset>
+
+    <!-- ===== AI MODIFICATION START ===== -->
+    <!-- Change: Commented out WhatsApp Configuration section from Central Config -->
+    <!-- Reason: WhatsApp config now has its own dedicated page under Communication Channels dropdown -->
+    <!-- Scope: Central Config page / Communication Channels feature -->
+    <%--
+    <div class="form-container">
+        <h2>WhatsApp Configuration</h2>
+        <fieldset>
+            <legend>API Details</legend>
+            <div class="form-group">
+                <label>API URL</label>
+                <form:input path="whatsAppApiUrl" class="input-field" placeholder="Enter WhatsApp API URL" />
+            </div>
+            <div class="form-group">
+                <label>API Key (Authorization)</label>
+                <form:input path="whatsAppApiKey" class="input-field" placeholder="Enter API Key" />
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Template IDs</legend>
+            <div class="form-group">
+                <label>Registration Template ID</label>
+                <form:input path="whatsAppRegistrationTemplateId" class="input-field" placeholder="ex: 25455" />
+            </div>
+            <div class="form-group">
+                <label>Stay Quotation Template ID</label>
+                <form:input path="whatsAppStayQuotationTemplateId" class="input-field" placeholder="ex: 27614" />
+            </div>
+            <div class="form-group">
+                <label>Guest Quotation Template ID</label>
+                <form:input path="whatsAppGuestQuotationTemplateId" class="input-field" placeholder="ex: 27614" />
+            </div>
+        </fieldset>
+    </div>
+    --%>
+    <!-- ===== AI MODIFICATION END ===== -->
+
 <div class="form-container">
     <h2>Quotation Configuration</h2>
 

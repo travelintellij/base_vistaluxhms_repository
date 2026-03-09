@@ -41,11 +41,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- ===== AI MODIFICATION START =====
+		     Change: Commented out devtools dependency
+		     Reason: Spring Boot 2.2.1 DevTools ASM cannot read JDK 21 class files (major version 63), causing crash on restart
+		     Scope: Application startup stability
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		===== AI MODIFICATION END ===== -->
 		<!-- Spring boot jdbc dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

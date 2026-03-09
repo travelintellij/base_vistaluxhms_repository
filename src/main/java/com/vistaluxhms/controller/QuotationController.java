@@ -4,6 +4,8 @@ import com.itextpdf.text.log.SysoCounter;
 import com.lowagie.text.DocumentException;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
+// ADDED: Import WhatsAppResult to capture success/failure from WhatsApp send operations
+import com.vistaluxhms.model.WhatsAppResult;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
@@ -41,7 +43,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-//@SessionAttributes("QUOTATION_OBJ")
+// @SessionAttributes("QUOTATION_OBJ")
 public class QuotationController {
 
     @Autowired
@@ -105,13 +107,11 @@ public class QuotationController {
     @Autowired
     private SettingsAndOtherServicesImpl settingService;
 
-
     @ModelAttribute("QUOTATION_OBJ")
     public QuotationEntityDTO getQuotationFromSession(HttpSession session) {
         QuotationEntityDTO quotation = (QuotationEntityDTO) session.getAttribute("QUOTATION_OBJ");
         return (quotation != null) ? quotation : new QuotationEntityDTO(); // Ensure a non-null object
     }
-
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -129,7 +129,8 @@ public class QuotationController {
     }
 
     @RequestMapping("view_add_quotation_form")
-    public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, BindingResult result) {
+    public ModelAndView view_add_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            HttpSession session, BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         session.removeAttribute("QUOTATION_OBJ");
         session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
@@ -137,7 +138,6 @@ public class QuotationController {
         if (quotationEntityDTO.getRoomDetails() == null || quotationEntityDTO.getRoomDetails().isEmpty()) {
             quotationEntityDTO.setRoomDetails(new ArrayList<>()); // Only initialize if it's empty
         }
-
 
         ModelAndView modelView = new ModelAndView("quotation/createQuotation");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
@@ -148,7 +148,8 @@ public class QuotationController {
         modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
         List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
         Map<Integer, String> roomTypeMap = listRoomType.stream()
-                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId,
+                        MasterRoomDetailsEntity::getRoomCategoryName));
         modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
 
@@ -157,10 +158,11 @@ public class QuotationController {
         return modelView;
     }
 
-
-    //@PostMapping(value = "review_process_create_quotation")
-    @RequestMapping(value = "review_process_create_quotation", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView review_process_create_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    // @PostMapping(value = "review_process_create_quotation")
+    @RequestMapping(value = "review_process_create_quotation", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView review_process_create_quotation(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result,
+            HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
@@ -188,10 +190,13 @@ public class QuotationController {
             }
 
             int grandTotalSum = 0;
-            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
+            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService
+                    .getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
-                quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
-                quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+                quotationRoomDTO.setRoomCategoryName(
+                        salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                quotationRoomDTO
+                        .setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 LocalDate checkIn = quotationRoomDTO.getCheckInDate();
                 LocalDate checkOut = quotationRoomDTO.getCheckOutDate();
                 int totalAdultPrice = 0;
@@ -200,9 +205,10 @@ public class QuotationController {
                 int totalExtraBedPrice = 0;
 
                 while (!checkIn.isAfter(checkOut.minusDays(1))) { // Loop from check-in to checkout - 1 day
-                    SessionDetailsEntity sessionDetailsEntity = sessionService.getSessionDetails_Rate_And_Date_and_MealPlan(
-                            sessionRateMappingEntities, checkIn, quotationRoomDTO.getRoomCategoryId(), quotationRoomDTO.getMealPlanId()
-                    );
+                    SessionDetailsEntity sessionDetailsEntity = sessionService
+                            .getSessionDetails_Rate_And_Date_and_MealPlan(
+                                    sessionRateMappingEntities, checkIn, quotationRoomDTO.getRoomCategoryId(),
+                                    quotationRoomDTO.getMealPlanId());
 
                     if (sessionDetailsEntity != null) {
                         int dayPrice = processTotalPrice(quotationRoomDTO, sessionDetailsEntity);
@@ -219,14 +225,15 @@ public class QuotationController {
                 quotationRoomDTO.setChildWithBedPrice(totalChildWithBedPrice);
                 quotationRoomDTO.setChildNoBedPrice(totalChildNoBedPrice);
                 quotationRoomDTO.setExtraBedPrice(totalExtraBedPrice);
-                quotationRoomDTO.setTotalPrice(totalAdultPrice + totalChildWithBedPrice + totalChildNoBedPrice + totalExtraBedPrice);
+                quotationRoomDTO.setTotalPrice(
+                        totalAdultPrice + totalChildWithBedPrice + totalChildNoBedPrice + totalExtraBedPrice);
             }
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
         formatRoomDates(quotationEntityDTO);
-        //session.
-        //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
-        //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+        // session.
+        // session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
+        // session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
 
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
@@ -261,19 +268,22 @@ public class QuotationController {
         }
 
         if (quotationRoomDTO.getChildWithBed() > 0) {
-            childWithBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_CHILD_PERCENTAGE / 100) * quotationRoomDTO.getChildWithBed();
+            childWithBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_CHILD_PERCENTAGE / 100)
+                    * quotationRoomDTO.getChildWithBed();
             totalPrice += childWithBedPrice;
             quotationRoomDTO.setChildWithBedPrice(childWithBedPrice);
         }
 
         if (quotationRoomDTO.getChildNoBed() > 0) {
-            childNoBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_CHILD_NO_BED_PERCENTAGE / 100) * quotationRoomDTO.getChildNoBed();
+            childNoBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_CHILD_NO_BED_PERCENTAGE / 100)
+                    * quotationRoomDTO.getChildNoBed();
             totalPrice += childNoBedPrice;
             quotationRoomDTO.setChildNoBedPrice(childNoBedPrice);
         }
 
         if (quotationRoomDTO.getExtraBed() > 0) {
-            extraBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_ADULT_PERCENTAGE / 100) * quotationRoomDTO.getExtraBed();
+            extraBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_ADULT_PERCENTAGE / 100)
+                    * quotationRoomDTO.getExtraBed();
             totalPrice += extraBedPrice;
             quotationRoomDTO.setExtraBedPrice(extraBedPrice);
         }
@@ -281,11 +291,13 @@ public class QuotationController {
         return totalPrice;
     }
 
-
-    @RequestMapping(value = "process_quotation", params = "whatsapp", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView process_quotation_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                   BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
-        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+    @RequestMapping(value = "process_quotation", params = "whatsapp", method = { RequestMethod.GET,
+            RequestMethod.POST })
+    public ModelAndView process_quotation_whatsapp(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        // ModelAndView modelView =
+        // review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
@@ -299,7 +311,8 @@ public class QuotationController {
             quotationEntityDTO = sessionQuotation;
         }
         modelView.setViewName("redirect:review_process_create_quotation");
-        //List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        // List<String> recipientEmails =
+        // validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
         if (result.hasErrors()) {
             modelView = review_process_create_quotation(quotationEntityDTO, result, session, redirectAttrib);
             result.rejectValue("email", "error.email", "Invalid Email Format.");
@@ -310,14 +323,29 @@ public class QuotationController {
             return modelView;
         }
 
-        notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-        System.out.println("Quotation Sent Successfully!! ");
-        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
-        //session.removeAttribute(sessionKey);
+        // CHANGED: Capture WhatsAppResult to report success/failure to the user.
+        // ORIGINAL CODE (removed):
+        // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+        // System.out.println("Quotation Sent Successfully!! ");
+        // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
+        // !! ");
+        WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+        if (whatsAppResult.isSuccess()) {
+            System.out.println("Quotation Sent Successfully via WhatsApp!!");
+            redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via WhatsApp!!");
+        } else {
+            // ADDED: Show WhatsApp error on frontend with descriptive reason
+            redirectAttrib.addFlashAttribute("Error",
+                    "WhatsApp notification failed: " + whatsAppResult.getErrorMessage());
+        }
+        // session.removeAttribute(sessionKey);
         return modelView;
     }
 
-    private void notifyQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
+    // CHANGED: Return type changed from void to WhatsAppResult.
+    // This allows callers to check if WhatsApp send succeeded or failed,
+    // and to display the specific failure reason on the frontend.
+    private WhatsAppResult notifyQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
         UserDetailsObj user = getLoggedInUser();
         System.out.println("Sharing Quotation via Whats app");
         try {
@@ -341,24 +369,31 @@ public class QuotationController {
             whatsAppMessageDTO.setFinalPrice(nettPrice);
             whatsAppMessageDTO.setNoOfRooms(quotationEntityDTO.getRoomDetails().size());
 
-            DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-            String queryDetails  = "Total Rooms: " + String.valueOf(quotationEntityDTO.getRoomDetails().size()) ;
-            for(int i=0;i<quotationEntityDTO.getRoomDetails().size();i++){
-                queryDetails = queryDetails + "\r\nRoom " + (i+1) +"\r\n";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            String queryDetails = "Total Rooms: " + String.valueOf(quotationEntityDTO.getRoomDetails().size());
+            for (int i = 0; i < quotationEntityDTO.getRoomDetails().size(); i++) {
+                queryDetails = queryDetails + "\r\nRoom " + (i + 1) + "\r\n";
                 QuotationRoomDetailsDTO roomDetailsDTO = quotationEntityDTO.getRoomDetails().get(i);
                 queryDetails = queryDetails + "Room Category: " + roomDetailsDTO.getRoomCategoryName() + "\r\n";
-                queryDetails = queryDetails + "Adults : " + (roomDetailsDTO.getAdults() + roomDetailsDTO.getExtraBed()) + " | Children: " +  (roomDetailsDTO.getChildNoBed() + roomDetailsDTO.getChildWithBed()) + "\r\n";
+                queryDetails = queryDetails + "Adults : " + (roomDetailsDTO.getAdults() + roomDetailsDTO.getExtraBed())
+                        + " | Children: " + (roomDetailsDTO.getChildNoBed() + roomDetailsDTO.getChildWithBed())
+                        + "\r\n";
                 String formattedCheckInDate = roomDetailsDTO.getCheckInDate().format(formatter);
                 String formattedCheckOutDate = roomDetailsDTO.getCheckOutDate().format(formatter);
-                queryDetails = queryDetails + "Check In: " +  formattedCheckInDate + " | Check Out: " + formattedCheckOutDate +"\r\n";
+                queryDetails = queryDetails + "Check In: " + formattedCheckInDate + " | Check Out: "
+                        + formattedCheckOutDate + "\r\n";
                 queryDetails = queryDetails + "Meal Plan : " + roomDetailsDTO.getMealPlanName();
                 queryDetails = queryDetails + "\r\n-----------";
             }
 
-            whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO,queryDetails);
+            // CHANGED: Return the WhatsAppResult from the service instead of
+            // fire-and-forget
+            return whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO, queryDetails);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // CHANGED: Return failure result instead of just printing stack trace
             e.printStackTrace();
+            return new WhatsAppResult(false,
+                    "WhatsApp quotation sending failed due to: " + e.getMessage());
         }
     }
 
@@ -428,10 +463,11 @@ public class QuotationController {
         return firstDate.format(formatter);
     }
 
-    @RequestMapping(value = "process_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "process_quotation", params = "Email", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView process_quotation_email(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
-        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        // ModelAndView modelView =
+        // review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
@@ -459,13 +495,13 @@ public class QuotationController {
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FITQuotation.ftl");
         System.out.println("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
-        //session.removeAttribute(sessionKey);
+        // session.removeAttribute(sessionKey);
         return modelView;
     }
 
-    @RequestMapping(value = "process_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "process_quotation", params = "Back", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView process_quotation_back(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                               BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("quotation/createQuotation");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
@@ -476,7 +512,8 @@ public class QuotationController {
         modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
         List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
         Map<Integer, String> roomTypeMap = listRoomType.stream()
-                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId,
+                        MasterRoomDetailsEntity::getRoomCategoryName));
         modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
         modelView.addObject("userName", userObj.getUsername());
@@ -487,15 +524,16 @@ public class QuotationController {
         return modelView;
     }
 
-
-    private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, List<String> recipientEmails, String templateName) {
+    private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, List<String> recipientEmails,
+            String templateName) {
         if (emailNotifyActive) {
             Mail mail = new Mail();
-            //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
+            // String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
+            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName()
+                    + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
-            //mail.setTo(quotationEntityDTO.getEmail());
+            // mail.setTo(quotationEntityDTO.getEmail());
             InternetAddress[] emailAddresses = new InternetAddress[recipientEmails.size()];
             for (int i = 0; i < recipientEmails.size(); i++) {
                 try {
@@ -509,12 +547,13 @@ public class QuotationController {
 
             try {
                 Map<String, Object> model = new HashMap<String, Object>();
-                //model.put("leadId", leadReferenceNumber);
+                // model.put("leadId", leadReferenceNumber);
                 model.put("contactName", quotationEntityDTO.getGuestName());
                 model.put("remarks", quotationEntityDTO.getRemarks());
                 model.put("roomDetails", quotationEntityDTO.getRoomDetails());
-                //System.out.println("Room Details " + quotationEntityDTO.getRoomDetails().size());
-                //System.out.println("Map Value " + model.get("roomDetails"));
+                // System.out.println("Room Details " +
+                // quotationEntityDTO.getRoomDetails().size());
+                // System.out.println("Map Value " + model.get("roomDetails"));
                 model.put("quotationAdvisor", userObj.getName());
                 model.put("grandTotalSum", quotationEntityDTO.getGrandTotal());
                 model.put("discount", quotationEntityDTO.getDiscount());
@@ -522,7 +561,7 @@ public class QuotationController {
                 model.put("serviceAdvisorMobile", userObj.getMobile());
 
                 mail.setModel(model);
-                //emailService.sendEmailMessageUsingTemplate(mail,templateName);
+                // emailService.sendEmailMessageUsingTemplate(mail,templateName);
                 emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
             } catch (MessagingException | IOException | TemplateException e) {
                 // TODO Auto-generated catch block
@@ -558,14 +597,18 @@ public class QuotationController {
         return email.matches(emailRegex);
     }
 
-
-    @RequestMapping(value = "process_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "process_quotation", params = "Download", method = { RequestMethod.GET,
+            RequestMethod.POST })
     @ResponseBody
-    public void downloadQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
-        generateQuotationPDF(quotationEntityDTO, session, response,"PDFQuotation.ftl");
+    public void downloadQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            HttpSession session, HttpServletResponse response)
+            throws IOException, TemplateException, DocumentException {
+        generateQuotationPDF(quotationEntityDTO, session, response, "PDFQuotation.ftl");
     }
 
-    private void generateQuotationPDF(QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
+    private void generateQuotationPDF(QuotationEntityDTO quotationEntityDTO, HttpSession session,
+            HttpServletResponse response, String templateName)
+            throws IOException, TemplateException, DocumentException {
         // Prepare data for the template
         CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
         Map<String, Object> model = new HashMap<>();
@@ -591,13 +634,14 @@ public class QuotationController {
         model.put("discount", quotationEntityDTO.getDiscount());
         model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
         model.put("serviceAdvisorMobile", userObj.getMobile());
-        model.put("remarks",quotationEntityDTO.getRemarks());
+        model.put("remarks", quotationEntityDTO.getRemarks());
 
         model.put("centralConfig", centralConfigEntity);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
-        //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
+        // freemarkerConfig.setDirectoryForTemplateLoading(new
+        // File(this.fileStorageLocation.get"));
         freemarkerConfig.setSetting(Configurable.NUMBER_FORMAT_KEY, "computer");
         freemarkerConfig.setAPIBuiltinEnabled(true);
         freemarkerConfig.setTemplateUpdateDelay(0);
@@ -635,9 +679,11 @@ public class QuotationController {
         }
     }
 
-    @RequestMapping(value = "process_quotation", params = "EmailAndWhatsApp", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView process_quotation_email_and_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                             BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    @RequestMapping(value = "process_quotation", params = "EmailAndWhatsApp", method = { RequestMethod.GET,
+            RequestMethod.POST })
+    public ModelAndView process_quotation_email_and_whatsapp(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
@@ -668,17 +714,30 @@ public class QuotationController {
         // Sending email
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FITQuotation.ftl");
 
-        // Sending WhatsApp message
-        notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-
-        System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
-        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
+        // CHANGED: Capture WhatsAppResult to report success/failure to the user.
+        // ORIGINAL CODE (removed):
+        // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+        // System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+        // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
+        // via Email and WhatsApp!!");
+        WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
+        if (whatsAppResult.isSuccess()) {
+            System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+            redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
+        } else {
+            // ADDED: Email succeeded but WhatsApp failed — show partial success with error
+            redirectAttrib.addFlashAttribute("Success", "Email sent successfully.");
+            redirectAttrib.addFlashAttribute("WhatsAppError",
+                    "WhatsApp notification failed: " + whatsAppResult.getErrorMessage());
+        }
 
         return modelView;
     }
 
     @RequestMapping("view_add_free_hand_quotation_form")
-    public ModelAndView view_add_free_hand_quotation_form(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, BindingResult result) {
+    public ModelAndView view_add_free_hand_quotation_form(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session,
+            BindingResult result) {
         UserDetailsObj userObj = getLoggedInUser();
         session.removeAttribute("QUOTATION_OBJ");
         session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
@@ -696,7 +755,8 @@ public class QuotationController {
         modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
         List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
         Map<Integer, String> roomTypeMap = listRoomType.stream()
-                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId,
+                        MasterRoomDetailsEntity::getRoomCategoryName));
         modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
 
@@ -705,8 +765,10 @@ public class QuotationController {
         return modelView;
     }
 
-    @RequestMapping(value = "review_process_create_fh_quotation", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView review_process_create_fh_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    @RequestMapping(value = "review_process_create_fh_quotation", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView review_process_create_fh_quotation(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, BindingResult result,
+            HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("forward:view_add_quotation_form");
 
@@ -737,18 +799,20 @@ public class QuotationController {
             }
 
             int grandTotalSum = 0;
-            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService.getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
+            List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService
+                    .getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
-                //quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
-                quotationRoomDTO.setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
+                // quotationRoomDTO.setRoomCategoryName(salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                quotationRoomDTO
+                        .setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 grandTotalSum += quotationRoomDTO.getTotalPrice();
             }
             quotationEntityDTO.setGrandTotal(grandTotalSum);
         }
         formatRoomDates(quotationEntityDTO);
-        //session.
-        //session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
-        //session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
+        // session.
+        // session.setAttribute("QUOTATION_OBJ", quotationEntityDTO);
+        // session.removeAttribute("QUOTATION_OBJ_" + userObj.getUserId());
         session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
 
         modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
@@ -764,7 +828,8 @@ public class QuotationController {
             } else {
                 ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
                 if (!clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
-                    System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is " + quotationEntityDTO.getGuestName());
+                    System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is "
+                            + quotationEntityDTO.getGuestName());
                     errors.rejectValue("guestName", "contact.error");
                     return false;
                 }
@@ -783,7 +848,8 @@ public class QuotationController {
 
                 // Validate Adults count
                 if (room.getAdults() < 1 && room.getNoOfChild() < 1) {
-                    errors.rejectValue("roomDetails[" + i + "].adults", "error.roomDetails", "Guests must be greater than zero.");
+                    errors.rejectValue("roomDetails[" + i + "].adults", "error.roomDetails",
+                            "Guests must be greater than zero.");
                     isValid = false;
                 }
 
@@ -792,21 +858,25 @@ public class QuotationController {
                 LocalDate checkOut = room.getCheckOutDate();
 
                 if (checkIn == null || checkOut == null) {
-                    errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in and Check-out dates are required.");
+                    errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails",
+                            "Check-in and Check-out dates are required.");
                     isValid = false;
                 } else {
                     if (checkIn.isBefore(today)) {
-                        errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails", "Check-in date cannot be in the past.");
+                        errors.rejectValue("roomDetails[" + i + "].checkInDate", "error.roomDetails",
+                                "Check-in date cannot be in the past.");
                         isValid = false;
                     }
 
                     if (checkOut.isBefore(today)) {
-                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date cannot be in the past.");
+                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails",
+                                "Check-out date cannot be in the past.");
                         isValid = false;
                     }
 
                     if (checkOut.isBefore(checkIn)) {
-                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails", "Check-out date must be the same or after Check-in date.");
+                        errors.rejectValue("roomDetails[" + i + "].checkOutDate", "error.roomDetails",
+                                "Check-out date must be the same or after Check-in date.");
                         isValid = false;
                     }
                 }
@@ -815,9 +885,9 @@ public class QuotationController {
         return isValid;
     }
 
-    @RequestMapping(value = "process_fh_quotation", params = "Back", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "process_fh_quotation", params = "Back", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView process_fh_quotation(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                             BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView("quotation/createFreeHandQuotation");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
@@ -828,7 +898,8 @@ public class QuotationController {
         modelView.addObject("RATE_TYPE_MAP", rateTypeMap);
         List<MasterRoomDetailsEntity> listRoomType = salesService.findActiveRoomsList();
         Map<Integer, String> roomTypeMap = listRoomType.stream()
-                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId, MasterRoomDetailsEntity::getRoomCategoryName));
+                .collect(Collectors.toMap(MasterRoomDetailsEntity::getRoomCategoryId,
+                        MasterRoomDetailsEntity::getRoomCategoryName));
         modelView.addObject("ROOM_TYPE_MAP", roomTypeMap);
         modelView.addObject("MEAL_PLAN_MAP", VistaluxConstants.MEAL_PLANS_MAP);
         modelView.addObject("userName", userObj.getUsername());
@@ -839,16 +910,20 @@ public class QuotationController {
         return modelView;
     }
 
-    @RequestMapping(value = "process_fh_quotation", params = "Download", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "process_fh_quotation", params = "Download", method = { RequestMethod.GET,
+            RequestMethod.POST })
     @ResponseBody
-    public void downloadFHQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response) throws IOException, TemplateException, DocumentException {
-        generateQuotationPDF(quotationEntityDTO, session, response,"PDFFreeHandQuotation.ftl");
+    public void downloadFHQuotationPdf(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            HttpSession session, HttpServletResponse response)
+            throws IOException, TemplateException, DocumentException {
+        generateQuotationPDF(quotationEntityDTO, session, response, "PDFFreeHandQuotation.ftl");
     }
 
-
-    @RequestMapping(value = "process_fh_quotation", params = "whatsapp", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView process_fh_quotation_whatsapp(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                      BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+    @RequestMapping(value = "process_fh_quotation", params = "whatsapp", method = { RequestMethod.GET,
+            RequestMethod.POST })
+    public ModelAndView process_fh_quotation_whatsapp(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
@@ -861,7 +936,8 @@ public class QuotationController {
             quotationEntityDTO = sessionQuotation;
         }
         modelView.setViewName("redirect:review_process_create_fh_quotation");
-        //List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        // List<String> recipientEmails =
+        // validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
         if (result.hasErrors()) {
             modelView = review_process_create_fh_quotation(quotationEntityDTO, result, session, redirectAttrib);
             result.rejectValue("email", "error.email", "Invalid Email Format.");
@@ -872,14 +948,29 @@ public class QuotationController {
             return modelView;
         }
 
-        notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
-        System.out.println("Quotation Sent Successfully!! ");
-        redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
-        //session.removeAttribute(sessionKey);
+        // CHANGED: Capture WhatsAppResult to report success/failure to the user.
+        // ORIGINAL CODE (removed):
+        // notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
+        // System.out.println("Quotation Sent Successfully!! ");
+        // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
+        // !! ");
+        WhatsAppResult whatsAppResult = notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
+        if (whatsAppResult.isSuccess()) {
+            System.out.println("FH Quotation Sent Successfully via WhatsApp!!");
+            redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via WhatsApp!!");
+        } else {
+            // ADDED: Show WhatsApp error on frontend with descriptive reason
+            redirectAttrib.addFlashAttribute("Error",
+                    "WhatsApp notification failed: " + whatsAppResult.getErrorMessage());
+        }
+        // session.removeAttribute(sessionKey);
         return modelView;
     }
 
-    private void notifyFreeHandQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
+    // CHANGED: Return type changed from void to WhatsAppResult.
+    // This allows callers to check if WhatsApp send succeeded or failed,
+    // and to display the specific failure reason on the frontend.
+    private WhatsAppResult notifyFreeHandQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
         UserDetailsObj user = getLoggedInUser();
         System.out.println("Sharing Quotation via Whats app");
         try {
@@ -906,24 +997,31 @@ public class QuotationController {
                 totalRooms += roomDetail.getNoOfRooms();
             }
             whatsAppMessageDTO.setNoOfRooms(totalRooms);
-            DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-            String queryDetails  = "Total Rooms: " + String.valueOf(quotationEntityDTO.getRoomDetails().size()) ;
-            for(int i=0;i<quotationEntityDTO.getRoomDetails().size();i++){
-                queryDetails = queryDetails + "\r\nRoom " + (i+1) +"\r\n";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
+            String queryDetails = "Total Rooms: " + String.valueOf(quotationEntityDTO.getRoomDetails().size());
+            for (int i = 0; i < quotationEntityDTO.getRoomDetails().size(); i++) {
+                queryDetails = queryDetails + "\r\nRoom " + (i + 1) + "\r\n";
                 QuotationRoomDetailsDTO roomDetailsDTO = quotationEntityDTO.getRoomDetails().get(i);
                 queryDetails = queryDetails + "Room Category: " + roomDetailsDTO.getRoomCategoryId() + "\r\n";
-                queryDetails = queryDetails + "Adults : " + (roomDetailsDTO.getAdults() + roomDetailsDTO.getExtraBed()) + " | Children: " +  (roomDetailsDTO.getChildNoBed() + roomDetailsDTO.getChildWithBed()) + "\r\n";
+                queryDetails = queryDetails + "Adults : " + (roomDetailsDTO.getAdults() + roomDetailsDTO.getExtraBed())
+                        + " | Children: " + (roomDetailsDTO.getChildNoBed() + roomDetailsDTO.getChildWithBed())
+                        + "\r\n";
                 String formattedCheckInDate = roomDetailsDTO.getCheckInDate().format(formatter);
                 String formattedCheckOutDate = roomDetailsDTO.getCheckOutDate().format(formatter);
-                queryDetails = queryDetails + "Check In: " +  formattedCheckInDate + " | Check Out: " + formattedCheckOutDate +"\r\n";
+                queryDetails = queryDetails + "Check In: " + formattedCheckInDate + " | Check Out: "
+                        + formattedCheckOutDate + "\r\n";
                 queryDetails = queryDetails + "Meal Plan : " + roomDetailsDTO.getMealPlanId();
                 queryDetails = queryDetails + "\r\n-----------";
             }
 
-            whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO,queryDetails);
+            // CHANGED: Return the WhatsAppResult from the service instead of
+            // fire-and-forget
+            return whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO, queryDetails);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // CHANGED: Return failure result instead of just printing stack trace
             e.printStackTrace();
+            return new WhatsAppResult(false,
+                    "WhatsApp quotation sending failed due to: " + e.getMessage());
         }
     }
 
@@ -942,10 +1040,13 @@ public class QuotationController {
         return firstRoomCategoryName; // All rooms have the same category
     }
 
-    @RequestMapping(value = "process_fh_quotation", params = "Email", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView process_fh_quotation_email(@ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
-                                                   BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
-        //ModelAndView modelView = review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
+    @RequestMapping(value = "process_fh_quotation", params = "Email", method = { RequestMethod.GET,
+            RequestMethod.POST })
+    public ModelAndView process_fh_quotation_email(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        // ModelAndView modelView =
+        // review_process_create_quotation(quotationEntityDTO,result,sessionredirectAttrib);
 
         ModelAndView modelView = new ModelAndView();
         UserDetailsObj userObj = getLoggedInUser();
@@ -973,12 +1074,8 @@ public class QuotationController {
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
         System.out.println("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
-        //session.removeAttribute(sessionKey);
+        // session.removeAttribute(sessionKey);
         return modelView;
     }
-
-
-
-
 
 }

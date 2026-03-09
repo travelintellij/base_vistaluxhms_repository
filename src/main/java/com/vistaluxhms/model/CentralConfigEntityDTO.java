@@ -54,6 +54,29 @@ public class CentralConfigEntityDTO {
 
     private String hotelInfo;
 
+    // WhatsApp Settings
+    private String whatsAppApiUrl;
+    private String whatsAppApiKey;
+    private String whatsAppRegistrationTemplateId;
+    private String whatsAppStayQuotationTemplateId;
+    private String whatsAppGuestQuotationTemplateId;
+
+    // ===== AI MODIFICATION START =====
+    // Change: Added Email Configuration fields to DTO
+    // Reason: Email settings should be configurable from frontend
+    // Scope: Communication Channels > Email Config
+    private String emailSmtpHost;
+    private String emailSmtpPort;
+    private String emailSmtpUsername;
+    private String emailSmtpPassword;
+    private String emailFromAddress;
+    private String emailReplyTo;
+    private String emailDefaultCc;
+    private String emailNotifyTo;
+    private String emailClientActive;
+    private String emailInternalActive;
+    // ===== AI MODIFICATION END =====
+
     public String getHotelName() {
         return hotelName;
     }
@@ -285,4 +308,129 @@ public class CentralConfigEntityDTO {
     public void setHotelInfo(String hotelInfo) {
         this.hotelInfo = hotelInfo;
     }
+
+    public String getWhatsAppApiUrl() {
+        return whatsAppApiUrl;
+    }
+
+    public void setWhatsAppApiUrl(String whatsAppApiUrl) {
+        this.whatsAppApiUrl = whatsAppApiUrl;
+    }
+
+    public String getWhatsAppApiKey() {
+        return whatsAppApiKey;
+    }
+
+    public void setWhatsAppApiKey(String whatsAppApiKey) {
+        this.whatsAppApiKey = whatsAppApiKey;
+    }
+
+    public String getWhatsAppRegistrationTemplateId() {
+        return whatsAppRegistrationTemplateId;
+    }
+
+    public void setWhatsAppRegistrationTemplateId(String whatsAppRegistrationTemplateId) {
+        this.whatsAppRegistrationTemplateId = whatsAppRegistrationTemplateId;
+    }
+
+    public String getWhatsAppStayQuotationTemplateId() {
+        return whatsAppStayQuotationTemplateId;
+    }
+
+    public void setWhatsAppStayQuotationTemplateId(String whatsAppStayQuotationTemplateId) {
+        this.whatsAppStayQuotationTemplateId = whatsAppStayQuotationTemplateId;
+    }
+
+    public String getWhatsAppGuestQuotationTemplateId() {
+        return whatsAppGuestQuotationTemplateId;
+    }
+
+    public void setWhatsAppGuestQuotationTemplateId(String whatsAppGuestQuotationTemplateId) {
+        this.whatsAppGuestQuotationTemplateId = whatsAppGuestQuotationTemplateId;
+    }
+
+    // ===== AI MODIFICATION START =====
+    // Change: Added getters/setters for Email Configuration fields in DTO
+    // Reason: Required for form binding and data transfer
+    // Scope: Communication Channels > Email Config
+    public String getEmailSmtpHost() {
+        return emailSmtpHost;
+    }
+
+    public void setEmailSmtpHost(String emailSmtpHost) {
+        this.emailSmtpHost = emailSmtpHost;
+    }
+
+    public String getEmailSmtpPort() {
+        return emailSmtpPort;
+    }
+
+    public void setEmailSmtpPort(String emailSmtpPort) {
+        this.emailSmtpPort = emailSmtpPort;
+    }
+
+    public String getEmailSmtpUsername() {
+        return emailSmtpUsername;
+    }
+
+    public void setEmailSmtpUsername(String emailSmtpUsername) {
+        this.emailSmtpUsername = emailSmtpUsername;
+    }
+
+    public String getEmailSmtpPassword() {
+        return emailSmtpPassword;
+    }
+
+    public void setEmailSmtpPassword(String emailSmtpPassword) {
+        this.emailSmtpPassword = emailSmtpPassword;
+    }
+
+    public String getEmailFromAddress() {
+        return emailFromAddress;
+    }
+
+    public void setEmailFromAddress(String emailFromAddress) {
+        this.emailFromAddress = emailFromAddress;
+    }
+
+    public String getEmailReplyTo() {
+        return emailReplyTo;
+    }
+
+    public void setEmailReplyTo(String emailReplyTo) {
+        this.emailReplyTo = emailReplyTo;
+    }
+
+    public String getEmailDefaultCc() {
+        return emailDefaultCc;
+    }
+
+    public void setEmailDefaultCc(String emailDefaultCc) {
+        this.emailDefaultCc = emailDefaultCc;
+    }
+
+    public String getEmailNotifyTo() {
+        return emailNotifyTo;
+    }
+
+    public void setEmailNotifyTo(String emailNotifyTo) {
+        this.emailNotifyTo = emailNotifyTo;
+    }
+
+    public String getEmailClientActive() {
+        return emailClientActive;
+    }
+
+    public void setEmailClientActive(String emailClientActive) {
+        this.emailClientActive = emailClientActive;
+    }
+
+    public String getEmailInternalActive() {
+        return emailInternalActive;
+    }
+
+    public void setEmailInternalActive(String emailInternalActive) {
+        this.emailInternalActive = emailInternalActive;
+    }
+    // ===== AI MODIFICATION END =====
 }
