@@ -277,7 +277,7 @@ public class ClientController {
     @PostMapping(value = "edit_edit_client")
     public ModelAndView edit_edit_client(@ModelAttribute("CLIENT_OBJ") ClientEntityDTO clientEntityDto,
             BindingResult result, final RedirectAttributes redirectAttrib) {
-        UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+        UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView();
         if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(),
                 clientEntityDto.getCityName())) {
@@ -291,43 +291,39 @@ public class ClientController {
                 result.rejectValue("cityName", "city.error");
             }
         }
-        if (result.hasErrors()) {
-            // If there are validation errors, return the form view with errors
-            modelView = view_edit_client_form(clientEntityDto, result);
-        } else {
-            City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
-            SalesPartnerEntity salesPartnerEntity = salesService
-                    .findSalesPartnerById(clientEntityDto.getSalesPartner().getSalesPartnerId());
-            ClientEntity clientEntity = new ClientEntity(clientEntityDto);
-            clientEntity.setClientId(clientEntityDto.getClientId());
-            clientEntity.setCity(cityEntity);
-            if (clientEntity.getSalesPartnerFlag()) {
-                salesPartnerEntity.setSalesPartnerShortName(clientEntity.getClientName());
-                salesPartnerEntity.setSalesPartnerName(clientEntity.getClientName());
-                salesPartnerEntity.setCityId(clientEntity.getCity().getDestinationId());
-                salesPartnerEntity.setReference(clientEntity.getReference());
-                salesPartnerEntity.setMobile(clientEntity.getMobile());
-                salesPartnerEntity.setEmailId(clientEntity.getEmailId());
-            }
-            clientEntity.setSalesPartner(salesPartnerEntity);
-            ClientEntity oldClient = clientService.findClientById(clientEntityDto.getClientId());
 
-            if (!oldClient.getMobile().equals(clientEntityDto.getMobile())
-                    && clientService.isMobileExists(clientEntityDto.getMobile())) {
+        ClientEntity oldClient = clientService.findClientById(clientEntityDto.getClientId());
 
-                result.rejectValue("mobile", "mobile.error", "Mobile already exists");
+        if (!oldClient.getMobile().equals(clientEntityDto.getMobile())
+                && clientService.isMobileExists(clientEntityDto.getMobile())) {
 
-            }
-            if (result.hasErrors()) {
-                modelView = view_edit_client_form(clientEntityDto, result);
-            }
-
-            clientService.saveClient(clientEntity);
-            redirectAttrib.addFlashAttribute("Success", "Client record is updated successfully.");
-            modelView.setViewName("redirect:view_clients_list");
+            result.rejectValue("mobile", "mobile.error", "Mobile already exists");
         }
 
-        return modelView;
+        // ✅ STOP EXECUTION IF ERRORS
+        if (result.hasErrors()) {
+            return view_edit_client_form(clientEntityDto, result);
+        }
+
+        // ✅ ONLY SAVE IF NO ERRORS
+        City_Entity cityEntity = cityRepository.findDestinationById(
+                clientEntityDto.getCity().getDestinationId());
+
+        SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(
+                clientEntityDto.getSalesPartner().getSalesPartnerId());
+
+        ClientEntity clientEntity = new ClientEntity(clientEntityDto);
+        clientEntity.setClientId(clientEntityDto.getClientId());
+        clientEntity.setCity(cityEntity);
+        clientEntity.setSalesPartner(salesPartnerEntity);
+
+        clientService.saveClient(clientEntity);
+
+        redirectAttrib.addFlashAttribute(
+                "Success",
+                "Client record is updated successfully.");
+
+        return new ModelAndView("redirect:view_clients_list");
     }
 
     @PostMapping("view_client_details")
