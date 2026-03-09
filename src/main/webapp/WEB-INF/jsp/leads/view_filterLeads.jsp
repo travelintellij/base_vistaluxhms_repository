@@ -455,7 +455,6 @@
                                 <div>
                                     <!-- Your results section will go here -->
                                     <h2>Results</h2>
-
                                     <!-- Success/Error Messages -->
                                     <div align="center" style="margin: 10px 0;">
                                         <b>
@@ -463,6 +462,19 @@
                                             <font color="red">${Error}</font>
                                         </b>
                                     </div>
+                                    <!-- ADDED: WhatsApp-specific error alert block. This displays
+                                        when WhatsApp message sending fails (e.g., missing template ID, wrong auth key,
+                                        API error). The 'WhatsAppError' attribute is set by the controllers when
+                                        WhatsAppResult.isSuccess() returns false. -->
+                                    <c:if test="${not empty WhatsAppError}">
+                                        <div style="background-color: #fff3cd; color: #856404; border: 1px solid #ffc107;
+                padding: 12px 20px; margin: 10px auto; border-radius: 6px;
+                max-width: 80%; text-align: left; font-size: 14px; position: relative;">
+                                            <strong>&#9888; WhatsApp Alert:</strong> ${WhatsAppError}
+                                            <span onclick="this.parentElement.style.display='none'" style="position: absolute; right: 10px; top: 10px; cursor: pointer;
+                     font-size: 18px; font-weight: bold;">&times;</span>
+                                        </div>
+                                    </c:if>
 
 
                                     <!-- Client List Table Section -->

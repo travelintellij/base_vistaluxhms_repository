@@ -1,14 +1,17 @@
 package com.vistaluxhms.services;
 
 import com.vistaluxhms.entity.CentralConfigEntity;
-import com.vistaluxhms.entity.StatusEntity;
+import com.vistaluxhms.entity.EmailConfigEntity;
+import com.vistaluxhms.entity.WhatsAppConfigEntity;
 import com.vistaluxhms.model.CentralConfigEntityDTO;
+import com.vistaluxhms.model.EmailConfigEntityDTO;
+import com.vistaluxhms.model.WhatsAppConfigEntityDTO;
 import com.vistaluxhms.repository.CentralConfigEntityRepository;
-import com.vistaluxhms.repository.StatusRepository;
+import com.vistaluxhms.repository.EmailConfigRepository;
+import com.vistaluxhms.repository.WhatsAppConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,22 +20,22 @@ public class SettingsAndOtherServicesImpl {
 	@Autowired
 	private CentralConfigEntityRepository centralConfigRepository;
 
-	/**
-	 * Fetch the existing central config (only 1 record is expected)
-	 */
+	@Autowired
+	private EmailConfigRepository emailConfigRepository;
+
+	@Autowired
+	private WhatsAppConfigRepository whatsAppConfigRepository;
+
+	// =============== CENTRAL CONFIG ===============
+
 	public CentralConfigEntityDTO getCentralConfig() {
 		return Optional.ofNullable(centralConfigRepository.findTopByOrderByIdAsc())
 				.map(this::convertEntityToDTO)
 				.orElse(new CentralConfigEntityDTO());
 	}
 
-	/**
-	 * Save or update central configuration (overrides existing record)
-	 */
 	public void saveOrUpdateCentralConfig(CentralConfigEntityDTO dto) {
 		CentralConfigEntity entity;
-
-		// Check if record exists (only one is allowed)
 		Optional<CentralConfigEntity> existingOpt = centralConfigRepository.findAll()
 				.stream()
 				.findFirst();
@@ -43,7 +46,6 @@ public class SettingsAndOtherServicesImpl {
 			entity = new CentralConfigEntity(); // Create new record
 		}
 
-		// Convert DTO -> Entity
 		entity.setHotelName(dto.getHotelName());
 		entity.setHotelAddress(dto.getHotelAddress());
 		entity.setCentralNumber(dto.getCentralNumber());
@@ -65,7 +67,6 @@ public class SettingsAndOtherServicesImpl {
 		entity.setEscalationEmail(dto.getEscalationEmail());
 		entity.setEscalationPhone(dto.getEscalationPhone());
 		entity.setWebsite(dto.getWebsite());
-		entity.setLogoPath(dto.getLogoPath());
 		entity.setAccountName(dto.getAccountName());
 		entity.setCompanyName(dto.getCompanyName());
 		entity.setTnc(dto.getTnc());
@@ -77,9 +78,6 @@ public class SettingsAndOtherServicesImpl {
 		centralConfigRepository.save(entity);
 	}
 
-	/**
-	 * Convert Entity -> DTO
-	 */
 	private CentralConfigEntityDTO convertEntityToDTO(CentralConfigEntity entity) {
 		CentralConfigEntityDTO dto = new CentralConfigEntityDTO();
 		dto.setHotelName(entity.getHotelName());
@@ -111,8 +109,76 @@ public class SettingsAndOtherServicesImpl {
 		dto.setUsp(entity.getUsp());
 		dto.setHotelInfo(entity.getHotelInfo());
 		dto.setDefaultLeadOwnerId(entity.getDefaultLeadOwnerId()); // ===== ADDED FOR LEAD SYNC =====
-		// dto.setLogoFile(entity.getLogoFile());
+		return dto;
+	} // =============== EMAIL CONFIG ===============
+
+	public EmailConfigEntityDTO getEmailConfig() {
+		return Optional.ofNullable(emailConfigRepository.findTopByOrderByIdAsc())
+				.map(this::convertEmailEntityToDTO)
+				.orElse(new EmailConfigEntityDTO());
+	}
+
+	public void saveOrUpdateEmailConfig(EmailConfigEntityDTO dto) {
+		EmailConfigEntity entity = Optional.ofNullable(emailConfigRepository.findTopByOrderByIdAsc())
+				.orElse(new EmailConfigEntity());
+
+		entity.setEmailSmtpHost(dto.getEmailSmtpHost());
+		entity.setEmailSmtpPort(dto.getEmailSmtpPort());
+		entity.setEmailSmtpUsername(dto.getEmailSmtpUsername());
+		entity.setEmailSmtpPassword(dto.getEmailSmtpPassword());
+		entity.setEmailFromAddress(dto.getEmailFromAddress());
+		entity.setEmailReplyTo(dto.getEmailReplyTo());
+		entity.setEmailDefaultCc(dto.getEmailDefaultCc());
+		entity.setEmailNotifyTo(dto.getEmailNotifyTo());
+		entity.setEmailClientActive(dto.getEmailClientActive());
+		entity.setEmailInternalActive(dto.getEmailInternalActive());
+
+		emailConfigRepository.save(entity);
+	}
+
+	private EmailConfigEntityDTO convertEmailEntityToDTO(EmailConfigEntity entity) {
+		EmailConfigEntityDTO dto = new EmailConfigEntityDTO();
+		dto.setEmailSmtpHost(entity.getEmailSmtpHost());
+		dto.setEmailSmtpPort(entity.getEmailSmtpPort());
+		dto.setEmailSmtpUsername(entity.getEmailSmtpUsername());
+		dto.setEmailSmtpPassword(entity.getEmailSmtpPassword());
+		dto.setEmailFromAddress(entity.getEmailFromAddress());
+		dto.setEmailReplyTo(entity.getEmailReplyTo());
+		dto.setEmailDefaultCc(entity.getEmailDefaultCc());
+		dto.setEmailNotifyTo(entity.getEmailNotifyTo());
+		dto.setEmailClientActive(entity.getEmailClientActive());
+		dto.setEmailInternalActive(entity.getEmailInternalActive());
 		return dto;
 	}
 
+	// =============== WHATSAPP CONFIG ===============
+
+	public WhatsAppConfigEntityDTO getWhatsAppConfig() {
+		return Optional.ofNullable(whatsAppConfigRepository.findTopByOrderByIdAsc())
+				.map(this::convertWhatsAppEntityToDTO)
+				.orElse(new WhatsAppConfigEntityDTO());
+	}
+
+	public void saveOrUpdateWhatsAppConfig(WhatsAppConfigEntityDTO dto) {
+		WhatsAppConfigEntity entity = Optional.ofNullable(whatsAppConfigRepository.findTopByOrderByIdAsc())
+				.orElse(new WhatsAppConfigEntity());
+
+		entity.setWhatsAppApiUrl(dto.getWhatsAppApiUrl());
+		entity.setWhatsAppApiKey(dto.getWhatsAppApiKey());
+		entity.setWhatsAppRegistrationTemplateId(dto.getWhatsAppRegistrationTemplateId());
+		entity.setWhatsAppStayQuotationTemplateId(dto.getWhatsAppStayQuotationTemplateId());
+		entity.setWhatsAppGuestQuotationTemplateId(dto.getWhatsAppGuestQuotationTemplateId());
+
+		whatsAppConfigRepository.save(entity);
+	}
+
+	private WhatsAppConfigEntityDTO convertWhatsAppEntityToDTO(WhatsAppConfigEntity entity) {
+		WhatsAppConfigEntityDTO dto = new WhatsAppConfigEntityDTO();
+		dto.setWhatsAppApiUrl(entity.getWhatsAppApiUrl());
+		dto.setWhatsAppApiKey(entity.getWhatsAppApiKey());
+		dto.setWhatsAppRegistrationTemplateId(entity.getWhatsAppRegistrationTemplateId());
+		dto.setWhatsAppStayQuotationTemplateId(entity.getWhatsAppStayQuotationTemplateId());
+		dto.setWhatsAppGuestQuotationTemplateId(entity.getWhatsAppGuestQuotationTemplateId());
+		return dto;
+	}
 }
