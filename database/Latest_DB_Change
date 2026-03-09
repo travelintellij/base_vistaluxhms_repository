@@ -4,4 +4,4 @@ UPDATE `ashokadb`.`eventtype` SET `eventTypeName` = 'GROUP_EVENT' WHERE (`eventT
 
 2)
 ALTER TABLE event_package
-ADD COLUMN hide_cost TINYINT DEFAULT 1
+ADD COLUMN hide_cost TINYINT DEFAULT 1;
