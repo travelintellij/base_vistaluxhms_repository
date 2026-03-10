@@ -37,18 +37,6 @@ import java.util.*;
 @Service
 public class SocialMediaLeadService {
 
-    @Value("${meta.page.access.token:}")
-    private String pageAccessToken;
-
-    @Value("${meta.lead.form.id:}")
-    private String leadFormId;
-
-    @Value("${meta.page.id:}")
-    private String pageId;
-
-    @Value("${meta.graph.api.version:v19.0}")
-    private String apiVersion;
-
     @Autowired
     private ClientEntityRepository clientRepository;
 
@@ -105,13 +93,17 @@ public class SocialMediaLeadService {
 
             com.vistaluxhms.entity.CentralConfigEntity centralConfig = centralConfigRepository.findTopByOrderByIdAsc();
             String activeFormId = formConfig.getFormId();
-            String activeAccessToken = (centralConfig != null && centralConfig.getMetaPageAccessToken() != null)
-                    ? centralConfig.getMetaPageAccessToken()
-                    : pageAccessToken;
 
-            String activeApiVersion = (centralConfig != null && centralConfig.getMetaGraphApiVersion() != null)
-                    ? centralConfig.getMetaGraphApiVersion()
-                    : apiVersion;
+            if (centralConfig == null || centralConfig.getMetaPageAccessToken() == null
+                    || centralConfig.getMetaPageAccessToken().isEmpty()) {
+                throw new RuntimeException("Meta Page Access Token is not configured. Please set it in Settings.");
+            }
+            String activeAccessToken = centralConfig.getMetaPageAccessToken();
+
+            String activeApiVersion = (centralConfig.getMetaGraphApiVersion() != null
+                    && !centralConfig.getMetaGraphApiVersion().isEmpty())
+                            ? centralConfig.getMetaGraphApiVersion()
+                            : "v19.0";
 
             // Fetch leads from Meta API
             String apiUrl = GRAPH_API_BASE + activeApiVersion + "/" + activeFormId
@@ -630,8 +622,24 @@ public class SocialMediaLeadService {
     public Map<String, Object> testConnection() {
         Map<String, Object> result = new HashMap<>();
         try {
-            String apiUrl = GRAPH_API_BASE + apiVersion + "/" + leadFormId
-                    + "?fields=id,name,status&access_token=" + pageAccessToken;
+            com.vistaluxhms.entity.CentralConfigEntity centralConfig = centralConfigRepository.findTopByOrderByIdAsc();
+
+            if (centralConfig == null || centralConfig.getMetaPageAccessToken() == null
+                    || centralConfig.getMetaPageAccessToken().isEmpty()) {
+                throw new RuntimeException("Meta Page Access Token is not configured. Please set it in Settings.");
+            }
+            if (centralConfig.getMetaLeadFormId() == null || centralConfig.getMetaLeadFormId().trim().isEmpty()) {
+                throw new RuntimeException("Meta Lead Form ID is not configured. Please set it in Settings.");
+            }
+
+            String token = centralConfig.getMetaPageAccessToken();
+            String formId = centralConfig.getMetaLeadFormId();
+            String version = (centralConfig.getMetaGraphApiVersion() != null
+                    && !centralConfig.getMetaGraphApiVersion().isEmpty()) ? centralConfig.getMetaGraphApiVersion()
+                            : "v19.0";
+
+            String apiUrl = GRAPH_API_BASE + version + "/" + formId
+                    + "?fields=id,name,status&access_token=" + token;
             String response = makeGetRequest(apiUrl);
             JsonNode node = objectMapper.readTree(response);
             result.put("success", true);

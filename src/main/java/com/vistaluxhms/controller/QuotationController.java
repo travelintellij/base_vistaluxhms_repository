@@ -84,12 +84,6 @@ public class QuotationController {
     @Value("${ANY_ROOM_STANDARD_OCCUPANCY_INCREASE_PERCENTAGE}")
     private int ANY_ROOM_STANDARD_OCCUPANCY_INCREASE_PERCENTAGE;
 
-    @Value("${all.email.notify.communication.active}")
-    private boolean emailNotifyActive;
-
-    @Value("${email.notify.communication.email}")
-    private String emailNotifyBcc;
-
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     @Autowired
@@ -526,6 +520,9 @@ public class QuotationController {
 
     private void notifyQuotationReceiverByEmail(QuotationEntityDTO quotationEntityDTO, List<String> recipientEmails,
             String templateName) {
+        com.vistaluxhms.model.EmailConfigEntityDTO emailConfig = settingService.getEmailConfig();
+        boolean emailNotifyActive = emailConfig != null && "true".equalsIgnoreCase(emailConfig.getEmailClientActive());
+        String emailNotifyBcc = emailConfig != null ? emailConfig.getEmailNotifyTo() : "";
         if (emailNotifyActive) {
             Mail mail = new Mail();
             // String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();

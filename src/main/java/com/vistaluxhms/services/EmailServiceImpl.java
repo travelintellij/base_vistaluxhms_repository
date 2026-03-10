@@ -127,11 +127,15 @@ public class EmailServiceImpl {
 	@Autowired
 	private Configuration freemarkerConfig;
 
-	@Value("${all.email.notify.communication.active}")
-	private boolean emailNotifyActive;
+	private boolean isEmailNotifyActive() {
+		com.vistaluxhms.model.EmailConfigEntityDTO config = settingService.getEmailConfig();
+		return config != null && "true".equalsIgnoreCase(config.getEmailClientActive());
+	}
 
-	@Value("${email.internal.valid}")
-	private boolean internalEmailNotifyActive;
+	private boolean isInternalEmailNotifyActive() {
+		com.vistaluxhms.model.EmailConfigEntityDTO config = settingService.getEmailConfig();
+		return config != null && "true".equalsIgnoreCase(config.getEmailInternalActive());
+	}
 
 	@Autowired
 	private EventConfigServicesImpl eventConfigService;
@@ -160,7 +164,7 @@ public class EmailServiceImpl {
 	 * This method will send compose and send the message
 	 */
 	public void sendMail(String to, String subject, String body) {
-		if (emailNotifyActive) {
+		if (isEmailNotifyActive()) {
 			SimpleMailMessage message = new SimpleMailMessage();
 			// message.setFrom(systemEmailFrom); // COMMENTED: was hardcoded from
 			// application.properties
@@ -176,7 +180,7 @@ public class EmailServiceImpl {
 	 * This method will send compose and send the message
 	 */
 	public void sendMail(String to, String from, String subject, String body) {
-		if (emailNotifyActive) {
+		if (isEmailNotifyActive()) {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom(from);
 			message.setTo(to);
@@ -571,7 +575,7 @@ public class EmailServiceImpl {
 	public void sendEmailMessage_Notification1_MultipleRecipients_from_loggedInUser(Mail mail, String emailBody,
 			String emailFrom) throws MessagingException, IOException, TemplateException {
 
-		if (emailNotifyActive && internalEmailNotifyActive) {
+		if (isEmailNotifyActive() && isInternalEmailNotifyActive()) {
 			MimeMessage message = getJavaMailSender().createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message);
 			message.setFrom(new InternetAddress(emailFrom));
@@ -593,7 +597,7 @@ public class EmailServiceImpl {
 	 * Send mail to multiple recipients (comma or semicolon separated).
 	 */
 	public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
-		if (!emailNotifyActive) {
+		if (!isEmailNotifyActive()) {
 			System.out.println("Email notifications are disabled.");
 			return;
 		}
@@ -626,7 +630,7 @@ public class EmailServiceImpl {
 	}
 
 	public void sendMailWithHtml(String to, String subject, String htmlBody) {
-		if (emailNotifyActive) {
+		if (isEmailNotifyActive()) {
 			try {
 				MimeMessage message = getJavaMailSender().createMimeMessage();
 				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

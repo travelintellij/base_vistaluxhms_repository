@@ -64,8 +64,8 @@ public class LeadController {
     @Autowired // ===== ADDED FOR LEAD SYNC =====
     com.vistaluxhms.repository.CampaignFormRepository campaignFormRepository;
 
-    @Value("${email.client.valid}")
-    private boolean emailClientNotifyActive;
+    @Autowired
+    private SettingsAndOtherServicesImpl settingService;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -166,6 +166,9 @@ public class LeadController {
 
     private void notifyLeadCreationTargetAudience(LeadEntityDTO leadRecorderObj, String templateName, boolean isCreated,
             boolean markClient) {
+        com.vistaluxhms.model.EmailConfigEntityDTO emailConfig = settingService.getEmailConfig();
+        boolean emailClientNotifyActive = emailConfig != null
+                && "true".equalsIgnoreCase(emailConfig.getEmailClientActive());
         if (emailClientNotifyActive) {
             Mail mail = new Mail();
             String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();

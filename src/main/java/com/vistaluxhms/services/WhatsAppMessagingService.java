@@ -17,16 +17,6 @@ import java.util.Map;
 @Service
 public class WhatsAppMessagingService {
 
-    // KEPT: application.properties values serve as a safety-net fallback
-    // if the database configuration (hotel_central_config) is empty or not yet set.
-    // The DB value always takes priority when available (see getApiUrl/getApiKey
-    // methods).
-    @Value("${whatsAppApiUrl}")
-    private String whatsAppApiUrlProp;
-
-    @Value("${whatsAppApiKey}")
-    private String whatsAppApiKeyProp;
-
     private final SettingsAndOtherServicesImpl configService;
 
     public WhatsAppMessagingService(SettingsAndOtherServicesImpl configService) {
@@ -36,16 +26,12 @@ public class WhatsAppMessagingService {
     private static final MediaType JSON = MediaType.parse("application/json");
     private final OkHttpClient client = new OkHttpClient();
 
-    // KEPT: Fetches API URL from DB first, falls back to application.properties
     private String getApiUrl() {
-        String url = configService.getWhatsAppConfig().getWhatsAppApiUrl();
-        return (url != null && !url.trim().isEmpty()) ? url : whatsAppApiUrlProp;
+        return configService.getWhatsAppConfig().getWhatsAppApiUrl();
     }
 
-    // KEPT: Fetches API Key from DB first, falls back to application.properties
     private String getApiKey() {
-        String key = configService.getWhatsAppConfig().getWhatsAppApiKey();
-        return (key != null && !key.trim().isEmpty()) ? key : whatsAppApiKeyProp;
+        return configService.getWhatsAppConfig().getWhatsAppApiKey();
     }
 
     /**

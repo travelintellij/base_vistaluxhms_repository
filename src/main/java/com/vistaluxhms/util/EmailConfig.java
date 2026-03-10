@@ -12,20 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
- 
+
 @Configuration
-public class EmailConfig 
-{
- 
-	@Value("${spring.mail.host}")
-	private String emailHost;
-    @Value("${spring.mail.port}")
-    private int emailPort;
-
-	@Value("${spring.mail.properties.mail.smtp.auth}")
-	private String smtpAuth;
-	
-	@Value("${spring.mail.properties.mail.debug}")
-	private String mailDebug;
-
+public class EmailConfig {
 }
