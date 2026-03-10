@@ -332,7 +332,14 @@
         <!-- Left Brand Panel -->
         <div class="login-brand">
           <div class="login-brand-content">
-            <h1>Axis<span>HMS</span> Pro</h1>
+            <c:choose>
+              <c:when test="${not empty centralConfig.hotelName}">
+                <h1>${centralConfig.hotelName}</h1>
+              </c:when>
+              <c:otherwise>
+                <h1>Axis<span>HMS</span> Pro</h1>
+              </c:otherwise>
+            </c:choose>
             <p class="login-brand-tagline">P R E M I U M &nbsp; H O T E L &nbsp; C R M</p>
             <div class="login-brand-divider"></div>
             <p class="login-brand-desc">
@@ -347,7 +354,15 @@
           <div class="login-card">
 
             <div class="login-logo">
-              <img src="<c:url value='/resources/images/ashoka_logo.jpg'/>" alt="Hotel Logo">
+              <c:choose>
+                <c:when test="${not empty centralConfig.logoPath}">
+                  <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                </c:when>
+                <c:otherwise>
+                  <c:set var="logoUrl" value="${pageContext.request.contextPath}/resources/images/ashoka_logo.jpg" />
+                </c:otherwise>
+              </c:choose>
+              <img src="${logoUrl}" alt="Hotel Logo">
             </div>
 
             <h2 class="login-heading">Welcome Back</h2>

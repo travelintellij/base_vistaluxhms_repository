@@ -36,11 +36,25 @@
                                     <!-- ===== HEADER ===== -->
                                     <header class="gs-header">
                                         <a href="view_workloadhome" class="gs-header-brand">
-                                            <img id="topLogo"
-                                                src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg"
-                                                alt="Logo">
+                                            <c:choose>
+                                                <c:when test="${not empty centralConfig.logoPath}">
+                                                    <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set var="logoUrl"
+                                                        value="${pageContext.request.contextPath}/resources/images/ashoka_logo.jpg" />
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <img id="topLogo" src="${logoUrl}" alt="Logo">
                                             <div class="gs-header-title">
-                                                Axis<span>HMS</span> Pro
+                                                <c:choose>
+                                                    <c:when test="${not empty centralConfig.hotelName}">
+                                                        ${centralConfig.hotelName}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Axis<span>HMS</span> Pro
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                         </a>
 

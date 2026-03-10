@@ -169,13 +169,6 @@ public class SettingsController {
         }
         modelAndView.addObject("CENTRAL_CONFIG_OBJ", centralConfigDTO);
 
-        // ===== START: ADDED FOR LEAD SYNC - LOAD ACTIVE USERS FOR OWNER DROPDOWN =====
-        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
-        Map<Integer, String> activeUsersMap = activeUsersList.stream().collect(
-                java.util.stream.Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
-        modelAndView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
-        // ===== END: ADDED FOR LEAD SYNC =====
-
         return modelAndView;
 
     }
@@ -221,13 +214,21 @@ public class SettingsController {
         if (config != null) {
             modelView.addObject("metaPageId", config.getMetaPageId());
             modelView.addObject("metaPageAccessToken", config.getMetaPageAccessToken());
+            modelView.addObject("defaultLeadOwnerId", config.getDefaultLeadOwnerId());
         }
+
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = activeUsersList.stream().collect(
+                java.util.stream.Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
+
         return modelView;
     }
 
     @PostMapping("save_meta_token")
     public String saveMetaToken(@RequestParam("metaPageId") String metaPageId,
             @RequestParam("metaPageAccessToken") String metaPageAccessToken,
+            @RequestParam(value = "defaultLeadOwnerId", required = false) Integer defaultLeadOwnerId,
             final RedirectAttributes redirectAttrib) {
         try {
             CentralConfigEntity config = centralConfigRepo.findTopByOrderByIdAsc();
@@ -238,6 +239,9 @@ public class SettingsController {
             }
             config.setMetaPageId(metaPageId);
             config.setMetaPageAccessToken(metaPageAccessToken);
+            if (defaultLeadOwnerId != null) {
+                config.setDefaultLeadOwnerId(defaultLeadOwnerId);
+            }
             centralConfigRepo.save(config);
             redirectAttrib.addFlashAttribute("Success", "Meta Token saved successfully!");
         } catch (Exception e) {

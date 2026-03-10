@@ -265,32 +265,7 @@
                             </div>
                         </fieldset>
 
-                        <!-- ===== START: ADDED FOR LEAD SYNC - LEAD IMPORT SETTINGS ===== -->
-                        <fieldset>
-                            <legend>Lead Import Settings</legend>
-                            <div class="form-group">
-                                <label>Default Lead Owner</label>
-                                <div>
-                                    <form:select path="defaultLeadOwnerId" class="input-field" style="width:95%">
-                                        <option value="">-- Select Lead Owner --</option>
-                                        <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
-                                            <c:choose>
-                                                <c:when test="${CENTRAL_CONFIG_OBJ.defaultLeadOwnerId eq userMap.key}">
-                                                    <option value="${userMap.key}" selected>${userMap.value}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${userMap.key}">${userMap.value}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </form:select>
-                                    <br><small style="color: #888;">All leads imported from Social Media
-                                        (Instagram/Facebook) will be assigned to this lead owner and they will be
-                                        notified via email.</small>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <!-- ===== END: ADDED FOR LEAD SYNC ===== -->
+
 
                         <div class="form-group">
                             <label>Global Watcher Emails</label>

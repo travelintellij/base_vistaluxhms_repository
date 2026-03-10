@@ -125,6 +125,33 @@
                                 placeholder="Paste your Permanent Page Access Token here">${metaPageAccessToken}</textarea>
                         </div>
 
+                        <!-- ===== START: ADDED FOR LEAD SYNC - LEAD IMPORT SETTINGS ===== -->
+                        <div class="form-group"
+                            style="padding-top: 15px; border-top: 1px dotted #ccc; margin-top: 25px;">
+                            <label>Default Lead Owner:</label>
+                            <div>
+                                <select name="defaultLeadOwnerId" class="input-field" style="width:100%">
+                                    <option value="">-- Select Lead Owner --</option>
+                                    <c:forEach items="${ACTIVE_USERS_MAP}" var="userMap">
+                                        <c:choose>
+                                            <c:when test="${defaultLeadOwnerId eq userMap.key}">
+                                                <option value="${userMap.key}" selected>${userMap.value}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${userMap.key}">${userMap.value}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                                <div style="margin-top: 6px;">
+                                    <small style="color: #6c757d; font-style: italic;">All leads imported from Social
+                                        Media (Instagram/Facebook) will be assigned to this user and they will be
+                                        notified via email.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ===== END: ADDED FOR LEAD SYNC ===== -->
+
                         <div class="btn-container">
                             <button type="submit" class="btn-save">Save Token</button>
                         </div>
