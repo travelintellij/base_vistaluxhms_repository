@@ -77,7 +77,7 @@
     .page-header h2 {
         font-size:36px;
         font-weight:bold;
-        color:#fff;
+        color:#185a9d;
         text-align:center;
         text-shadow:2px 2px 6px rgba(0,0,0,0.3);
         margin:0;
@@ -363,6 +363,18 @@
      filter: brightness(0.9);
      transform: scale(1.03);
    }
+
+
+   .dropdown-menu .btn {
+       font-size: 16px !important;
+       padding: 8px 10px !important;
+       height: 40px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+   }
+
+
     </style>
 </head>
 
@@ -472,8 +484,8 @@
              <a href="${pageContext.request.contextPath}/edit_asset/${asset.assetId}" class="dropdown-item btn btn-edit text-white mb-1 w-100">Edit</a>
            </li>
            <li>
-             <button type="button" class="dropdown-item btn btn-info text-white mb-1 w-100 viewAssetBtn"
-                     data-bs-toggle="modal"
+                  <button type="button" class="dropdown-item btn btn-view text-white mb-1 w-100 viewAssetBtn"
+                  data-bs-toggle="modal"
                      data-bs-target="#viewAssetModal"
                      data-code="${asset.assetCode}"
                      data-name="${asset.assetName}"
