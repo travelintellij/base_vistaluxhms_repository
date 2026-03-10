@@ -208,9 +208,9 @@ a:hover {
     color: var(--gs-text-on-dark);
     padding: 0 var(--gs-space-6);
     display: flex;
-    align-items: center;
+    align-items:center;
     justify-content: space-between;
-    height: var(--gs-header-height);
+    height:80px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -229,11 +229,14 @@ a:hover {
     color: var(--gs-text-on-dark);
 }
 
-.gs-header-brand img {
-    height: 42px;
-    width: auto;
-    border-radius: var(--gs-radius-sm);
-    border: 1px solid rgba(201, 168, 76, 0.3);
+.gs-header-brand img{
+    height:60px;
+    width:auto;
+    background:#ffffff;
+    padding:6px 8px;
+    border-radius:8px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
 }
 
 .gs-header-title {
