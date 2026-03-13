@@ -440,6 +440,9 @@ h2, h3 {
     <font color="red">
       <form:errors path="eventEndDate" cssClass="error"  />
     </font>
+    <font color="red">
+      <form:errors path="email" cssClass="error"  />
+    </font>
     <h3>List of Services</h3>
 
     <div class="table-container">
@@ -456,7 +459,6 @@ h2, h3 {
        </thead>
 
 
-<tbody id="services-table-body">
 <tbody id="services-table-body">
 
 <c:forEach var="service"
@@ -618,15 +620,15 @@ function addServiceRow() {
     // ALWAYS show full fields on screen
     newRow.innerHTML = `
       <td>
-        <input name="services[${serviceIndex}].serviceName"
+        <input name="services[` + serviceIndex + `].serviceName"
                class="input-field"
                style="width:450px;" />
       </td>
 
-      <td>${selectHTML}</td>
+      <td>` + selectHTML + `</td>
 
       <td>
-        <input name="services[${serviceIndex}].costPerUnit"
+        <input name="services[` + serviceIndex + `].costPerUnit"
                class="input-field"
                style="width:100px;"
                min="0"
@@ -634,7 +636,7 @@ function addServiceRow() {
       </td>
 
       <td>
-        <input name="services[${serviceIndex}].quantity"
+        <input name="services[` + serviceIndex + `].quantity"
                class="input-field"
                style="width:100px;"
                min="0"
@@ -642,7 +644,7 @@ function addServiceRow() {
       </td>
 
       <td>
-        <input name="services[${serviceIndex}].totalCost"
+        <input name="services[` + serviceIndex + `].totalCost"
                class="input-field"
                style="width:100px;"
                min="0"

@@ -90,17 +90,19 @@
                                             <label for="field4">User Type:</label>
                                             <div class="radio-group">
                                                 <label>
-                                                    <form:radiobutton path="roleName" name="roleName" value="USER"
-                                                        required="required" />
+                                                    <form:radiobutton path="roleName" value="USER" />
                                                     <span>USER</span>
                                                 </label>
                                                 <label>
-                                                    <form:radiobutton path="roleName" name="roleName" value="ADMIN"
-                                                        required="required" />
+                                                    <form:radiobutton path="roleName" value="ADMIN" />
                                                     <span>ADMIN</span>
                                                 </label>
                                             </div>
                                         </div>
+                                        <font color="red">
+                                            <form:errors path="roleName" cssClass="error" />
+                                        </font>
+
                                     </div>
                                 </div>
                                 <div class="form-table">
@@ -135,15 +137,26 @@
                                     <div class="form-cell">
                                         <label for="">Date of Birth</label>
                                         <form:input path="dob" type="date" />
+                                        <font color="red">
+                                            <form:errors path="dob" cssClass="error" />
+                                        </font>
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="">Personal Email</label>
-                                        <form:input path="personalEmail" type="email" required="required" />
+                                        <form:input path="personalEmail" type="email" />
+                                        <font color="red">
+                                            <form:errors path="personalEmail" cssClass="error" />
+                                        </font>
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Personal Phone</label>
-                                        <form:input path="personalMobile" type="number" required="required" />
+                                        <form:input path="personalMobile" type="number" />
+                                        <font color="red">
+                                            <form:errors path="personalMobile" cssClass="error" />
+                                        </font>
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="field8">Address</label>
                                         <form:input path="address" /> <br>
@@ -183,7 +196,11 @@
                                     <div class="form-cell">
                                         <label for="">Date Of Joining</label>
                                         <form:input path="doj" type="date" />
+                                        <font color="red">
+                                            <form:errors path="doj" cssClass="error" />
+                                        </font>
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="">Last Working Day</label>
                                         <form:input path="lastWorkingDay" type="date" />

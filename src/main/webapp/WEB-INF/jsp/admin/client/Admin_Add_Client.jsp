@@ -83,15 +83,18 @@
                <div class="radio-group-container">
                    <div class="radio-group">
                        <label>
-                           <form:radiobutton path="b2b" name="b2b" value="true" required="required" />
+                           <form:radiobutton path="b2b" value="true" />
                            <span>B2B</span>
                        </label>
                        <label>
-                           <form:radiobutton path="b2b" name="b2b"  value="false" required="required" />
+                           <form:radiobutton path="b2b" value="false" />
                            <span>B2C</span>
                        </label>
                    </div>
                </div>
+               <font color="red">
+                   <form:errors path="b2b" cssClass="error" />
+               </font>
            </div>
 
 

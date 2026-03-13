@@ -173,9 +173,8 @@ public class AssetController {
             }
 
             if (assetDTO.getAssetOwnerId() == null || assetDTO.getAssetOwnerId() == 0) {
-                assetDTO.setAssetOwnerId(
-                        userRepository.findByUsername("INI").get().getUserId()
-                );
+                mv.addObject("ownerError", "Please select an Assign Owner.");
+                return mv;
             }
 
             assetDTO.setActive(true);

@@ -139,6 +139,9 @@
                                <form:option value="${team.userId}" label="${team.name} (${team.username})" />
                            </c:forEach>
                           </form:select>
+                          <c:if test="${not empty ownerError}">
+                              <span class="error-message">${ownerError}</span>
+                          </c:if>
                       </div>
 
 

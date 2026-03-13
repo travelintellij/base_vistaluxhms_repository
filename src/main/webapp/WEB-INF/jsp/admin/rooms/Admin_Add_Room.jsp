@@ -99,6 +99,9 @@ label {
     text-decoration: none;
     border-radius: 5px;
     font-size: 16px;
+    display: inline-block;
+    text-align: center;
+    min-width: 100px;
 }
 
 .submit-btn {
@@ -111,8 +114,6 @@ label {
 .cancel-btn {
     background: #dc3545;
     color: white;
-    padding: 9px 18px;
-    display: inline-block;
 }
 
 .submit-btn:hover, .cancel-btn:hover {
@@ -249,8 +250,8 @@ label {
             </div>
 
             <div class="button-group">
-                <button type="submit" class="submit-btn">Save</button>
-                <a href="view_rooms_list" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn" style="padding: 10px 25px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; display: inline-block; text-align: center; min-width: 100px; line-height: 1.2; box-sizing: border-box;">Save</button>
+                <a href="view_rooms_list" class="cancel-btn" style="padding: 10px 25px; font-size: 16px; border: none; border-radius: 5px; display: inline-block; text-align: center; min-width: 100px; line-height: 1.2; box-sizing: border-box; text-decoration: none;">Cancel</a>
             </div>
 
         </form:form>

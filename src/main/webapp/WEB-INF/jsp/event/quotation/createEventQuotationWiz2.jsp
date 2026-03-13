@@ -441,6 +441,9 @@ h2, h3 {
     <font color="red">
       <form:errors path="eventEndDate" cssClass="error"  />
     </font>
+    <font color="red">
+      <form:errors path="email" cssClass="error"  />
+    </font>
     <h3>List of Services</h3>
 
 <div id="servicesSection" class="table-container">

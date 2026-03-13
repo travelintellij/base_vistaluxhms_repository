@@ -25,24 +25,47 @@ public class UserValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		UserDetailsObj userDTO = (UserDetailsObj) target;
-		if (!userDTO.getPassword().trim().equals(userDTO.getPasswordConfirm().trim())) {
-			errors.rejectValue("passwordConfirm", "password.mismatch.error");
+		if (userDTO.getPassword() != null && userDTO.getPasswordConfirm() != null
+				&& !userDTO.getPassword().trim().equals(userDTO.getPasswordConfirm().trim())) {
+			errors.rejectValue("passwordConfirm", "password.mismatch.error", "Password and Confirm Password do not match.");
 		}
 
-		/*
-		 * if(destinationVO.getCityName()==null ||
-		 * destinationVO.getCityName().trim().length()==0) {
-		 * errors.rejectValue("cityName", "city.error");
-		 * }
-		 * if(destinationVO.getCountryCode().trim().equalsIgnoreCase(VistaluxConstants.
-		 * DESTINATION_ALL_CTRY_CODE)) {
-		 * errors.rejectValue("countryCode", "country.error");
-		 * }
-		 * if(commonService.existsByCityNameAndCountryCode(destinationVO.getCityName(),
-		 * destinationVO.getCountryCode())) {
-		 * errors.rejectValue("cityName", "city.error");
-		 * }
-		 */
+		// Validate Company Email format
+		if (userDTO.getEmail() == null || userDTO.getEmail().trim().isEmpty()) {
+			errors.rejectValue("email", "email.required", "Company Email is required.");
+		} else if (!userDTO.getEmail().contains("@") || !userDTO.getEmail().contains(".")) {
+			errors.rejectValue("email", "email.invalid", "Please enter a valid email address.");
+		}
+
+		// Validate Company Mobile
+		if (userDTO.getMobile() == 0) {
+			errors.rejectValue("mobile", "mobile.required", "Company Mobile is required.");
+		}
+
+		// Validate Personal Phone
+		if (userDTO.getPersonalMobile() == 0) {
+			errors.rejectValue("personalMobile", "personalMobile.required", "Personal Phone is required.");
+		}
+
+		// Validate Address
+		if (userDTO.getAddress() == null || userDTO.getAddress().trim().isEmpty()) {
+			errors.rejectValue("address", "address.required", "Address is required.");
+		}
+
+		// Validate Date of Birth
+		if (userDTO.getDob() == null) {
+			errors.rejectValue("dob", "dob.required", "Date of Birth is required.");
+		}
+
+		// Validate Date of Joining
+		if (userDTO.getDoj() == null) {
+			errors.rejectValue("doj", "doj.required", "Date of Joining is required.");
+		}
+
+		// Validate User Type
+		if (userDTO.getRoleName() == null || userDTO.getRoleName().trim().isEmpty()) {
+			errors.rejectValue("roleName", "roleName.required", "Please select a User Type.");
+		}
 	}
 
 }

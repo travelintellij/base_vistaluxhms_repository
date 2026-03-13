@@ -75,6 +75,7 @@
                     <th>Max Occupancy</th>
                     <th>Standard Occupancy</th>
                     <th>Extra Bed</th>
+                    <th>CWB %</th>
                     <th>Category Level</th>
                     <th>Active</th>
                     <th>Actions</th>
@@ -89,6 +90,7 @@
                         <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.maxOccupancy}</td>
                         <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.standardOccupancy}</td>
                         <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.extraBed}</td>
+                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.cwbPercentage}</td>
                         <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.categoryLevel}</td>
                         <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.active}</td>
                         <td class="action-btns">
