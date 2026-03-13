@@ -236,6 +236,10 @@ label {
                 <form:input path="cnbPercentage" type="number" min="1" cssClass="form-control"/>
             </div>
             <div class="form-group">
+                <label>Child With Bed % <br><small>(% for children with extrabed calculated from here)</small> :</label>
+                <form:input path="cwbPercentage" type="number" min="1" cssClass="form-control"/>
+            </div>
+            <div class="form-group">
                 &nbsp;
             </div>
 

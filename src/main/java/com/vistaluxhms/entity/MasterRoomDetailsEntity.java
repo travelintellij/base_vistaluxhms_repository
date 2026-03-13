@@ -46,12 +46,15 @@ public class MasterRoomDetailsEntity {
     @Column(name = "cnbPercentage", columnDefinition = "int default 20")
     private int cnbPercentage=20;
 
+    @Column(name = "cwbPercentage", columnDefinition = "int default 30")
+    private int cwbPercentage=30;
+
 
     // Constructors
     public MasterRoomDetailsEntity() {}
 
     public MasterRoomDetailsEntity(String roomCategoryName, String description, String size, int standardOccupancy,
-                             int maxOccupancy, int extraBed, int child, int compChild, int categoryLevel, int extraBedPercentage,int cnbPercentage,boolean active) {
+                             int maxOccupancy, int extraBed, int child, int compChild, int categoryLevel, int extraBedPercentage,int cnbPercentage,int cwbPercentage,boolean active) {
         this.roomCategoryName = roomCategoryName;
         this.description = description;
         this.size = size;
@@ -64,6 +67,7 @@ public class MasterRoomDetailsEntity {
         this.active = active;
         this.extraBedPercentage= extraBedPercentage;
         this.cnbPercentage=cnbPercentage;
+        this.cwbPercentage=cwbPercentage;
     }
 
     // Getters and Setters
@@ -175,6 +179,14 @@ public class MasterRoomDetailsEntity {
         this.cnbPercentage = cnbPercentage;
     }
 
+    public int getCwbPercentage() {
+        return cwbPercentage;
+    }
+
+    public void setCwbPercentage(int cwbPercentage) {
+        this.cwbPercentage = cwbPercentage;
+    }
+
     @Override
     public String toString() {
         return "MasterRoomDetailsEntity{" +
@@ -191,6 +203,7 @@ public class MasterRoomDetailsEntity {
                 ", active=" + active +
                 ", extraBedPercentage=" + extraBedPercentage +
                 ", cnbPercentage=" + cnbPercentage +
+                ", cwbPercentage=" + cwbPercentage +
                 '}';
     }
 }

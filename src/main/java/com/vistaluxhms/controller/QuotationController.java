@@ -187,8 +187,8 @@ public class QuotationController {
             List<SessionRateMappingEntity> sessionRateMappingEntities = sessionService
                     .getMappingsByRateTypeId(quotationEntityDTO.getRateTypeId());
             for (QuotationRoomDetailsDTO quotationRoomDTO : validRooms) {
-                quotationRoomDTO.setRoomCategoryName(
-                        salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId()).getRoomCategoryName());
+                MasterRoomDetailsEntity roomEntity = salesService.findRoomCategoryById(quotationRoomDTO.getRoomCategoryId());
+                quotationRoomDTO.setRoomCategoryName(roomEntity.getRoomCategoryName());
                 quotationRoomDTO
                         .setMealPlanName(VistaluxConstants.MEAL_PLANS_MAP.get(quotationRoomDTO.getMealPlanId()));
                 LocalDate checkIn = quotationRoomDTO.getCheckInDate();
@@ -205,7 +205,7 @@ public class QuotationController {
                                     quotationRoomDTO.getMealPlanId());
 
                     if (sessionDetailsEntity != null) {
-                        int dayPrice = processTotalPrice(quotationRoomDTO, sessionDetailsEntity);
+                        int dayPrice = processTotalPrice(quotationRoomDTO, sessionDetailsEntity, roomEntity);
                         grandTotalSum += dayPrice;
 
                         totalAdultPrice += quotationRoomDTO.getAdultPrice();
@@ -235,7 +235,7 @@ public class QuotationController {
         return modelView;
     }
 
-    private int processTotalPrice(QuotationRoomDetailsDTO quotationRoomDTO, SessionDetailsEntity sessionDetailsEntity) {
+    private int processTotalPrice(QuotationRoomDetailsDTO quotationRoomDTO, SessionDetailsEntity sessionDetailsEntity, MasterRoomDetailsEntity roomEntity) {
         int totalPrice = 0;
         int childWithBedPrice = 0;
         int childNoBedPrice = 0;
@@ -262,21 +262,21 @@ public class QuotationController {
         }
 
         if (quotationRoomDTO.getChildWithBed() > 0) {
-            childWithBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_CHILD_PERCENTAGE / 100)
+            childWithBedPrice = (sessionDetailsEntity.getPerson2() * roomEntity.getCwbPercentage() / 100)
                     * quotationRoomDTO.getChildWithBed();
             totalPrice += childWithBedPrice;
             quotationRoomDTO.setChildWithBedPrice(childWithBedPrice);
         }
 
         if (quotationRoomDTO.getChildNoBed() > 0) {
-            childNoBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_CHILD_NO_BED_PERCENTAGE / 100)
+            childNoBedPrice = (sessionDetailsEntity.getPerson2() * roomEntity.getCnbPercentage() / 100)
                     * quotationRoomDTO.getChildNoBed();
             totalPrice += childNoBedPrice;
             quotationRoomDTO.setChildNoBedPrice(childNoBedPrice);
         }
 
         if (quotationRoomDTO.getExtraBed() > 0) {
-            extraBedPrice = (sessionDetailsEntity.getPerson2() * ANY_ROOM_EXTRA_BED_ADULT_PERCENTAGE / 100)
+            extraBedPrice = (sessionDetailsEntity.getPerson2() * roomEntity.getExtraBedPercentage() / 100)
                     * quotationRoomDTO.getExtraBed();
             totalPrice += extraBedPrice;
             quotationRoomDTO.setExtraBedPrice(extraBedPrice);
