@@ -105,7 +105,20 @@ public class SettingsController {
         validator.validate(userDetailsObj, result);
         try {
             if (result.hasErrors()) {
-                modelView.addObject("Error", "Error: While updating password. ");
+                // ===== AI MODIFICATION START =====
+                // Change: Show specific validation error messages instead of a generic error
+                // Reason: Users need to know exactly which field failed validation (e.g., wrong current password, mismatch)
+                // Scope: SettingsController — update_update_password() method
+                // modelView.addObject("Error", "Error: While updating password. ");
+                StringBuilder errorMessages = new StringBuilder();
+                result.getAllErrors().forEach(error -> {
+                    if (errorMessages.length() > 0) {
+                        errorMessages.append("<br>");
+                    }
+                    errorMessages.append(error.getDefaultMessage());
+                });
+                modelView.addObject("Error", errorMessages.toString());
+                // ===== AI MODIFICATION END =====
             } else {
                 AshokaTeam userEntity = userDetailsService.findUserByID(getLoggedInUser().getUserId());
                 // userEntity.setPassword(userDetailsObj.getPasswordConfirm());

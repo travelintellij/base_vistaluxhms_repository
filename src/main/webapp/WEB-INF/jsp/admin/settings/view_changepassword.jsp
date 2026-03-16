@@ -90,28 +90,79 @@
                 </b>
             </div>
 
+            <!-- ===== AI MODIFICATION START ===== -->
+            <!-- Change: Added inline field-specific error display and client-side confirm password validation -->
+            <!-- Reason: Users need clear feedback on exactly which field has the error during password change -->
+            <!-- Scope: view_changepassword.jsp — password form fields -->
             <table class="password-table">
                 <tr>
                     <td>
                         <label>Current Password</label><br>
-                        <input type="password" name="currentPassword" maxlength="20" placeholder="Current Password" required />
-                        <form:errors path="currentPassword" cssClass="error" />
+                        <input type="password" name="currentPassword" id="currentPassword" maxlength="20" placeholder="Current Password" required />
+                        <form:errors path="currentPassword" cssClass="error" /><br>
+                        <span id="currentPasswordError" class="error"></span>
                     </td>
                     <td>
                         <label>New Password</label><br>
-                        <input type="password" name="changedPassword" minlength="8" maxlength="20" placeholder="New Password" required />
-                        <form:errors path="changedPassword" cssClass="error" />
+                        <input type="password" name="changedPassword" id="changedPassword" minlength="8" maxlength="20" placeholder="New Password" required />
+                        <form:errors path="changedPassword" cssClass="error" /><br>
+                        <span id="changedPasswordError" class="error"></span>
                     </td>
                     <td>
                         <label>Confirm Password</label><br>
-                        <input type="password" name="passwordConfirm" minlength="8" maxlength="20" placeholder="Confirm Password" required />
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" minlength="8" maxlength="20" placeholder="Confirm Password" required />
+                        <span id="confirmPasswordError" class="error"></span>
                     </td>
                 </tr>
             </table>
 
             <div class="submit-btn-container">
-                <input type="submit" value="Change Password" />
+                <input type="submit" value="Change Password" onclick="return validatePasswordForm();" />
             </div>
+
+            <script>
+                // Client-side password validation before form submission
+                function validatePasswordForm() {
+                    var currentPassword = document.getElementById('currentPassword').value.trim();
+                    var changedPassword = document.getElementById('changedPassword').value.trim();
+                    var passwordConfirm = document.getElementById('passwordConfirm').value.trim();
+                    var isValid = true;
+
+                    // Clear previous errors
+                    document.getElementById('currentPasswordError').innerText = '';
+                    document.getElementById('changedPasswordError').innerText = '';
+                    document.getElementById('confirmPasswordError').innerText = '';
+
+                    if (currentPassword === '') {
+                        document.getElementById('currentPasswordError').innerText = 'Current Password is required.';
+                        isValid = false;
+                    }
+
+                    if (changedPassword === '') {
+                        document.getElementById('changedPasswordError').innerText = 'New Password is required.';
+                        isValid = false;
+                    } else if (changedPassword.length < 8) {
+                        document.getElementById('changedPasswordError').innerText = 'New Password must be at least 8 characters long.';
+                        isValid = false;
+                    }
+
+                    if (passwordConfirm === '') {
+                        document.getElementById('confirmPasswordError').innerText = 'Confirm Password is required.';
+                        isValid = false;
+                    } else if (changedPassword !== passwordConfirm) {
+                        document.getElementById('confirmPasswordError').innerText = 'Confirm Password does not match New Password.';
+                        isValid = false;
+                    }
+
+                    if (currentPassword !== '' && changedPassword !== '' && currentPassword === changedPassword) {
+                        document.getElementById('changedPasswordError').innerText = 'New Password cannot be the same as Current Password.';
+                        isValid = false;
+                    }
+
+                    return isValid;
+                }
+            </script>
+            <!-- ===== AI MODIFICATION END ===== -->
         </form:form>
     </div>
 

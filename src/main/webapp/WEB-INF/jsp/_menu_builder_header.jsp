@@ -36,9 +36,20 @@
                                     <!-- ===== HEADER ===== -->
                                     <header class="gs-header">
                                         <a href="view_workloadhome" class="gs-header-brand">
+                                            <%-- ===== AI MODIFICATION START ===== --%>
+                                            <%-- Change: Add context path dynamically to internally uploaded logos --%>
+                                            <%-- Reason: Central config logo uses relative paths starting with /resources, needing correct host evaluation --%>
+                                            <%-- Scope: Navigation Header > Logo Image Source --%>
                                             <c:choose>
                                                 <c:when test="${not empty centralConfig.logoPath}">
-                                                    <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                                                    <c:choose>
+                                                        <c:when test="${fn:startsWith(centralConfig.logoPath, '/resources')}">
+                                                            <c:set var="logoUrl" value="${pageContext.request.contextPath}${centralConfig.logoPath}" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <c:set var="logoUrl"
@@ -46,6 +57,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <img id="topLogo" src="${logoUrl}" alt="Logo">
+                                            <%-- ===== AI MODIFICATION END ===== --%>
                                             <div class="gs-header-title">
                                                 <c:choose>
                                                     <c:when test="${not empty centralConfig.hotelName}">
@@ -491,6 +503,7 @@
                                                     padding: 6px 8px;
                                                     border-radius: 50%;
                                                     margin-right: 5px;
+                                                }
                                             </style>
 
                                             <body>

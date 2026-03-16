@@ -243,6 +243,21 @@ public class UserController {
             orgUserEntity.setDeleted(userDTO.isDeleted());
             orgUserEntity.setLastWorkingDay(userDTO.getLastWorkingDay());
 
+            // ===== AI MODIFICATION START =====
+            // Change: Auto-lock account if lastWorkingDay has passed
+            // Reason: If a user's last working day has passed, their account should be automatically locked
+            //         Adjusted to allow login ON the last working day — only locks AFTER it.
+            // Scope: UserController — edit_edit_user() method
+            if (userDTO.getLastWorkingDay() != null) {
+                java.time.LocalDate today = java.time.LocalDate.now();
+                java.time.LocalDate lastDay = userDTO.getLastWorkingDay().toLocalDate();
+                if (today.isAfter(lastDay)) {
+                    // today is strictly after lastWorkingDay — lock the account immediately
+                    orgUserEntity.setAccountLocked(true);
+                }
+            }
+            // ===== AI MODIFICATION END =====
+
             Set<RoleEntity> roles = orgUserEntity.getRoles();
             boolean isSuperAdmin = roles.stream()
                     .anyMatch(role -> "SUPERADMIN".equalsIgnoreCase(role.getRoleName()));

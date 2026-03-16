@@ -294,7 +294,21 @@ public class EmailServiceImpl {
 		CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
 		// String logoUrl = centralConfigEntity.getBaseUrl() +
 		// "/resources/images/ashoka_logo.jpg";
-		mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+// ===== AI MODIFICATION START =====
+// Change: Build an absolute URL for the logo in emails if a relative image path is used
+// Reason: Email clients require fully qualified URLs to render images properly
+// Scope: Email generation context
+		String logoPath = centralConfigEntity.getLogoPath();
+		if (logoPath != null && logoPath.startsWith("/resources")) {
+			String baseUrl = centralConfigEntity.getBaseUrl();
+			if (baseUrl != null && baseUrl.endsWith("/")) {
+				logoPath = baseUrl.substring(0, baseUrl.length() - 1) + logoPath;
+			} else if (baseUrl != null) {
+				logoPath = baseUrl + logoPath;
+			}
+		}
+		mail.getModel().put("logoUrl", logoPath);
+// ===== AI MODIFICATION END =====
 		mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
 		mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
 		mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
@@ -369,7 +383,21 @@ public class EmailServiceImpl {
 		EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails(eventType);
 		// String logoUrl = centralConfigEntity.getBaseUrl() +
 		// "/resources/images/ashoka_logo.jpg";
-		mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+// ===== AI MODIFICATION START =====
+// Change: Build an absolute URL for the logo in emails if a relative image path is used
+// Reason: Email clients require fully qualified URLs to render images properly
+// Scope: Email generation context
+		String logoPath = centralConfigEntity.getLogoPath();
+		if (logoPath != null && logoPath.startsWith("/resources")) {
+			String baseUrl = centralConfigEntity.getBaseUrl();
+			if (baseUrl != null && baseUrl.endsWith("/")) {
+				logoPath = baseUrl.substring(0, baseUrl.length() - 1) + logoPath;
+			} else if (baseUrl != null) {
+				logoPath = baseUrl + logoPath;
+			}
+		}
+		mail.getModel().put("logoUrl", logoPath);
+// ===== AI MODIFICATION END =====
 		mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
 		mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
 		mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
