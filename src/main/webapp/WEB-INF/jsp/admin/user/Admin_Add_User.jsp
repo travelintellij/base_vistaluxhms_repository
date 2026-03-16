@@ -90,11 +90,11 @@
                                             <label for="field4">User Type:</label>
                                             <div class="radio-group">
                                                 <label>
-                                                    <form:radiobutton path="roleName" value="USER" />
+                                                    <form:radiobutton path="roleName" value="USER" required="required" />
                                                     <span>USER</span>
                                                 </label>
                                                 <label>
-                                                    <form:radiobutton path="roleName" value="ADMIN" />
+                                                    <form:radiobutton path="roleName" value="ADMIN" required="required" />
                                                     <span>ADMIN</span>
                                                 </label>
                                             </div>
@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Date of Birth</label>
-                                        <form:input path="dob" type="date" />
+                                        <form:input path="dob" type="date" required="required" />
                                         <font color="red">
                                             <form:errors path="dob" cssClass="error" />
                                         </font>
@@ -151,7 +151,7 @@
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Personal Phone</label>
-                                        <form:input path="personalMobile" type="number" />
+                                        <form:input path="personalMobile" type="number" required="required" />
                                         <font color="red">
                                             <form:errors path="personalMobile" cssClass="error" />
                                         </font>
@@ -159,7 +159,7 @@
 
                                     <div class="form-cell">
                                         <label for="field8">Address</label>
-                                        <form:input path="address" /> <br>
+                                        <form:input path="address" required="required" /> <br>
                                         <font color="red">
                                             <form:errors path="address" cssClass="error" />
                                         </font>
@@ -195,7 +195,7 @@
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Date Of Joining</label>
-                                        <form:input path="doj" type="date" />
+                                        <form:input path="doj" type="date" required="required" />
                                         <font color="red">
                                             <form:errors path="doj" cssClass="error" />
                                         </font>

@@ -165,7 +165,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="">Date of Birth</label>
-                                <form:input path="dob" type="date" />
+                                <form:input path="dob" type="date" required="required" />
                             </div>
                             <div class="form-cell">
                                 <label for="">Personal Email</label>
@@ -177,7 +177,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="field8">Address</label>
-                                <form:input path="address" /> <br>
+                                <form:input path="address" required="required" /> <br>
                                 <font color="red">
                                     <form:errors path="address" cssClass="error" />
                                 </font>
@@ -213,7 +213,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="">Date Of Joining</label>
-                                <form:input path="doj" type="date" />
+                                <form:input path="doj" type="date" required="required" />
                             </div>
                             <div class="form-cell">
                                 <label for="">Last Working Day</label>

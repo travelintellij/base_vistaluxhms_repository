@@ -410,7 +410,7 @@ public class EventController {
 			return modelView;
 		} else {
 
-			List<EventPackageServiceEntity> eventPackageServicesEntityList = recalcualateEventServicesList(
+			List<EventPackageServiceEntity> eventPackageServicesEntityList = recalculateEventServicesList(
 					eventPackageEntityDTO, listServiceCostType);
 
 			int grandTotal = 0;
@@ -418,13 +418,7 @@ public class EventController {
 				grandTotal += service.getTotalCost();
 			}
 			eventPackageEntityDTO.setGrand_total_cost(grandTotal);
-			// eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
-			eventPackageEntityDTO.setServices(
-					eventPackageServicesEntityList.stream()
-							.filter(service -> service.getServiceName() != null
-									&& !service.getServiceName().trim().isEmpty())
-							.collect(Collectors.toList()));
-
+			eventPackageEntityDTO.setServices(eventPackageServicesEntityList);
 		}
 		modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 		modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
@@ -432,80 +426,69 @@ public class EventController {
 		return modelView;
 	}
 
-	private List<EventPackageServiceEntity> recalcualateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,
+	private List<EventPackageServiceEntity> recalculateEventServicesList(EventPackageEntityDTO eventPackageEntityDTO,
 			List<EventServiceCostTypeEntity> listServiceCostType) {
 		List<EventPackageServiceEntity> eventPackageServicesEntityList = new ArrayList<EventPackageServiceEntity>();
 		for (EventPackageServiceEntity packageService : eventPackageEntityDTO.getServices()) {
+			if (packageService == null) continue;
 			int totalNights = (int) getNumberOfNights(eventPackageEntityDTO.getEventStartDate(),
 					eventPackageEntityDTO.getEventEndDate());
+			if (totalNights <= 0) totalNights = 1; // Default to 1 for calculation if same day or error
 			int totalDays = totalNights + 1;
 
-			for (EventServiceCostTypeEntity serviceCostType : listServiceCostType) {
-				// String costTypeName = serviceCostType.getEventServiceCostTypeName(); //
-				// Assuming the getter method is `getEventServiceCostTypeName()`
-				if (packageService.getEventServiceCostTypeEntity() != null) {
-					Integer serviceCostTypeId = packageService.getEventServiceCostTypeEntity()
-							.getEventServiceCostTypeId();
-					EventServiceCostTypeEntity costTypeEntity = eventServices
-							.findEventServiceCostTypeByID(serviceCostTypeId);
-					packageService.setEventServiceCostTypeEntity(costTypeEntity);
+			if (packageService.getEventServiceCostTypeEntity() != null) {
+				Integer serviceCostTypeId = packageService.getEventServiceCostTypeEntity()
+						.getEventServiceCostTypeId();
+				EventServiceCostTypeEntity costTypeEntity = eventServices
+						.findEventServiceCostTypeByID(serviceCostTypeId);
+				packageService.setEventServiceCostTypeEntity(costTypeEntity);
 
-					String costTypeName = packageService.getEventServiceCostTypeEntity().getEventServiceCostTypeName();
+				if (costTypeEntity != null) {
+					String costTypeName = costTypeEntity.getEventServiceCostTypeName();
 					int totalCost = 0;
+					int baseCost = packageService.getCostPerUnit();
+					int qty = (packageService.getQuantity() != null) ? packageService.getQuantity() : 0;
+
 					switch (costTypeName) {
 						case VistaluxConstants.PER_GUEST_PER_NIGHT:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * totalNights;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost * totalNights;
 							break;
-
 						case VistaluxConstants.PER_GUEST_ONE_TIME:
-							// Perform action for TypeB
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * 1;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost;
 							break;
-
 						case VistaluxConstants.PER_GUEST_PER_DAY:
-							// Perform action for TypeC
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * totalDays;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost * totalDays;
 							break;
-
 						case VistaluxConstants.PER_ROOM_ONE_TIME:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * 1;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost;
 							break;
-
 						case VistaluxConstants.PER_ROOM_PER_NIGHT:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * totalNights;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost * totalNights;
 							break;
-
 						case VistaluxConstants.PER_DAY:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * totalDays;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost * totalDays;
 							break;
-
 						case VistaluxConstants.PER_NIGHT:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * totalNights;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost * totalNights;
 							break;
-
 						case VistaluxConstants.ONE_TIME:
-							totalCost = packageService.getQuantity() * packageService.getCostPerUnit() * 1;
-							packageService.setTotalCost(totalCost);
+							totalCost = qty * baseCost;
 							break;
-
-						// Add more cases as needed
 						default:
-							// Handle the default case if the eventServiceCostTypeName doesn't match any
-							// case
-							System.out.println("Unknown cost type: " + costTypeName);
+							totalCost = qty * baseCost;
 							break;
 					}
+					packageService.setTotalCost(totalCost);
+				} else {
+					// Fallback for cases where cost type entity might be null but data exists
+					packageService.setTotalCost(packageService.getCostPerUnit() * (packageService.getQuantity() != null ? packageService.getQuantity() : 0));
 				}
+			} else {
+				// Fallback if the whole cost type relation is null
+				packageService.setTotalCost(packageService.getCostPerUnit() * (packageService.getQuantity() != null ? packageService.getQuantity() : 0));
 			}
-			if (packageService.getServiceName() != null && (!packageService.getServiceName().isEmpty()))
-				eventPackageServicesEntityList.add(packageService);
+			// Add ALL services during recalculate so they stay on screen
+			eventPackageServicesEntityList.add(packageService);
 		}
 		return eventPackageServicesEntityList;
 	}

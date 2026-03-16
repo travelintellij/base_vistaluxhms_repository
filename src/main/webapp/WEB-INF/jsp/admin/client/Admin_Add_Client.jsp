@@ -83,11 +83,11 @@
                <div class="radio-group-container">
                    <div class="radio-group">
                        <label>
-                           <form:radiobutton path="b2b" value="true" />
+                           <form:radiobutton path="b2b" value="true" required="required" />
                            <span>B2B</span>
                        </label>
                        <label>
-                           <form:radiobutton path="b2b" value="false" />
+                           <form:radiobutton path="b2b" value="false" required="required" />
                            <span>B2C</span>
                        </label>
                    </div>
@@ -111,7 +111,7 @@
             </div>
             <div class="form-row">
                  <label for="city-id">City:</label>
-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
+                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
                 <input type="hidden" id="destinationId" name="city.destinationId" />
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
