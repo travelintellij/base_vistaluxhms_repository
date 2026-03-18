@@ -156,10 +156,8 @@
                                 paramName: "cityName",
                                 delimiter: ",",
                                 onSelect: function (suggestion) {
-                                    cityID = suggestion.data;
-                                    id = cityID;
-                                    jQuery("#destinationId").val(cityID);
-                                    $('input[name=cityId]').val(id);
+                                    var cityID = suggestion.data;
+                                    jQuery("#cityId").val(cityID);
                                     return false;
                                 },
                                 transformResult: function (response) {

@@ -95,7 +95,7 @@
             <div class="form-row">
                  <label for="city-id">City:</label>
                 <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
-                <input type="hidden" id="destinationId" name="city.destinationId" value="${CLIENT_OBJ.city.destinationId}" />
+                <form:hidden id="destinationId" path="city.destinationId" />
 
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
@@ -138,10 +138,8 @@
         paramName: "cityName",
         delimiter: ",",
         onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
+            var cityID = suggestion.data;
             jQuery("#destinationId").val(cityID);
-            $('input[name=cityId]').val(id);
             return false;
         },
         transformResult: function (response) {
