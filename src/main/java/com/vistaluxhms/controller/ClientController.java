@@ -101,9 +101,15 @@ public class ClientController {
         // CHECK CITY VALIDATION
         if (clientEntityDto.getCity() == null || clientEntityDto.getCity().getDestinationId() == 0 || clientEntityDto.getCityName() == null || clientEntityDto.getCityName().trim().isEmpty()) {
             result.rejectValue("cityName", "city.empty", "Please type and select a city from the list.");
-        } else if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(),
-                clientEntityDto.getCityName())) {
-            result.rejectValue("cityName", "city.invalid", "The entered city name does not match our records. Please select from the dropdown.");
+        } else {
+            String trimmedCityName = clientEntityDto.getCityName().trim();
+            if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(), trimmedCityName)) {
+                // Try case-insensitive lookup to be more robust
+                City_Entity city = commonService.findDestinationById(clientEntityDto.getCity().getDestinationId());
+                if (city == null || !city.getCityName().equalsIgnoreCase(trimmedCityName)) {
+                    result.rejectValue("cityName", "city.invalid", "The entered city name does not match our records. Please select from the dropdown.");
+                }
+            }
         }
 
         // CHECK DUPLICATE MOBILE
