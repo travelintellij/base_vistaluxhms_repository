@@ -1,0 +1,37 @@
+﻿commit 0ee1989fd3147e4d57792caaaadc1b24e6ff7ef0
+Author: janvimehra <janvimehra2004@gmail.com>
+Date:   Mon Mar 16 19:10:50 2026 +0530
+
+    changes added
+
+diff --git a/src/main/webapp/WEB-INF/jsp/admin/user/Admin_Edit_User.jsp b/src/main/webapp/WEB-INF/jsp/admin/user/Admin_Edit_User.jsp
+index 132d40a..6bab856 100644
+--- a/src/main/webapp/WEB-INF/jsp/admin/user/Admin_Edit_User.jsp
++++ b/src/main/webapp/WEB-INF/jsp/admin/user/Admin_Edit_User.jsp
+@@ -165,7 +165,7 @@
+                             </div>
+                             <div class="form-cell">
+                                 <label for="">Date of Birth</label>
+-                                <form:input path="dob" type="date" />
++                                <form:input path="dob" type="date" required="required" />
+                             </div>
+                             <div class="form-cell">
+                                 <label for="">Personal Email</label>
+@@ -177,7 +177,7 @@
+                             </div>
+                             <div class="form-cell">
+                                 <label for="field8">Address</label>
+-                                <form:input path="address" /> <br>
++                                <form:input path="address" required="required" /> <br>
+                                 <font color="red">
+                                     <form:errors path="address" cssClass="error" />
+                                 </font>
+@@ -213,7 +213,7 @@
+                             </div>
+                             <div class="form-cell">
+                                 <label for="">Date Of Joining</label>
+-                                <form:input path="doj" type="date" />
++                                <form:input path="doj" type="date" required="required" />
+                             </div>
+                             <div class="form-cell">
+                                 <label for="">Last Working Day</label>

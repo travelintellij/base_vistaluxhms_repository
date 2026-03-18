@@ -90,17 +90,19 @@
                                             <label for="field4">User Type:</label>
                                             <div class="radio-group">
                                                 <label>
-                                                    <form:radiobutton path="roleName" name="roleName" value="USER"
-                                                        required="required" />
+                                                    <form:radiobutton path="roleName" value="USER" required="required" />
                                                     <span>USER</span>
                                                 </label>
                                                 <label>
-                                                    <form:radiobutton path="roleName" name="roleName" value="ADMIN"
-                                                        required="required" />
+                                                    <form:radiobutton path="roleName" value="ADMIN" required="required" />
                                                     <span>ADMIN</span>
                                                 </label>
                                             </div>
                                         </div>
+                                        <font color="red">
+                                            <form:errors path="roleName" cssClass="error" />
+                                        </font>
+
                                     </div>
                                 </div>
                                 <div class="form-table">
@@ -139,7 +141,10 @@
                                         <!-- Reason: Date of birth cannot logically be a future date -->
                                         <!-- Scope: Admin_Add_User.jsp — DOB date field -->
                                         <!-- <form:input path="dob" type="date" /> -->
-                                        <form:input path="dob" type="date" id="dobField" />
+                                        <form:input path="dob" type="date" required="required" id="dobField" />
+                                        <font color="red">
+                                            <form:errors path="dob" cssClass="error" />
+                                        </font>
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 var today = new Date().toISOString().split('T')[0];
@@ -148,17 +153,25 @@
                                         </script>
                                         <!-- ===== AI MODIFICATION END ===== -->
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="">Personal Email</label>
-                                        <form:input path="personalEmail" type="email" required="required" />
+                                        <form:input path="personalEmail" type="email" />
+                                        <font color="red">
+                                            <form:errors path="personalEmail" cssClass="error" />
+                                        </font>
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Personal Phone</label>
                                         <form:input path="personalMobile" type="number" required="required" />
+                                        <font color="red">
+                                            <form:errors path="personalMobile" cssClass="error" />
+                                        </font>
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="field8">Address</label>
-                                        <form:input path="address" /> <br>
+                                        <form:input path="address" required="required" /> <br>
                                         <font color="red">
                                             <form:errors path="address" cssClass="error" />
                                         </font>
@@ -194,8 +207,12 @@
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Date Of Joining</label>
-                                        <form:input path="doj" type="date" />
+                                        <form:input path="doj" type="date" required="required" />
+                                        <font color="red">
+                                            <form:errors path="doj" cssClass="error" />
+                                        </font>
                                     </div>
+
                                     <div class="form-cell">
                                         <label for="">Last Working Day</label>
                                         <form:input path="lastWorkingDay" type="date" />

@@ -170,7 +170,7 @@
                                 <!-- Reason: Date of birth cannot logically be a future date -->
                                 <!-- Scope: Admin_Edit_User.jsp — DOB date field -->
                                 <!-- <form:input path="dob" type="date" /> -->
-                                <form:input path="dob" type="date" id="dobFieldEdit" />
+                                <form:input path="dob" type="date" required="required" id="dobFieldEdit" />
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         var today = new Date().toISOString().split('T')[0];
@@ -189,7 +189,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="field8">Address</label>
-                                <form:input path="address" /> <br>
+                                <form:input path="address" required="required" /> <br>
                                 <font color="red">
                                     <form:errors path="address" cssClass="error" />
                                 </font>
@@ -225,7 +225,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="">Date Of Joining</label>
-                                <form:input path="doj" type="date" />
+                                <form:input path="doj" type="date" required="required" />
                             </div>
                             <div class="form-cell">
                                 <label for="">Last Working Day</label>

@@ -1,0 +1,34 @@
+﻿diff --git a/src/main/webapp/WEB-INF/jsp/admin/client/Admin_Add_Client.jsp b/src/main/webapp/WEB-INF/jsp/admin/client/Admin_Add_Client.jsp
+index 808cadf..418c659 100644
+--- a/src/main/webapp/WEB-INF/jsp/admin/client/Admin_Add_Client.jsp
++++ b/src/main/webapp/WEB-INF/jsp/admin/client/Admin_Add_Client.jsp
+@@ -83,18 +83,15 @@
+                <div class="radio-group-container">
+                    <div class="radio-group">
+                        <label>
+-                           <form:radiobutton path="b2b" value="true" required="required" />
++                           <form:radiobutton path="b2b" name="b2b" value="true" required="required" />
+                            <span>B2B</span>
+                        </label>
+                        <label>
+-                           <form:radiobutton path="b2b" value="false" required="required" />
++                           <form:radiobutton path="b2b" name="b2b"  value="false" required="required" />
+                            <span>B2C</span>
+                        </label>
+                    </div>
+                </div>
+-               <font color="red">
+-                   <form:errors path="b2b" cssClass="error" />
+-               </font>
+            </div>
+ 
+ 
+@@ -111,7 +108,7 @@
+             </div>
+             <div class="form-row">
+                  <label for="city-id">City:</label>
+-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
++                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
+                 <input type="hidden" id="destinationId" name="city.destinationId" />
+                 <font color="red">
+                     <form:errors path="cityName" cssClass="error" />

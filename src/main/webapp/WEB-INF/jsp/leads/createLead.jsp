@@ -96,14 +96,14 @@
                 </div>
                 <div class="form-cell">
                     <label for="field6">Child With Bed</label>
-                    <form:input path="cwb" type="number" required="required" />
+                    <form:input path="cwb" type="number" />
                     <font color="red">
                         <form:errors path="cwb" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
                     <label for="field7">Child No Bed</label>
-                    <form:input path="cnb" type="number" required="required" /> <br>
+                    <form:input path="cnb" type="number" /> <br>
                     <font color="red">
                         <form:errors path="cnb" cssClass="error" />
                     </font>
@@ -131,11 +131,11 @@
                          <div class="radio-group-container">
                              <div class="radio-group">
                                  <label>
-                                     <form:radiobutton path="qualified" name="qualified" value="true" required="required" />
+                                     <form:radiobutton path="qualified" name="qualified" value="true" />
                                      <span>Yes</span>
                                  </label>
                                  <label>
-                                     <form:radiobutton path="qualified" name="qualified"  value="false" required="required" />
+                                     <form:radiobutton path="qualified" name="qualified"  value="false" />
                                      <span>No</span>
                                  </label>
                              </div>
@@ -146,11 +146,11 @@
                       <div class="radio-group-container">
                            <div class="radio-group">
                                <label>
-                                   <form:radiobutton path="flagged" name="flagged" value="true" required="required" />
+                                   <form:radiobutton path="flagged" name="flagged" value="true" />
                                    <span>Yes</span>
                                </label>
                                <label>
-                                   <form:radiobutton path="flagged" name="flagged"  value="false" required="required" />
+                                   <form:radiobutton path="flagged" name="flagged"  value="false" />
                                    <span>No</span>
                                </label>
                            </div>
@@ -200,11 +200,11 @@
                                    <div class="radio-group-container">
                                        <div class="radio-group">
                                            <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" required="required" />
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" />
                                                <span>Yes</span>
                                            </label>
                                            <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" required="required" />
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" />
                                                <span>No</span>
                                            </label>
                                        </div>

@@ -84,6 +84,7 @@ public class ClientController {
         ModelAndView modelView = new ModelAndView("admin/client/Admin_Add_Client");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        modelView.addAllObjects(result.getModel());
         return modelView;
     }
 
@@ -92,21 +93,21 @@ public class ClientController {
             BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
-        if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(),
-                clientEntityDto.getCityName())) {
-            try {
-                City_Entity newCity = new City_Entity();
-                newCity.setCityName(clientEntityDto.getCityName());
-                newCity.setActive(true);
-                newCity = cityRepository.save(newCity);
-                clientEntityDto.getCity().setDestinationId(newCity.getDestinationId());
-            } catch (Exception e) {
-                result.rejectValue("cityName", "city.error");
-            }
+        // CHECK CLIENT TYPE (B2B/B2C)
+        if (clientEntityDto.getB2b() == null) {
+            result.rejectValue("b2b", "b2b.error", "Please select a Client Type");
         }
-        // CHECK DUPLICATE MOBILE
-        if (clientService.isMobileExistsForClient(clientEntityDto.getMobile())) {
 
+        // CHECK CITY VALIDATION
+        if (clientEntityDto.getCity() == null || clientEntityDto.getCity().getDestinationId() == 0 || clientEntityDto.getCityName() == null || clientEntityDto.getCityName().trim().isEmpty()) {
+            result.rejectValue("cityName", "city.empty", "Please type and select a city from the list.");
+        } else if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(),
+                clientEntityDto.getCityName())) {
+            result.rejectValue("cityName", "city.invalid", "The entered city name does not match our records. Please select from the dropdown.");
+        }
+
+        // CHECK DUPLICATE MOBILE
+        if (clientEntityDto.getMobile() != null && clientService.isMobileExistsForClient(clientEntityDto.getMobile())) {
             result.rejectValue(
                     "mobile",
                     "mobile.error",
@@ -114,9 +115,12 @@ public class ClientController {
         }
 
         if (result.hasErrors()) {
-
             // If there are validation errors, return the form view with errors
-            modelView = view_add_client_form(clientEntityDto, result);
+            modelView.setViewName("admin/client/Admin_Add_Client");
+            Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
+            modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+            modelView.addObject("CLIENT_OBJ", clientEntityDto);
+            modelView.addAllObjects(result.getModel()); // Explicitly add errors to model
         } else {
             City_Entity cityEntity = cityRepository.findDestinationById(clientEntityDto.getCity().getDestinationId());
             SalesPartnerEntity salesPartnerEntity = salesService
@@ -271,6 +275,7 @@ public class ClientController {
         ModelAndView modelView = new ModelAndView("admin/client/Admin_Edit_Client");
         Map<Long, String> mapSalesPartner = salesService.getActiveSalesPartnerMap(true);
         modelView.addObject("SALES_PARTNER_MAP", mapSalesPartner);
+        modelView.addAllObjects(result.getModel());
         return modelView;
     }
 

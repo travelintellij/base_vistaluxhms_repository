@@ -1,0 +1,26 @@
+﻿commit 0ee1989fd3147e4d57792caaaadc1b24e6ff7ef0
+Author: janvimehra <janvimehra2004@gmail.com>
+Date:   Mon Mar 16 19:10:50 2026 +0530
+
+    changes added
+
+ .../vistaluxevent/controller/EventController.java  |  87 ++++-----
+ .../WEB-INF/jsp/admin/client/Admin_Add_Client.jsp  |   6 +-
+ .../WEB-INF/jsp/admin/client/Admin_Edit_Client.jsp |   6 +-
+ .../admin/salespartner/Admin_Add_SalesPartner.jsp  |   2 +-
+ .../admin/salespartner/Admin_Edit_SalesPartner.jsp |   2 +-
+ .../WEB-INF/jsp/admin/user/Admin_Add_User.jsp      |  12 +-
+ .../WEB-INF/jsp/admin/user/Admin_Edit_User.jsp     |   6 +-
+ .../event/quotation/createEventQuotationWiz2.jsp   | 205 ++++++++++++++++-----
+ .../jsp/event/quotation/updateEventQuotation.jsp   | 205 +++++++++++++++++----
+ src/main/webapp/WEB-INF/jsp/footer.jsp             |  58 +++++-
+ src/main/webapp/WEB-INF/jsp/leads/createLead.jsp   |  16 +-
+ src/main/webapp/WEB-INF/jsp/leads/editLead.jsp     |  16 +-
+ .../jsp/quotation/loadFreeHandQuotation.jsp        |   7 +-
+ .../WEB-INF/jsp/quotation/loadSystemQuotation.jsp  |   7 +-
+ .../WEB-INF/jsp/quotation/reviewFHQuotation.jsp    |  11 +-
+ .../jsp/quotation/reviewLeadFHQuotation.jsp        |  19 +-
+ .../WEB-INF/jsp/quotation/reviewQuotation.jsp      |  11 +-
+ .../jsp/quotation/reviewSystemQuotation.jsp        |  11 +-
+ src/main/webapp/resources/css/grand-suite.css      |   4 -
+ 19 files changed, 480 insertions(+), 211 deletions(-)

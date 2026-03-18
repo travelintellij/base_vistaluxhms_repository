@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.35, for Win64 (x86_64)
 --
--- Host: localhost    Database: vanilla
+-- Host: localhost    Database: ashokadb
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -50,7 +50,7 @@ CREATE TABLE `ashokateam` (
   `credentialsExpired` tinyint DEFAULT '0',
   `deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `ashokateam` (
 
 LOCK TABLES `ashokateam` WRITE;
 /*!40000 ALTER TABLE `ashokateam` DISABLE KEYS */;
-INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Super Admin','Corbett',9090762424,'Super Admin',NULL,NULL,0,NULL,'sales@digitalintellij.com',NULL,'2026-01-13','sales@digitalintellij.com',9090762424,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0);
+INSERT INTO `ashokateam` VALUES (1,'admin','$2a$10$3zMTkSVpm7yBDehJ.wTbJOnEyYzNCWgC/vYB4wwr9JYFaKhUxuGoi','Sushil Chugh','Vikas Puriu',9999449267,'Partner',NULL,NULL,0,NULL,'sushil@vistaluxhotel.com',NULL,NULL,'sushil@vistaluxhotel.com',9999441267,NULL,NULL,NULL,NULL,'perfect',1,0,0,0,0),(3,'RITIK','$2a$10$kllIHy8xTfjTiE5CKs2bVONJKtFzvWEPNn3RKTGzo/gIAUmHXsc5W','Ritik Makker','rz-28 subhash park ext-2 bindapur matiala rd uttam nagar new delhi-110059',9968228221,'USER',NULL,NULL,0,'2028-10-04','ritik.makker@gmail.com',NULL,'2026-03-02','ritik.makker@gmail.com',9968228221,NULL,NULL,NULL,NULL,'',1,0,0,0,0);
 /*!40000 ALTER TABLE `ashokateam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ CREATE TABLE `ashokateam_role` (
   KEY `FK_ROLE_ID_idx` (`roleId`),
   CONSTRAINT `FK_ROLE_ID` FOREIGN KEY (`roleId`) REFERENCES `role` (`roleId`),
   CONSTRAINT `FK_USR_ID_RL_MAP` FOREIGN KEY (`userId`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `ashokateam_role` (
 
 LOCK TABLES `ashokateam_role` WRITE;
 /*!40000 ALTER TABLE `ashokateam_role` DISABLE KEYS */;
-INSERT INTO `ashokateam_role` VALUES (1,1,1),(2,1,43);
+INSERT INTO `ashokateam_role` VALUES (1,1,1),(2,1,43),(3,3,2);
 /*!40000 ALTER TABLE `ashokateam_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +271,7 @@ CREATE TABLE `client` (
   KEY `salesPartnerId` (`salesPartnerId`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`),
   CONSTRAINT `client_ibfk_2` FOREIGN KEY (`salesPartnerId`) REFERENCES `salespartner` (`salesPartnerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,6 +280,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (1,'Janvi Mehra',10,1,9999441267,'janvimehra2004@gmail.com','',1,'',1,1,'2026-02-05 08:22:37','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),(2,'ritik ',10,0,9968228221,'ritik.makker@gmail.com','',1,'',0,1,'2026-02-23 13:42:29','CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,7 +554,7 @@ CREATE TABLE `event_service_cost_type` (
   `eventServiceCostTypeName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`eventServiceCostTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -562,7 +563,6 @@ CREATE TABLE `event_service_cost_type` (
 
 LOCK TABLES `event_service_cost_type` WRITE;
 /*!40000 ALTER TABLE `event_service_cost_type` DISABLE KEYS */;
-INSERT INTO `event_service_cost_type` VALUES (1,'PER_GUEST_PER_NIGHT',1),(2,'PER_GUEST_ONE_TIME',1),(3,'PER_GUEST_PER_DAY',1),(4,'PER_ROOM_ONE_TIME',1),(5,'PER_ROOM_PER_NIGHT',1),(6,'PER_DAY',1),(7,'PER_NIGHT',1),(8,'ONE_TIME',1),(9,'MANUAL',1);
 /*!40000 ALTER TABLE `event_service_cost_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -579,7 +579,7 @@ CREATE TABLE `eventtype` (
   `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`eventTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +588,6 @@ CREATE TABLE `eventtype` (
 
 LOCK TABLES `eventtype` WRITE;
 /*!40000 ALTER TABLE `eventtype` DISABLE KEYS */;
-INSERT INTO `eventtype` VALUES (1,'Wedding','Wedding Event',1),(2,'GROUP_EVENT','Corporate Event management',1);
 /*!40000 ALTER TABLE `eventtype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -652,8 +651,23 @@ CREATE TABLE `hotel_central_config` (
   `centralized_email` varchar(150) DEFAULT NULL,
   `resort_gst_number` varchar(30) DEFAULT NULL,
   `last_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `email_smtp_host` varchar(255) DEFAULT NULL,
+  `email_smtp_port` varchar(10) DEFAULT NULL,
+  `email_smtp_username` varchar(255) DEFAULT NULL,
+  `email_smtp_password` varchar(255) DEFAULT NULL,
+  `email_from_address` varchar(255) DEFAULT NULL,
+  `email_reply_to` varchar(255) DEFAULT NULL,
+  `email_default_cc` varchar(255) DEFAULT NULL,
+  `email_notify_to` varchar(255) DEFAULT NULL,
+  `email_client_active` varchar(10) DEFAULT NULL,
+  `email_internal_active` varchar(10) DEFAULT NULL,
+  `whats_app_api_url` varchar(255) DEFAULT NULL,
+  `whats_app_api_key` varchar(255) DEFAULT NULL,
+  `whats_app_registration_template_id` varchar(255) DEFAULT NULL,
+  `whats_app_stay_quotation_template_id` varchar(255) DEFAULT NULL,
+  `whats_app_guest_quotation_template_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -662,7 +676,69 @@ CREATE TABLE `hotel_central_config` (
 
 LOCK TABLES `hotel_central_config` WRITE;
 /*!40000 ALTER TABLE `hotel_central_config` DISABLE KEYS */;
+INSERT INTO `hotel_central_config` VALUES (1,'','','','','','','','','','','','','','','','',0,'','','','','','','','','','','','2026-03-07 13:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `hotel_central_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hotel_email_config`
+--
+
+DROP TABLE IF EXISTS `hotel_email_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hotel_email_config` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email_client_active` varchar(255) DEFAULT NULL,
+  `email_default_cc` varchar(500) DEFAULT NULL,
+  `email_from_address` varchar(500) DEFAULT NULL,
+  `email_internal_active` varchar(255) DEFAULT NULL,
+  `email_notify_to` varchar(500) DEFAULT NULL,
+  `email_reply_to` varchar(255) DEFAULT NULL,
+  `email_smtp_host` varchar(255) DEFAULT NULL,
+  `email_smtp_password` varchar(255) DEFAULT NULL,
+  `email_smtp_port` varchar(255) DEFAULT NULL,
+  `email_smtp_username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hotel_email_config`
+--
+
+LOCK TABLES `hotel_email_config` WRITE;
+/*!40000 ALTER TABLE `hotel_email_config` DISABLE KEYS */;
+INSERT INTO `hotel_email_config` VALUES (1,'true','sales@udanchoo.com','Ashoka Tiger Trail Resort <query@ashokacrm.com>','true','sales@udanchoo.com','ritik.makker@gmail.com','smtp-relay.brevo.com','ZazPKQEcHkbmYOXs','587','9eb6e7001@smtp-brevo.com');
+/*!40000 ALTER TABLE `hotel_email_config` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hotel_whatsapp_config`
+--
+
+DROP TABLE IF EXISTS `hotel_whatsapp_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hotel_whatsapp_config` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `whats_app_api_key` varchar(255) DEFAULT NULL,
+  `whats_app_api_url` varchar(255) DEFAULT NULL,
+  `whats_app_guest_quotation_template_id` varchar(255) DEFAULT NULL,
+  `whats_app_registration_template_id` varchar(255) DEFAULT NULL,
+  `whats_app_stay_quotation_template_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hotel_whatsapp_config`
+--
+
+LOCK TABLES `hotel_whatsapp_config` WRITE;
+/*!40000 ALTER TABLE `hotel_whatsapp_config` DISABLE KEYS */;
+INSERT INTO `hotel_whatsapp_config` VALUES (1,'','','','','');
+/*!40000 ALTER TABLE `hotel_whatsapp_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -687,7 +763,7 @@ CREATE TABLE `lead_fh_quotation` (
   KEY `fk_client_sq` (`clientId`),
   CONSTRAINT `fk_client_fhq` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_fh` FOREIGN KEY (`leadId`) REFERENCES `lead_master` (`leadId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -696,6 +772,7 @@ CREATE TABLE `lead_fh_quotation` (
 
 LOCK TABLES `lead_fh_quotation` WRITE;
 /*!40000 ALTER TABLE `lead_fh_quotation` DISABLE KEYS */;
+INSERT INTO `lead_fh_quotation` VALUES (1,8,1,1,300,0,'','2026-02-28 13:16:49','2026-02-28 13:16:49');
 /*!40000 ALTER TABLE `lead_fh_quotation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -720,7 +797,7 @@ CREATE TABLE `lead_fh_quotation_room_details` (
   PRIMARY KEY (`lfqrd`),
   KEY `fk_lfqid` (`lfhqid`),
   CONSTRAINT `fk_lfhqid` FOREIGN KEY (`lfhqid`) REFERENCES `lead_fh_quotation` (`lfhqid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -729,6 +806,7 @@ CREATE TABLE `lead_fh_quotation_room_details` (
 
 LOCK TABLES `lead_fh_quotation_room_details` WRITE;
 /*!40000 ALTER TABLE `lead_fh_quotation_room_details` DISABLE KEYS */;
+INSERT INTO `lead_fh_quotation_room_details` VALUES (1,1,'premium room',1,1,2,0,'2026-03-02','2026-03-03',100),(2,1,'luxury suite',1,4,3,0,'2026-03-07','2026-03-08',200);
 /*!40000 ALTER TABLE `lead_fh_quotation_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -767,7 +845,7 @@ CREATE TABLE `lead_master` (
   KEY `fk_lead_owner_user_idx` (`leadOwner`),
   CONSTRAINT `fk_client` FOREIGN KEY (`clientId`) REFERENCES `client` (`clientId`),
   CONSTRAINT `fk_lead_owner_user` FOREIGN KEY (`leadOwner`) REFERENCES `ashokateam` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -776,6 +854,7 @@ CREATE TABLE `lead_master` (
 
 LOCK TABLES `lead_master` WRITE;
 /*!40000 ALTER TABLE `lead_master` DISABLE KEYS */;
+INSERT INTO `lead_master` VALUES (1,1,2,0,0,0,'','','2026-02-18','2026-02-20',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(2,1,2,0,0,0,'','','2026-02-12','2026-02-13',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(3,1,2,0,0,0,'','','2026-02-05','2026-02-06',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(4,1,2,0,0,0,'','','2026-02-13','2026-02-14',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(5,1,2,0,0,0,'','','2026-02-20','2026-02-27',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(6,1,2,0,0,0,'','','2026-02-06','2026-02-07',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(7,1,2,0,0,0,'','','2026-03-05','2026-03-06',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(8,1,2,0,0,0,'','','2026-02-07','2026-02-08',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(9,1,2,1,0,0,'','','2026-02-25','2026-02-26',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(10,2,2,1,0,0,'','','2026-02-26','2026-02-28',101,NULL,0,0,1,0,0,0,1,1,NULL,NULL),(11,1,1,1,1,1,'','','2026-03-01','2026-03-02',101,NULL,1,0,1,0,0,0,1,1,NULL,NULL);
 /*!40000 ALTER TABLE `lead_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -935,7 +1014,7 @@ CREATE TABLE `master_room_details` (
   `cnbPercentage` int DEFAULT '0',
   `cwbPercentage` int DEFAULT '0',
   PRIMARY KEY (`roomCategoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -944,6 +1023,7 @@ CREATE TABLE `master_room_details` (
 
 LOCK TABLES `master_room_details` WRITE;
 /*!40000 ALTER TABLE `master_room_details` DISABLE KEYS */;
+INSERT INTO `master_room_details` VALUES (1,'deluxe room','','',2,5,1,0,0,1,1,35,20,30);
 /*!40000 ALTER TABLE `master_room_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1075,7 +1155,7 @@ CREATE TABLE `ratetype` (
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`rateTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1084,6 +1164,7 @@ CREATE TABLE `ratetype` (
 
 LOCK TABLES `ratetype` WRITE;
 /*!40000 ALTER TABLE `ratetype` DISABLE KEYS */;
+INSERT INTO `ratetype` VALUES (1,'B2C_Rate_Type','',0,'2026-02-05 08:21:49','2026-02-05 11:41:52'),(2,'B2C_Rate_Type','tester',1,'2026-02-05 11:38:32','2026-02-05 11:38:32'),(3,'B2C_Rate_Type','',0,'2026-02-05 12:47:55','2026-02-05 12:48:08');
 /*!40000 ALTER TABLE `ratetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1138,7 +1219,7 @@ CREATE TABLE `salespartner` (
   KEY `fk_ratetype_idx` (`rateTypeId`),
   CONSTRAINT `fk_city` FOREIGN KEY (`cityId`) REFERENCES `cities` (`destinationId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_ratetype` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1147,6 +1228,7 @@ CREATE TABLE `salespartner` (
 
 LOCK TABLES `salespartner` WRITE;
 /*!40000 ALTER TABLE `salespartner` DISABLE KEYS */;
+INSERT INTO `salespartner` VALUES (1,'Janvi Mehra','Janvi Mehra',2,9999441267,'janvimehra2004@gmail.com',10,'','','',1,'2026-02-05 08:22:37','2026-02-26 13:12:30');
 /*!40000 ALTER TABLE `salespartner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1165,7 +1247,7 @@ CREATE TABLE `session` (
   `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint DEFAULT NULL,
   PRIMARY KEY (`sessionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1174,6 +1256,7 @@ CREATE TABLE `session` (
 
 LOCK TABLES `session` WRITE;
 /*!40000 ALTER TABLE `session` DISABLE KEYS */;
+INSERT INTO `session` VALUES (1,'15Aug_B2B_offer','','2026-02-05 11:43:31','2026-02-05 11:43:31',1),(2,'15Aug_B2B_offer','','2026-02-23 13:44:13','2026-02-23 13:44:13',1),(3,'15Aug_B2B_offer','','2026-02-23 13:44:24','2026-02-23 13:44:24',1);
 /*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1198,7 +1281,7 @@ CREATE TABLE `session_rate_mapping` (
   KEY `rateTypeId` (`rateTypeId`),
   CONSTRAINT `session_rate_mapping_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE CASCADE,
   CONSTRAINT `session_rate_mapping_ibfk_2` FOREIGN KEY (`rateTypeId`) REFERENCES `ratetype` (`rateTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1207,6 +1290,7 @@ CREATE TABLE `session_rate_mapping` (
 
 LOCK TABLES `session_rate_mapping` WRITE;
 /*!40000 ALTER TABLE `session_rate_mapping` DISABLE KEYS */;
+INSERT INTO `session_rate_mapping` VALUES (1,1,2,'2026-02-01','2026-06-19',1,'2026-02-05 11:47:27','2026-02-05 11:47:27'),(2,3,2,'2027-01-01','2027-02-01',1,'2026-02-23 13:45:22','2026-02-23 13:45:22');
 /*!40000 ALTER TABLE `session_rate_mapping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1239,7 +1323,7 @@ CREATE TABLE `sessiondetail` (
   CONSTRAINT `fk_mealPlan` FOREIGN KEY (`mealPlanId`) REFERENCES `mealplan` (`mealPlanId`),
   CONSTRAINT `fk_roomCategory` FOREIGN KEY (`roomCategoryId`) REFERENCES `master_room_details` (`roomCategoryId`),
   CONSTRAINT `fk_sessionId` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1248,6 +1332,7 @@ CREATE TABLE `sessiondetail` (
 
 LOCK TABLES `sessiondetail` WRITE;
 /*!40000 ALTER TABLE `sessiondetail` DISABLE KEYS */;
+INSERT INTO `sessiondetail` VALUES (1,1,1,2000,2000,0,0,0,0,0,NULL,1,'2026-02-05 11:44:41','2026-02-05 11:44:46'),(1,1,2,2500,3000,0,0,0,0,0,NULL,1,'2026-02-05 11:44:35','2026-02-05 11:44:51'),(1,1,3,3000,4000,0,0,0,0,0,NULL,1,'2026-02-05 11:44:30','2026-02-05 11:44:56'),(1,1,4,3500,5000,0,0,0,0,0,NULL,1,'2026-02-05 11:44:24','2026-02-05 11:44:24'),(3,1,1,5000,5000,0,0,0,0,0,NULL,1,'2026-02-23 13:46:20','2026-02-23 13:46:20'),(3,1,2,5000,5000,0,0,0,0,0,NULL,1,'2026-02-23 13:46:11','2026-02-23 13:46:11'),(3,1,3,5000,5000,0,0,0,0,0,NULL,1,'2026-02-23 13:46:03','2026-02-23 13:46:03'),(3,1,4,5000,5000,0,0,0,0,0,NULL,1,'2026-02-23 13:45:52','2026-02-23 13:45:52');
 /*!40000 ALTER TABLE `sessiondetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1344,4 +1429,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-20 11:24:57
+-- Dump completed on 2026-03-09 13:01:08

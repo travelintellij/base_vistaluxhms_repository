@@ -5,8 +5,8 @@
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-                        <script src="<c:url value=" /resources/core/jquery.1.10.2.min.js" />"></script>
-                        <script src="<c:url value=" /resources/core/jquery.autocomplete.min.js" />"></script>
+                        <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+                        <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
 
                         <head>
                             <meta charset="UTF-8">
@@ -305,7 +305,7 @@
                                                 <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;"
                                                     colspan="2">Grand Total :</th>
                                                 <td>
-                                                    <font color="blue"><b> &#8377; ${QUOTATION_OBJ.grandTotal} </b>
+                                                    <font color="blue"><b> &#8377; <span id="grandTotalDisplay">${QUOTATION_OBJ.grandTotal}</span> </b>
                                                     </font>
                                                 </td>
                                             </tr>
@@ -356,8 +356,9 @@
                         <script>
                             $(document).ready(function () {
                                 $("#discount").on("input", function () {
-                                    var grandTotal = parseFloat(${ QUOTATION_OBJ.grandTotal }); // Get the grand total
-                                    var discount = parseFloat($(this).val()) || 0; // Get discount or set to 0 if empty
+                                    var grandTotalText = $("#grandTotalDisplay").text().trim().replace(/,/g, '');
+                                    var grandTotal = parseFloat(grandTotalText) || 0; 
+                                    var discount = parseFloat($(this).val()) || 0; 
 
                                     // Check if discount exceeds grand total
                                     if (discount > grandTotal) {

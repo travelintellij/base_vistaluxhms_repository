@@ -94,6 +94,27 @@
     opacity: 0.9;
     transform: scale(1.03);
   }
+
+  .btn-delete-event {
+    background-color: #ff4d4d !important;
+    border: none !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-size: 14px !important;
+    margin: 4px 2px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease-in-out !important;
+  }
+  .btn-delete-event:hover {
+    background-color: #ff3333 !important;
+  }
+  #finalAmount, #grandTotal {
+    padding-right: 25px !important;
+  }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -395,6 +416,7 @@ h2, h3 {
         <form:hidden path="quotationAudienceType" />
         <form:hidden path="contactMethod" />
         <form:hidden path="update" value="true"/>
+        <input type="hidden" id="initialServiceCount" value="${fn:length(EVENT_PACKAGE.services)}" />
         <input type="hidden" name="deleteIndex" id="deleteIndex" />
 
 
@@ -440,6 +462,9 @@ h2, h3 {
     <font color="red">
       <form:errors path="eventEndDate" cssClass="error"  />
     </font>
+    <font color="red">
+      <form:errors path="email" cssClass="error"  />
+    </font>
     <h3>List of Services</h3>
 
     <div class="table-container">
@@ -457,7 +482,6 @@ h2, h3 {
 
 
 <tbody id="services-table-body">
-<tbody id="services-table-body">
 
 <c:forEach var="service"
            items="${eventPackageEntityDTO.services}"
@@ -474,36 +498,36 @@ h2, h3 {
     </td>
 
     <td>
-      <form:select path="services[${status.index}].eventServiceCostTypeEntity"
+      <form:select path="services[${status.index}].eventServiceCostTypeEntity.eventServiceCostTypeId"
                    items="${LIST_SERVICE_COST_TYPE}"
                    itemValue="eventServiceCostTypeId"
                    itemLabel="eventServiceCostTypeName"
-                   cssClass="form-control"/>
+                   cssClass="form-control service-cost-type" />
     </td>
 
     <td>
-      <form:input path="services[${status.index}].costPerUnit"
-                  class="input-field"
-                  style="width:100px;" />
+      <input name="services[${status.index}].costPerUnit"
+                  class="input-field service-cost-per-unit"
+                  style="width:100px;" placeholder="0" value="${service.costPerUnit == 0 ? '' : service.costPerUnit}" />
     </td>
 
     <td>
-      <form:input path="services[${status.index}].quantity"
-                  class="input-field"
-                  style="width:100px;" />
+      <input name="services[${status.index}].quantity"
+                  class="input-field service-quantity"
+                  style="width:100px;" placeholder="0" value="${service.quantity == 0 ? '' : service.quantity}" />
     </td>
 
     <td>
       <form:input path="services[${status.index}].totalCost"
-                  class="input-field"
-                  style="width:100px;" />
+                  class="input-field service-total-cost"
+                  style="width:100px;" readonly="true" />
     </td>
 
     <td>
-      <button type="button"
+      <button type="button" class="btn-delete-event"
               onclick="submitTo('delete_delete_package_service',
                ${EVENT_PACKAGE.id},
-               '${service.id}',this)">
+               '${service.id}',this); updateGrandTotal();">
         Delete
       </button>
     </td>
@@ -593,7 +617,7 @@ h2, h3 {
 
    function createServiceCostTypeSelect(serviceIndex) {
      let select = document.createElement('select');
-     select.name = `services[\${serviceIndex}].eventServiceCostTypeEntity.eventServiceCostTypeId`;
+     select.name = 'services[' + serviceIndex + '].eventServiceCostTypeEntity.eventServiceCostTypeId';
      select.className = 'form-control';
 
      LIST_SERVICE_COST_TYPE.forEach(type => {
@@ -606,57 +630,60 @@ h2, h3 {
      return select.outerHTML; // Use this when inserting into innerHTML
    }
 
+  let serviceIndexCounter = parseInt(document.getElementById("initialServiceCount").value) || 0;
+
 function addServiceRow() {
 
     const tableBody = document.querySelector("#services-table-body");
-    const serviceIndex = tableBody.rows.length;
+    const serviceIndex = serviceIndexCounter++;
 
     const selectHTML = createServiceCostTypeSelect(serviceIndex);
 
     const newRow = document.createElement("tr");
 
-    // ALWAYS show full fields on screen
     newRow.innerHTML = `
       <td>
-        <input name="services[${serviceIndex}].serviceName"
+        <input name="services[` + serviceIndex + `].serviceName"
                class="input-field"
                style="width:450px;" />
       </td>
 
-      <td>${selectHTML}</td>
+      <td>` + selectHTML + `</td>
 
       <td>
-        <input name="services[${serviceIndex}].costPerUnit"
-               class="input-field"
+        <input name="services[` + serviceIndex + `].costPerUnit"
+               class="input-field service-cost-per-unit"
                style="width:100px;"
                min="0"
-               type="number" />
+               type="number" value="" placeholder="0" />
       </td>
 
       <td>
-        <input name="services[${serviceIndex}].quantity"
-               class="input-field"
+        <input name="services[` + serviceIndex + `].quantity"
+               class="input-field service-quantity"
                style="width:100px;"
                min="0"
-               type="number"/>
+               type="number" value="" placeholder="0" />
       </td>
 
       <td>
-        <input name="services[${serviceIndex}].totalCost"
-               class="input-field"
+        <input name="services[` + serviceIndex + `].totalCost"
+               class="input-field service-total-cost"
                style="width:100px;"
                min="0"
-               type="number"/>
+               type="number" value="0" readonly />
       </td>
 
       <td>
         <input type="button"
                value="Delete"
-               onclick="deleteRow(this)" />
+               class="btn-delete-event"
+               onclick="deleteRow(this); updateGrandTotal();" />
       </td>
     `;
 
     tableBody.appendChild(newRow);
+    updateGrandTotal();
 }
 
 
@@ -675,8 +702,7 @@ function deleteRow(button) {
 
     inputs.forEach(input => {
       if (input.name) {
-        // Replace the index inside the name attribute
-        input.name = input.name.replace(/services\[\d+\]/, `services[\${index}]`);
+        input.name = input.name.replace(/services\[\d+\]/, 'services[' + index + ']');
       }
     });
   });
@@ -692,28 +718,129 @@ function setDeleteIndex(index) {
 
 
 
-  document.addEventListener("DOMContentLoaded", function () {
+   function getRowTotal(row) {
+     const costTypeId = row.querySelector(".service-cost-type, select").value;
+     const costPerUnit = parseFloat(row.querySelector(".service-cost-per-unit").value) || 0;
+     const quantity = parseFloat(row.querySelector(".service-quantity").value) || 0;
+
+     const startDateInput = document.getElementById("eventStartDate") || document.getElementsByName("eventStartDate")[0];
+     const endDateInput = document.getElementById("eventEndDate") || document.getElementsByName("eventEndDate")[0];
+     
+     const startDate = new Date(startDateInput.value);
+     const endDate = new Date(endDateInput.value);
+     let totalNights = 1;
+     if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+       totalNights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+       if (totalNights <= 0) totalNights = 1;
+     }
+     const totalDays = totalNights + 1;
+
+     let costTypeName = "";
+     LIST_SERVICE_COST_TYPE.forEach(type => {
+       if (type.id == costTypeId) costTypeName = type.name;
+     });
+
+     let totalCost = 0;
+     switch (costTypeName) {
+       case "PER_GUEST_PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "PER_GUEST_ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       case "PER_GUEST_PER_DAY":
+         totalCost = quantity * costPerUnit * totalDays;
+         break;
+       case "PER_ROOM_ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       case "PER_ROOM_PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "PER_DAY":
+         totalCost = quantity * costPerUnit * totalDays;
+         break;
+       case "PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       default:
+         totalCost = quantity * costPerUnit;
+     }
+     return totalCost;
+   }
+
+   function calculateRowTotal(row) {
+     const totalCost = getRowTotal(row);
+     const totalCostInput = row.querySelector(".service-total-cost");
+     totalCostInput.value = totalCost.toFixed(2);
+   }
+
+   function updateGrandTotal() {
+     let grandTotal = 0;
+     document.querySelectorAll("#services-table-body tr").forEach(row => {
+       grandTotal += getRowTotal(row);
+     });
+     document.getElementById("grandTotal").textContent = grandTotal.toFixed(2);
+     updateFinalAmount();
+   }
+
+  function updateFinalAmount() {
+    const grandTotalText = document.getElementById("grandTotal").textContent.trim();
+    const grandTotal = parseFloat(grandTotalText) || 0;
     const discountInput = document.getElementById("discountInput");
-    const grandTotalEl = document.getElementById("grandTotal");
-    const finalAmountEl = document.getElementById("finalAmount");
+    let discount = parseFloat(discountInput.value) || 0;
     const errorEl = document.getElementById("discountError");
 
-    const grandTotal = parseInt(grandTotalEl.textContent.trim()) || 0;
+    if (discount > grandTotal) {
+      errorEl.textContent = "Discount cannot exceed Grand Total.";
+      discountInput.value = grandTotal;
+      discount = grandTotal;
+    } else {
+      errorEl.textContent = "";
+    }
 
-    discountInput.addEventListener("input", function () {
-      let discount = parseInt(discountInput.value.trim()) || 0;
+    const finalAmount = grandTotal - discount;
+    document.getElementById("finalAmount").textContent = finalAmount.toFixed(2);
+  }
 
-      if (discount > grandTotal) {
-        errorEl.textContent = "Discount cannot exceed Grand Total.";
-        discountInput.value = grandTotal;
-        discount = grandTotal;
-      } else {
-        errorEl.textContent = "";
-      }
+  document.addEventListener("DOMContentLoaded", function () {
+    const discountInput = document.getElementById("discountInput");
+    discountInput.addEventListener("input", updateFinalAmount);
+    
+    const recalculateBtn = document.getElementById("recalculate");
+    if (recalculateBtn) {
+        recalculateBtn.addEventListener("click", function(e) {
+            // Recalculate all rows
+            document.querySelectorAll("#services-table-body tr").forEach(row => {
+                calculateRowTotal(row);
+            });
+            updateGrandTotal();
+        });
+    }
 
-      const finalAmount = grandTotal - discount;
-      finalAmountEl.textContent = finalAmount;
-    });
+     // Real-time calculation listeners
+     const tableBody = document.getElementById("services-table-body");
+     if (tableBody) {
+         tableBody.addEventListener("input", function(e) {
+             if (e.target.matches(".service-cost-per-unit, .service-quantity")) {
+                 updateGrandTotal();
+             }
+         });
+         tableBody.addEventListener("change", function(e) {
+             if (e.target.matches(".service-cost-type")) {
+                 updateGrandTotal();
+             }
+         });
+     }
+
+     updateGrandTotal();
+
+    // Initial calculation (optional)
+    // document.querySelectorAll("#services-table-body tr").forEach(calculateRowTotal);
+    // updateGrandTotal();
   });
 
 

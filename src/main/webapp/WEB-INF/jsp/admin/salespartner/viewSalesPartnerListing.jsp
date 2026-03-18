@@ -108,7 +108,7 @@
                     <td style="width:12%;">${salesPartnerRec.salesPartnerId}</td>
                     <td style="text-align:left;">${salesPartnerRec.salesPartnerShortName}</td>
                     <td style="text-align:left;">${salesPartnerRec.salesPartnerName}</td>
-                    <td style="text-align:left;">${salesPartnerRec.rateTypeEntity.rateTypeName}</td>
+                    <td style="text-align:left;">${salesPartnerRec.rateTypeEntity != null ? salesPartnerRec.rateTypeEntity.rateTypeName : 'N/A'}</td>
                     <td style="text-align:left;">${salesPartnerRec.cityName}</td>
                     <td>
                         <c:if test="${salesPartnerRec.active eq true}">

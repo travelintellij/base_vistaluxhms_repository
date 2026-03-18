@@ -246,6 +246,16 @@ public class SalesServiceController {
         // Adding user details to the model
         modelView.addObject("userName", userObj.getUsername());
         modelView.addObject("Id", userObj.getUserId());
+
+        // FIX: SalesPartnerEntityDto extends SalesPartnerEntity which defaults
+        // cityId to DEFAULT_CITY_ID (8) and active to true. When no filter is applied,
+        // these defaults cause the query to only return partners with cityId=8.
+        // Reset cityId to 0 if it still has the default value and no city name was typed.
+        if (searchSalesPartnerObj.getCityId() == VistaluxConstants.DEFAULT_CITY_ID
+                && (searchSalesPartnerObj.getCityName() == null || searchSalesPartnerObj.getCityName().trim().isEmpty())) {
+            searchSalesPartnerObj.setCityId(0);
+        }
+
         // Filtering sales partners based on the search criteria
         List<SalesPartnerEntity> salesPartnerFilteredList = salesService.filterSalesPartners(searchSalesPartnerObj);
         List<SalesPartnerEntityDto> salesPartnerDTOFilteredList = generateSalesPartnerObj(salesPartnerFilteredList);
@@ -262,11 +272,18 @@ public class SalesServiceController {
             try {
                 salesPartnerEntityDto = new SalesPartnerEntityDto();
                 salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
-                salesPartnerEntityDto
-                        .setCityName(commonService.findDestinationById(salesPartnerEntity.getCityId()).getCityName());
+                // Safe city name lookup - don't skip entry if city is missing
+                String cityName = "N/A";
+                if (salesPartnerEntity.getCityId() > 0) {
+                    City_Entity cityEntity = commonService.findDestinationById(salesPartnerEntity.getCityId());
+                    if (cityEntity != null) {
+                        cityName = cityEntity.getCityName();
+                    }
+                }
+                salesPartnerEntityDto.setCityName(cityName);
                 salesPartnerVoList.add(salesPartnerEntityDto);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                // Still add the partner even if city lookup fails
                 e.printStackTrace();
             }
         }
