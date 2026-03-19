@@ -146,6 +146,17 @@
         }
     });
 
+    $('#cityName').on('input', function() {
+        jQuery("#cityId").val('');
+    });
 
+    $('#cityName').on('blur', function() {
+        var $input = $(this);
+        setTimeout(function() {
+            if (!jQuery("#cityId").val()) {
+                $input.val('');
+            }
+        }, 250);
+    });
     </script>
 <jsp:include page="../../footer.jsp" />

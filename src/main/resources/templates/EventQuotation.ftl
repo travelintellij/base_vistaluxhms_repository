@@ -264,9 +264,9 @@
             <tbody>
             <#list services as service>
                 <tr>
-                    <td>${service.name}</td>
-                    <td>${service.costType}</td>
-                    <td>₹ ${service.amount?string["#,##0"]}</td>
+                    <td>${service.name!"N/A"}</td>
+                    <td>${service.costType!"N/A"}</td>
+                    <td>₹ ${(service.amount!0)?string["#,##0"]}</td>
                 </tr>
             </#list>
             </tbody>
@@ -295,7 +295,7 @@
             <tbody>
             <#list services as service>
                 <tr>
-                    <td>${service.name}</td>
+                    <td>${service.name!"N/A"}</td>
                 </tr>
             </#list>
             </tbody>
@@ -314,7 +314,7 @@
             <tbody>
             <#list services as service>
                 <tr>
-                    <td>${service.name}</td>
+                    <td>${service.name!"N/A"}</td>
                 </tr>
             </#list>
             </tbody>

@@ -7,8 +7,8 @@
                     <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
                         <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 
-                        <script src="<c:url value=" /resources/core/jquery.1.10.2.min.js" />"></script>
-                        <script src="<c:url value=" /resources/core/jquery.autocomplete.min.js" />"></script>
+                        <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+                        <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
                         <style>
                             body {
                                 background-image: url('<%= request.getContextPath() %>/resources/images/salespartneradd.jpg');
@@ -167,6 +167,19 @@
                                         })
                                     };
                                 }
+                            });
+
+                            $('#cityName').on('input', function() {
+                                jQuery("#cityId").val('');
+                            });
+
+                            $('#cityName').on('blur', function() {
+                                var $input = $(this);
+                                setTimeout(function() {
+                                    if (!jQuery("#cityId").val()) {
+                                        $input.val('');
+                                    }
+                                }, 250);
                             });
                         </script>
                         <jsp:include page="../../footer.jsp" />

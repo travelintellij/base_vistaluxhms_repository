@@ -970,10 +970,10 @@ body:has(.menu-page) .pdf-bg-img {
         <tbody>
         <#list services as service>
             <tr>
-                <td>${service.name}</td>
-                <td>${service.costType}</td>
+                <td>${service.name!"N/A"}</td>
+                <td>${service.costType!"N/A"}</td>
                 <td>
-                    ₹ ${service.amount?string["#,##0"]}
+                    ₹ ${(service.amount!0)?string["#,##0"]}
                 </td>
             </tr>
         </#list>
@@ -1003,7 +1003,7 @@ body:has(.menu-page) .pdf-bg-img {
         <tbody>
         <#list services as service>
             <tr>
-                <td>${service.name}</td>
+                <td>${service.name!"N/A"}</td>
             </tr>
         </#list>
         </tbody>
@@ -1022,7 +1022,7 @@ body:has(.menu-page) .pdf-bg-img {
         <tbody>
         <#list services as service>
             <tr>
-                <td>${service.name}</td>
+                <td>${service.name!"N/A"}</td>
             </tr>
         </#list>
      </tbody>
