@@ -136,10 +136,22 @@
                                     </div>
                                     <div class="form-cell">
                                         <label for="">Date of Birth</label>
-                                        <form:input path="dob" type="date" required="required" />
+                                        <!-- ===== AI MODIFICATION START ===== -->
+                                        <!-- Change: Added max attribute to DOB date input to prevent future dates -->
+                                        <!-- Reason: Date of birth cannot logically be a future date -->
+                                        <!-- Scope: Admin_Add_User.jsp — DOB date field -->
+                                        <!-- <form:input path="dob" type="date" /> -->
+                                        <form:input path="dob" type="date" required="required" id="dobField" />
                                         <font color="red">
                                             <form:errors path="dob" cssClass="error" />
                                         </font>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                var today = new Date().toISOString().split('T')[0];
+                                                document.getElementById('dobField').setAttribute('max', today);
+                                            });
+                                        </script>
+                                        <!-- ===== AI MODIFICATION END ===== -->
                                     </div>
 
                                     <div class="form-cell">

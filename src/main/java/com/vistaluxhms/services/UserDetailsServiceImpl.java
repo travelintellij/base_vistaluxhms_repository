@@ -29,7 +29,9 @@ import com.vistaluxhms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,14 +55,51 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetailsObj loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		Optional<AshokaTeam> optionalUsers = userRepository
-				.findByUsernameAndActiveAndDeletedAndAccountLockedAndAccountExpiredAndCredentialsExpired(userName, true,
-						false, false, false, false);
+		// Step 1: Find the user by username only (don't filter by locked/active yet so we can give specific errors)
+		Optional<AshokaTeam> optionalUsers = userRepository.findByUsername(userName);
 
-		optionalUsers
+		AshokaTeam userEntity = optionalUsers
 				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-		return optionalUsers
-				.map(UserDetailsObj::new).get();
+
+		// Step 2: Check if user is deleted or inactive
+		if (userEntity.isDeleted()) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		if (!userEntity.isActive()) {
+			throw new DisabledException("Your account has been disabled.");
+		}
+
+		// Step 3: Run the lastWorkingDay check (Auto-Lock logic)
+		// ===== AI MODIFICATION START =====
+		// Change: Added login-time check for lastWorkingDay — auto-lock if expired
+		// Reason: If a user's last working day was set to a future date and that date has now passed,
+		//         the account must be locked automatically at login time
+		if (userEntity.getLastWorkingDay() != null) {
+			java.time.LocalDate today = java.time.LocalDate.now();
+			java.time.LocalDate lastDay = userEntity.getLastWorkingDay().toLocalDate();
+			if (today.isAfter(lastDay)) {
+				// today is after lastWorkingDay — lock the account
+				userEntity.setAccountLocked(true);
+				userRepository.save(userEntity);
+				throw new LockedException("Your account has been locked because your last working day (" 
+						+ userEntity.getLastWorkingDay() + ") has passed.");
+			}
+		}
+		// ===== AI MODIFICATION END =====
+
+		// Step 4: Check other account status flags
+		if (userEntity.isAccountLocked()) {
+			throw new LockedException("Your account is locked. Please contact administrator.");
+		}
+		if (userEntity.isAccountExpired()) {
+			throw new AccountExpiredException("Your account has expired.");
+		}
+		if (userEntity.isCredentialsExpired()) {
+			// CredentialsExpiredException could be used here if preferred
+		}
+
+		return new UserDetailsObj(userEntity);
+	}
 		/*
 		 * Optional<UdnTeam> optionalUser =
 		 * userRepository.findByUsernameAndActive(userName,true);
@@ -88,7 +127,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		 * throw new UsernameNotFoundException("User Name is not Found");
 		 * }
 		 */
-	}
+
 
 	public List<UserDetailsObj> findAllUsers() {
 		List<AshokaTeam> listUdnTeam = userRepository.findAll(Sort.by(Sort.Order.desc("active")));

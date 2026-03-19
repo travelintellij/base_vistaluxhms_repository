@@ -1,4 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!-- ===== AI MODIFICATION START ===== -->
+<!-- Change: Added missing JSTL Functions taglib import for fn prefix -->
+<!-- Reason: fn:startsWith() is used on line 364 for logo URL processing but the fn taglib was not imported, causing a JasperException -->
+<!-- Scope: login.jsp — taglib declarations -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!-- ===== AI MODIFICATION END ===== -->
   <!DOCTYPE html>
   <html lang="en">
 
@@ -355,14 +361,26 @@
 
             <div class="login-logo">
               <c:choose>
+                <%-- ===== AI MODIFICATION START ===== --%>
+                <%-- Change: Add context path dynamically to internally uploaded logos on login page --%>
+                <%-- Reason: Avoid broken image link by prepending context path for internal resources --%>
+                <%-- Scope: Login Page > Logo URL processing --%>
                 <c:when test="${not empty centralConfig.logoPath}">
-                  <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                  <c:choose>
+                    <c:when test="${fn:startsWith(centralConfig.logoPath, '/resources')}">
+                      <c:set var="logoUrl" value="${pageContext.request.contextPath}${centralConfig.logoPath}" />
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="logoUrl" value="${centralConfig.logoPath}" />
+                    </c:otherwise>
+                  </c:choose>
                 </c:when>
                 <c:otherwise>
                   <c:set var="logoUrl" value="${pageContext.request.contextPath}/resources/images/ashoka_logo.jpg" />
                 </c:otherwise>
               </c:choose>
               <img src="${logoUrl}" alt="Hotel Logo">
+              <%-- ===== AI MODIFICATION END ===== --%>
             </div>
 
             <h2 class="login-heading">Welcome Back</h2>
@@ -370,7 +388,14 @@
 
             <c:if test="${param.error != null}">
               <div class="login-error">
-                Invalid username or password. Please try again.
+                <c:choose>
+                  <c:when test="${not empty SPRING_SECURITY_LAST_EXCEPTION.message}">
+                    ${SPRING_SECURITY_LAST_EXCEPTION.message}
+                  </c:when>
+                  <c:otherwise>
+                    Invalid username or password. Please try again.
+                  </c:otherwise>
+                </c:choose>
               </div>
             </c:if>
 
