@@ -99,7 +99,7 @@
 
                             <form action="view_edit_master_service_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="id" value="${masterServiceRec.id}" />
-                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                <button type="submit" class="btn btn-sm" style="background-color: #c09d6b; color: white; border: none;">Edit</button>
                              </form>
 
 

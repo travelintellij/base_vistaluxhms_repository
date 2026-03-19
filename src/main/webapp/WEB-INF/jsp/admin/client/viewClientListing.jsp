@@ -128,11 +128,11 @@
                       <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
                   </form:select>
             </div>
+        </div>
 
+        <div class="form-actions" style="width: 100%; display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
 
-        <div class="form-actions" style="flex:1;min-width:250px;display:flex;gap:8px;flex-wrap:wrap;">
-
-            <button type="submit" class="apply-filter-btn">Apply Filter</button>
+            <button type="submit" class="apply-filter-btn" style="background-color: #0e2238; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 600;">Apply Filter</button>
 
             <a href="view_clients_list">
                 <input type="button" class="clear-filter-btn" value="Clear Filter">
@@ -148,8 +148,6 @@
    Export PDF
 </a>
  </div>
-
-        </div>
     </form:form>
 </div>
 </sec:authorize>
@@ -205,7 +203,7 @@
                         </form>
                         <form action="view_edit_client_form" method="POST" style="display:inline;">
                             <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px; background-color: #c09d6b; color: white; border: none; border-radius: 4px;">Edit</button>
                         </form>
 
                     </td>

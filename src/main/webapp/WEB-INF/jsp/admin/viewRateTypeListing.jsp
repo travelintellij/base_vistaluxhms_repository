@@ -91,12 +91,12 @@
                           <form action="view_edit_rate_type_form" method="POST" style="display:inline;">
                               <!-- Hidden field to store destinationId -->
                               <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                              <button type="submit" class="btn btn-warning btn-sm"  style="height: 30px;  padding: 5px 10px; ">Edit</button>
+                              <button type="submit" class="btn btn-sm"  style="height: 30px;  padding: 5px 10px; background-color: #c09d6b; color: white; border: none;">Edit</button>
                          </form>
                          <form action="view_rate_type_sessionwise" method="POST" style="display:inline;">
                             <!-- Hidden field to store destinationId -->
                             <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                            <button type="submit" class="btn btn-warning btn-sm"  style="height: 30px;  padding: 5px 10px; ">&#128197; Check Applicable Dates</button>
+                            <button type="submit" class="btn btn-sm"  style="height: 30px;  padding: 5px 10px; background-color: #c09d6b; color: white; border: none;">&#128197; Check Applicable Dates</button>
                         </form>
 
 
