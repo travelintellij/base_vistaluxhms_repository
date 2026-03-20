@@ -81,6 +81,9 @@ public class SocialMediaLeadService {
         List<Map<String, String>> importedLeads = new ArrayList<>();
 
         try {
+            // Ensure the tracking table exists (auto-creates on first run)
+            ensureTrackingTableExists();
+
             com.vistaluxhms.entity.CampaignFormEntity formConfig = campaignFormRepository.findById(campaignFormId)
                     .orElse(null);
             if (formConfig == null) {
