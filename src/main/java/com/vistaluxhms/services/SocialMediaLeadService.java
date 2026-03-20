@@ -390,7 +390,7 @@ public class SocialMediaLeadService {
         lead.setCwb(0);
         lead.setCnb(0);
         lead.setCompChild(0);
-        lead.setLeadStatus(1); // Open
+        lead.setLeadStatus(101); // Open (workload_status ID 101)
 
         // Use default lead owner from Central Config, fallback to 1 (admin)
         int defaultOwnerId = 1;

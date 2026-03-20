@@ -38,7 +38,8 @@
                                 }
 
                                 .sync-toast.show {
-                                    transform: translateX(0);
+                                    visibility: visible;
+                                    transform: translateX(-50%);
                                 }
 
                                 .sync-toast.success {
@@ -264,7 +265,7 @@
                                                                 <td><img src="<%= request.getContextPath() %>/resources/images/${leadRec.flagged ? 'tick.jpg' : 'cross.jpg'}"
                                                                         alt="${leadRec.flagged ? 'Flagged' : 'Not Flagged'}"
                                                                         style="width: 25px; height: 25px;" /></td>
-                                                                <td>${leadRec.clientName}</td>
+                                                                <td>${fn:escapeXml(leadRec.clientName)}</td>
                                                                 <td>${leadRec.formattedCheckInDate}</td>
                                                                 <td>${leadRec.formattedCheckOutDate}</td>
                                                                 <td>${leadRec.b2b ? "B2B" : "B2C"}</td>
@@ -446,7 +447,7 @@
                                         btn.classList.add('loading');
                                         btn.disabled = true;
 
-                                        fetch('<%= request.getContextPath() %>/sync_instagram_leads?campaignFormId=' + formId)
+                                        fetch('<%= request.getContextPath() %>/sync_social_leads?campaignFormId=' + formId)
                                             .then(function (response) { return response.json(); })
                                             .then(function (data) {
                                                 btn.classList.remove('loading');
