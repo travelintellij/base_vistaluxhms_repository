@@ -234,9 +234,9 @@
                                             </c:if>
 
 
-                                            <!-- Client List Table Section -->
-                                            <div class="form-container client-list-container"
-                                                style="width: 60%; min-width: 60%; max-width: 60%;">
+                                            <!-- Leads List Table Section -->
+                                            <div class="form-container leads-list-container"
+                                                style="width: 100%; max-width: 100%; margin: 20px 0;">
                                                 <c:set value="${FILTERED_LEADS_RECORDS}" var="leadsList" />
                                                 <table>
                                                     <thead>

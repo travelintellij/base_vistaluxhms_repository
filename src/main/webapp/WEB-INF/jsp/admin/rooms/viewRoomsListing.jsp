@@ -83,25 +83,25 @@
             </thead>
             <tbody>
                 <c:forEach var="room" items="${ACTIVE_ROOMS_LIST}">
-                    <tr >
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.roomCategoryId}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.roomCategoryName}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.size}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.maxOccupancy}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.standardOccupancy}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.extraBed}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.cwbPercentage}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.categoryLevel}</td>
-                        <td style="${room.active ? '' : 'background-color: #ffcccc;'}">${room.active}</td>
+                    <tr class="${room.active ? '' : 'row-inactive'}">
+                        <td>${room.roomCategoryId}</td>
+                        <td>${room.roomCategoryName}</td>
+                        <td>${room.size}</td>
+                        <td>${room.maxOccupancy}</td>
+                        <td>${room.standardOccupancy}</td>
+                        <td>${room.extraBed}</td>
+                        <td>${room.cwbPercentage}</td>
+                        <td>${room.categoryLevel}</td>
+                        <td>${room.active}</td>
                         <td class="action-btns">
                             <form action="view_room_category_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="roomCategoryId" value="${room.roomCategoryId}" />
-                                <button type="submit" class="btn btn-info btn-sm">View</button>
+                                <button type="submit" class="view-btn">View</button>
                              </form>
 
                             <form action="view_edit_room_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="roomCategoryId" value="${room.roomCategoryId}" />
-                                <button type="submit" class="btn btn-sm" style="background-color: #c09d6b; color: white; border: none;">Edit</button>
+                                <button type="submit" class="edit-btn">Edit</button>
                              </form>
 
 
@@ -111,7 +111,7 @@
             </tbody>
         </table>
         <div class="text-center mt-3">
-            <a href="view_add_room_category_form" class="btn btn-success">Add New Room Category</a>
+            <a href="view_add_room_category_form" class="edit-btn" style="padding: 8px 20px !important; font-size: 0.875rem !important;">Add New Room Category</a>
         </div>
     </div>
 </body>

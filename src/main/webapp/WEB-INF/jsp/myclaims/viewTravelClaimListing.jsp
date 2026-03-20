@@ -79,17 +79,7 @@ th, td {
   }
 
   .filter-bar button {
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .filter-bar button:hover {
-    background-color: #0056b3;
+    margin-right: 5px;
   }
 
  .date-input {
@@ -186,10 +176,10 @@ th, td {
           </div>
 
         <div class="filter-item">
-            <button type="submit" name="view_travelclaimlist" id="view_travelclaimlist">Apply Filter</button>
-            <a href="view_travel_claim_list?view_travelclaimlist" style="background-color: green; color: white; border-radius: 4px; padding: 6px 12px; text-decoration: none; display: inline-block;">Clear Filter</a>
-            <button type="submit" name="download_travelclaimlist" id="download_travelclaimlist">Download PDF</button>
-            <button type="button" onclick="openEmailModal()">Email Claims</button>
+            <button type="submit" name="view_travelclaimlist" id="view_travelclaimlist" class="apply-filter-btn">Apply Filter</button>
+            <a href="view_travel_claim_list?view_travelclaimlist" class="clear-filter-btn">Clear Filter</a>
+            <button type="submit" name="download_travelclaimlist" id="download_travelclaimlist" class="export-btn">Download PDF</button>
+            <button type="button" onclick="openEmailModal()" class="view-btn">Email Claims</button>
         </div>
         <div id="emailModal" class="modal" style="display:none;">
                   <div class="modal-content">
@@ -199,8 +189,8 @@ th, td {
                               placeholder="Enter comma or semicolon separated email addresses"></textarea>
 
                     <div id="emailError" style="color:red; font-size:14px; margin-top:5px;"></div>
-                    <button type="button" onclick="submitEmail()">Send</button>
-                    <button type="button" onclick="closeEmailModal()">Cancel</button>
+                    <button type="button" onclick="submitEmail()" class="edit-btn">Send</button>
+                    <button type="button" onclick="closeEmailModal()" class="view-btn">Cancel</button>
                   </div>
         </div>
         </div>
@@ -246,7 +236,7 @@ th, td {
                     <td>
                         <form action="view_view_travel_claim_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                <button type="submit" class="view-btn">View</button>
                         </form>
                         <c:set var="statusOK" value="${claimRec.claimStatus == TRAV_EXP_DEF_STATUS}" />
                         <c:set var="shouldShow" value="${statusOK}" />
@@ -257,7 +247,7 @@ th, td {
                         <c:if test="${shouldShow}">
                             <form action="view_edit_travel_claim_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="travelClaimId" value="${claimRec.travelClaimId}" />
-                                <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                                <button type="submit" class="edit-btn">Edit</button>
                             </form>
                         </c:if>
 

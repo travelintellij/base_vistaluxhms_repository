@@ -91,17 +91,17 @@
                       <td>${cityRec.countryName }</td>
                       <td>
                       <c:if test="${cityRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;;padding: 4px 5px;pointer-events: none;"  value="Active" />
+                            <input type="button" class="status-badge-active"  value="Active" />
                         </c:if>
                         <c:if test="${cityRec.active eq false}">
-                                <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;;padding: 4px 5px;pointer-events: none;"  value="In-Active" />
+                                <input type="button" class="status-badge-inactive"  value="In-Active" />
                         </c:if>
                        </td>
                       <td>
                           <form action="view_edit_city_form" method="POST" style="display:inline;">
                               <!-- Hidden field to store destinationId -->
                               <input type="hidden" name="destinationId" value="${cityRec.destinationId}" />
-                              <button type="submit" class="edit-btn"  style="height: 25px;  padding: 5px 10px; ">Edit</button>
+                              <button type="submit" class="edit-btn">Edit</button>
                           </form>
 
                       </td>

@@ -8,6 +8,7 @@
 <head>
     <title>Documents List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
     <style>
         body {
             margin: 0;
@@ -77,48 +78,6 @@
             transition: all 0.3s ease;
         }
         .add-btn:hover { background: #eb5a3c; transform: scale(1.05); }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        table th, table td {
-            padding: 12px 15px;
-            text-align: left;
-            font-size: 18px;
-            border-bottom: 1px solid #ddd;
-        }
-        table.table th {
-            background-color: #FFEB3B !important;
-            color: #000; !important;
-            font-weight: bold;
-            border-bottom: 2px solid #ccc;
-        }
-
-        table tr:nth-child(even) { background-color: #f3f3f3; }
-        table tr:hover { background-color: #d0eaff; }
-
-        .view-btn, .download-btn, .delete-btn {
-            display: inline-block;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 14px;
-            padding: 8px 14px;
-            font-weight: bold;
-            text-decoration: none;
-            margin-right: 5px;
-            transition: all 0.3s ease;
-        }
-        .view-btn { background: #43cea2; }
-        .view-btn:hover { background: #2bb07f; }
-        .download-btn { background: #185a9d; }
-        .download-btn:hover { background: #0f3c6a; }
-        .delete-btn { background: #e74c3c; }
-        .delete-btn:hover { background: #c0392b; }
 
 
         .modal {
@@ -200,22 +159,8 @@
         }
 
         .doc-actions a {
-            padding: 7px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #fff;
-            text-decoration: none;
             margin-right: 5px;
-            transition: all 0.3s ease;
         }
-
-        .doc-actions .view-btn { background: #43cea2; }
-        .doc-actions .view-btn:hover { background: #2bb07f; }
-        .doc-actions .download-btn { background: #185a9d; }
-        .doc-actions .download-btn:hover { background: #0f3c6a; }
-        .doc-actions .delete-btn { background: #e74c3c; }
-        .doc-actions .delete-btn:hover { background: #c0392b; }
 
 
     </style>
@@ -277,9 +222,9 @@
                                 <td>${doc.documentName}</td>
                                 <td>${doc.fileName}</td>
                                 <td class="doc-actions">
-                                    <a href="<c:url value='/download_document/${doc.documentId}'/>" class="download-btn">Download</a>
+                                    <a href="<c:url value='/download_document/${doc.documentId}'/>" class="export-btn">Download</a>
                                     <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')">
-                                        <a href="#" class="delete-btn" onclick="openDeleteModal(${doc.documentId})">Delete</a>
+                                        <a href="#" class="delete-btn" onclick="openDeleteModal('${doc.documentId}')">Delete</a>
                                     </sec:authorize>
                                     <a href="<c:url value='/view_document/${doc.documentId}'/>" target="_blank" class="view-btn">View</a>
                                 </td>

@@ -112,24 +112,24 @@
                     <td style="text-align:left;">${salesPartnerRec.cityName}</td>
                     <td>
                         <c:if test="${salesPartnerRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
+                            <input type="button" class="status-badge-active" value="Active" />
                         </c:if>
                         <c:if test="${salesPartnerRec.active eq false}">
-                            <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
+                            <input type="button" class="status-badge-inactive" value="Inactive" />
                         </c:if>
                     </td>
                     <td style="text-align:left;">
                         <form action="view_sales_partner_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                <button type="submit" class="view-btn">View</button>
                         </form>
                         <form action="view_edit_sales_partner_form" method="POST" style="display:inline;">
                             <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                            <button type="submit" class="edit-btn">Edit</button>
                         </form>
                         <form action="view_share_season_sales_partner_form" method="POST" style="display:inline;">
                             <input type="hidden" name="salesPartnerId" value="${salesPartnerRec.salesPartnerId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Share Season Rates</button>
+                            <button type="submit" class="edit-btn">Share Season Rates</button>
                         </form>
                     </td>
                 </tr>

@@ -35,11 +35,15 @@
 
                                     <!-- ===== HEADER ===== -->
                                     <header class="gs-header">
+                                        <%-- Back Button Integration: Shows on all pages except the main home dashboard --%>
+                                      <c:if test="${not fn:contains(pageContext.request.requestURI, 'view_workloadhome') and not fn:contains(pageContext.request.requestURI, 'resortHomePage')}">
+        <a href="javascript:history.back()" class="gs-back-btn" title="Go Back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+        </a>
+    </c:if>
                                         <a href="view_workloadhome" class="gs-header-brand">
-                                            <%-- ===== AI MODIFICATION START ===== --%>
-                                            <%-- Change: Add context path dynamically to internally uploaded logos --%>
-                                            <%-- Reason: Central config logo uses relative paths starting with /resources, needing correct host evaluation --%>
-                                            <%-- Scope: Navigation Header > Logo Image Source --%>
                                             <c:choose>
                                                 <c:when test="${not empty centralConfig.logoPath}">
                                                     <c:choose>
@@ -57,7 +61,6 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <img id="topLogo" src="${logoUrl}" alt="Logo">
-                                            <%-- ===== AI MODIFICATION END ===== --%>
                                             <div class="gs-header-title">
                                                 <c:choose>
                                                     <c:when test="${not empty centralConfig.hotelName}">
@@ -70,7 +73,7 @@
                                             </div>
                                         </a>
 
-                                        <div class="gs-header-user">
+                                        <div class="gs-header-user" style="margin-left: auto;">
                                             <span>Welcome, <strong>
                                                     <sec:authentication property="principal.username" />
                                                 </strong></span>
