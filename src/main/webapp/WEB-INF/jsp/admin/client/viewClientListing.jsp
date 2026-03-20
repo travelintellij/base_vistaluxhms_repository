@@ -32,23 +32,6 @@
     }
 
 
-    .export-btn{
-        padding:6px 12px;
-        background:#2e7d32;
-        color:white;
-        border-radius:4px;
-        font-weight:600;
-        text-decoration:none;
-    }
-
-    .export-btn.pdf{
-        background:#c62828;
-    }
-
-    .export-btn:hover{
-        opacity:0.9;
-    }
-
     .form-row {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -61,19 +44,11 @@
         min-width: 200px !important;
     }
 
-    .form-actions {
-        flex: 1 1 250px !important;
-        min-width: 250px !important;
-        display: flex !important;
-        gap: 8px !important;
-        flex-wrap: wrap !important;
-    }
-
 
 </style>
 
 <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
-<div class="form-container filter-container" style="width: 85%; min-width: 85%; max-width: 90%;">
+<div class="form-container filter-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -130,9 +105,9 @@
             </div>
         </div>
 
-        <div class="form-actions" style="width: 100%; display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+        <div class="form-actions">
 
-            <button type="submit" class="apply-filter-btn" style="background-color: #0e2238; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 600;">Apply Filter</button>
+            <button type="submit" class="apply-filter-btn">Apply Filter</button>
 
             <a href="view_clients_list">
                 <input type="button" class="clear-filter-btn" value="Clear Filter">
@@ -163,7 +138,7 @@
 
 <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
 <!-- Client List Table Section -->
-<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+<div class="form-container client-list-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <c:set value="${CLIENT_FILTERED_LIST}" var="clientList" />
     <table>
         <thead>
@@ -190,20 +165,20 @@
 
                     <td>
                         <c:if test="${clientRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
+                            <input type="button" class="status-badge-active" value="Active" />
                         </c:if>
                         <c:if test="${clientRec.active eq false}">
-                            <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
+                            <input type="button" class="status-badge-inactive" value="Inactive" />
                         </c:if>
                     </td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                <button type="submit" class="view-btn">View</button>
                         </form>
                         <form action="view_edit_client_form" method="POST" style="display:inline;">
                             <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px; background-color: #c09d6b; color: white; border: none; border-radius: 4px;">Edit</button>
+                            <button type="submit" class="edit-btn">Edit</button>
                         </form>
 
                     </td>

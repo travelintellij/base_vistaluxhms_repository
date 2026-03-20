@@ -208,11 +208,36 @@ a:hover {
     color: var(--gs-text-on-dark);
     padding: 0 var(--gs-space-6);
     display: flex;
-    align-items:center;
-    justify-content: space-between;
-    height:80px;
+    align-items: center;
+    justify-content: flex-start; /* Changed to flex-start to allow back-btn -> brand alignment */
+    height: 80px;
     z-index: 100;
     border-bottom: 2px solid var(--gs-gold);
+}
+
+.gs-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: var(--gs-radius-full);
+    color: var(--gs-gold);
+    margin-right: var(--gs-space-5);
+    transition: all var(--gs-transition-base);
+    text-decoration: none !important;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gs-back-btn:hover {
+    background: var(--gs-gold);
+    color: var(--gs-charcoal);
+    transform: translateX(-4px);
+    box-shadow: 0 0 15px var(--gs-gold-glow);
 }
 
 .gs-header-brand {

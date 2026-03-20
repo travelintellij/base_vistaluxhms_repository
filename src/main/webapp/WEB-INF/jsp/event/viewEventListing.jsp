@@ -112,16 +112,16 @@
             <tbody>
                 <c:forEach var="event" items="${FILTERED_EVENT_RECORDS}">
                     <tr >
-                        <td style="background-color: #F9FAFB;">${event.id}</td>
-                        <td style="background-color: #F9FAFB;">${event.guestName}</td>
-                        <td style="background-color: #F9FAFB;">${event.formattedStartDate}</td>
-                        <td style="background-color: #F9FAFB;">${event.formattedEndDate}</td>
-                        <td style="background-color: #F9FAFB;">${event.baseGuestCount}</td>
-                        <td style="background-color: #F9FAFB;">${event.grand_total_cost}</td>
+                        <td>${event.id}</td>
+                        <td>${event.guestName}</td>
+                        <td>${event.formattedStartDate}</td>
+                        <td>${event.formattedEndDate}</td>
+                        <td>${event.baseGuestCount}</td>
+                        <td>${event.grand_total_cost}</td>
                         <td class="action-btns">
                             <form action="load_event_quotation_wiz_2" method="POST" style="display:inline;">
                                 <input type="hidden" name="id" value="${event.id}" />
-                                <button type="submit" class="btn btn-info btn-sm">Open</button>
+                                <button type="submit" class="view-btn">Open</button>
                              </form>
                         </td>
                     </tr>
@@ -129,7 +129,7 @@
             </tbody>
         </table>
         <div class="text-center mt-3">
-            <a href="view_event_quotation_form_wiz1" class="btn btn-success">New Event Quotation </a>
+            <a href="view_event_quotation_form_wiz1" class="edit-btn">New Event Quotation </a>
 
 
 <!-- Pagination Section -->

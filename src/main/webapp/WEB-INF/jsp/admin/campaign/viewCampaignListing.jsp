@@ -290,7 +290,7 @@
                         <div class="campaign-header">
                             <h2>Campaign Management</h2>
                             <div class="action-buttons">
-                                <a href="view_add_meta_form" class="btn-meta">+ Add Meta Form</a>
+                                <a href="view_add_meta_form" class="edit-btn">+ Add Meta Form</a>
                             </div>
                         </div>
 
@@ -350,17 +350,17 @@
                                                         <c:choose>
                                                             <c:when test="${form.active}">
                                                                 <a href="toggle_campaign_form_status?campaignFormId=${form.campaignFormId}"
-                                                                    class="toggle-link toggle-deactivate">Deactivate</a>
+                                                                    class="delete-btn">Deactivate</a>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <a href="toggle_campaign_form_status?campaignFormId=${form.campaignFormId}"
-                                                                    class="toggle-link toggle-activate">Activate</a>
+                                                                    class="edit-btn">Activate</a>
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <a href="view_edit_campaign_form?campaignFormId=${form.campaignFormId}"
-                                                            class="edit-link" style="margin-left:5px;">Edit</a>
+                                                            class="view-btn">Edit</a>
                                                         <a href="delete_campaign_form?campaignFormId=${form.campaignFormId}"
-                                                            class="delete-link" style="margin-left:5px;"
+                                                            class="delete-btn"
                                                             onclick="return confirm('Are you sure you want to delete this form?');">Delete</a>
                                                     </td>
                                                 </tr>

@@ -1,0 +1,104 @@
+﻿commit 948ad9a6e703304a7dfc9616d0a0add8ab3fe512
+Author: janvimehra <janvimehra2004@gmail.com>
+Date:   Wed Mar 18 14:14:09 2026 +0530
+
+    changes added
+
+diff --git a/src/main/java/com/vistaluxhms/controller/SalesServiceController.java b/src/main/java/com/vistaluxhms/controller/SalesServiceController.java
+index 699c595..f1b9471 100644
+--- a/src/main/java/com/vistaluxhms/controller/SalesServiceController.java
++++ b/src/main/java/com/vistaluxhms/controller/SalesServiceController.java
+@@ -163,17 +163,27 @@ public class SalesServiceController {
+             final RedirectAttributes redirectAttrib) {
+         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+         ModelAndView modelView = new ModelAndView();
+-        if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(),
+-                salesPartnerDto.getCityName())) {
+-            try {
+-                City_Entity newCity = new City_Entity();
+-                newCity.setCityName(salesPartnerDto.getCityName());
+-                newCity.setActive(true);
+-                newCity = cityRepository.save(newCity);
+-                salesPartnerDto.setCityId(newCity.getDestinationId());
+-            } catch (Exception e) {
+-                result.rejectValue("cityName", "city.error");
++        if (salesPartnerDto.getCityName() != null && !salesPartnerDto.getCityName().trim().isEmpty()) {
++            String trimmedCityName = salesPartnerDto.getCityName().trim();
++            if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), trimmedCityName)) {
++                // Try case-insensitive lookup to be more robust
++                City_Entity city = commonService.findDestinationById(salesPartnerDto.getCityId());
++                if (city != null && city.getCityName().equalsIgnoreCase(trimmedCityName)) {
++                    // Match found case-insensitively, we're good
++                } else {
++                    try {
++                        City_Entity newCity = new City_Entity();
++                        newCity.setCityName(trimmedCityName);
++                        newCity.setActive(true);
++                        newCity = cityRepository.save(newCity);
++                        salesPartnerDto.setCityId(newCity.getDestinationId());
++                    } catch (Exception e) {
++                        result.rejectValue("cityName", "city.error", "The entered city name does not match our records. Please select from the dropdown.");
++                    }
++                }
+             }
++        } else {
++            result.rejectValue("cityName", "city.error", "Please select a city.");
+         }
+ 
+         // Check duplicate mobile in Sales Partner
+@@ -189,6 +199,8 @@ public class SalesServiceController {
+         if (result.hasErrors()) {
+             // If there are validation errors, return the form view with errors
+             modelView = view_add_sales_partner_form(salesPartnerDto, result);
++            modelView.addObject("SALES_PARTNER_OBJ", salesPartnerDto);
++            modelView.addAllObjects(result.getModel());
+         } else {
+             SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
+             RateTypeEntity rateTypeEntity = salesService.findById(salesPartnerDto.getRateTypeId());
+@@ -331,17 +343,27 @@ public class SalesServiceController {
+             final RedirectAttributes redirectAttrib) {
+         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
+         ModelAndView modelView = new ModelAndView();
+-        if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(),
+-                salesPartnerDto.getCityName())) {
+-            try {
+-                City_Entity newCity = new City_Entity();
+-                newCity.setCityName(salesPartnerDto.getCityName());
+-                newCity.setActive(true);
+-                newCity = cityRepository.save(newCity);
+-                salesPartnerDto.setCityId(newCity.getDestinationId());
+-            } catch (Exception e) {
+-                result.rejectValue("cityName", "city.error");
++        if (salesPartnerDto.getCityName() != null && !salesPartnerDto.getCityName().trim().isEmpty()) {
++            String trimmedCityName = salesPartnerDto.getCityName().trim();
++            if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), trimmedCityName)) {
++                // Try case-insensitive lookup to be more robust
++                City_Entity city = commonService.findDestinationById(salesPartnerDto.getCityId());
++                if (city != null && city.getCityName().equalsIgnoreCase(trimmedCityName)) {
++                    // Match found case-insensitively, we're good
++                } else {
++                    try {
++                        City_Entity newCity = new City_Entity();
++                        newCity.setCityName(trimmedCityName);
++                        newCity.setActive(true);
++                        newCity = cityRepository.save(newCity);
++                        salesPartnerDto.setCityId(newCity.getDestinationId());
++                    } catch (Exception e) {
++                        result.rejectValue("cityName", "city.error", "The entered city name does not match our records. Please select from the dropdown.");
++                    }
++                }
+             }
++        } else {
++            result.rejectValue("cityName", "city.error", "Please select a city.");
+         }
+ 
+         // Check duplicate mobile in Sales Partner (Edit)
+@@ -363,6 +385,8 @@ public class SalesServiceController {
+         if (result.hasErrors()) {
+             // If there are validation errors, return the form view with errors
+             modelView = view_edit_sales_partner_form(salesPartnerDto, result);
++            modelView.addObject("SALES_PARTNER_OBJ", salesPartnerDto);
++            modelView.addAllObjects(result.getModel());
+         } else {
+             SalesPartnerEntity salesPartnerEntity = new SalesPartnerEntity(salesPartnerDto);
+             RateTypeEntity rateTypeEntity = salesService.findById(salesPartnerDto.getRateTypeId());
