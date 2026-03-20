@@ -273,7 +273,8 @@
                                                                                             System Quotation</a></li>
                                                                                     <li><a href="view_add_free_hand_quotation_form"
                                                                                             class="gs-dropdown-item"
-                                                                                            style="color: var(--gs-gold-dark); font-weight: 500;">New
+
+                                                                                            font-weight: 500;">New
                                                                                             Free Hand Quotation</a></li>
                                                                                 </ul>
                                                                             </li>
