@@ -46,11 +46,12 @@
                             margin-bottom: 20px;
                         }
 
-                        .campaign-header h2 {
-                            color: #fff;
-                            font-size: 26px;
-                            margin: 0;
-                        }
+                       .campaign-header h2 {
+                           color: #111;
+                           font-size: 26px;
+                           margin: 0;
+                           font-weight: 700;
+                       }
 
                         .campaign-header .action-buttons a {
                             text-decoration: none;
@@ -87,25 +88,25 @@
 
                         .stat-card {
                             flex: 1;
-                            background: rgba(255, 255, 255, 0.1);
-                            backdrop-filter: blur(10px);
-                            border: 1px solid rgba(255, 255, 255, 0.15);
+                            background: #ffffff;
+                            border: 1px solid #e0e0e0;
                             border-radius: 10px;
                             padding: 20px;
                             text-align: center;
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
                         }
 
-                        .stat-card .stat-number {
-                            font-size: 36px;
-                            font-weight: 700;
-                            color: #fff;
-                        }
+                       .stat-card .stat-number {
+                           font-size: 36px;
+                           font-weight: 700;
+                           color: #111;
+                       }
 
-                        .stat-card .stat-label {
-                            font-size: 13px;
-                            color: rgba(255, 255, 255, 0.7);
-                            margin-top: 5px;
-                        }
+                       .stat-card .stat-label {
+                           font-size: 13px;
+                           color: #333;
+                           margin-top: 5px;
+                       }
 
                         .stat-card.meta {
                             border-top: 3px solid #e94560;
