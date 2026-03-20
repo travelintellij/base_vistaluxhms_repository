@@ -850,10 +850,18 @@ public class EventController {
 			Map<String, Object> serviceMap = new HashMap<>();
 
 			serviceMap.put("name", entity.getServiceName() != null ? entity.getServiceName() : "N/A");
-			serviceMap.put("costType",
-					entity.getEventServiceCostTypeEntity() != null
-							? entity.getEventServiceCostTypeEntity().getEventServiceCostTypeName()
-							: "N/A");
+
+			// Look up the full cost type entity from DB (form only sends the ID)
+			String costTypeName = "N/A";
+			if (entity.getEventServiceCostTypeEntity() != null
+					&& entity.getEventServiceCostTypeEntity().getEventServiceCostTypeId() != 0) {
+				EventServiceCostTypeEntity costType = eventServices
+						.findEventServiceCostTypeByID(entity.getEventServiceCostTypeEntity().getEventServiceCostTypeId());
+				if (costType != null) {
+					costTypeName = costType.getEventServiceCostTypeName();
+				}
+			}
+			serviceMap.put("costType", costTypeName);
 
 			// ✅ Only send amount when breakup is enabled
 			if (showBreakup && !hideCost) {

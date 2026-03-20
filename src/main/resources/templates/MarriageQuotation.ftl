@@ -1048,7 +1048,7 @@ body:has(.menu-page) .pdf-bg-img {
     </div>
 </#if>
 
-<div class="footer after-menu">
+<div class="footer after-menu" style="page-break-before: always;">
     <h3>Terms and Conditions</h3>
 <div class="content-box">
     <ul>

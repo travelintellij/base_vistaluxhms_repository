@@ -690,7 +690,7 @@ function deleteRow(button) {
    function calculateRowTotal(row) {
      const totalCost = getRowTotal(row);
      const totalCostInput = row.querySelector(".service-total-cost");
-     totalCostInput.value = totalCost.toFixed(2);
+     totalCostInput.value = Math.round(totalCost);
    }
 
    function updateGrandTotal() {
@@ -698,7 +698,7 @@ function deleteRow(button) {
      document.querySelectorAll("#services-table-body tr").forEach(row => {
        grandTotal += getRowTotal(row);
      });
-     document.getElementById("grandTotal").textContent = grandTotal.toFixed(2);
+     document.getElementById("grandTotal").textContent = Math.round(grandTotal);
      updateFinalAmount();
    }
 
@@ -717,7 +717,7 @@ function updateFinalAmount() {
     }
 
     const finalAmount = grandTotal - discount;
-    document.getElementById("finalAmount").textContent = finalAmount.toFixed(2);
+    document.getElementById("finalAmount").textContent = Math.round(finalAmount);
 }
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -340,7 +340,7 @@
     </div>
 </#if>
 
-<div class="footer">
+<div class="footer" style="page-break-before: always;">
     <h3>Terms and Conditions</h3>
     <ul>
         <#if gstIncluded>
