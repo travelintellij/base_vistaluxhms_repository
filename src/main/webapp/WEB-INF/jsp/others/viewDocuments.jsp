@@ -171,7 +171,7 @@
 
 
 <div class="d-flex justify-content-center align-items-center mb-4" style="gap:20px;">
-    <h2 style="color:#fff; font-weight:bold; font-size:42px; margin:0;">Documents</h2>
+<h2 style="color:#222; font-weight:bold; font-size:42px; margin:0;">Documents</h2>
     <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_DOCUMENT_MANAGER')">
         <a href="<c:url value='/add_document'/>" class="add-btn"
            style="font-size:14px; padding:6px 12px; margin:0;">Add New Document</a>
