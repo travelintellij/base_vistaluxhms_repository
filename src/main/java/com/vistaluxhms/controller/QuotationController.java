@@ -1075,4 +1075,55 @@ public class QuotationController {
         return modelView;
     }
 
+    @RequestMapping(value = "process_fh_quotation", params = "EmailAndWhatsApp", method = { RequestMethod.GET,
+            RequestMethod.POST })
+    public ModelAndView process_fh_quotation_email_and_whatsapp(
+            @ModelAttribute("QUOTATION_OBJ") QuotationEntityDTO quotationEntityDTO,
+            BindingResult result, HttpSession session, final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView();
+        UserDetailsObj userObj = getLoggedInUser();
+        String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
+        QuotationEntityDTO sessionQuotation = (QuotationEntityDTO) session.getAttribute(sessionKey);
+
+        sessionQuotation.setGuestName(quotationEntityDTO.getGuestName());
+        sessionQuotation.setDiscount(quotationEntityDTO.getDiscount());
+        sessionQuotation.setMobile(quotationEntityDTO.getMobile());
+        sessionQuotation.setEmail(quotationEntityDTO.getEmail());
+
+        if (sessionQuotation != null) {
+            quotationEntityDTO = sessionQuotation;
+        }
+
+        modelView.setViewName("redirect:review_process_create_fh_quotation");
+
+        List<String> recipientEmails = validateAndExtractEmails(quotationEntityDTO.getEmail(), result);
+        if (result.hasErrors()) {
+            modelView = review_process_create_fh_quotation(quotationEntityDTO, result, session, redirectAttrib);
+            result.rejectValue("email", "error.email", "Invalid Email Format.");
+            session.setAttribute("QUOTATION_OBJ_" + userObj.getUserId(), quotationEntityDTO);
+            modelView.addObject("QUOTATION_OBJ", quotationEntityDTO);
+            modelView.setViewName("quotation/reviewFHQuotation");
+            modelView.addObject("Error", "Invalid Email Provided.");
+            return modelView;
+        }
+
+        formatRoomDates(quotationEntityDTO);
+
+        // Sending email
+        notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
+
+        WhatsAppResult whatsAppResult = notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
+        if (whatsAppResult.isSuccess()) {
+            System.out.println("FH Quotation Sent Successfully via Email and WhatsApp!!");
+            redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
+        } else {
+            // Email succeeded but WhatsApp failed — show partial success with error
+            redirectAttrib.addFlashAttribute("Success", "Email sent successfully.");
+            redirectAttrib.addFlashAttribute("WhatsAppError",
+                    "WhatsApp notification failed: " + whatsAppResult.getErrorMessage());
+        }
+
+        return modelView;
+    }
+
 }
