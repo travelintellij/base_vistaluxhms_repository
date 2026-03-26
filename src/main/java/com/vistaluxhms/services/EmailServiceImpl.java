@@ -89,6 +89,12 @@ public class EmailServiceImpl {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 
+		try {
+			dynamicMailSender.testConnection();
+		} catch (Exception e) {
+			throw new org.springframework.mail.MailSendException("SMTP connection test failed. Please check your credentials and host.", e);
+		}
+
 		return dynamicMailSender;
 	}
 	// ===== AI MODIFICATION END =====
@@ -285,7 +291,22 @@ public class EmailServiceImpl {
 		freemarkerConfig.setTemplateUpdateDelay(0);
 		// mail.setFrom(systemEmailFrom); // COMMENTED: was hardcoded from
 		// application.properties
-		mail.setFrom(getSystemEmailFrom()); // Now reads from DB (frontend config)
+		String systemEmailFrom = getSystemEmailFrom();
+		
+		try {
+			InternetAddress[] addrs = InternetAddress.parse(systemEmailFrom, true); 
+			for (InternetAddress addr : addrs) {
+				String e = addr.getAddress();
+				if (e == null || !e.contains("@") || !e.contains(".")) {
+					throw new org.springframework.mail.MailSendException("Invalid Sender Email Format");
+				}
+			}
+		} catch (Exception e) {
+			throw new org.springframework.mail.MailSendException("Failed to send email: The 'From Address' is invalid or not correctly structured.");
+		}
+
+
+		mail.setFrom(systemEmailFrom); // Now reads from DB (frontend config)
 		MimeMessage message = getJavaMailSender().createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message,
 				MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -426,9 +447,23 @@ public class EmailServiceImpl {
 		freemarkerConfig.setAPIBuiltinEnabled(true);
 
 		freemarkerConfig.setTemplateUpdateDelay(0);
+		String systemEmailFrom = getSystemEmailFrom();
+
+		try {
+			InternetAddress[] addrs = InternetAddress.parse(systemEmailFrom, true); 
+			for (InternetAddress addr : addrs) {
+				String e = addr.getAddress();
+				if (e == null || !e.contains("@") || !e.contains(".")) {
+					throw new org.springframework.mail.MailSendException("Invalid Sender Email Format");
+				}
+			}
+		} catch (Exception e) {
+			throw new org.springframework.mail.MailSendException("Failed to send email: The 'From Address' is invalid or not correctly structured.");
+		}
+
 		// mail.setFrom(systemEmailFrom); // COMMENTED: was hardcoded from
 		// application.properties
-		mail.setFrom(getSystemEmailFrom()); // Now reads from DB (frontend config)
+		mail.setFrom(systemEmailFrom); // Now reads from DB (frontend config)
 		MimeMessage message = getJavaMailSender().createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message,
 				MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

@@ -123,16 +123,23 @@ public class SessionController {
 		return modelView;
 	}
 
-	@PostMapping(value = "edit_edit_session")
-	public ModelAndView edit_edit_session(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,
-			BindingResult result, final RedirectAttributes redirectAttrib) {
-		UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
-		ModelAndView modelView = new ModelAndView();
-		sessionService.saveSessionMaster(sessionEntity);
-		redirectAttrib.addFlashAttribute("Success", "Session record updated successfully.");
-		modelView.setViewName("redirect:view_session_list");
-		return modelView;
-	}
+    @PostMapping(value = "edit_edit_session")
+    public ModelAndView edit_edit_session(@ModelAttribute("SESSION_MASTER_OBJ") SessionEntity sessionEntity,
+                                          BindingResult result, final RedirectAttributes redirectAttrib) {
+        ModelAndView modelView = new ModelAndView();
+
+        try {
+            sessionService.saveSessionMaster(sessionEntity);
+            redirectAttrib.addFlashAttribute("Success", "Session record updated successfully.");
+            modelView.setViewName("redirect:view_session_list");
+        } catch (IllegalArgumentException e) {
+            modelView.setViewName("session/Admin_Edit_Session");
+            modelView.addObject("SESSION_MASTER_OBJ", sessionEntity);
+            modelView.addObject("Error", e.getMessage());
+        }
+
+        return modelView;
+    }
 
 	@RequestMapping("view_edit_session_detail_form")
 	public ModelAndView view_add_session_form(@RequestParam("sessionId") Integer sessionId,

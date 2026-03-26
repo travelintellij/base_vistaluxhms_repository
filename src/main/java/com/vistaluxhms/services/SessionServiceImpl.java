@@ -36,9 +36,10 @@ public class SessionServiceImpl {
 	@Autowired
 	private SessionRateMappingEntityRepository sessionRateMappingEntityRepository;
 
-	public void saveSessionMaster(SessionEntity sessionEntity) {
-		sessionRepository.save(sessionEntity);
-	}
+    public void saveSessionMaster(SessionEntity sessionEntity) {
+        validateSessionActivationConflict(sessionEntity);
+        sessionRepository.save(sessionEntity);
+    }
 
 	public void saveSessionDetails(SessionDetailsEntity sessionDetailsEntity) {
 		sessionDetailsRepository.save(sessionDetailsEntity);
@@ -151,7 +152,7 @@ public class SessionServiceImpl {
 	}
 
 	public List<SessionRateMappingEntity> getMappingsByRateTypeId(int rateTypeId) {
-		return sessionRateMappingEntityRepository.findByRateTypeEntity_RateTypeIdAndActiveTrue(rateTypeId);
+		return sessionRateMappingEntityRepository.findByRateTypeEntity_RateTypeIdAndActiveTrueAndSessionEntity_ActiveTrue(rateTypeId);
 	}
 
 	public SessionDetailsEntity getSessionDetails_Rate_And_Date_and_MealPlan(
@@ -176,7 +177,39 @@ public class SessionServiceImpl {
 		return null; // No matching session details found
 	}
 
+    private void validateSessionActivationConflict(SessionEntity sessionEntity) {
 
+        // Validate only when session is being set ACTIVE
+        if (!Boolean.TRUE.equals(sessionEntity.getActive())) {
+            return;
+        }
+
+        // Only for existing session (edit / re-activate case)
+        if (sessionEntity.getSessionId() == null) {
+            return;
+        }
+
+        // Get all ACTIVE mappings of this session
+        List<SessionRateMappingEntity> mappings =
+                sessionRateMappingEntityRepository.findBySessionEntity_SessionIdAndActiveTrue(sessionEntity.getSessionId());
+
+        // Check each mapping against other ACTIVE sessions
+        for (SessionRateMappingEntity mapping : mappings) {
+
+            boolean conflict = sessionRateMappingEntityRepository.existsConflictingMappingForOtherActiveSessions(
+                    sessionEntity.getSessionId(),
+                    mapping.getRateTypeEntity().getRateTypeId(),
+                    mapping.getStartDate(),
+                    mapping.getEndDate()
+            );
+
+            if (conflict) {
+                throw new IllegalArgumentException(
+                        "Cannot activate this session. Another active session already exists for the same date range."
+                );
+            }
+        }
+    }
 
 
 

@@ -938,14 +938,18 @@ public class EventController {
 			modelView.addObject("LIST_SERVICE_COST_TYPE", listServiceCostType);
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
-			notifyQuotationReceiverByEmail(eventPackageEntityDTO, recipientEmails, templateName);
-			System.out.println("Quotation Sent Successfully!! ");
-			modelView.addObject("SuccessMessage", "Event Package Record is sent successfully.");
+			boolean emailSentStatus = notifyQuotationReceiverByEmail(eventPackageEntityDTO, recipientEmails, templateName);
+			if (emailSentStatus) {
+			    System.out.println("Quotation Sent Successfully!! ");
+			    modelView.addObject("SuccessMessage", "Event Package Record is sent successfully.");
+			} else {
+			    modelView.addObject("ErrorMessage", "Failed to send email");
+			}
 		}
 		return modelView;
 	}
 
-	private void notifyQuotationReceiverByEmail(EventPackageEntityDTO eventPackageEntityDTO,
+	private boolean notifyQuotationReceiverByEmail(EventPackageEntityDTO eventPackageEntityDTO,
 			List<String> recipientEmails, String templateName) {
 		com.vistaluxhms.model.EmailConfigEntityDTO emailConfig = settingService.getEmailConfig();
 		boolean emailNotifyActive = emailConfig != null && "true".equalsIgnoreCase(emailConfig.getEmailClientActive());
@@ -1017,12 +1021,14 @@ public class EventController {
 				mail.setModel(model);
 				// emailService.sendEmailMessageUsingTemplate(mail,templateName);
 				emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
-			} catch (MessagingException | IOException | TemplateException e) {
-				// TODO Auto-generated catch block
+				return true;
+			} catch (Exception e) {
 				e.printStackTrace();
+				return false;
 			}
 		} else {
 			System.out.println("Email Notification DISABLE. ");
+			return false;
 		}
 	}
 

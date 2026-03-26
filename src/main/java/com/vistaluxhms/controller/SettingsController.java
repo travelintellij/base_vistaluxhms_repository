@@ -209,7 +209,7 @@ public class SettingsController {
             redirectAttrib.addFlashAttribute("Error", "Configuration updation Failed. !!. ");
             e.printStackTrace();
         }
-        return "redirect:view_form_manage_central_config";
+        return "redirect:view_form_manage_central_config?t=" + System.currentTimeMillis();
     }
 
     @Autowired

@@ -401,12 +401,12 @@ h2, h3 {
 
 <div class="container">
     <h2>Create Event Quotation (Wiz 2) </h2>
-     <div align="center" style="margin: 10px 0;">
-                <b>
-                    <font color="green">${Success}</font>
-                    <font color="red">${Error}</font>
-                </b>
-            </div>
+      <c:if test="${not empty SuccessMessage or not empty Success}">
+          <div class="alert alert-success" style="margin-bottom: 10px; text-align: center;"><font color="green" size="4"><b>${not empty SuccessMessage ? SuccessMessage : Success}</b></font></div>
+      </c:if>
+      <c:if test="${not empty ErrorMessage or not empty Error}">
+          <div class="alert alert-danger" style="margin-bottom: 10px; text-align: center;"><font color="red" size="4"><b>${not empty ErrorMessage ? ErrorMessage : Error}</b></font></div>
+      </c:if>
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
 
         <form:hidden path="id" />
