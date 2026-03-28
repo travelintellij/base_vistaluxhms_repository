@@ -101,6 +101,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
+                     <th>Event Type</th>
                     <th>Guest Name</th>
                     <th>Event Start Date</th>
                     <th>Event End Date</th>
@@ -113,8 +114,9 @@
                 <c:forEach var="event" items="${FILTERED_EVENT_RECORDS}">
                     <tr >
                         <td>${event.id}</td>
+                        <td>${event.eventType.eventTypeName}</td>
                         <td>${event.guestName}</td>
-                        <td>${event.formattedStartDate}</td>
+                       <td>${event.formattedStartDate}</td>
                         <td>${event.formattedEndDate}</td>
                         <td>${event.baseGuestCount}</td>
                         <td>${event.grand_total_cost}</td>

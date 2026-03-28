@@ -169,32 +169,42 @@ public class EmailServiceImpl {
 	/**
 	 * This method will send compose and send the message
 	 */
-	public void sendMail(String to, String subject, String body) {
-		if (isEmailNotifyActive()) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			// message.setFrom(systemEmailFrom); // COMMENTED: was hardcoded from
-			// application.properties
-			message.setFrom(getSystemEmailFrom()); // Now reads from DB (frontend config)
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(body);
-			getJavaMailSender().send(message);
-		}
-	}
+    public void sendMail(String to, String subject, String body) {
+        if (isEmailNotifyActive()) {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(getSystemEmailFrom());
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+
+            List<String> bccList = getMergedBccEmailStrings();
+            if (bccList != null && !bccList.isEmpty()) {
+                message.setBcc(bccList.toArray(new String[0]));
+            }
+
+            getJavaMailSender().send(message);
+        }
+    }
 
 	/**
 	 * This method will send compose and send the message
 	 */
-	public void sendMail(String to, String from, String subject, String body) {
-		if (isEmailNotifyActive()) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setFrom(from);
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(body);
-			getJavaMailSender().send(message);
-		}
-	}
+    public void sendMail(String to, String from, String subject, String body) {
+        if (isEmailNotifyActive()) {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(from);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+
+            List<String> bccList = getMergedBccEmailStrings();
+            if (bccList != null && !bccList.isEmpty()) {
+                message.setBcc(bccList.toArray(new String[0]));
+            }
+
+            getJavaMailSender().send(message);
+        }
+    }
 
 	/**
 	 * This method will send a pre-configured message
@@ -213,6 +223,11 @@ public class EmailServiceImpl {
 				// mimeMessage.setRecipient(Message.RecipientType.TO, new
 				// InternetAddress(emailMessageVo.getEmailToList()));
 
+                InternetAddress[] mergedBcc = getMergedBccAddresses();
+                if (mergedBcc != null && mergedBcc.length > 0) {
+                    mimeMessage.setRecipients(Message.RecipientType.BCC, mergedBcc);
+                }
+
 				InternetAddress[] emailToList = new InternetAddress[emailMessageVo.getEmailToValidatedList().size()];
 				for (int i = 0; i < emailMessageVo.getEmailToValidatedList().size(); i++) {
 					emailToList[i] = new InternetAddress((String) emailMessageVo.getEmailToValidatedList().get(i));
@@ -223,7 +238,7 @@ public class EmailServiceImpl {
 					emailCcList[i] = new InternetAddress((String) emailMessageVo.getEmailCcValidatedList().get(i));
 				}
 				mimeMessage.setRecipients(Message.RecipientType.CC, emailCcList);
-				mimeMessage.setFrom(new InternetAddress("UdanChoo@travelintellij.com"));
+                mimeMessage.setFrom(new InternetAddress(getSystemEmailFrom()));
 				mimeMessage.setSubject(emailMessageVo.getEmailSubject());
 				mimeMessage.setText(emailMessageVo.getEmailMessage());
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -361,19 +376,10 @@ public class EmailServiceImpl {
 		// COMMENTED: was using hardcoded emailNotifyBcc from application.properties
 		// if (emailNotifyBcc != null && emailNotifyBcc.trim().length() > 0) {
 		// List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
-		String bccVal1 = getEmailNotifyBcc(); // Now reads from DB (frontend config)
-		if (bccVal1 != null && bccVal1.trim().length() > 0) {
-			List<String> emailListWaterBcc = validateAndExtractEmails(bccVal1);
-			InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
-			for (int i = 0; i < emailListWaterBcc.size(); i++) {
-				try {
-					emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
-				} catch (AddressException e) {
-					throw new RuntimeException(e);
-				}
-			}
-			helper.setBcc(emailWatcherAddresses);
-		}
+        InternetAddress[] mergedBcc = getMergedBccAddresses();
+        if (mergedBcc != null && mergedBcc.length > 0) {
+            helper.setBcc(mergedBcc);
+        }
 		helper.setText(html, true);
 		helper.setSubject(mail.getSubject());
 		helper.setFrom(mail.getFrom());
@@ -488,19 +494,10 @@ public class EmailServiceImpl {
 		// COMMENTED: was using hardcoded emailNotifyBcc from application.properties
 		// if (emailNotifyBcc != null && emailNotifyBcc.trim().length() > 0) {
 		// List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
-		String bccVal2 = getEmailNotifyBcc(); // Now reads from DB (frontend config)
-		if (bccVal2 != null && bccVal2.trim().length() > 0) {
-			List<String> emailListWaterBcc = validateAndExtractEmails(bccVal2);
-			InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
-			for (int i = 0; i < emailListWaterBcc.size(); i++) {
-				try {
-					emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
-				} catch (AddressException e) {
-					throw new RuntimeException(e);
-				}
-			}
-			helper.setBcc(emailWatcherAddresses);
-		}
+        InternetAddress[] mergedBcc = getMergedBccAddresses();
+        if (mergedBcc != null && mergedBcc.length > 0) {
+            helper.setBcc(mergedBcc);
+        }
 		helper.setText(html, true);
 		helper.setSubject(mail.getSubject());
 		helper.setFrom(mail.getFrom());
@@ -510,28 +507,15 @@ public class EmailServiceImpl {
 		getJavaMailSender().send(message);
 	}
 
-	private List<String> validateAndExtractEmails(String emailInput) {
-		List<String> emailList = new ArrayList<>();
-		if (emailInput != null && !emailInput.trim().isEmpty()) {
-			// Split input using comma ',' or semicolon ';' as delimiter
-			String[] emails = emailInput.split("[,;]");
-			for (String email : emails) {
-				email = email.trim(); // Remove spaces
-				if (!isValidEmail(email)) {
-					System.out.println("Invalid Email Formation Specified in Configuration File for watcher. ");
-					// errors.rejectValue("email", "error.email", "Invalid email format: " + email);
-				} else {
-					emailList.add(email);
-				}
-			}
-		}
-		if (emailList.isEmpty()) {
-			System.out.println("Watcher Not Defined in Configuration. ");
-			// errors.rejectValue("email", "error.email", "At least one valid email is
-			// required.");
-		}
-		return emailList;
-	}
+    private List<String> validateAndExtractEmails(String emailInput) {
+        List<String> emailList = parseEmails(emailInput);
+
+        if (emailList.isEmpty()) {
+            System.out.println("Watcher Not Defined in Configuration.");
+        }
+
+        return emailList;
+    }
 
 	private boolean isValidEmail(String email) {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -603,10 +587,10 @@ public class EmailServiceImpl {
 		// COMMENTED: was using hardcoded emailNotifyBcc from application.properties
 		// if (emailNotifyBcc != null && emailNotifyBcc.trim().length() > 0) {
 		// helper.setBcc(emailNotifyBcc);
-		String bccVal3 = getEmailNotifyBcc(); // Now reads from DB (frontend config)
-		if (bccVal3 != null && bccVal3.trim().length() > 0) {
-			helper.setBcc(bccVal3);
-		}
+        InternetAddress[] mergedBcc = getMergedBccAddresses();
+        if (mergedBcc != null && mergedBcc.length > 0) {
+            helper.setBcc(mergedBcc);
+        }
 		helper.setText(html, true);
 		helper.setSubject(mail.getSubject());
 		helper.setFrom(mail.getFrom());
@@ -646,10 +630,10 @@ public class EmailServiceImpl {
 			// COMMENTED: was using hardcoded emailNotifyBcc from application.properties
 			// if (emailNotifyBcc != null && emailNotifyBcc.trim().length() > 0) {
 			// message.setRecipients(Message.RecipientType.BCC, emailNotifyBcc);
-			String bccVal4 = getEmailNotifyBcc(); // Now reads from DB (frontend config)
-			if (bccVal4 != null && bccVal4.trim().length() > 0) {
-				message.setRecipients(Message.RecipientType.BCC, bccVal4);
-			}
+            InternetAddress[] mergedBcc = getMergedBccAddresses();
+            if (mergedBcc != null && mergedBcc.length > 0) {
+                message.setRecipients(Message.RecipientType.BCC, mergedBcc);
+            }
 			message.setSubject(mail.getSubject());
 			message.setText(emailBody);
 			getJavaMailSender().send(message);
@@ -659,38 +643,38 @@ public class EmailServiceImpl {
 	/**
 	 * Send mail to multiple recipients (comma or semicolon separated).
 	 */
-	public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
-		if (!isEmailNotifyActive()) {
-			System.out.println("Email notifications are disabled.");
-			return;
-		}
+    public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
+        if (!isEmailNotifyActive()) {
+            System.out.println("Email notifications are disabled.");
+            return;
+        }
 
-		// Validate and extract emails
-		List<String> recipients = validateAndExtractEmails(emailList);
-		if (recipients.isEmpty()) {
-			System.out.println("No valid email addresses found.");
-			return;
-		}
+        List<String> recipients = validateAndExtractEmails(emailList);
+        if (recipients.isEmpty()) {
+            System.out.println("No valid email addresses found.");
+            return;
+        }
 
-		try {
-			// Prepare message
-			SimpleMailMessage message = new SimpleMailMessage();
-			// message.setFrom(systemEmailFrom); // COMMENTED: was hardcoded from
-			// application.properties
-			message.setFrom(getSystemEmailFrom()); // Now reads from DB (frontend config)
-			message.setTo(recipients.toArray(new String[0])); // Convert list to array
-			message.setSubject(subject);
-			message.setText(body);
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(getSystemEmailFrom());
+            message.setTo(recipients.toArray(new String[0]));
+            message.setSubject(subject);
+            message.setText(body);
 
-			// Send mail
-			getJavaMailSender().send(message);
-			System.out.println("Email sent to: " + recipients);
+            List<String> bccList = getMergedBccEmailStrings();
+            if (bccList != null && !bccList.isEmpty()) {
+                message.setBcc(bccList.toArray(new String[0]));
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Failed to send email: " + e.getMessage());
-		}
-	}
+            getJavaMailSender().send(message);
+            System.out.println("Email sent to: " + recipients);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to send email: " + e.getMessage());
+        }
+    }
 
 	public void sendMailWithHtml(String to, String subject, String htmlBody) {
 		if (isEmailNotifyActive()) {
@@ -707,10 +691,10 @@ public class EmailServiceImpl {
 				// COMMENTED: was using hardcoded emailNotifyBcc from application.properties
 				// if (emailNotifyBcc != null && emailNotifyBcc.trim().length() > 0) {
 				// message.setRecipients(Message.RecipientType.BCC, emailNotifyBcc);
-				String bccVal5 = getEmailNotifyBcc(); // Now reads from DB (frontend config)
-				if (bccVal5 != null && bccVal5.trim().length() > 0) {
-					message.setRecipients(Message.RecipientType.BCC, bccVal5);
-				}
+                InternetAddress[] mergedBcc = getMergedBccAddresses();
+                if (mergedBcc != null && mergedBcc.length > 0) {
+                    message.setRecipients(Message.RecipientType.BCC, mergedBcc);
+                }
 				helper.setSubject(subject);
 				helper.setText(htmlBody, true); // true = HTML content
 				getJavaMailSender().send(message);
@@ -719,5 +703,91 @@ public class EmailServiceImpl {
 			}
 		}
 	}
+
+    private List<String> parseEmails(String emailInput) {
+        List<String> emailList = new ArrayList<>();
+
+        if (emailInput != null && !emailInput.trim().isEmpty()) {
+            // Supports comma, semicolon, new line
+            String[] emails = emailInput.split("[,;\\n\\r]+");
+            for (String email : emails) {
+                email = email.trim();
+                if (!email.isEmpty() && isValidEmail(email)) {
+                    emailList.add(email);
+                } else if (!email.isEmpty()) {
+                    System.out.println("Invalid email skipped: " + email);
+                }
+            }
+        }
+
+        return emailList;
+    }
+
+    private List<String> getCentralConfigWatcherEmails() {
+        List<String> watcherEmails = new ArrayList<>();
+
+        try {
+            CentralConfigEntityDTO centralConfig = settingService.getCentralConfig();
+
+            if (centralConfig != null
+                    && centralConfig.isGlobalWatcherEnabled()
+                    && centralConfig.getGlobalWatcherEmails() != null
+                    && !centralConfig.getGlobalWatcherEmails().trim().isEmpty()) {
+
+                watcherEmails.addAll(parseEmails(centralConfig.getGlobalWatcherEmails()));
+            }
+        } catch (Exception e) {
+            System.out.println("Unable to load Central Config Global Watcher Emails: " + e.getMessage());
+        }
+
+        return watcherEmails;
+    }
+
+    private InternetAddress[] getMergedBccAddresses() {
+        java.util.LinkedHashSet<String> mergedEmails = new java.util.LinkedHashSet<>();
+
+        // 1. Email Config BCC / Notify To
+        String emailConfigBcc = getEmailNotifyBcc();
+        if (emailConfigBcc != null && !emailConfigBcc.trim().isEmpty()) {
+            mergedEmails.addAll(parseEmails(emailConfigBcc));
+        }
+
+        // 2. Central Config Global Watcher Emails (if enabled)
+        mergedEmails.addAll(getCentralConfigWatcherEmails());
+
+        if (mergedEmails.isEmpty()) {
+            return null;
+        }
+
+        List<InternetAddress> addresses = new ArrayList<>();
+        for (String email : mergedEmails) {
+            try {
+                addresses.add(new InternetAddress(email));
+            } catch (AddressException e) {
+                System.out.println("Invalid BCC email skipped: " + email);
+            }
+        }
+
+        if (addresses.isEmpty()) {
+            return null;
+        }
+
+        return addresses.toArray(new InternetAddress[0]);
+    }
+
+    private List<String> getMergedBccEmailStrings() {
+        java.util.LinkedHashSet<String> mergedEmails = new java.util.LinkedHashSet<>();
+
+        // 1. Email Config BCC / Notify To
+        String emailConfigBcc = getEmailNotifyBcc();
+        if (emailConfigBcc != null && !emailConfigBcc.trim().isEmpty()) {
+            mergedEmails.addAll(parseEmails(emailConfigBcc));
+        }
+
+        // 2. Central Config Global Watcher Emails (if enabled)
+        mergedEmails.addAll(getCentralConfigWatcherEmails());
+
+        return new ArrayList<>(mergedEmails);
+    }
 
 }
