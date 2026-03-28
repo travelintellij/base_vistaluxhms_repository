@@ -89,6 +89,12 @@ public class AshokaTeam {
 	protected boolean credentialsExpired;
 	protected boolean deleted;
 
+	@Column(nullable = true, name = "reset_token")
+	protected String resetToken;
+
+	@Column(nullable = true, name = "token_expiry_date")
+	protected java.time.LocalDateTime tokenExpiryDate;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ashokateam_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	protected Set<RoleEntity> roles = new HashSet<RoleEntity>();
@@ -445,6 +451,22 @@ public class AshokaTeam {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
+	}
+
+	public java.time.LocalDateTime getTokenExpiryDate() {
+		return tokenExpiryDate;
+	}
+
+	public void setTokenExpiryDate(java.time.LocalDateTime tokenExpiryDate) {
+		this.tokenExpiryDate = tokenExpiryDate;
 	}
 
 	public boolean isDeleted() {
