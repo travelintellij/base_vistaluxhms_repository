@@ -41,5 +41,9 @@ public interface UserRepository extends JpaRepository<AshokaTeam,Integer>,JpaSpe
 		@Query("FROM AshokaTeam a WHERE a.lastWorkingDay IS NOT NULL AND a.lastWorkingDay < :today AND a.active = true AND a.accountLocked = false")
 		List<AshokaTeam> findUsersWithExpiredLastWorkingDay(@org.springframework.data.repository.query.Param("today") java.sql.Date today);
 		// ===== AI MODIFICATION END =====
+
+		// ===== FORGOT PASSWORD FEATURE =====
+		Optional<AshokaTeam> findByEmailAndActive(String email, boolean active);
+		Optional<AshokaTeam> findByResetToken(String resetToken);
 		
 }

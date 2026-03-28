@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .frameOptions().sameOrigin() // ← ✅ Add this line
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/resources/**", "/static/**").permitAll() // Allow public access to login and
+                .antMatchers("/login", "/forgot-password", "/reset-password", "/resources/**", "/static/**").permitAll() // Allow public access to login, forgot/reset password and resources
                                                                                   // resources
                 .antMatchers("/admin").hasRole("ADMIN") // Only admins can access /admin
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER") // Admins and users can access /user
