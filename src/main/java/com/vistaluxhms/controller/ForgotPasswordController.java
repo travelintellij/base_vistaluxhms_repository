@@ -51,33 +51,46 @@ public class ForgotPasswordController {
         String safeMessage = "If a valid account exists for this email, a password reset link has been sent.";
 
         try {
+            System.out.println("[FORGOT-PASSWORD] === Request received for email: " + email.trim());
+
             Optional<AshokaTeam> userOpt = userRepository.findByEmailAndActive(email.trim(), true);
 
             if (userOpt.isPresent()) {
                 AshokaTeam user = userOpt.get();
+                System.out.println("[FORGOT-PASSWORD] User FOUND — ID: " + user.getUserId() + ", Name: " + user.getName() + ", Email: " + user.getEmail());
 
                 // Generate a secure token
                 String token = UUID.randomUUID().toString();
                 user.setResetToken(token);
                 user.setTokenExpiryDate(LocalDateTime.now().plusMinutes(TOKEN_EXPIRY_MINUTES));
                 userRepository.save(user);
+                System.out.println("[FORGOT-PASSWORD] Token generated and saved: " + token);
 
                 // Build reset link
                 String resetUrl = request.getScheme() + "://" + request.getServerName()
                         + ":" + request.getServerPort()
                         + request.getContextPath()
                         + "/reset-password?token=" + token;
+                System.out.println("[FORGOT-PASSWORD] Reset URL: " + resetUrl);
 
                 // Send email
                 String subject = "Password Reset Request — AxisHMS Pro";
                 String htmlBody = buildResetEmailBody(user.getName(), resetUrl);
-                emailService.sendMailWithHtml(user.getEmail(), subject, htmlBody);
+
+                try {
+                    emailService.sendMailWithHtml(user.getEmail(), subject, htmlBody);
+                    System.out.println("[FORGOT-PASSWORD] Email dispatch call completed for: " + user.getEmail());
+                } catch (Exception emailEx) {
+                    System.out.println("[FORGOT-PASSWORD] ERROR sending email: " + emailEx.getMessage());
+                    emailEx.printStackTrace();
+                }
+            } else {
+                System.out.println("[FORGOT-PASSWORD] No active user found for email: " + email.trim());
             }
-            // If user not found, we still show the same message (no enumeration)
 
         } catch (Exception e) {
+            System.out.println("[FORGOT-PASSWORD] EXCEPTION: " + e.getMessage());
             e.printStackTrace();
-            // Still show the safe message even if email sending fails
         }
 
         modelView.addObject("Success", safeMessage);
