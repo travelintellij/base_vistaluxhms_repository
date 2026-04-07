@@ -24,7 +24,15 @@ document.addEventListener("DOMContentLoaded", function() {
             // Special handling for grouped radios/checkboxes
             var radioContainer = el.closest('.radio-group-container');
             if (radioContainer) {
-                label = radioContainer.querySelector('label');
+                var prev = radioContainer.previousElementSibling;
+                if (prev && prev.tagName === 'LABEL') {
+                    label = prev;
+                } else {
+                    var parentRow = el.closest('.form-row, .form-group');
+                    if (parentRow) {
+                        label = parentRow.querySelector('label');
+                    }
+                }
             } else {
                 if (el.id) {
                     label = document.querySelector('label[for="' + el.id + '"]');

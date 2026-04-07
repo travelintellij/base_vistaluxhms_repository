@@ -38,8 +38,22 @@
 
 </style>
 
-    <h2>View Users </h2>
-<<!-- User List Table Section -->
+    <h2 style="text-align: center; color: #1a1a2e; margin-bottom: 20px;">View Users</h2>
+
+    <div style="width: 90%; margin: 0 auto;">
+        <c:if test="${not empty Error}">
+            <div style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ef9a9a; text-align: center; font-weight: 500;">
+                ${Error}
+            </div>
+        </c:if>
+        <c:if test="${not empty Success}">
+            <div style="background-color: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #a5d6a7; text-align: center; font-weight: 500;">
+                ${Success}
+            </div>
+        </c:if>
+    </div>
+
+<!-- User List Table Section -->
 <div class="form-container user-list-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <c:set value="${USER_FILTERED_LIST}" var="userList" />
        <table>

@@ -419,8 +419,7 @@
 
             </form>
 
-            <a href="${pageContext.request.contextPath}/forgot-password" class="login-footer-link"
-              style="cursor: not-allowed;">
+            <a href="${pageContext.request.contextPath}/forgot-password" class="login-footer-link">
               Forgot Password?
             </a>
 

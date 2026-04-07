@@ -402,7 +402,10 @@ h2, h3 {
 <div class="container">
     <h2>Update Event Quotation (<font color="blue"> Event Id: ${EVENT_PACKAGE.id} </font>) </h2>
       <c:if test="${not empty SuccessMessage}">
-          <div class="alert alert-success"><font color="green">${SuccessMessage}<font></div>
+          <div class="alert alert-success" style="margin-bottom: 10px; text-align: center;"><font color="green" size="4"><b>${SuccessMessage}</b></font></div>
+      </c:if>
+      <c:if test="${not empty ErrorMessage}">
+          <div class="alert alert-danger" style="margin-bottom: 10px; text-align: center;"><font color="red" size="4"><b>${ErrorMessage}</b></font></div>
       </c:if>
 
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
