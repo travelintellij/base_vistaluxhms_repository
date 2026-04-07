@@ -211,7 +211,7 @@ public class EventController {
 				eventPackageEntityDTO.setMobile(clientEntity.getMobile().toString());
 				eventPackageEntityDTO.setEmail(clientEntity.getEmailId());
 				logger.debug("All Value set for mobile and email");
-				logger.debug(eventPackageEntityDTO);
+				logger.debug("Event Details: {}", eventPackageEntityDTO);
 			}
 			List<EventMasterServiceEntity> eventMasterServiceDTOList = eventServices
 					.findByEventTypeIdAndActiveEventMasterServiceList(

@@ -211,7 +211,7 @@ public class UserController {
         // logger.debug("User Details are " + userDTO);
 
         if (result.hasErrors()) {
-            logger.debug(result);
+            logger.debug("Validation errors: {}", result);
             // If there are validation errors, return the form view with errors
             modelView = view_edit_user_form(userDTO, result);
         } else {
