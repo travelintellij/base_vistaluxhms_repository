@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.itextpdf.text.log.SysoCounter;
 import com.lowagie.text.DocumentException;
 import com.vistaluxhms.entity.*;
@@ -46,6 +49,8 @@ import java.util.stream.Collectors;
 // @SessionAttributes("QUOTATION_OBJ")
 public class QuotationController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(QuotationController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -320,12 +325,12 @@ public class QuotationController {
         // CHANGED: Capture WhatsAppResult to report success/failure to the user.
         // ORIGINAL CODE (removed):
         // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-        // System.out.println("Quotation Sent Successfully!! ");
+        // logger.debug("Quotation Sent Successfully!! ");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // !! ");
         WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
         if (whatsAppResult.isSuccess()) {
-            System.out.println("Quotation Sent Successfully via WhatsApp!!");
+            logger.debug("Quotation Sent Successfully via WhatsApp!!");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via WhatsApp!!");
         } else {
             // ADDED: Show WhatsApp error on frontend with descriptive reason
@@ -341,7 +346,7 @@ public class QuotationController {
     // and to display the specific failure reason on the frontend.
     private WhatsAppResult notifyQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
         UserDetailsObj user = getLoggedInUser();
-        System.out.println("Sharing Quotation via Whats app");
+        logger.debug("Sharing Quotation via Whats app");
         try {
             WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
             whatsAppMessageDTO.setRecipientMobile("91" + quotationEntityDTO.getMobile());
@@ -385,7 +390,7 @@ public class QuotationController {
             return whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO, queryDetails);
         } catch (Exception e) {
             // CHANGED: Return failure result instead of just printing stack trace
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return new WhatsAppResult(false,
                     "WhatsApp quotation sending failed due to: " + e.getMessage());
         }
@@ -487,7 +492,7 @@ public class QuotationController {
         }
         formatRoomDates(quotationEntityDTO);
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FITQuotation.ftl");
-        System.out.println("Quotation Sent Successfully!! ");
+        logger.debug("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
         // session.removeAttribute(sessionKey);
         return modelView;
@@ -562,10 +567,10 @@ public class QuotationController {
                 emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
             } catch (MessagingException | IOException | TemplateException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Exception caught", e);
             }
         } else {
-            System.out.println("Email Notification DISABLE. ");
+            logger.debug("Email Notification DISABLE. ");
         }
     }
 
@@ -714,12 +719,12 @@ public class QuotationController {
         // CHANGED: Capture WhatsAppResult to report success/failure to the user.
         // ORIGINAL CODE (removed):
         // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-        // System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+        // logger.debug("Quotation Sent Successfully via Email and WhatsApp!!");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // via Email and WhatsApp!!");
         WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
         if (whatsAppResult.isSuccess()) {
-            System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+            logger.debug("Quotation Sent Successfully via Email and WhatsApp!!");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
         } else {
             // ADDED: Email succeeded but WhatsApp failed — show partial success with error
@@ -948,12 +953,12 @@ public class QuotationController {
         // CHANGED: Capture WhatsAppResult to report success/failure to the user.
         // ORIGINAL CODE (removed):
         // notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
-        // System.out.println("Quotation Sent Successfully!! ");
+        // logger.debug("Quotation Sent Successfully!! ");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // !! ");
         WhatsAppResult whatsAppResult = notifyFreeHandQuotationReceiverByWhatsapp(quotationEntityDTO);
         if (whatsAppResult.isSuccess()) {
-            System.out.println("FH Quotation Sent Successfully via WhatsApp!!");
+            logger.debug("FH Quotation Sent Successfully via WhatsApp!!");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via WhatsApp!!");
         } else {
             // ADDED: Show WhatsApp error on frontend with descriptive reason
@@ -969,7 +974,7 @@ public class QuotationController {
     // and to display the specific failure reason on the frontend.
     private WhatsAppResult notifyFreeHandQuotationReceiverByWhatsapp(QuotationEntityDTO quotationEntityDTO) {
         UserDetailsObj user = getLoggedInUser();
-        System.out.println("Sharing Quotation via Whats app");
+        logger.debug("Sharing Quotation via Whats app");
         try {
             WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
             whatsAppMessageDTO.setRecipientMobile("91" + quotationEntityDTO.getMobile());
@@ -1016,7 +1021,7 @@ public class QuotationController {
             return whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO, queryDetails);
         } catch (Exception e) {
             // CHANGED: Return failure result instead of just printing stack trace
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return new WhatsAppResult(false,
                     "WhatsApp quotation sending failed due to: " + e.getMessage());
         }
@@ -1069,7 +1074,7 @@ public class QuotationController {
         }
         formatRoomDates(quotationEntityDTO);
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
-        System.out.println("Quotation Sent Successfully!! ");
+        logger.debug("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
         // session.removeAttribute(sessionKey);
         return modelView;

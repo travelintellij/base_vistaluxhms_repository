@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vistaluxhms.entity.ClientEntity;
@@ -37,6 +40,8 @@ import java.util.*;
 @Service
 public class SocialMediaLeadService {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SocialMediaLeadService.class);
     @Autowired
     private ClientEntityRepository clientRepository;
 
@@ -118,7 +123,7 @@ public class SocialMediaLeadService {
             JsonNode dataArray = rootNode.get("data");
 
             if (dataArray == null || !dataArray.isArray()) {
-                System.out.println("[SocialMediaLeadService] No data array in API response");
+                logger.debug("[SocialMediaLeadService] No data array in API response");
                 return importedLeads;
             }
 
@@ -131,7 +136,7 @@ public class SocialMediaLeadService {
 
                 // Check if this lead has already been imported
                 if (isLeadAlreadyImported(metaLeadId)) {
-                    System.out.println("[SocialMediaLeadService] Lead " + metaLeadId + " already imported, skipping");
+                    logger.debug("[SocialMediaLeadService] Lead " + metaLeadId + " already imported, skipping");
                     continue;
                 }
 
@@ -215,7 +220,7 @@ public class SocialMediaLeadService {
             String ownerEmail = ownerUser.getEmail();
 
             if (ownerEmail == null || ownerEmail.trim().isEmpty()) {
-                System.out.println("[SocialMediaLeadService] Lead owner has no email. Skipping notification.");
+                logger.debug("[SocialMediaLeadService] Lead owner has no email. Skipping notification.");
                 return;
             }
 
@@ -245,7 +250,7 @@ public class SocialMediaLeadService {
         } catch (Exception e) {
             // Never let email failure break the lead sync process
             System.out.println("[SocialMediaLeadService] Failed to send lead owner notification: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
     }
 

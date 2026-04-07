@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,6 +59,8 @@ import org.springframework.validation.Errors;
 @Service
 public class EmailServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 	// ===== AI MODIFICATION START =====
 	// Change: Dynamic JavaMailSender based on DB config instead of static bean
 	// Reason: Ensure SMTP properties are read from the frontend without
@@ -264,7 +269,7 @@ public class EmailServiceImpl {
 				helper.addAttachment(file.getFilename(), file);
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 
@@ -276,11 +281,11 @@ public class EmailServiceImpl {
 		 * Iterator itr = fileUploaderListVo.getFlightFilesList().iterator();
 		 * while(itr.hasNext()) {
 		 * String fileName=(String) itr.next();
-		 * System.out.println("File Name is " + fileName);
+		 * logger.debug("File Name is " + fileName);
 		 * Path directoryPath = Paths.get(fileStorageService.getFileStorageLocation() +
 		 * "\\" + fileUploaderListVo.getDealConfirmationId() +"
 		 * \\" + UdanChooConstants.UDN_FLT_SRV_SUPP_NAME + "\\" + fileName);
-		 * System.out.println("Attaching File " + directoryPath);
+		 * logger.debug("Attaching File " + directoryPath);
 		 * FileSystemResource file = new FileSystemResource(new
 		 * File(directoryPath.toString()));
 		 * helper.addAttachment(file.getFilename(),file);
@@ -507,15 +512,15 @@ public class EmailServiceImpl {
 		getJavaMailSender().send(message);
 	}
 
-    private List<String> validateAndExtractEmails(String emailInput) {
-        List<String> emailList = parseEmails(emailInput);
+	private List<String> validateAndExtractEmails(String emailInput) {
+		List<String> emailList = parseEmails(emailInput);
 
-        if (emailList.isEmpty()) {
-            System.out.println("Watcher Not Defined in Configuration.");
-        }
+		if (emailList.isEmpty()) {
+			logger.debug("Watcher Not Defined in Configuration. ");
+		}
 
-        return emailList;
-    }
+		return emailList;
+	}
 
 	private boolean isValidEmail(String email) {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -643,17 +648,17 @@ public class EmailServiceImpl {
 	/**
 	 * Send mail to multiple recipients (comma or semicolon separated).
 	 */
-    public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
-        if (!isEmailNotifyActive()) {
-            System.out.println("Email notifications are disabled.");
-            return;
-        }
+	public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
+		if (!isEmailNotifyActive()) {
+			logger.debug("Email notifications are disabled.");
+			return;
+		}
 
-        List<String> recipients = validateAndExtractEmails(emailList);
-        if (recipients.isEmpty()) {
-            System.out.println("No valid email addresses found.");
-            return;
-        }
+		List<String> recipients = validateAndExtractEmails(emailList);
+		if (recipients.isEmpty()) {
+			logger.debug("No valid email addresses found.");
+			return;
+		}
 
         try {
             SimpleMailMessage message = new SimpleMailMessage();
@@ -662,19 +667,19 @@ public class EmailServiceImpl {
             message.setSubject(subject);
             message.setText(body);
 
-            List<String> bccList = getMergedBccEmailStrings();
-            if (bccList != null && !bccList.isEmpty()) {
-                message.setBcc(bccList.toArray(new String[0]));
-            }
+			List<String> bccList = getMergedBccEmailStrings();
+			if (bccList != null && !bccList.isEmpty()) {
+				message.setBcc(bccList.toArray(new String[0]));
+			}
 
-            getJavaMailSender().send(message);
-            System.out.println("Email sent to: " + recipients);
+			getJavaMailSender().send(message);
+			logger.debug("Email sent to: " + recipients);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Failed to send email: " + e.getMessage());
-        }
-    }
+		} catch (Exception e) {
+			logger.error("Exception caught", e);
+			logger.debug("Failed to send email: " + e.getMessage());
+		}
+	}
 
 	public void sendMailWithHtml(String to, String subject, String htmlBody) {
 		if (isEmailNotifyActive()) {
@@ -699,7 +704,7 @@ public class EmailServiceImpl {
 				helper.setText(htmlBody, true); // true = HTML content
 				getJavaMailSender().send(message);
 			} catch (MessagingException e) {
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 	}

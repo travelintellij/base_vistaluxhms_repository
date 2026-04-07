@@ -1,5 +1,8 @@
 package com.vistaluxhms.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,6 +13,8 @@ import org.json.JSONObject;
 
 public class WbboxWhatsAppClient {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(WbboxWhatsAppClient.class);
     private static final String AUTH_URL = "https://wbbox.in/api/v1.0/authenticate/";
 
     private static final String MESSAGE_API_URL = "https://cloudapi.wbbox.com/api/v1.0/send-message";
@@ -90,7 +95,7 @@ public class WbboxWhatsAppClient {
             System.out.println("Response is " + response.body().string()); // Print API response
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
     }
 
@@ -162,7 +167,7 @@ public class WbboxWhatsAppClient {
             System.out.println("Response is " + response.body().string()); // Print API response
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
 
 
@@ -170,10 +175,10 @@ public class WbboxWhatsAppClient {
         try {
             // Step 1: Authenticate and get the access token
             String accessToken = getAccessToken();
-            System.out.println("Token is received Successfully!! " + accessToken);
+            logger.debug("Token is received Successfully!! " + accessToken);
 
             if (accessToken == null) {
-                System.out.println("Failed to get access token.");
+                logger.debug("Failed to get access token.");
                 return;
             }
 
@@ -181,7 +186,7 @@ public class WbboxWhatsAppClient {
             sendTemplateMessage(accessToken, "+919999449267", "Sushil", "Your booking is confirmed!");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }*/
     }
 
@@ -218,7 +223,7 @@ public class WbboxWhatsAppClient {
             return jsonResponse.getString("access_token");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return null;
         }
     }
@@ -263,7 +268,7 @@ public class WbboxWhatsAppClient {
             System.out.println("✅ Message Sent! API Response: " + response.toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
     }
 }

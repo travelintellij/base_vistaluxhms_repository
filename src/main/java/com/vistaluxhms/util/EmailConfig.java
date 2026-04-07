@@ -1,5 +1,8 @@
 package com.vistaluxhms.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -15,4 +18,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 public class EmailConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailConfig.class);
 }

@@ -1,5 +1,8 @@
 package com.vistaluxevent.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.DocumentException;
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventDetailsConfigDTO;
@@ -52,6 +55,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class EventConfigController {
+
+    private static final Logger logger = LoggerFactory.getLogger(EventConfigController.class);
 	private final EventConfigServicesImpl eventService;
 
 	public EventConfigController(EventConfigServicesImpl eventService) {

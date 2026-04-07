@@ -63,15 +63,16 @@
                                     .sidebar-dropdown .dropdown-toggle {
                                         display: block;
                                         padding: 10px 15px;
-                                        background-color: #e9ecef;
+                                        background-color: #d6e0f0;
                                         color: #000;
                                         text-decoration: none;
                                         border-radius: 4px;
                                         cursor: pointer;
+                                        font-weight: bold;
                                     }
 
                                     .sidebar-dropdown .dropdown-toggle:hover {
-                                        background-color: #ced4da;
+                                        background-color: #c0cfe0;
                                     }
 
                                     .sidebar-dropdown .dropdown-toggle::after {

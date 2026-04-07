@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -34,6 +37,8 @@ import java.security.Principal;
 @Controller
 public class LoginController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -50,7 +55,7 @@ public class LoginController {
 
     @RequestMapping("/welcome")
     public ModelAndView firstPage(@RequestHeader(value = "Authorization") String authorizationHeader) {
-        // System.out.println("Request Header is " + authorizationHeader);
+        // logger.debug("Request Header is " + authorizationHeader);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
@@ -77,7 +82,7 @@ public class LoginController {
         mapview.addObject("userObj", userObj);
         // mapview.addObject(userObj);
 
-        // System.out.println(userObj);
+        // logger.debug(userObj);
         return mapview;
     }
 
@@ -100,7 +105,7 @@ public class LoginController {
     public ModelAndView loginPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelView = new ModelAndView();
         modelView.setViewName("/login");
-        // System.out.println("Login controller is invoked. ");
+        // logger.debug("Login controller is invoked. ");
 
         return modelView;
 

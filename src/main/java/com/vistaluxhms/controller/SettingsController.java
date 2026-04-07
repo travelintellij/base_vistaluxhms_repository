@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.exception.RecordNotFoundException;
 import com.vistaluxhms.model.*;
@@ -29,6 +32,8 @@ import java.util.*;
 @Controller
 public class SettingsController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -127,7 +132,7 @@ public class SettingsController {
                 modelView.addObject("Success", "Your password is updated Successfully!!");
             }
         } catch (RecordNotFoundException rnfe) {
-            rnfe.printStackTrace();
+            logger.error("Exception caught", rnfe);
         }
         // UserDetailsObj userObj = (UserDetailsObj)
         // userDetailsService.loadUserByUsername(username);
@@ -143,7 +148,7 @@ public class SettingsController {
         List<UserDetailsObj> userList = userDetailsService.findAllActiveUsers();
 
         modelView.addObject("ROLE_OBJ", roleEntityMap);
-        System.out.println("Active Users List is " + userList);
+        logger.debug("Active Users List is " + userList);
         modelView.addObject("ACTIVE_USERS_LIST", userList);
 
         return modelView;
@@ -158,7 +163,7 @@ public class SettingsController {
             modelView.addObject("Success", "Permission Records are updated successfully.");
         } catch (RecordNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             modelView.addObject("Error", "Error: while updating permissions. Please contact support.");
         }
         return modelView;
@@ -207,7 +212,7 @@ public class SettingsController {
             redirectAttrib.addFlashAttribute("Success", "Configuration is updated Successfully!!. ");
         } catch (Exception e) {
             redirectAttrib.addFlashAttribute("Error", "Configuration updation Failed. !!. ");
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
         return "redirect:view_form_manage_central_config?t=" + System.currentTimeMillis();
     }
@@ -259,7 +264,7 @@ public class SettingsController {
             redirectAttrib.addFlashAttribute("Success", "Meta Token saved successfully!");
         } catch (Exception e) {
             redirectAttrib.addFlashAttribute("Error", "Failed to save Meta Token.");
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
         return "redirect:view_form_meta_token";
     }
@@ -295,7 +300,7 @@ public class SettingsController {
             redirectAttrib.addFlashAttribute("Success", "WhatsApp Configuration updated successfully!");
         } catch (Exception e) {
             redirectAttrib.addFlashAttribute("Error", "WhatsApp Configuration update failed!");
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
         return "redirect:view_form_whatsapp_config";
     }
@@ -335,7 +340,7 @@ public class SettingsController {
             redirectAttrib.addFlashAttribute("Success", "Email Configuration updated successfully!");
         } catch (Exception e) {
             redirectAttrib.addFlashAttribute("Error", "Email Configuration update failed!");
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
         return "redirect:view_form_email_config";
     }

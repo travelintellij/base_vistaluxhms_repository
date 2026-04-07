@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -32,6 +35,8 @@ import java.util.stream.Stream;
 
 @Service
 public class MyClaimsServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(MyClaimsServicesImpl.class);
     @Autowired
     TravelClaimBillRepository travelClaimBillRepository;
 
@@ -322,7 +327,7 @@ public class MyClaimsServicesImpl {
             document.close();
 
         } catch (DocumentException e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
 
         return out.toByteArray();

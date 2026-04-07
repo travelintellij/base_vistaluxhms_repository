@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.CampaignFormEntity;
 import com.vistaluxhms.model.CampaignFormDTO;
 import com.vistaluxhms.model.UserDetailsObj;
@@ -18,6 +21,8 @@ import java.util.List;
 @Controller
 public class CampaignController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(CampaignController.class);
     @Autowired
     private CampaignFormRepository campaignFormRepository;
 

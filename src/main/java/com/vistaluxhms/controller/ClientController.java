@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
 import com.vistaluxhms.entity.RateTypeEntity;
@@ -37,6 +40,8 @@ import java.util.Map;
 @Controller
 public class ClientController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -264,7 +269,7 @@ public class ClientController {
                 salesPartnerVoList.add(clientEntityDto);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Exception caught", e);
             }
         }
         return salesPartnerVoList;

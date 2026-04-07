@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.services.SocialMediaLeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ import java.util.Map;
 @Controller
 public class SocialLeadController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SocialLeadController.class);
     @Autowired
     private SocialMediaLeadService socialMediaLeadService;
 
@@ -60,7 +65,7 @@ public class SocialLeadController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error syncing leads: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
         return response;
     }

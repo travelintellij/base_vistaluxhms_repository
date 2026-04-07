@@ -30,9 +30,13 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class LeadController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LeadController.class);
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -112,8 +116,8 @@ public class LeadController {
             BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         // leadRecorderObj.setLeadStatus(UdanChooConstants.LEAD_CLOSE_REASON.get(UdanChooConstants.LEAD_NEW));
-        System.out.println(leadRecorderObj);
-        System.out.println("Client Details entered is " + leadRecorderObj.getClient());
+        logger.debug("Creating lead: {}", leadRecorderObj);
+        logger.debug("Client Details entered is {}", leadRecorderObj.getClient());
         if (leadRecorderObj.getLeadOwner() == 0) {
             leadRecorderObj.setLeadOwner(userObj.getUserId());
         }
@@ -135,11 +139,11 @@ public class LeadController {
             redirectAttrib.addFlashAttribute("Success", "Lead Record is updated Successfully..");
             modelView.setViewName("redirect:view_filter_leads");
             if (leadRecorderObj.isLeadCreationClientInformed()) {
-                System.out.println("Lead Creation Client Informed");
+                logger.debug("Lead Creation Client Informed");
                 if (leadRecorderObj.isNotifyEmail()) {
                     notifyLeadCreationTargetAudience(leadRecorderObj, "LeadCreateConfirmation.ftl", true, true);
                 } else {
-                    System.out.println("Inform Client Active but email disabled. ");
+                    logger.debug("Inform Client Active but email disabled.");
                 }
                 if (leadRecorderObj.isNotifyWhatsapp()) {
                     WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
@@ -209,11 +213,10 @@ public class LeadController {
                 mail.setModel(model);
                 emailService.sendEmailMessageUsingTemplate(mail, templateName);
             } catch (MessagingException | IOException | TemplateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Error sending email notification to audience", e);
             }
         } else {
-            System.out.println("Email Notification DISABLE. ");
+            logger.debug("Email Notification DISABLE.");
         }
     }
 
@@ -266,7 +269,7 @@ public class LeadController {
             @ModelAttribute("FILTER_LEAD_WL") FilterLeadObj filterObj, BindingResult result) {
 
         ModelAndView modelView = new ModelAndView("leads/view_filterLeads");
-        // System.out.println(filterObj);
+        // logger.debug(filterObj);
         List<WorkLoadStatusVO> lead_wl_statusList = commonService
                 .find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
 
@@ -560,7 +563,7 @@ public class LeadController {
                 // adminstrator.");
             }
         } catch (AddressException ae) {
-            ae.printStackTrace();
+            logger.error("Address error building emailToList for followup", ae);
         }
         mail.setToList(emailToList);
         try {
@@ -568,8 +571,7 @@ public class LeadController {
                     userObj.getEmail());
 
         } catch (MessagingException | IOException | TemplateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Error sending lead followup notification email", e);
         }
         redirectAttrib.addFlashAttribute("Success", "Lead Followup Status is updated Successfully..");
         modelView.setViewName("redirect:form_view_lead_followup_details?leadId=" + leadRecorderObj.getLeadId());

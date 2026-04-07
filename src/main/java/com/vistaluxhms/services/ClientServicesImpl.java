@@ -1,4 +1,7 @@
 package com.vistaluxhms.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.itextpdf.text.Font;
 import com.vistaluxhms.entity.City_Entity;
 import com.vistaluxhms.entity.ClientEntity;
@@ -33,6 +36,8 @@ import org.springframework.data.domain.Pageable;
 
 @Service
 public class ClientServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientServicesImpl.class);
     @Autowired
     Vlx_City_Master_Repository cityRepository;
 
@@ -413,7 +418,7 @@ public class ClientServicesImpl {
             document.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
         }
     }
 

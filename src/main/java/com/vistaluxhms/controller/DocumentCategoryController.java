@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.DocumentCategoryEntity;
 import com.vistaluxhms.entity.DocumentCategoryMaster;
@@ -33,6 +36,8 @@ import static com.vistaluxhms.services.DocumentCategoryServiceImpl.*;
 @Controller
 public class DocumentCategoryController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(DocumentCategoryController.class);
     @Autowired
     private DocumentCategoryServiceImpl documentService;
 
@@ -62,7 +67,7 @@ public class DocumentCategoryController {
 
         if (username == null || username.equalsIgnoreCase("anonymousUser")) {
             documents = Collections.emptyList();
-            System.out.println("🔴 No logged-in user");
+            logger.debug("🔴 No logged-in user");
         } else {
             // ✅ Fetch AshokaTeam user
             AshokaTeam user = documentService.getUserByUsername(username);
@@ -164,16 +169,16 @@ public class DocumentCategoryController {
                 SecurityContextHolder.getContext().getAuthentication() != null) {
 
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-            System.out.println("🟢 Username from SecurityContext: " + currentUsername);
+            logger.debug("🟢 Username from SecurityContext: " + currentUsername);
         }
 
         if (currentUsername == null || currentUsername.equalsIgnoreCase("anonymousUser")) {
             currentUsername = "Sushil";
-            System.out.println("🟣 Using fallback username: " + currentUsername);
+            logger.debug("🟣 Using fallback username: " + currentUsername);
         }
 
         Integer userId = documentService.getUserIdByUsername(currentUsername);
-        System.out.println("🟢 Final UploadedBy userId: " + userId);
+        logger.debug("🟢 Final UploadedBy userId: " + userId);
 
         dto.setUploadedBy(userId);
         documentService.saveDocument(dto);

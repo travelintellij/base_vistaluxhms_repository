@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vistaluxhms.model.WhatsAppMessageDTO;
 import com.vistaluxhms.model.WhatsAppResult;
@@ -17,6 +20,8 @@ import java.util.Map;
 @Service
 public class WhatsAppMessagingService {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(WhatsAppMessagingService.class);
     private final SettingsAndOtherServicesImpl configService;
 
     public WhatsAppMessagingService(SettingsAndOtherServicesImpl configService) {
@@ -97,7 +102,7 @@ public class WhatsAppMessagingService {
         // ADDED: Pre-send validation — checks API URL, Auth Key, and Template ID
         String validationError = validateConfig(wid, "Query Registration");
         if (validationError != null) {
-            System.out.println("WhatsApp Config Error: " + validationError);
+            logger.debug("WhatsApp Config Error: " + validationError);
             return new WhatsAppResult(false, validationError);
         }
 
@@ -121,7 +126,7 @@ public class WhatsAppMessagingService {
             return execute(jsonBody);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             // CHANGED: Returning error result instead of silently swallowing the exception
             return new WhatsAppResult(false,
                     "WhatsApp message sending failed due to: " + e.getMessage());
@@ -154,7 +159,7 @@ public class WhatsAppMessagingService {
             String responseBody = (response.body() != null) ? response.body().string() : "NO RESPONSE";
 
             System.out.println("WhatsApp Response Code: " + response.code());
-            System.out.println("WhatsApp Response Body: " + responseBody);
+            logger.debug("WhatsApp Response Body: " + responseBody);
 
             // ADDED: Check HTTP status to detect API-level failures
             // (e.g., wrong template ID, invalid auth key, etc.)
@@ -169,7 +174,7 @@ public class WhatsAppMessagingService {
             return new WhatsAppResult(true, null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             // ADDED: Return descriptive error for network/connection failures
             return new WhatsAppResult(false,
                     "WhatsApp message sending failed due to: " + e.getMessage());
@@ -177,13 +182,13 @@ public class WhatsAppMessagingService {
     }
 
     private void log(String wid, String mobile, String payload) {
-        System.out.println("=========== WhatsApp API LOG ===========");
-        System.out.println("Template ID : " + wid);
-        System.out.println("Recipient Mobile : " + mobile);
+        logger.debug("=========== WhatsApp API LOG ===========");
+        logger.debug("Template ID : " + wid);
+        logger.debug("Recipient Mobile : " + mobile);
         System.out.println("API URL : " + getApiUrl());
-        System.out.println("Request Payload : ");
-        System.out.println(payload);
-        System.out.println("=======================================");
+        logger.debug("Request Payload : ");
+        logger.debug(payload);
+        logger.debug("=======================================");
     }
 
     private String safe(String v) {
@@ -230,7 +235,7 @@ public class WhatsAppMessagingService {
         // ADDED: Pre-send validation — checks API URL, Auth Key, and Template ID
         String validationError = validateConfig(wid, "Stay Quotation");
         if (validationError != null) {
-            System.out.println("WhatsApp Config Error: " + validationError);
+            logger.debug("WhatsApp Config Error: " + validationError);
             return new WhatsAppResult(false, validationError);
         }
 
@@ -251,7 +256,7 @@ public class WhatsAppMessagingService {
             payload.put("bodyValues", bodyValues);
             ObjectMapper mapper = new ObjectMapper();
             String jsonBody = mapper.writeValueAsString(payload);
-            System.out.println("Final Json body is " + jsonBody);
+            logger.debug("Final Json body is " + jsonBody);
             // CHANGED: Now capturing and returning the result from execute()
             return execute(jsonBody);
 
@@ -259,7 +264,7 @@ public class WhatsAppMessagingService {
             // CHANGED: Returning error result instead of throwing RuntimeException
             // REMOVED (original code):
             // throw new RuntimeException(e);
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return new WhatsAppResult(false,
                     "WhatsApp message sending failed due to: " + e.getMessage());
         }
@@ -283,7 +288,7 @@ public class WhatsAppMessagingService {
          * execute(jsonBody);
          * 
          * } catch (Exception e) {
-         * e.printStackTrace();
+         * logger.error("Exception caught", e);
          * }
          * 
          */
@@ -360,7 +365,7 @@ public class WhatsAppMessagingService {
      * response
      * 
      * } catch (Exception e) {
-     * e.printStackTrace();
+     * logger.error("Exception caught", e);
      * }
      * }
      * 
@@ -428,7 +433,7 @@ public class WhatsAppMessagingService {
      * System.out.println("Response is " + response.body().string());
      * 
      * } catch (Exception e) {
-     * e.printStackTrace();
+     * logger.error("Exception caught", e);
      * }
      * }
      */
@@ -536,7 +541,7 @@ public class WhatsAppMessagingService {
             Response response = client.newCall(request).execute();
             // CHANGED: Read and check response for errors
             String responseBody = (response.body() != null) ? response.body().string() : "NO RESPONSE";
-            System.out.println("Response is " + responseBody);
+            logger.debug("Response is " + responseBody);
 
             // ADDED: Check HTTP status to detect API-level failures
             if (!response.isSuccessful()) {
@@ -548,7 +553,7 @@ public class WhatsAppMessagingService {
             return new WhatsAppResult(true, null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             // CHANGED: Returning error result instead of silently swallowing the exception
             return new WhatsAppResult(false,
                     "WhatsApp Guest Quotation sending failed due to: " + e.getMessage());
