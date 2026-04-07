@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +49,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 	@Autowired
 	UserRepository userRepository;
 
@@ -278,15 +283,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		 * System.out.
 		 * println("*********************Existing Roles *********************************"
 		 * );
-		 * System.out.println(existingTargetRoles);
-		 * System.out.println("*********************New Roles ********************");
-		 * System.out.println(rolesToUpdate);
+		 * logger.debug(existingTargetRoles);
+		 * logger.debug("*********************New Roles ********************");
+		 * logger.debug(rolesToUpdate);
 		 * System.out.
 		 * println("*********************Roles to Delete***************************");
-		 * System.out.println(rolesToDelete);
+		 * logger.debug(rolesToDelete);
 		 * System.out.
 		 * println("*********************Roles to Add ***************************");
-		 * System.out.println(rolesToUpdate);
+		 * logger.debug(rolesToUpdate);
 		 */
 	}
 

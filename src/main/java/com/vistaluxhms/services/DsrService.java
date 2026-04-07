@@ -1,4 +1,7 @@
-package com.vistaluxhms.services; // package for service logic
+package com.vistaluxhms.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; // package for service logic
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,8 @@ import com.vistaluxhms.repository.DsrRepository;
 @Service // marks this as a Spring service class
 public class DsrService {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(DsrService.class);
     @Autowired // inject the repository automatically
     private DsrRepository dsrRepository;
 

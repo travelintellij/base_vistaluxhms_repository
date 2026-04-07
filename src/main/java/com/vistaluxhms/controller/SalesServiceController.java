@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.DocumentException;
 import com.twilio.type.Client;
 import com.vistaluxhms.entity.*;
@@ -43,6 +46,8 @@ import java.util.*;
 @Controller
 public class SalesServiceController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SalesServiceController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -140,7 +145,7 @@ public class SalesServiceController {
                 listRateTypeObj.add(rateTypeObj);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Exception caught", e);
             }
         }
         return listRateTypeObj;
@@ -296,7 +301,7 @@ public class SalesServiceController {
                 salesPartnerVoList.add(salesPartnerEntityDto);
             } catch (Exception e) {
                 // Still add the partner even if city lookup fails
-                e.printStackTrace();
+                logger.error("Exception caught", e);
             }
         }
         return salesPartnerVoList;
@@ -536,7 +541,7 @@ public class SalesServiceController {
                                                                                                        // your JSP page
         if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
             // Process the selected session IDs
-            // System.out.println("Selected Session ID is : " + rateSessionMappingIds);
+            // logger.debug("Selected Session ID is : " + rateSessionMappingIds);
 
             List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
             for (Integer sessionRateMappingId : rateSessionMappingIds) {
@@ -655,7 +660,7 @@ public class SalesServiceController {
                 roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
                 roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
                 roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
-                // System.out.println("Key: " + key + ", Room Details Entity : " +
+                // logger.debug("Key: " + key + ", Room Details Entity : " +
                 // roomDetailsEntity);
                 List<MealPlanRate> mealPlans = new ArrayList<>();
                 Map<Integer, SessionDetailsEntityDTO> mealwiseSessionDetail = (Map<Integer, SessionDetailsEntityDTO>) sessionDetailsMap
@@ -681,14 +686,14 @@ public class SalesServiceController {
                     }
                     mealPlanRate.setPersonWiseRates(personWiseRate);
                     mealPlans.add(mealPlanRate);
-                    // System.out.println(mealId + "-- " + personWiseRate);
+                    // logger.debug(mealId + "-- " + personWiseRate);
                 }
                 roomCategory.setMealPlans(mealPlans);
                 roomCategories.add(roomCategory);
             }
             rateCard.setRoomCategories(roomCategories);
             listRateCard.add(rateCard);
-            System.out.println("***************************");
+            logger.debug("***************************");
         }
 
         Map<String, Object> emailData = new HashMap<>();
@@ -793,7 +798,7 @@ public class SalesServiceController {
      * List<Map<String, Object>> sessionDetailsList = new ArrayList<>();
      * if (rateSessionMappingIds != null && !rateSessionMappingIds.isEmpty()) {
      * // Process the selected session IDs
-     * System.out.println("Selected Session ID is : " + rateSessionMappingIds);
+     * logger.debug("Selected Session ID is : " + rateSessionMappingIds);
      * 
      * for (Integer sessionRateMappingId : rateSessionMappingIds) {
      * SessionRateMappingEntity sessionRateMappingEntity =
@@ -837,30 +842,30 @@ public class SalesServiceController {
     /*
      * private void printRateCards(List<RateCard> rateCards) {
      * if (rateCards == null || rateCards.isEmpty()) {
-     * System.out.println("No rate cards available.");
+     * logger.debug("No rate cards available.");
      * return;
      * }
      * 
      * for (RateCard rateCard : rateCards) {
-     * System.out.println("==========================================");
+     * logger.debug("==========================================");
      * System.out.println("Season: " + rateCard.getSeasonStartDate() + " to " +
      * rateCard.getSeasonEndDate());
      * 
      * List<RoomCategory> roomCategories = rateCard.getRoomCategories();
      * if (roomCategories == null || roomCategories.isEmpty()) {
-     * System.out.println("  No room categories available.");
+     * logger.debug("  No room categories available.");
      * continue;
      * }
      * 
      * for (RoomCategory roomCategory : roomCategories) {
-     * System.out.println("  ----------------------------------");
+     * logger.debug("  ----------------------------------");
      * System.out.println("  Room Category: " + roomCategory.getName());
      * System.out.println("    Max Occupancy: " + roomCategory.getMaxOccupancy());
      * System.out.println("    Extra Bed: " + roomCategory.getExtraBed());
      * 
      * List<MealPlanRate> mealPlans = roomCategory.getMealPlans();
      * if (mealPlans == null || mealPlans.isEmpty()) {
-     * System.out.println("    No meal plans available.");
+     * logger.debug("    No meal plans available.");
      * continue;
      * }
      * 
@@ -869,7 +874,7 @@ public class SalesServiceController {
      * 
      * Map<String, Integer> personWiseRates = mealPlan.getPersonWiseRates();
      * if (personWiseRates == null || personWiseRates.isEmpty()) {
-     * System.out.println("      No person-wise rates available.");
+     * logger.debug("      No person-wise rates available.");
      * } else {
      * for (Map.Entry<String, Integer> entry : personWiseRates.entrySet()) {
      * System.out.println("      Person " + entry.getKey() + ": ₹" +
@@ -917,7 +922,7 @@ public class SalesServiceController {
                 roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
                 roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
                 roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
-                // System.out.println("Key: " + key + ", Room Details Entity : " +
+                // logger.debug("Key: " + key + ", Room Details Entity : " +
                 // roomDetailsEntity);
                 List<MealPlanRate> mealPlans = new ArrayList<>();
                 Map<Integer, SessionDetailsEntityDTO> mealwiseSessionDetail = (Map<Integer, SessionDetailsEntityDTO>) sessionDetailsMap
@@ -943,14 +948,14 @@ public class SalesServiceController {
                     }
                     mealPlanRate.setPersonWiseRates(personWiseRate);
                     mealPlans.add(mealPlanRate);
-                    // System.out.println(mealId + "-- " + personWiseRate);
+                    // logger.debug(mealId + "-- " + personWiseRate);
                 }
                 roomCategory.setMealPlans(mealPlans);
                 roomCategories.add(roomCategory);
             }
             rateCard.setRoomCategories(roomCategories);
             listRateCard.add(rateCard);
-            System.out.println("***************************");
+            logger.debug("***************************");
         }
 
         Map<String, Object> model = new HashMap<>();

@@ -1,5 +1,8 @@
 package com.vistaluxevent.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventDetailsConfigDTO;
 import com.vistaluxevent.model.FilterEventObj;
@@ -41,6 +44,8 @@ import java.util.stream.Collectors;
 @Service
 public class EventConfigServicesImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(EventConfigServicesImpl.class);
 	private final EventDetailsConfigEntityRepository detailsRepo;
 
 	@Autowired
@@ -92,7 +97,7 @@ public class EventConfigServicesImpl {
 
 	@Transactional
 	public void saveOrUpdateEvent(String eventTypeStr, EventDetailsConfigDTO form) throws IOException {
-		System.out.println("Event Type String is " + eventTypeStr);
+		logger.debug("Event Type String is " + eventTypeStr);
 		EventType eventType = EventType.valueOf(eventTypeStr.toUpperCase());
 
 		EventDetailsConfigEntity details = detailsRepo.findByEventType(eventType).orElseGet(() -> {
@@ -250,7 +255,7 @@ public class EventConfigServicesImpl {
 		}
 
 
-		System.out.println("Event Type Id is" + detailsId);
+		logger.debug("Event Type Id is" + detailsId);
 
 		List<EventImageConfigEntity> images = imageRepo.findByEventDetails_IdOrderByImageIndex(detailsId);
 		List<Long> imageIds = new ArrayList<>(Collections.nCopies(6, null));

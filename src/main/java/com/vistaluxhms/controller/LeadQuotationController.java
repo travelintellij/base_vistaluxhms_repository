@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.DocumentException;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
@@ -43,6 +46,8 @@ import java.util.stream.Collectors;
 // @SessionAttributes("QUOTATION_OBJ")
 public class LeadQuotationController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(LeadQuotationController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -142,7 +147,7 @@ public class LeadQuotationController {
         modelView.addObject("LEAD_SYS_QUOTATION_LIST", listLeadSystemQuotation);
         // modelView.addObject("LEAD_OBJ",leadRecorderObj);
         // leadRecorderObj.setLeadId(new Long(35));
-        // System.out.println(filterObj);
+        // logger.debug(filterObj);
         // List<WorkLoadStatusVO> lead_wl_statusList =
         // commonService.find_All_Active_Status_Workload_Obj(VistaluxConstants.WORKLOAD_LEAD_STATUS);
         return modelView;
@@ -511,12 +516,12 @@ public class LeadQuotationController {
         // Scope: Email quotation sending flow
         // notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails,
         // "LeadFITQuotation.ftl");
-        // System.out.println("Quotation Sent Successfully!! ");
+        // logger.debug("Quotation Sent Successfully!! ");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // !! ");
         boolean emailSent = notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "LeadFITQuotation.ftl");
         if (emailSent) {
-            System.out.println("Quotation Sent Successfully!! ");
+            logger.debug("Quotation Sent Successfully!! ");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
         } else {
             redirectAttrib.addFlashAttribute("Error",
@@ -609,12 +614,12 @@ public class LeadQuotationController {
                 // Reason: MailSendException and other unhandled exceptions (like missing DB
                 // config) should also be caught securely
                 // Scope: Email quotation sending - error handling
-                e.printStackTrace();
+                logger.error("Exception caught", e);
                 return false;
                 // ===== AI MODIFICATION END =====
             }
         } else {
-            System.out.println("Email Notification DISABLE. ");
+            logger.debug("Email Notification DISABLE. ");
             // ===== AI MODIFICATION START =====
             return false; // Email notifications disabled
             // ===== AI MODIFICATION END =====
@@ -674,12 +679,12 @@ public class LeadQuotationController {
         // CHANGED: Capture WhatsAppResult to report success/failure to the user.
         // ORIGINAL CODE (removed):
         // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-        // System.out.println("Quotation Sent Successfully!! ");
+        // logger.debug("Quotation Sent Successfully!! ");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // !! ");
         WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
         if (whatsAppResult.isSuccess()) {
-            System.out.println("Quotation Sent Successfully via WhatsApp!!");
+            logger.debug("Quotation Sent Successfully via WhatsApp!!");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via WhatsApp!!");
         } else {
             // ADDED: Show WhatsApp error on frontend with descriptive reason
@@ -695,7 +700,7 @@ public class LeadQuotationController {
     // and to display the specific failure reason on the frontend.
     private WhatsAppResult notifyQuotationReceiverByWhatsapp(LeadSystemQuotationEntityDTO quotationEntityDTO) {
         UserDetailsObj user = getLoggedInUser();
-        System.out.println("Sharing Quotation via Whats app");
+        logger.debug("Sharing Quotation via Whats app");
         try {
             WhatsAppMessageDTO whatsAppMessageDTO = new WhatsAppMessageDTO();
             whatsAppMessageDTO.setRecipientMobile("91" + quotationEntityDTO.getMobile());
@@ -738,7 +743,7 @@ public class LeadQuotationController {
             return whatsAppService.sendStayQuotationMessage(whatsAppMessageDTO, queryDetails);
         } catch (Exception e) {
             // CHANGED: Return failure result instead of just printing stack trace
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return new WhatsAppResult(false,
                     "WhatsApp quotation sending failed due to: " + e.getMessage());
         }
@@ -864,7 +869,7 @@ public class LeadQuotationController {
         // CHANGED: Capture WhatsAppResult to report success/failure to the user.
         // ORIGINAL CODE (removed):
         // notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
-        // System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+        // logger.debug("Quotation Sent Successfully via Email and WhatsApp!!");
         // redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully
         // via Email and WhatsApp!!");
         WhatsAppResult whatsAppResult = notifyQuotationReceiverByWhatsapp(quotationEntityDTO);
@@ -873,7 +878,7 @@ public class LeadQuotationController {
         // Reason: User should know exactly which channel succeeded or failed
         // Scope: Combined Email+WhatsApp quotation sending flow
         if (emailSent && whatsAppResult.isSuccess()) {
-            System.out.println("Quotation Sent Successfully via Email and WhatsApp!!");
+            logger.debug("Quotation Sent Successfully via Email and WhatsApp!!");
             redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully via Email and WhatsApp!!");
         } else if (emailSent && !whatsAppResult.isSuccess()) {
             redirectAttrib.addFlashAttribute("Success", "Email sent successfully.");
@@ -945,9 +950,9 @@ public class LeadQuotationController {
             }
             newLeadSystemQuotationEntity.setRoomDetails(roomEntities);
 
-            System.out.println("Existing Entity is " + existingleadSystemQuotationEntity);
-            System.out.println("****************************************************************");
-            System.out.println("New Entity is " + newLeadSystemQuotationEntity);
+            logger.debug("Existing Entity is " + existingleadSystemQuotationEntity);
+            logger.debug("****************************************************************");
+            logger.debug("New Entity is " + newLeadSystemQuotationEntity);
 
             // System.out.println("Before Updating LSQID is " + existingEntity.getLsqid());
             existingleadSystemQuotationEntity.getRoomDetails().clear();
@@ -1499,7 +1504,7 @@ public class LeadQuotationController {
         }
         formatRoomDates(quotationEntityDTO);
         notifyQuotationReceiverByEmail(quotationEntityDTO, recipientEmails, "FreeHandQuotation.ftl");
-        System.out.println("Quotation Sent Successfully!! ");
+        logger.debug("Quotation Sent Successfully!! ");
         redirectAttrib.addFlashAttribute("Success", "Quotation is sent successfully !! ");
         // session.removeAttribute(sessionKey);
         return modelView;
@@ -1548,10 +1553,10 @@ public class LeadQuotationController {
                 emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
             } catch (MessagingException | IOException | TemplateException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error("Exception caught", e);
             }
         } else {
-            System.out.println("Email Notification DISABLE. ");
+            logger.debug("Email Notification DISABLE. ");
         }
     }
 
@@ -1608,11 +1613,11 @@ public class LeadQuotationController {
             newLeadFHQuotationEntity.setRoomDetails(roomEntities);
 
             /*
-             * System.out.println("Existing Entity is " +
+             * logger.debug("Existing Entity is " +
              * existingleadSystemQuotationEntity);
-             * System.out.println(
+             * logger.debug(
              * "****************************************************************");
-             * System.out.println("New Entity is " + newLeadSystemQuotationEntity);
+             * logger.debug("New Entity is " + newLeadSystemQuotationEntity);
              */
             // System.out.println("Before Updating LSQID is " + existingEntity.getLsqid());
             existingleadFHQuotationEntity.getRoomDetails().clear();

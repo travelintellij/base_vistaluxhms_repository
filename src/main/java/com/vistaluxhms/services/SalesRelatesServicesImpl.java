@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.RateType_Obj;
@@ -26,6 +29,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class SalesRelatesServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(SalesRelatesServicesImpl.class);
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 

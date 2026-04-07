@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.AssetDTO;
 import com.vistaluxhms.model.TransferDTO;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class AssetServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
     @Autowired
     private AssetRepository assetRepository;
 

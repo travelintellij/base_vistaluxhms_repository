@@ -1,5 +1,8 @@
 package com.vistaluxevent.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.DocumentException;
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.EventDetailsConfigDTO;
@@ -53,6 +56,8 @@ import java.util.stream.Collectors;
 @Controller
 public class EventController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -205,8 +210,8 @@ public class EventController {
 				ClientEntity clientEntity = clientService.findClientById(eventPackageEntityDTO.getGuestId());
 				eventPackageEntityDTO.setMobile(clientEntity.getMobile().toString());
 				eventPackageEntityDTO.setEmail(clientEntity.getEmailId());
-				System.out.println("All Value set for mobile and email");
-				System.out.println(eventPackageEntityDTO);
+				logger.debug("All Value set for mobile and email");
+				logger.debug(eventPackageEntityDTO);
 			}
 			List<EventMasterServiceEntity> eventMasterServiceDTOList = eventServices
 					.findByEventTypeIdAndActiveEventMasterServiceList(
@@ -310,7 +315,7 @@ public class EventController {
 					default:
 						// Handle the default case if the eventServiceCostTypeName doesn't match any
 						// case
-						System.out.println("Unknown cost type: " + costTypeName);
+						logger.debug("Unknown cost type: " + costTypeName);
 						break;
 				}
 			}
@@ -364,7 +369,7 @@ public class EventController {
 		}
 		// Check if end date is not before start date
 		if (eventEndDate.isBefore(eventStartDate)) {
-			System.out.println("");
+			logger.debug("");
 			errors.rejectValue("eventEndDate", "error.eventEndDate", "End date cannot be before the start date.");
 			return false;
 		}
@@ -564,7 +569,7 @@ public class EventController {
 			@ModelAttribute("FILTER_EVENT_OBJ") FilterEventObj filterObj, BindingResult result) {
 
 		ModelAndView modelView = new ModelAndView("event/viewEventListing");
-		// System.out.println(filterObj);
+		// logger.debug(filterObj);
 
 		/*
 		 * List<WorkLoadStatusVO> lead_wl_statusList =
@@ -785,7 +790,7 @@ public class EventController {
 			bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 		}
 
 		model.put("bgImageBase64", bgImageBase64);
@@ -834,7 +839,7 @@ public class EventController {
 				menuImages.add(base64);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 
@@ -939,7 +944,7 @@ public class EventController {
 			modelView.addObject("eventPackageEntityDTO", eventPackageEntityDTO);
 			modelView.addObject("EVENT_PACKAGE", eventPackageEntityDTO);
 			notifyQuotationReceiverByEmail(eventPackageEntityDTO, recipientEmails, templateName);
-			System.out.println("Quotation Sent Successfully!! ");
+			logger.debug("Quotation Sent Successfully!! ");
 			modelView.addObject("SuccessMessage", "Event Package Record is sent successfully.");
 		}
 		return modelView;
@@ -1019,10 +1024,10 @@ public class EventController {
 				emailService.sendEmailMessageUsingTemplate_MultipleRecipients(mail, templateName);
 			} catch (MessagingException | IOException | TemplateException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		} else {
-			System.out.println("Email Notification DISABLE. ");
+			logger.debug("Email Notification DISABLE. ");
 		}
 	}
 

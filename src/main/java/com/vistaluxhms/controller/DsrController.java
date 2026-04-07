@@ -1,4 +1,7 @@
-package com.vistaluxhms.controller; // package for REST endpoints
+package com.vistaluxhms.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; // package for REST endpoints
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +14,8 @@ import com.vistaluxhms.services.DsrService;
 @CrossOrigin(origins = "*") // allow frontend access
 public class DsrController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(DsrController.class);
     @Autowired // inject service
     private DsrService dsrService;
 

@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.ClientEntityDTO;
 import com.vistaluxhms.model.FilterLeadObj;
@@ -20,6 +23,8 @@ import java.util.*;
 
 @Service
 public class LeadServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(LeadServicesImpl.class);
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 
@@ -111,7 +116,7 @@ public class LeadServicesImpl {
 									.add(criteriaBuilder.between(leadsRootEntity.get(dateCriteria), dateFrom, dateTo));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logger.error("Exception caught", e);
 						}
 					} /*
 						 * else {

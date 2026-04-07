@@ -1,5 +1,8 @@
 package com.vistaluxevent.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxevent.entity.*;
 import com.vistaluxevent.model.FilterEventObj;
 import com.vistaluxevent.repository.*;
@@ -27,6 +30,8 @@ import java.util.*;
 
 @Service
 public class EventServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(EventServicesImpl.class);
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 
@@ -149,7 +154,7 @@ public class EventServicesImpl {
 							predicates.add(criteriaBuilder.between(eventRootEntity.get("eventStartDate"),localStartDate,localEndDate));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logger.error("Exception caught", e);
 						}
 					}
 

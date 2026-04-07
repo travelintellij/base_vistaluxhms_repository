@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.CentralConfigEntity;
 import com.vistaluxhms.entity.EmailConfigEntity;
 import com.vistaluxhms.entity.WhatsAppConfigEntity;
@@ -17,6 +20,8 @@ import java.util.Optional;
 @Service
 public class SettingsAndOtherServicesImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SettingsAndOtherServicesImpl.class);
 	@Autowired
 	private CentralConfigEntityRepository centralConfigRepository;
 

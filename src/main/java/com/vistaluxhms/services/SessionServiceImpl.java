@@ -1,4 +1,7 @@
 package com.vistaluxhms.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
 import com.vistaluxhms.model.SessionFilterDTO;
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 @Service
 public class SessionServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SessionServiceImpl.class);
 	@Autowired
 	SessionRepository sessionRepository;
 

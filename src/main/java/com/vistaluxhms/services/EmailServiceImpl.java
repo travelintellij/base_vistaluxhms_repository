@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,6 +59,8 @@ import org.springframework.validation.Errors;
 @Service
 public class EmailServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 	// ===== AI MODIFICATION START =====
 	// Change: Dynamic JavaMailSender based on DB config instead of static bean
 	// Reason: Ensure SMTP properties are read from the frontend without
@@ -243,7 +248,7 @@ public class EmailServiceImpl {
 				helper.addAttachment(file.getFilename(), file);
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 
@@ -255,11 +260,11 @@ public class EmailServiceImpl {
 		 * Iterator itr = fileUploaderListVo.getFlightFilesList().iterator();
 		 * while(itr.hasNext()) {
 		 * String fileName=(String) itr.next();
-		 * System.out.println("File Name is " + fileName);
+		 * logger.debug("File Name is " + fileName);
 		 * Path directoryPath = Paths.get(fileStorageService.getFileStorageLocation() +
 		 * "\\" + fileUploaderListVo.getDealConfirmationId() +"
 		 * \\" + UdanChooConstants.UDN_FLT_SRV_SUPP_NAME + "\\" + fileName);
-		 * System.out.println("Attaching File " + directoryPath);
+		 * logger.debug("Attaching File " + directoryPath);
 		 * FileSystemResource file = new FileSystemResource(new
 		 * File(directoryPath.toString()));
 		 * helper.addAttachment(file.getFilename(),file);
@@ -483,7 +488,7 @@ public class EmailServiceImpl {
 			for (String email : emails) {
 				email = email.trim(); // Remove spaces
 				if (!isValidEmail(email)) {
-					System.out.println("Invalid Email Formation Specified in Configuration File for watcher. ");
+					logger.debug("Invalid Email Formation Specified in Configuration File for watcher. ");
 					// errors.rejectValue("email", "error.email", "Invalid email format: " + email);
 				} else {
 					emailList.add(email);
@@ -491,7 +496,7 @@ public class EmailServiceImpl {
 			}
 		}
 		if (emailList.isEmpty()) {
-			System.out.println("Watcher Not Defined in Configuration. ");
+			logger.debug("Watcher Not Defined in Configuration. ");
 			// errors.rejectValue("email", "error.email", "At least one valid email is
 			// required.");
 		}
@@ -626,14 +631,14 @@ public class EmailServiceImpl {
 	 */
 	public void sendMailToMultipleRecipients(String emailList, String subject, String body) {
 		if (!isEmailNotifyActive()) {
-			System.out.println("Email notifications are disabled.");
+			logger.debug("Email notifications are disabled.");
 			return;
 		}
 
 		// Validate and extract emails
 		List<String> recipients = validateAndExtractEmails(emailList);
 		if (recipients.isEmpty()) {
-			System.out.println("No valid email addresses found.");
+			logger.debug("No valid email addresses found.");
 			return;
 		}
 
@@ -649,10 +654,10 @@ public class EmailServiceImpl {
 
 			// Send mail
 			getJavaMailSender().send(message);
-			System.out.println("Email sent to: " + recipients);
+			logger.debug("Email sent to: " + recipients);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception caught", e);
 			System.out.println("Failed to send email: " + e.getMessage());
 		}
 	}
@@ -680,7 +685,7 @@ public class EmailServiceImpl {
 				helper.setText(htmlBody, true); // true = HTML content
 				getJavaMailSender().send(message);
 			} catch (MessagingException e) {
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 	}

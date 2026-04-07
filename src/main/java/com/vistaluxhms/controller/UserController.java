@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.RoleEntity;
 import com.vistaluxhms.model.UserDetailsObj;
@@ -26,6 +29,8 @@ import java.util.Set;
 @Controller
 public class UserController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -57,7 +62,7 @@ public class UserController {
         AshokaTeam userEntity = userDetailsService.findUserByID(userId);
         userDetailsDTO.updateUserVoFromEntity(userEntity);
         mapview.addObject("USER_OBJ", userDetailsDTO);
-        // System.out.println("Entity REtreived is " + userEntity);
+        // logger.debug("Entity REtreived is " + userEntity);
         // UserDetailsObj userDetailsObj = new UserDetailsObj(userEntity);
         // mapview.addObject("userobj",userDetailsObj);
         mapview.setViewName("admin/user/Admin_View_User");
@@ -170,7 +175,7 @@ public class UserController {
             ModelAndView modelView = view_add_user_form(userDTO, result);
             modelView.addObject("USER_OBJ", userDTO);
             modelView.addObject("Error", "Error: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             return modelView;
         }
     }
@@ -203,10 +208,10 @@ public class UserController {
         // System.out.println("Last Working Day is " +userDTO.getLastWorkingDay());
 
         userValidator.validate(userDTO, result);
-        // System.out.println("User Details are " + userDTO);
+        // logger.debug("User Details are " + userDTO);
 
         if (result.hasErrors()) {
-            System.out.println(result);
+            logger.debug(result);
             // If there are validation errors, return the form view with errors
             modelView = view_edit_user_form(userDTO, result);
         } else {

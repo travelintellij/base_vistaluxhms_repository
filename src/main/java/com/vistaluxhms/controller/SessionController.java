@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.services.SalesRelatesServicesImpl;
@@ -24,6 +27,8 @@ import java.util.*;
 @Controller
 public class SessionController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -163,7 +168,7 @@ public class SessionController {
 		 * sessionDetailsEntityList.add(newSessionDetailsEntityDTO);
 		 * }
 		 * else{
-		 * System.out.println("Not Present");
+		 * logger.debug("Not Present");
 		 * newSessionDetailsEntityDTO.setRoomCategoryId(activeRoomCategory.
 		 * getRoomCategoryId());
 		 * SessionEntity session = new SessionEntity();
@@ -260,7 +265,7 @@ public class SessionController {
 			@ModelAttribute("SESSION_RATE_MAP_OBJ") SessionRateMappingEntityDTO sessionRateMappingEntityDTO,
 			BindingResult result, final RedirectAttributes redirectAttrib) {
 		ModelAndView modelView = new ModelAndView();
-		System.out.println("Mapping Entity Object is " + sessionRateMappingEntityDTO);
+		logger.debug("Mapping Entity Object is " + sessionRateMappingEntityDTO);
 		boolean conflictExists = sessionService.isRateTypeConflict(
 				sessionRateMappingEntityDTO.getRateTypeId(), sessionRateMappingEntityDTO.getStartDate(),
 				sessionRateMappingEntityDTO.getEndDate());
