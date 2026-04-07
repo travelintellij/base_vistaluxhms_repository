@@ -142,9 +142,15 @@ public class SalesRelatesServicesImpl {
 					sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
 					sp.setDescription("Default partner for Social Media Leads");
 					sp.setReference("System Generated");
-					RateTypeEntity rateType = new RateTypeEntity();
-					rateType.setRateTypeId(2); // Active B2C_Rate_Type
-					sp.setRateTypeEntity(rateType);
+                    RateTypeEntity defaultRateType = rateTypeRepository.findByRateTypeName("B2C_Rate_Type")
+                            .orElseGet(() -> {
+                                RateTypeEntity rt = new RateTypeEntity();
+                                rt.setRateTypeName("B2C_Rate_Type");
+                                rt.setActive(true);
+                                return rateTypeRepository.save(rt);
+                            });
+
+                    sp.setRateTypeEntity(defaultRateType);
 					return salesPartnerRepository.save(sp);
 				});
 
