@@ -87,9 +87,10 @@ public class QuotationValidator implements Validator {
 				if(quotationOccupancy>masterRoomDetailsEntity.getMaxOccupancy()){
 					errors.rejectValue("roomDetails[" + i + "].roomCategoryId", "error.roomDetails", "Max Occupancy Exceeded.");
 				}
-				if(childNoBed>ANY_ROOM_CHILD_NO_BED_ALLOWED){
-					errors.rejectValue("roomDetails[" + i + "].childNoBed", "error.roomDetails", "Child No Bed Exceeded.");
-				}
+                if (childNoBed > masterRoomDetailsEntity.getChild()) {
+                    errors.rejectValue("roomDetails[" + i + "].childNoBed", "error.roomDetails",
+                            "Child No Bed Exceeded. Allowed: " + masterRoomDetailsEntity.getChild());
+                }
 
 				// Use the found room entity
 			} else {

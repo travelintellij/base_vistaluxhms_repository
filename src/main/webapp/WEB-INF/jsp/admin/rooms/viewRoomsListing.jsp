@@ -38,24 +38,61 @@
     }
 
 
-    .container {
-        max-width: 60%;
-        margin: 40px auto;
-        padding: 20px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    table {
-        width: 100%;
-    }
-    th, td {
-        text-align: center;
-        vertical-align: middle;
-    }
-    .action-btns a {
-        margin: 3px;
-    }
+   .container {
+       max-width: 95%;
+       width: 95%;
+       margin: 40px auto;
+       padding: 20px;
+       background: #fff;
+       border-radius: 10px;
+       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+   }
+
+
+   table {
+       width: 100%;
+       table-layout: auto;
+   }
+
+   th, td {
+       text-align: center;
+       vertical-align: middle;
+       white-space: nowrap;
+   }
+
+   /* Room Category column wider and no wrap */
+   th:nth-child(2),
+   td:nth-child(2) {
+       min-width: 220px;
+       white-space: nowrap;
+   }
+
+   /* Actions column wider */
+   th:nth-child(10),
+   td:nth-child(10) {
+       min-width: 140px;
+   }
+
+   .add-btn {
+       display: inline-block;
+       padding: 10px 22px;
+       background-color: #c9a646;
+       color: #000;
+       text-decoration: none;
+       border: 1px solid #b89434;
+       border-radius: 6px;
+       font-size: 14px;
+       font-weight: 600;
+       cursor: pointer;
+       transition: 0.2s ease-in-out;
+   }
+
+   .add-btn:hover {
+       background-color: #b89434;
+       color: #000;
+       text-decoration: none;
+   }
+
 </style>
 <body>
 <div align="center" style="margin:10px 0">
@@ -66,6 +103,7 @@
 </div>
     <div class="container">
         <h2 class="text-center mb-4">Room Category List</h2>
+        <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
@@ -110,8 +148,9 @@
                 </c:forEach>
             </tbody>
         </table>
+        </div>
         <div class="text-center mt-3">
-            <a href="view_add_room_category_form" class="edit-btn" style="padding: 8px 20px !important; font-size: 0.875rem !important;">Add New Room Category</a>
+            <a href="view_add_room_category_form" class="add-btn">Add New Room Category</a>
         </div>
     </div>
 </body>

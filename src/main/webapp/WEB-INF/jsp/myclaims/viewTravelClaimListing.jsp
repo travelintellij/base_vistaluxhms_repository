@@ -38,15 +38,15 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* this is important */
+  table-layout: auto; /* this is important */
 }
 
 th, td {
-  text-align: left;
   padding: 8px;
   border: 1px solid #ccc;
-  word-wrap: break-word;
   text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
   .filter-bar {
@@ -206,7 +206,7 @@ th, td {
 
 
 <!-- Client List Table Section -->
-<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+<div class="form-container client-list-container" style="width: 90%; min-width: 90%; max-width: 90%;">
     <c:set value="${TRAVEL_CLAIM_FILTERED_LIST}" var="travelClaimList" />
 
     <table>

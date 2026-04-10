@@ -660,6 +660,7 @@ public class SalesServiceController {
                 roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
                 roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
                 roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
+                roomCategory.setChild(roomDetailsEntity.getChild());
                 // logger.debug("Key: " + key + ", Room Details Entity : " +
                 // roomDetailsEntity);
                 List<MealPlanRate> mealPlans = new ArrayList<>();
@@ -922,6 +923,7 @@ public class SalesServiceController {
                 roomCategory.setMaxOccupancy(roomDetailsEntity.getMaxOccupancy());
                 roomCategory.setName(roomDetailsEntity.getRoomCategoryName());
                 roomCategory.setExtraBed(roomDetailsEntity.getExtraBed());
+                roomCategory.setChild(roomDetailsEntity.getChild());
                 // logger.debug("Key: " + key + ", Room Details Entity : " +
                 // roomDetailsEntity);
                 List<MealPlanRate> mealPlans = new ArrayList<>();

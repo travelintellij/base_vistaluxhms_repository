@@ -32,17 +32,17 @@
     body {
         opacity: .98;
     }
-    .date-input {
-        height: 40px; /* taller than default (~20px) */
-        padding: 5px 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        outline: none;
-        width: 220px;
-        box-sizing: border-box;
-        transition: border-color 0.3s;
-      }
+  .date-input {
+      height: 40px;
+      padding: 5px 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      width: 67%;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+  }
 
       .date-input:focus {
         border-color: #3399ff;

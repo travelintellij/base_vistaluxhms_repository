@@ -9,6 +9,7 @@ public class RoomCategory {
     private int standardOccupancy;
     private int extraBed;
     private List<MealPlanRate> mealPlans;
+    private int child;
 
     // Getters and Setters
 
@@ -62,6 +63,14 @@ public class RoomCategory {
 
     public void setStandardOccupancy(int standardOccupancy) {
         this.standardOccupancy = standardOccupancy;
+    }
+
+    public int getChild() {
+        return child;
+    }
+
+    public void setChild(int child) {
+        this.child = child;
     }
 }
 
