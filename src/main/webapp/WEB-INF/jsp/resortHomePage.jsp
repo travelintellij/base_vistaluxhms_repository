@@ -395,7 +395,7 @@
                         <div class="gs-action-desc">Create a freehand quotation</div>
                     </a>
                     <sec:authorize access="hasAnyRole('ADMIN')">
-                        <a href="view_form_manage_central_config" class="gs-action-card">
+                        <a href="view_form_my_profile" class="gs-action-card">
                             <div class="gs-action-icon">&#9881;</div>
                             <div class="gs-action-title">Settings</div>
                             <div class="gs-action-desc">Central configuration</div>
