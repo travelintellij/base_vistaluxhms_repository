@@ -94,12 +94,8 @@ public class EmailServiceImpl {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 
-		try {
-			dynamicMailSender.testConnection();
-		} catch (Exception e) {
-			throw new org.springframework.mail.MailSendException("SMTP connection test failed. Please check your credentials and host.", e);
-		}
-
+		// NOTE: Removed testConnection() — it blocked every email send thread
+		// and caused delayed/missing emails. Brevo will fail fast on actual send if creds are wrong.
 		return dynamicMailSender;
 	}
 	// ===== AI MODIFICATION END =====
@@ -174,8 +170,10 @@ public class EmailServiceImpl {
 	/**
 	 * This method will send compose and send the message
 	 */
+	@Async
     public void sendMail(String to, String subject, String body) {
-        if (isEmailNotifyActive()) {
+        if (!isEmailNotifyActive()) return;
+        try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(getSystemEmailFrom());
             message.setTo(to);
@@ -188,6 +186,9 @@ public class EmailServiceImpl {
             }
 
             getJavaMailSender().send(message);
+            logger.info("[EmailService] Mail sent to: {} | Subject: {}", to, subject);
+        } catch (Exception e) {
+            logger.error("[EmailService] Failed to send mail to {}: {}", to, e.getMessage());
         }
     }
 
