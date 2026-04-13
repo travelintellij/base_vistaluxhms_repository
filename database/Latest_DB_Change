@@ -8,3 +8,12 @@ ADD COLUMN hide_cost TINYINT DEFAULT 1;
 
 ALTER TABLE `lead_system_quotation_room_details`
 ADD COLUMN `CWB` INT NULL DEFAULT 0;
+
+CREATE TABLE social_lead_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    meta_lead_id VARCHAR(100) UNIQUE NOT NULL,
+    crm_lead_id BIGINT,
+    platform VARCHAR(20),
+    meta_created_time VARCHAR(100),
+    imported_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

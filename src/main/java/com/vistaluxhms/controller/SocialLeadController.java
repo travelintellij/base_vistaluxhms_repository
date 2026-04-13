@@ -60,7 +60,10 @@ public class SocialLeadController {
             response.put("leads", importedLeads);
             response.put("message", newLeads > 0
                     ? newLeads + " new lead(s) imported successfully!"
-                    : "No new leads to import. All leads are already synced.");
+                            + (errors > 0 ? " (" + errors + " error(s))" : "")
+                    : (errors > 0
+                            ? errors + " lead(s) failed to import. Check server logs for details."
+                            : "No new leads to import. All leads are already synced."));
 
         } catch (Exception e) {
             response.put("success", false);

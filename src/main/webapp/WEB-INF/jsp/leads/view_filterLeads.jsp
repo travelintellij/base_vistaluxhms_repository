@@ -455,6 +455,8 @@
                                                 if (data.success && data.newLeadsImported > 0) {
                                                     showSyncToast(data.newLeadsImported + ' new lead(s) imported!', 'success');
                                                     setTimeout(function () { window.location.reload(); }, 1500);
+                                                } else if (data.success && data.errors > 0) {
+                                                    showSyncToast(data.message || (data.errors + ' lead(s) failed to import.'), 'error');
                                                 } else if (data.success) {
                                                     showSyncToast('No new leads to import.', 'info');
                                                 } else {

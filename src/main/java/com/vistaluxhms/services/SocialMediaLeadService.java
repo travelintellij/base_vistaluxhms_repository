@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -86,8 +87,7 @@ public class SocialMediaLeadService {
         List<Map<String, String>> importedLeads = new ArrayList<>();
 
         try {
-            // Ensure the tracking table exists (auto-creates on first run)
-            ensureTrackingTableExists();
+            // Table must be created manually before syncing leads.
 
             com.vistaluxhms.entity.CampaignFormEntity formConfig = campaignFormRepository.findById(campaignFormId)
                     .orElse(null);
@@ -150,9 +150,16 @@ public class SocialMediaLeadService {
                     Map<String, String> result = applicationContext.getBean(SocialMediaLeadService.class)
                             .processAndImportLead(fieldData);
                     importedLeads.add(result);
+
+                    // Send notification ONLY after transaction has committed successfully.
+                    // This prevents emails being sent for leads that get rolled back.
+                    notifyLeadOwnerFromFieldData(result);
                 } catch (Exception ex) {
-                    System.err.println(
-                            "[SocialMediaLeadService] Error importing lead " + metaLeadId + ": " + ex.getMessage());
+                    logger.error("Error importing lead " + metaLeadId, ex);
+                    Map<String, String> errorMap = new HashMap<>();
+                    errorMap.put("status", "Error");
+                    errorMap.put("message", "Failed to import lead " + metaLeadId + ": " + ex.getMessage());
+                    importedLeads.add(errorMap);
                 }
             }
 
@@ -185,17 +192,22 @@ public class SocialMediaLeadService {
 
         ClientEntity client = findOrCreateClient(fieldData, sourceName);
         LeadEntity lead = createLead(client, fieldData, sourceName);
-        logImportedLead(metaLeadId, lead.getLeadId(), platform, createdTime);
+        // Log in a separate transaction so a logging failure can't roll back the lead import
+        applicationContext.getBean(SocialMediaLeadService.class)
+                .logImportedLead(metaLeadId, lead.getLeadId(), platform, createdTime);
 
         fieldData.put("crm_lead_id", String.valueOf(lead.getLeadId()));
         fieldData.put("source", sourceName);
         fieldData.put("status", "Imported Successfully");
+        fieldData.put("client_name", client.getClientName() != null ? client.getClientName() : "Unknown");
+        fieldData.put("client_email", client.getEmailId() != null ? client.getEmailId() : "");
+        fieldData.put("client_mobile", client.getMobile() != null ? String.valueOf(client.getMobile()) : "");
 
         System.out.println("[SocialMediaLeadService] Imported lead: " + fieldData.getOrDefault("full_name", "Unknown")
                 + " from " + sourceName + " -> CRM Lead #" + lead.getLeadId());
 
-        // Notify the default lead owner (admin) via email
-        notifyLeadOwner(lead, client, sourceName);
+        // NOTE: Email notification is now sent AFTER the transaction commits
+        // (from fetchAndImportLeads) to prevent sending emails for rolled-back leads
 
         return fieldData;
     }
@@ -255,6 +267,33 @@ public class SocialMediaLeadService {
     }
 
     /**
+     * Send lead owner notification using data from the import result map.
+     * Called AFTER the transaction has committed to ensure we don't send
+     * emails for leads that got rolled back.
+     */
+    private void notifyLeadOwnerFromFieldData(Map<String, String> fieldData) {
+        try {
+            String crmLeadIdStr = fieldData.get("crm_lead_id");
+            if (crmLeadIdStr == null) return;
+
+            Long crmLeadId = Long.parseLong(crmLeadIdStr);
+            LeadEntity lead = leadRepository.findById(crmLeadId).orElse(null);
+            if (lead == null) {
+                logger.warn("Cannot notify: Lead #{} not found after import", crmLeadId);
+                return;
+            }
+
+            ClientEntity client = lead.getClient();
+            String source = fieldData.getOrDefault("source", "Social Media Lead Ad");
+
+            notifyLeadOwner(lead, client, source);
+        } catch (Exception e) {
+            // Never let notification failure affect the import result
+            logger.error("Post-import notification failed", e);
+        }
+    }
+
+    /**
      * Fetch leads from a specific URL (for pagination)
      */
     private List<Map<String, String>> fetchAndImportFromUrl(String url) {
@@ -277,11 +316,16 @@ public class SocialMediaLeadService {
                             leadNode.has("created_time") ? leadNode.get("created_time").asText() : "");
 
                     try {
-                        results.add(
-                                applicationContext.getBean(SocialMediaLeadService.class)
-                                        .processAndImportLead(fieldData));
+                        Map<String, String> result = applicationContext.getBean(SocialMediaLeadService.class)
+                                .processAndImportLead(fieldData);
+                        results.add(result);
+                        notifyLeadOwnerFromFieldData(result);
                     } catch (Exception ex) {
-                        System.err.println("[SocialMediaLeadService] Pagination lead error: " + ex.getMessage());
+                        logger.error("Pagination lead error for " + metaLeadId, ex);
+                        Map<String, String> errorMap = new HashMap<>();
+                        errorMap.put("status", "Error");
+                        errorMap.put("message", "Failed to import lead: " + ex.getMessage());
+                        results.add(errorMap);
                     }
                 }
             }
@@ -572,9 +616,12 @@ public class SocialMediaLeadService {
     }
 
     /**
-     * Log an imported lead to prevent duplicate imports
+     * Log an imported lead to prevent duplicate imports.
+     * Runs in its own transaction (REQUIRES_NEW) so that a logging failure
+     * cannot roll back the main lead import transaction.
      */
-    private void logImportedLead(String metaLeadId, Long crmLeadId, String platform, String createdTime) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logImportedLead(String metaLeadId, Long crmLeadId, String platform, String createdTime) {
         try {
             Query query = entityManager.createNativeQuery(
                     "INSERT INTO social_lead_log (meta_lead_id, crm_lead_id, platform, meta_created_time, imported_at) "
@@ -589,29 +636,6 @@ public class SocialMediaLeadService {
         } catch (Exception e) {
             System.err.println("[SocialMediaLeadService] Error logging lead: " + e.getMessage());
         }
-    }
-
-    /**
-     * Ensure the tracking table exists
-     */
-    private void ensureTrackingTableExists() {
-        try {
-            entityManager.createNativeQuery(
-                    "CREATE TABLE IF NOT EXISTS social_lead_log (" +
-                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                            "meta_lead_id VARCHAR(100) UNIQUE NOT NULL, " +
-                            "crm_lead_id BIGINT, " +
-                            "platform VARCHAR(20), " +
-                            "meta_created_time VARCHAR(100), " +
-                            "imported_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                            ")")
-                    .executeUpdate();
-        } catch (Exception e) {
-            // Table might already exist, that's fine
-            System.out.println("[SocialMediaLeadService] Tracking table check: " + e.getMessage());
-        }
-    }
-
     /**
      * Get count of imported leads
      */
