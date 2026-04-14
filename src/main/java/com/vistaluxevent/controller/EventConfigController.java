@@ -72,15 +72,15 @@ public class EventConfigController {
 	}
 
 	@RequestMapping("view_form_manage_event_forms")
-	public ModelAndView view_form_manage_event_forms(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
-			@ModelAttribute("eventForm") EventDetailsConfigDTO eventConfig, BindingResult result) {
+    public ModelAndView view_form_manage_event_forms(@RequestParam(value = "eventType", required = false) String eventType,
+                                                     @ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
 		/*
 		 * ModelAndView modelView = new
 		 * ModelAndView("admin/settings/view_event_manage_forms");
 		 * return modelView;
 		 * 
 		 */
-		String eventType = eventConfig.getEventType();
+
 		EventDetailsConfigDTO dto = eventService.getEventDetails(eventType);
 		ModelAndView mv = new ModelAndView("admin/settings/view_event_manage_forms"); // your JSP
 		mv.addObject("eventForm", dto);

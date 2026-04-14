@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  * Service for handling Meta (Facebook/Instagram) Lead Ads synchronization.
- * 
+ *
  * Logic Added:
  * 1. Automated Lead Fetching: Connects to Meta Graph API using Page Access
  * Token.
@@ -110,8 +110,8 @@ public class SocialMediaLeadService {
 
             String activeApiVersion = (centralConfig.getMetaGraphApiVersion() != null
                     && !centralConfig.getMetaGraphApiVersion().isEmpty())
-                            ? centralConfig.getMetaGraphApiVersion()
-                            : "v19.0";
+                    ? centralConfig.getMetaGraphApiVersion()
+                    : "v19.0";
 
             // Fetch leads from Meta API
             String apiUrl = GRAPH_API_BASE + activeApiVersion + "/" + activeFormId
@@ -636,6 +636,8 @@ public class SocialMediaLeadService {
         } catch (Exception e) {
             System.err.println("[SocialMediaLeadService] Error logging lead: " + e.getMessage());
         }
+    }
+
     /**
      * Get count of imported leads
      */
@@ -668,7 +670,7 @@ public class SocialMediaLeadService {
             String formId = centralConfig.getMetaLeadFormId();
             String version = (centralConfig.getMetaGraphApiVersion() != null
                     && !centralConfig.getMetaGraphApiVersion().isEmpty()) ? centralConfig.getMetaGraphApiVersion()
-                            : "v19.0";
+                    : "v19.0";
 
             String apiUrl = GRAPH_API_BASE + version + "/" + formId
                     + "?fields=id,name,status&access_token=" + token;
@@ -683,7 +685,10 @@ public class SocialMediaLeadService {
             result.put("success", false);
             result.put("message", "Connection failed: " + e.getMessage());
         }
+
         return result;
     }
-
 }
+
+
+

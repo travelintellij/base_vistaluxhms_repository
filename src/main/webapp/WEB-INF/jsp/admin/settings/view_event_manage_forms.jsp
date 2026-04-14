@@ -247,7 +247,7 @@
         <form:textarea path="termsConditions" rows="3" cssClass="form-control"/>
 
         <!-- Submit -->
-        <button type="submit" class="submit-btn">Submit Wedding Event</button>
+        <button type="submit" class="submit-btn">Submit Group Event</button>
     </form:form>
 
   </div>
