@@ -97,7 +97,7 @@
         <h2 style="text-align:center">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
 
         <p>Dear ${contactName},</p>
-        ${centralConfig.quotationTopCover}
+        ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
 
         <table>
             <tr>
@@ -155,9 +155,9 @@
             <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
         </p>
 
-       ${centralConfig.inclusions}
+       ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
 
-       ${centralConfig.tnc}
+       ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
         <hr/>
 
         <h3>Payment Details:</h3>

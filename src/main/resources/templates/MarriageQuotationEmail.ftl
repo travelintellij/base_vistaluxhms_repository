@@ -219,16 +219,28 @@
 
 <div class="section">
     <h2 style="text-align: center; color: #2e6c80;">Welcome to ${centralConfig.hotelName}</h2>
-    ${eventConfig.resortInfo}
+    <p style="font-size: 14px; line-height: 1.6; text-align: center;">
+        ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
+    </p>
 
     <!-- Highlights Box with Floral Background -->
-       <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
+        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
            <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
-              ${eventConfig.celebrationHighlight}
+               <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+                   <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
+                       <#if highlight?trim?has_content>
+                           <li style="margin-bottom: 6px;">${highlight?replace(r"(?is)<h2.*?>.*?</h2>", "", "r")?html}</li>
+                       </#if>
+                   </#list>
+               </ul>
            </div>
        </div>
 
-    ${eventConfig.testimonial}
+    <#if eventConfig.testimonial?has_content>
+        <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
+        </div>
+    </#if>
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
 </div>
@@ -359,7 +371,11 @@
                         <#else>
                             <li>GST and other applicable taxes will be charged extra.</li>
                         </#if>
-                       ${eventConfig.termsConditions}
+                        <#list eventConfig.termsConditions?split("\\r?\\n", "r") as term>
+                            <#if term?trim?has_content>
+                                <li>${term?html}</li>
+                            </#if>
+                        </#list>
                     </ul>
                     <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
             </ul>

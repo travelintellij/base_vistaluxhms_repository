@@ -541,6 +541,11 @@ h1, h2 {
 .celebration-highlight {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    page-break-before: always !important;
+}
+
+.celebration-highlight .content-box {
+    min-height: 180px;
 }
 
 .celebration-highlight h2 {
@@ -933,8 +938,12 @@ body:has(.menu-page) .pdf-bg-img {
             Welcome to ${centralConfig.hotelName}
         </h2>
      <div class="content-box">
-        ${eventConfig.resortInfo}
-        ${eventConfig.testimonial}
+        <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
+        <#if eventConfig.testimonial?has_content>
+            <div style="margin-top: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+                ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
+            </div>
+        </#if>
     </div>
       </div>
             </div>
@@ -946,8 +955,14 @@ body:has(.menu-page) .pdf-bg-img {
 
       <!-- Content INSIDE container -->
       <div class="content-box">
-      ${eventConfig.celebrationHighlight?replace(r"(?is)<h2.*?>.*?</h2>", "")}
-         </div>
+          <ul style="margin: 0; padding-left: 18px;">
+              <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
+                  <#if highlight?trim?has_content>
+                      <li>${highlight?replace(r"(?is)<h2.*?>.*?</h2>", "", "r")?html}</li>
+                  </#if>
+              </#list>
+          </ul>
+      </div>
         </div>
 
 <#-- ================= COST DISPLAY LOGIC ================= -->
@@ -1057,7 +1072,11 @@ body:has(.menu-page) .pdf-bg-img {
         <#else>
             <li>GST and other applicable taxes will be charged extra.</li>
         </#if>
-      ${eventConfig.termsConditions}
+        <#list eventConfig.termsConditions?split("\\r?\\n", "r") as term>
+            <#if term?trim?has_content>
+                <li>${term?html}</li>
+            </#if>
+        </#list>
     </ul>
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>

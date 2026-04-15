@@ -217,10 +217,16 @@
 
 <div class="section">
    <h2>Venue &amp; Experience Overview</h2>
-   ${eventConfig.resortInfo}
+   <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
 
    <div class="highlight-box">
-           ${eventConfig.celebrationHighlight}
+           <ul style="margin: 0; padding-left: 20px;">
+               <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
+                   <#if highlight?trim?has_content>
+                       <li style="margin-bottom: 6px;">${highlight?replace(r"(?is)<h2.*?>.*?</h2>", "", "r")?html}</li>
+                   </#if>
+               </#list>
+           </ul>
       </div>
 <div style="page-break-after: always;"></div>
 <div class="section">
@@ -234,7 +240,11 @@
     </div>
 </div>
 
- ${eventConfig.testimonial}
+    <#if eventConfig.testimonial?has_content>
+        <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
+        </div>
+    </#if>
 
     <!-- Additional Testimonial -->
 
@@ -348,7 +358,11 @@
         <#else>
             <li>GST and other applicable taxes will be charged extra.</li>
         </#if>
-         ${eventConfig.termsConditions}
+        <#list eventConfig.termsConditions?split("\\r?\\n", "r") as term>
+            <#if term?trim?has_content>
+                <li>${term?html}</li>
+            </#if>
+        </#list>
     </ul>
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>

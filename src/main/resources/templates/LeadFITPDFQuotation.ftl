@@ -135,7 +135,7 @@
     <div class="content">
         <h2 class="quotation-header">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
         <p>Dear ${contactName},</p>
-          ${centralConfig.quotationTopCover}
+          ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
 
 <div style="overflow-x: auto;">
         <table>
@@ -185,13 +185,13 @@
     </p>
 
     <div class="rover">
-         ${centralConfig.inclusions}
+         ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
      </div>
     <div class="rover">
-           ${centralConfig.usp}
+           ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
      </div>
      <div class="rover">
-        ${centralConfig.tnc}
+        ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
      </div>
   <hr/>
         <h3>Payment Details:</h3>

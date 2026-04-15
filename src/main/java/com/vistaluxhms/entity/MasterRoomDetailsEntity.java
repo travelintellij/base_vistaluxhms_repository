@@ -38,23 +38,24 @@ public class MasterRoomDetailsEntity {
     private int categoryLevel;
 
     @Column(name = "active", columnDefinition = "boolean default true")
-    private boolean active=true;
+    private boolean active = true;
 
     @Column(name = "extraBedPercentage", columnDefinition = "int default 35")
-    private int extraBedPercentage=35;
+    private int extraBedPercentage = 35;
 
     @Column(name = "cnbPercentage", columnDefinition = "int default 20")
-    private int cnbPercentage=20;
+    private int cnbPercentage = 20;
 
     @Column(name = "cwbPercentage", columnDefinition = "int default 30")
-    private int cwbPercentage=30;
-
+    private int cwbPercentage = 30;
 
     // Constructors
-    public MasterRoomDetailsEntity() {}
+    public MasterRoomDetailsEntity() {
+    }
 
     public MasterRoomDetailsEntity(String roomCategoryName, String description, String size, int standardOccupancy,
-                             int maxOccupancy, int extraBed, int child, int compChild, int categoryLevel, int extraBedPercentage,int cnbPercentage,int cwbPercentage,boolean active) {
+            int maxOccupancy, int extraBed, int child, int compChild, int categoryLevel, int extraBedPercentage,
+            int cnbPercentage, int cwbPercentage, boolean active) {
         this.roomCategoryName = roomCategoryName;
         this.description = description;
         this.size = size;
@@ -65,15 +66,12 @@ public class MasterRoomDetailsEntity {
         this.compChild = compChild;
         this.categoryLevel = categoryLevel;
         this.active = active;
-        this.extraBedPercentage= extraBedPercentage;
-        this.cnbPercentage=cnbPercentage;
-        this.cwbPercentage=cwbPercentage;
+        this.extraBedPercentage = extraBedPercentage;
+        this.cnbPercentage = cnbPercentage;
+        this.cwbPercentage = cwbPercentage;
     }
 
     // Getters and Setters
-
-
-
 
     public String getDescription() {
         return description;

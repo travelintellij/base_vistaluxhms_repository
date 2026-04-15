@@ -154,7 +154,7 @@
 </div>
 </#list>
 
-${centralConfig.hotelInfo}
+${centralConfig.hotelInfo?html?replace("\\r?\\n", "<br/>", "r")}
 
 
 
@@ -184,7 +184,7 @@ ${centralConfig.hotelInfo}
 </div>
 
 <div class="section">
-     ${centralConfig.tnc}
+     ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
  </div>
 
 <div class="section">
