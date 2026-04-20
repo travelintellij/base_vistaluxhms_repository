@@ -38,7 +38,7 @@
             float: right;
             text-align: right;
             font-size: 16px;
-            color: #6a1b3f;
+            color: black;
             font-weight: bold;
         }
 
@@ -47,7 +47,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            color: white;
+            color: black;
             text-align: center;
             padding: 60px 20px;
         }
@@ -55,16 +55,19 @@
         .header h1 {
             font-size: 32px;
             margin: 0;
-            text-shadow: 2px 2px 4px #00000050;
+            color: black;
+            font-weight: bold;
         }
 
         .section {
             padding: 15px 30px;
             border-bottom: 1px solid #f0b6c5;
+            page-break-inside: avoid;
         }
 
         .section h2, .section h3 {
-            color: #b4004e;
+            color: black;
+            font-weight: bold;
         }
 
         .info-table, .service-table {
@@ -192,21 +195,6 @@
     </div>
 
    <div class="section">
-         <p style="font-size: 14px; line-height: 1.6; text-align: left;">
-             ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
-         </p>
-         <div class="highlight-box">
-             <ul style="margin: 0; padding-left: 20px;">
-                 <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
-                     <#if highlight?trim?has_content>
-                         <li style="margin-bottom: 6px;">${highlight?replace(r"(?is)<h2.*?>.*?</h2>", "", "r")?html}</li>
-                     </#if>
-                 </#list>
-             </ul>
-        </div>
-
-
-   <div class="section">
      <h2>Photo Gallery</h2>
      <div class="photo-collage">
        <#if eventConfig.imageUrl1?? && eventConfig.imageUrl1?has_content>
@@ -230,14 +218,29 @@
      </div>
    </div>
 
+   <div class="section">
+          <h2 style="color: black; font-weight: bold;">Venue &amp; Experience Overview</h2>
+         <p style="font-size: 14px; line-height: 1.6; text-align: left;">
+             ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
+         </p>
     <#if eventConfig.testimonial?has_content>
-        <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+        <div style="margin-top: 20px; margin-bottom: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
             ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
         </div>
     </#if>
-    <!-- Page Break Before Next Section -->
-    <div style="page-break-after: always;"></div>
-</div>
+    
+         <div class="highlight-box">
+             <h3 style="color: black; font-weight: bold; margin-bottom: 10px; margin-top: 0;">Event Offerings and Highlights</h3>
+
+             <ul style="margin: 0; padding-left: 20px;">
+                 <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
+                     <#if highlight?trim?has_content>
+                         <li style="margin-bottom: 6px;">${highlight?replace(r"(?is)<h2.*?>.*?</h2>", "", "r")?html}</li>
+                     </#if>
+                 </#list>
+             </ul>
+        </div>
+   </div>
 
 
 

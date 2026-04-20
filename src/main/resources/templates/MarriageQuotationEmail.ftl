@@ -38,16 +38,16 @@
             float: right;
             text-align: right;
             font-size: 16px;
-            color: #6a1b3f;
+            color: black;
             font-weight: bold;
         }
 
         .header {
-            background-image: url('https://www.dropbox.com/scl/fi/es1lvnryfcb3d3edi3iy3/banner_image.jpg?rlkey=n1c83omswor5v7thtct9xu212&raw=1');
+            background-image: url('https://www.dropbox.com/scl/fi/f0x6i71u18x75sk92pkyu/wedding-banner-image.jpg?rlkey=2ov8hmo0etu58q1q6u30nyb&raw=1');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            color: white;
+            color: black;
             text-align: center;
             padding: 60px 20px;
         }
@@ -56,6 +56,8 @@
             font-size: 32px;
             margin: 0;
             text-shadow: 2px 2px 4px #00000050;
+            color: black;
+            font-weight: bold;
         }
 
         .section {
@@ -64,7 +66,8 @@
         }
 
         .section h2, .section h3 {
-            color: #b4004e;
+            color: black;
+            font-weight: bold;
         }
 
         .info-table, .service-table {
@@ -218,14 +221,24 @@
 
 
 <div class="section">
-    <h2 style="text-align: center; color: #2e6c80;">Welcome to ${centralConfig.hotelName}</h2>
-    <p style="font-size: 14px; line-height: 1.6; text-align: center;">
-        ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
-    </p>
+        <div class="welcome-section" style="padding: 20px 30px; text-align: left;">
+            <h2 style="text-align: center; color: black; font-weight: bold;">Welcome to ${centralConfig.hotelName}</h2>
+            <div style="font-size: 14px; line-height: 1.6; text-align: left; color: #555;">
+                ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
+            </div>
+        </div>
+
+    <#if eventConfig.testimonial?has_content>
+        <div style="margin-top: 20px; margin-bottom: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
+        </div>
+    </#if>
 
     <!-- Highlights Box with Floral Background -->
         <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
-           <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
+            <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
+               <h3 style="color: black; font-weight: bold; margin-bottom: 10px; margin-top: 0;">Wedding Celebration Highlights</h3>
+
                <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
                    <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
                        <#if highlight?trim?has_content>
@@ -236,11 +249,6 @@
            </div>
        </div>
 
-    <#if eventConfig.testimonial?has_content>
-        <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
-        </div>
-    </#if>
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
 </div>

@@ -42,8 +42,13 @@
             text-align: left;
         }
         th {
-            background-color: #2c3e50;
-            color: white;
+            background-color: #f1f1f1;
+            color: black;
+            font-weight: bold;
+        }
+        h2, h3 {
+            font-weight: bold;
+            color: black;
         }
         .footer {
             margin-top: 15px;
@@ -84,6 +89,10 @@
             table, th, td {
                 font-size: 12px;
             }
+        }
+        .rover {
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
     </style>
 </head>
@@ -126,8 +135,8 @@
             </#list>
               <tr>
                   <td colspan="6">&nbsp;</td>
-                  <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
-                    <td><font color="blue"><b> &#8377; ${grandTotalSum} </b></font></td>
+                  <th style="background-color: #f1f1f1; color: black; padding: 10px; text-align: center; border: 1px solid #ddd; font-weight: bold;" colspan="2">Grand Total :</th>
+                    <td style="color: black; font-weight: bold;"> &#8377; ${grandTotalSum} </td>
                </tr>
                <#if discount?number gt 0>
                <tr>
@@ -138,8 +147,8 @@
 
                <tr>
                    <td colspan="6">&nbsp;</td>
-                  <th style=" background-color:#4CAF50;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Final Price :</th>
-                   <td style="font-family: Arial, sans-serif;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: blue;"> ${finalPrice}</span></td>
+                  <th style=" background-color: #f1f1f1; color: black; padding: 10px; text-align: center; border: 1px solid #ddd; font-weight: bold;" colspan="2">Final Price :</th>
+                   <td style="font-family: Arial, sans-serif; color: black; font-weight: bold;">&#8377;  <span id="finalPrice" style="font-size: 20px; font-weight: bold; color: black;"> ${finalPrice}</span></td>
                </tr>
                </#if>
         </table>
@@ -155,9 +164,20 @@
             <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
         </p>
 
+       <div class="rover">
+       <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
        ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
+       </div>
 
+       <div class="rover">
+       <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
+       ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
+       </div>
+
+       <div class="rover">
+       <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
        ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
+       </div>
         <hr/>
 
         <h3>Payment Details:</h3>

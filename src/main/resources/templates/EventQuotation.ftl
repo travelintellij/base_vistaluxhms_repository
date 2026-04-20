@@ -18,7 +18,7 @@
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
-            color: white;
+            color: black;
             padding: 80px 30px 60px 30px;
             text-align: center;
             position: relative;
@@ -28,7 +28,8 @@
 
         .header h1 {
             font-size: 36px;
-            text-shadow: 2px 2px 4px #00000050;
+            color: black;
+            font-weight: bold;
         }
 
         .logo {
@@ -44,10 +45,12 @@
         .section {
             padding: 15px;
             border-bottom: 1px solid #f0b6c5;
+            page-break-inside: avoid;
         }
 
         .section h2, .section h3 {
-            color: #b4004e;
+            color: black;
+            font-weight: bold;
         }
 
         .info-table {
@@ -215,11 +218,43 @@
 </div>
 
 
+<#-- SHOW PHOTO SECTION ONLY IF AT LEAST ONE IMAGE EXISTS -->
+<#if eventConfig.galleryImageDataUrls?? && eventConfig.galleryImageDataUrls?size gt 0>
+    <#assign hasValidImage = false />
+    <#list eventConfig.galleryImageDataUrls as img>
+        <#if img?? && img?has_content>
+            <#assign hasValidImage = true />
+            <#break>
+        </#if>
+    </#list>
+
+    <#if hasValidImage>
+        <div class="section photo-section">
+            <h2>Photo Gallery</h2>
+            <div class="photo-collage">
+               <#list eventConfig.galleryImageDataUrls as img>
+                    <#if img?? && img?has_content>
+                        <img src="${img}" alt="Quotation Image"/>
+                    </#if>
+               </#list>
+            </div>
+        </div>
+    </#if>
+</#if>
+
 <div class="section">
    <h2>Venue &amp; Experience Overview</h2>
    <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
 
+    <#if eventConfig.testimonial?has_content>
+        <div style="margin-top: 20px; margin-bottom: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
+        </div>
+    </#if>
+
    <div class="highlight-box">
+           <h3 style="color: black; font-weight: bold; margin-bottom: 10px; margin-top: 0;">Event Offerings and Highlights</h3>
+
            <ul style="margin: 0; padding-left: 20px;">
                <#list eventConfig.celebrationHighlight?split("\\r?\\n", "r") as highlight>
                    <#if highlight?trim?has_content>
@@ -228,29 +263,6 @@
                </#list>
            </ul>
       </div>
-<div style="page-break-after: always;"></div>
-<div class="section">
-    <h2>Photo Gallery</h2>
-    <div class="photo-collage">
-       <#list eventConfig.galleryImageDataUrls as img>
-                  <#if img?? && img?has_content>
-                      <img src="${img}" alt="Quotation Image"/>
-                  </#if>
-              </#list>
-    </div>
-</div>
-
-    <#if eventConfig.testimonial?has_content>
-        <div style="margin-top: 30px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
-            ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
-        </div>
-    </#if>
-
-    <!-- Additional Testimonial -->
-
-
-    <!-- Page Break Before Next Section -->
-    <div style="page-break-after: always;"></div>
 </div>
 
 

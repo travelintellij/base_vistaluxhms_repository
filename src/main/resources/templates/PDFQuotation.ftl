@@ -27,9 +27,10 @@
             max-width: 150px;
             height: 150;
         }
-        .content h2, h3 {
+        .content h2, .content h3 {
             font-size: 12px;
-            color: #2c3e50;
+            color: black;
+            font-weight: bold;
         }
      table {
          width: 100%;
@@ -46,8 +47,8 @@
          text-align: left;
      }
      th {
-         background-color: #2c3e50;
-         color: white;
+         background-color: #f1f1f1;
+         color: black;
          white-space: nowrap;
          font-size: 11px;
      }
@@ -117,9 +118,8 @@
                      display: inline-block;
                  }
                 .rover {
-                    break-inside: auto;
-                    break-before: avoid;
-                    break-after: auto;
+                    page-break-inside: avoid;
+                    break-inside: avoid;
                 }
 
     </style>
@@ -185,13 +185,16 @@
     </p>
 
    <div class="rover">
+           <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
            ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
    </div>
   <div class="rover">
+           <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
            ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
    </div>
    <div class="rover">
-        ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
+         <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
+         ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
    </div>
  <hr/>
   <h3>Payment Details:</h3>
