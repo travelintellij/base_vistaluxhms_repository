@@ -295,6 +295,11 @@ public class ClientController {
             BindingResult result, final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser();
         ModelAndView modelView = new ModelAndView();
+
+        // CHECK CLIENT TYPE (B2B/B2C)
+        if (clientEntityDto.getB2b() == null) {
+            result.rejectValue("b2b", "b2b.error", "Please select a Client Type");
+        }
         if (!commonService.existsByDestinationIdAndCityName(clientEntityDto.getCity().getDestinationId(),
                 clientEntityDto.getCityName())) {
             try {

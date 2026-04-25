@@ -67,15 +67,15 @@
                 </font>
             </div>
             <div class="form-row">
-              <label for="b2b-client">B2B Client:</label>
+              <label for="b2b-client">B2B Client: <font color="red">*</font></label>
               <div class="radio-group-container">
                   <div class="radio-group">
                       <label>
-                          <form:radiobutton path="b2b" value="true" required="required" />
+                          <form:radiobutton path="b2b" value="true" />
                           <span>Yes</span>
                       </label>
                       <label>
-                          <form:radiobutton path="b2b" value="false" required="required" />
+                          <form:radiobutton path="b2b" value="false" />
                           <span>No</span>
                       </label>
                   </div>

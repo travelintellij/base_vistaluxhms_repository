@@ -36,6 +36,46 @@
         opacity: .98; /* Adjust the opacity for the background image */
     }
 
+    .button-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* FORCE both buttons identical */
+   .button-container button,
+   .button-container .link-btn {
+       padding: 10px 20px !important;   /* ↓ smaller */
+       font-size: 14px !important;     /* ↓ smaller text */
+       font-weight: 600;
+        white-space: nowrap;   /* 🔥 THIS fixes the split */
+
+
+       height: 40px;                  /* force compact height */
+       line-height: 1;
+
+       background: linear-gradient(135deg, #C9A84C, #B8963F) !important;
+       color: #fff !important;
+
+       border: none;
+       border-radius: 10px;
+       cursor: pointer;
+
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+   }
+
+    /* Anchor fix */
+    .button-container .link-btn {
+        text-decoration: none;
+    }
+
+    /* Hover */
+    .button-container button:hover,
+    .button-container .link-btn:hover {
+        background: linear-gradient(135deg, #B8963F, #A8842E);
+    }
+
 </style>
 
     <h2>Update Lead</h2> <!-- Bold Header -->
@@ -250,10 +290,13 @@
 
            </div>
 
-           <div class="button-container">
-                <input type="submit" value="Update Lead">
-                <a href="view_filter_leads"><input type="button" class="clear-filter-btn" value="View Leads List"></input></a>
-            </div>
+         <div class="button-container">
+             <button type="submit" class="apply-filter-btn">Update Lead</button>
+
+             <a href="view_filter_leads" class="apply-filter-btn link-btn">
+                 View Leads List
+             </a>
+         </div>
         </form:form>
     </div>
 

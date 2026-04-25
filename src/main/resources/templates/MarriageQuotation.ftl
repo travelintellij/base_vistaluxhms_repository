@@ -932,13 +932,18 @@ body:has(.menu-page) .pdf-bg-img {
 </#if>
 </div>
 
+<#if eventConfig.resortInfo?has_content || eventConfig.testimonial?has_content>
 <div class="section welcome-section">
     <div class="welcome-block">
+      <#if eventConfig.resortInfo?has_content>
       <h2 class="welcome-heading">
             Welcome to ${centralConfig.hotelName}
         </h2>
+      </#if>
      <div class="content-box">
+        <#if eventConfig.resortInfo?has_content>
         <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
+        </#if>
         <#if eventConfig.testimonial?has_content>
             <div style="margin-top: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
                 ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
@@ -946,8 +951,10 @@ body:has(.menu-page) .pdf-bg-img {
         </#if>
     </div>
       </div>
-            </div>
+</div>
+</#if>
 
+<#if eventConfig.celebrationHighlight?has_content>
   <div class="section celebration-highlight">
 
       <!-- Heading OUTSIDE container -->
@@ -963,7 +970,8 @@ body:has(.menu-page) .pdf-bg-img {
               </#list>
           </ul>
       </div>
-        </div>
+  </div>
+</#if>
 
 <#-- ================= COST DISPLAY LOGIC ================= -->
 
@@ -1063,6 +1071,7 @@ body:has(.menu-page) .pdf-bg-img {
     </div>
 </#if>
 
+<#if eventConfig.termsConditions?has_content>
 <div class="footer after-menu" style="page-break-before: always;">
     <h3>Terms and Conditions</h3>
 <div class="content-box">
@@ -1081,6 +1090,7 @@ body:has(.menu-page) .pdf-bg-img {
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
 </div>
+</#if>
 
 </div> <!-- END page-content -->
 

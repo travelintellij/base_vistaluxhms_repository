@@ -53,6 +53,36 @@
                                 .sync-toast.error {
                                     background: linear-gradient(135deg, #dc3545, #e83e8c);
                                 }
+
+                                /* FIX: align action column LEFT */
+                                table td:last-child {
+                                    text-align: left !important;
+                                }
+
+                                /* FIX: align dropdown content LEFT */
+                                .dropdown {
+                                    display: flex;
+                                    justify-content: flex-start !important;
+                                }
+
+                                /* FIX: make all dropdown buttons consistent */
+                                .dropdown-content a,
+                                .dropdown-content button {
+                                    display: block;
+                                    width: 100%;
+                                    text-align: left;
+                                    background: none;
+                                    border: none;
+                                    padding: 8px 12px;
+                                    font: inherit;
+                                    cursor: pointer;
+                                }
+
+                                .dropdown-content a,
+                                .dropdown-content button,
+                                .dropdown-button {
+                                    font-weight: 600; /* semi-bold, looks clean */
+                                }
                             </style>
                             <%--=====AI MODIFICATION END=====--%>
 
@@ -187,6 +217,9 @@
                                         <div
                                             style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; flex-wrap: wrap;">
                                             <button onclick="toggleSidebar()">Open Filters</button>
+                                            <a href="view_lead_followup_report" style="text-decoration: none;">
+                                                <button type="button" style="background-color: #1B2A3D; color: white;">Follow-up Report</button>
+                                            </a>
 
                                             <div
                                                 style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 6px; padding: 4px; background: #f8f9fa;">
@@ -285,13 +318,9 @@
                                                                             </a>
 
                                                                             <!-- Edit -->
-                                                                            <form action="view_edit_lead_form"
-                                                                                method="POST" style="margin: 0;">
-                                                                                <input type="hidden" name="leadId"
-                                                                                    value="${leadRec.leadId}" />
-                                                                                <button type="submit"
-                                                                                    class="dropdown-button">Edit</button>
-                                                                            </form>
+                                                                           <a href="view_edit_lead_form?leadId=${leadRec.leadId}" class="dropdown-button">
+                                                                               Edit
+                                                                           </a>
 
                                                                             <!-- Follow-Up -->
                                                                             <a href="form_view_lead_followup_details?leadId=${leadRec.leadId}"

@@ -106,7 +106,9 @@
         <h2 style="text-align:center">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
 
         <p>Dear ${contactName},</p>
-        ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
+        <#if centralConfig.quotationTopCover?has_content>
+            ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
+        </#if>
 
         <table>
             <tr>
@@ -160,18 +162,24 @@
         </#if>
 
 
+    <#if centralConfig.inclusions?has_content>
     <div class="rover">
            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
            ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
     </div>
+    </#if>
+    <#if centralConfig.usp?has_content>
     <div class="rover">
            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
            ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
     </div>
+    </#if>
+    <#if centralConfig.tnc?has_content>
     <div class="rover">
            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
                   ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
     </div>
+    </#if>
 
         <hr/>
        <h3>Payment Details:</h3>

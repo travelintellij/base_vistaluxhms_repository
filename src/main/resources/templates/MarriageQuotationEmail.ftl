@@ -220,11 +220,14 @@
 
 
 
+<#if eventConfig.resortInfo?has_content || eventConfig.testimonial?has_content>
 <div class="section">
         <div class="welcome-section" style="padding: 20px 30px; text-align: left;">
+            <#if eventConfig.resortInfo?has_content>
             <h2 style="text-align: center; color: black; font-weight: bold;">Welcome to ${centralConfig.hotelName}</h2>
+            </#if>
             <div style="font-size: 14px; line-height: 1.6; text-align: left; color: #555;">
-                ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
+                <#if eventConfig.resortInfo?has_content>${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</#if>
             </div>
         </div>
 
@@ -233,7 +236,10 @@
             ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
         </div>
     </#if>
+</div>
+</#if>
 
+    <#if eventConfig.celebrationHighlight?has_content>
     <!-- Highlights Box with Floral Background -->
         <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
             <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
@@ -248,6 +254,7 @@
                </ul>
            </div>
        </div>
+    </#if>
 
     <!-- Page Break Before Next Section -->
     <div style="page-break-after: always;"></div>
@@ -370,6 +377,7 @@
     </div>
 </#if>
 
+    <#if eventConfig.termsConditions?has_content>
     <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
         <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
             <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Terms and Conditions</h3>
@@ -381,14 +389,15 @@
                         </#if>
                         <#list eventConfig.termsConditions?split("\\r?\\n", "r") as term>
                             <#if term?trim?has_content>
-                                <li>${term?html}</li>
-                            </#if>
-                        </#list>
-                    </ul>
-                    <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
-            </ul>
+                                    <li>${term?html}</li>
+                                </#if>
+                            </#list>
+                        </ul>
+                        <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>sales@vistaluxhotel.com</strong></p>
+                </ul>
+            </div>
         </div>
-    </div>
+    </#if>
 
     <div class="social-links">
             <#if centralConfig.facebookLink?has_content>

@@ -242,16 +242,18 @@
     </#if>
 </#if>
 
+<#if eventConfig.resortInfo?has_content || eventConfig.testimonial?has_content || eventConfig.celebrationHighlight?has_content>
 <div class="section">
-   <h2>Venue &amp; Experience Overview</h2>
-   <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
-
+   <#if eventConfig.resortInfo?has_content>
+    <h2>Venue &amp; Experience Overview</h2>
+    <p style="font-size: 14px; line-height: 1.6;">${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}</p>
+   </#if>
     <#if eventConfig.testimonial?has_content>
-        <div style="margin-top: 20px; margin-bottom: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
+        <div style="margin-top: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
             ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
         </div>
     </#if>
-
+   <#if eventConfig.celebrationHighlight?has_content>
    <div class="highlight-box">
            <h3 style="color: black; font-weight: bold; margin-bottom: 10px; margin-top: 0;">Event Offerings and Highlights</h3>
 
@@ -263,7 +265,9 @@
                </#list>
            </ul>
       </div>
+   </#if>
 </div>
+</#if>
 
 
 <#-- ================= COST DISPLAY LOGIC ================= -->
@@ -362,6 +366,7 @@
     </div>
 </#if>
 
+<#if eventConfig.termsConditions?has_content>
 <div class="footer" style="page-break-before: always;">
     <h3>Terms and Conditions</h3>
     <ul>
@@ -378,6 +383,7 @@
     </ul>
     <p>For queries, please contact us at <strong>${centralConfig.centralNumber} </strong> or email <strong>${centralConfig.centralizedEmail}</strong></p>
 </div>
+</#if>
 
 <div class="social-links">
             <#if centralConfig.facebookLink?has_content>

@@ -135,7 +135,9 @@
     <div class="content">
         <h2 class="quotation-header">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
         <p>Dear ${contactName},</p>
-        ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
+        <#if centralConfig.quotationTopCover?has_content>
+            ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
+        </#if>
 
 <div style="overflow-x: auto;">
         <table>
@@ -184,18 +186,24 @@
       <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
     </p>
 
-   <div class="rover">
-           <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
-           ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
-   </div>
-  <div class="rover">
-           <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
-           ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
-   </div>
-   <div class="rover">
-         <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
-         ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
-   </div>
+   <#if centralConfig.inclusions?has_content>
+    <div class="rover">
+            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
+            ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
+    </div>
+   </#if>
+   <#if centralConfig.usp?has_content>
+    <div class="rover">
+            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
+            ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
+    </div>
+   </#if>
+   <#if centralConfig.tnc?has_content>
+    <div class="rover">
+          <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
+          ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
+    </div>
+   </#if>
  <hr/>
   <h3>Payment Details:</h3>
         <p><strong>Bank Name:</strong> ${centralConfig.bankName}</p>

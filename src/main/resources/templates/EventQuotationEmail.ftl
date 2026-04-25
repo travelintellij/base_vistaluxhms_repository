@@ -218,17 +218,21 @@
      </div>
    </div>
 
+<#if eventConfig.resortInfo?has_content || eventConfig.testimonial?has_content || eventConfig.celebrationHighlight?has_content>
    <div class="section">
+      <#if eventConfig.resortInfo?has_content>
           <h2 style="color: black; font-weight: bold;">Venue &amp; Experience Overview</h2>
-         <p style="font-size: 14px; line-height: 1.6; text-align: left;">
-             ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
-         </p>
+          <p style="font-size: 14px; line-height: 1.6; text-align: left;">
+              ${eventConfig.resortInfo?html?replace("\\r?\\n", "<br/>", "r")}
+          </p>
+      </#if>
     <#if eventConfig.testimonial?has_content>
         <div style="margin-top: 20px; margin-bottom: 20px; font-style: italic; border-left: 4px solid #ccc; padding-left: 15px; color: #555;">
             ${eventConfig.testimonial?html?replace("\\r?\\n", "<br/>", "r")}
         </div>
     </#if>
     
+      <#if eventConfig.celebrationHighlight?has_content>
          <div class="highlight-box">
              <h3 style="color: black; font-weight: bold; margin-bottom: 10px; margin-top: 0;">Event Offerings and Highlights</h3>
 
@@ -240,7 +244,9 @@
                  </#list>
              </ul>
         </div>
+      </#if>
    </div>
+</#if>
 
 
 
@@ -356,6 +362,7 @@
     </div>
 </#if>
 
+<#if eventConfig.termsConditions?has_content>
    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px 15px; margin-top: 20px; background-image: url('flower-bg.jpg'); background-size: cover; background-position: center; color: #2e2e2e;">
            <div style="background-color: rgba(255,255,255,0.85); padding: 10px 12px; border-radius: 6px;">
                <h3 style="color: #2e6c80; margin-bottom: 10px; margin-top: 0;">Terms and Conditions</h3>
@@ -375,6 +382,7 @@
                </ul>
            </div>
        </div>
+</#if>
 
        <div class="social-links">
                <#if centralConfig.facebookLink?has_content>

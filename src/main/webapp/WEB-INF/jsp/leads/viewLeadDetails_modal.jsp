@@ -86,8 +86,9 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="submit-btn">Edit Lead</button>
-                            </form:form>
+<div class="form-cell full-width">
+    <button type="submit" class="submit-btn">Edit Lead</button>
+</div>                            </form:form>
                         </div>
                         <script>
                             // Close modal function

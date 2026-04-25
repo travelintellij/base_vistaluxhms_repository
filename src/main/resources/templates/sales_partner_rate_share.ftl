@@ -154,7 +154,17 @@
 </div>
 </#list>
 
-${centralConfig.hotelInfo?html?replace("\\r?\\n", "<br/>", "r")}
+<div style="page-break-before: always;">
+    <h3 style="color: #000; font-weight: bold; margin-top: 0; margin-bottom: 10px;">ABOUT THE RESORT</h3>
+    <div style="margin-top: 0;">
+        ${(centralConfig.hotelInfo!"")?trim?replace("(?i)^About the Resort[:\\s]*", "", "r")?trim?html?replace("\\r?\\n", "<br/>", "r")}
+    </div>
+</div>
+
+
+
+
+
 
 
 
