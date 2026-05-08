@@ -46,21 +46,138 @@
                   margin: 0;
                   padding-left: 20px;
               }
-                      body {
-                          margin: 0; padding: 0;
-                          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                          background: linear-gradient(135deg, #43cea2, #185a9d);
-                          min-height: 100vh;
+                     body {
+                         background: #f4f6f9;
+                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                         margin: 0;
+                         padding: 0;
+                     }
 
+                     /body {
+                          background-image: url('<%= request.getContextPath() %>/resources/images/newlead.jpg');
+                          background-size: cover;
+                          background-position: center;
+                          background-attachment: fixed;
+                          margin: 0;
+                          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                          position: relative;
                       }
+
+                      body::after {
+                          content: "";
+                          position: fixed;
+                          inset: 0;
+                          background: rgba(255,255,255,0.3);
+                          z-index: -1;
+                      }
+
+                      /* MAIN CONTAINER SAME AS LEADS */
                       .container {
-                          width: 95%; max-width: 900px;
-                          background: #fff; border-radius: 20px;
-                          padding: 50px 60px;
-                          margin: 50px auto;
-                          box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+                          width: 60%;
+                          min-width: 60%;
+                          max-width: 60%;
+                          margin: 40px auto;
                       }
-                      h2 { text-align: center; font-size: 40px; margin-bottom: 40px; color: #ff4b2b; }
+
+                      /* FORM WRAPPER like leads */
+                      .form-container {
+                          background: #fff;
+                          padding: 25px;
+                          border-radius: 8px;
+                          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                      }
+
+                     h2 {
+                         text-align: center;
+                         font-size: 36px;
+                         color: #000 !important;
+                         margin-bottom: 25px;
+                     }
+
+                      /* LEADS-STYLE GRID */
+                      .form-table {
+                          display: flex;
+                          flex-wrap: wrap;
+                          gap: 15px;
+                      }
+
+                      /* SAME CELL SYSTEM AS LEADS */
+                      .form-cell {
+                          flex: 1 1 45%;
+                          display: flex;
+                          flex-direction: column;
+                      }
+
+                      /* LABELS EXACT LEADS STYLE */
+                      label {
+                          font-weight: 600;
+                          margin-bottom: 6px;
+                          font-size: 14px;
+                          color: #333;
+                      }
+
+                      /* INPUTS MATCH LEADS LOOK */
+                      input[type="text"],
+                      input[type="number"],
+                      input[type="date"],
+                      select,
+                      textarea {
+                          padding: 10px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                          font-size: 14px;
+                          width: 100%;
+                          box-sizing: border-box;
+                      }
+
+                      input:focus,
+                      select:focus,
+                      textarea:focus {
+                          border-color: #ff4b2b;
+                          box-shadow: 0 0 5px rgba(255,75,43,0.3);
+                          outline: none;
+                      }
+
+                      /* ERROR STYLE SAME AS LEADS */
+                      .error-message,
+                      .error {
+                          color: red;
+                          font-size: 13px;
+                          margin-top: 4px;
+                      }
+
+                      /* BUTTON AREA SAME AS LEADS */
+                      .button-container {
+                          margin-top: 20px;
+                          text-align: center;
+                      }
+
+                      .button-container input[type="submit"] {
+                          background: #ff4b2b;
+                          color: #fff;
+                          border: none;
+                          padding: 10px 20px;
+                          font-size: 14px;
+                          border-radius: 4px;
+                          cursor: pointer;
+                      }
+
+                      .button-container input[type="submit"]:hover {
+                          background: #e63e22;
+                      }
+
+                      .clear-filter-btn {
+                          background: #ccc;
+                          border: none;
+                          padding: 10px 20px;
+                          margin-left: 10px;
+                          cursor: pointer;
+                          border-radius: 4px;
+                      }
+
+                      .clear-filter-btn:hover {
+                          background: #aaa;
+                      }
                       .form-cell { margin-bottom: 30px; }
                       label { display: block; font-size: 20px; font-weight: bold; margin-bottom: 12px; color: #333; }
                       input[type="text"], input[type="number"], input[type="date"], select {
@@ -87,6 +204,13 @@
                           box-shadow: 0 0 15px rgba(255,75,43,0.3);
                           outline: none;
                       }
+
+                      .asset-container {
+                          width: 45%;
+                          min-width: 45%;
+                          max-width: 45%;
+                          margin: 40px auto;
+                      }
                   </style>
               </head>
               <body>
@@ -94,7 +218,7 @@
               <jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
 
 
-                  <div class="container">
+                  <div class="form-container asset-container">
 
                   <div style="text-align:center; margin-bottom: 30px;">
                       <h2 style="font-size: 36px; color: #ff4b2b; margin: 0;">Add New Asset</h2>

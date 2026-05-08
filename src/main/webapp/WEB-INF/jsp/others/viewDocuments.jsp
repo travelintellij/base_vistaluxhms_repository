@@ -162,6 +162,22 @@
             margin-right: 5px;
         }
 
+ /* ===== GRAND SUITE TABLE HEADER OVERRIDE ===== */
+      table th {
+          background: var(--gs-charcoal) !important;
+          color: var(--gs-beige) !important;
+          font-family: var(--gs-font-body);
+          font-size: var(--gs-text-xs);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          border-bottom: 2px solid var(--gs-gold) !important;
+      }
+
+      /* ensure row header consistency */
+      table tr:first-child th {
+          background: var(--gs-charcoal) !important;
+      }
+
 
     </style>
 </head>

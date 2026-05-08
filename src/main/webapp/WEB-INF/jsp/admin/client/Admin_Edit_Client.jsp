@@ -6,9 +6,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
     body {
         background-image: url('<%= request.getContextPath() %>/resources/images/clientedit.jpg');
@@ -36,6 +39,24 @@
     body {
         opacity: .98; /* Adjust the opacity for the background image */
     }
+    .form-row .select2-container {
+        width: 66% !important;
+    }
+
+    .form-row .select2-selection--single {
+        height: 38px !important;
+        padding-top: 4px;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+    }
+
+    .form-row .select2-selection__rendered {
+        line-height: 28px !important;
+    }
+
+    .form-row .select2-selection__arrow {
+        height: 38px !important;
+    }
 
 </style>
 
@@ -50,7 +71,7 @@
                 <label for="client-id">Client Id:</label>
                 <label for="auto-generated"><font color="blue">${CLIENT_OBJ.clientId}</font></label>
             </div>
-            <div class="form-row" style="flex: 1; min-width: 200px;">
+            <div class="form-row">
                 <label for="clientSource">Client Source (Sales Partner):</label>
                 <form:select id="salesPartnerSelect" path="salesPartner.salesPartnerId" required="required">
                        <!-- Default placeholder option -->
@@ -94,7 +115,12 @@
             </div>
             <div class="form-row">
                  <label for="city-id">City:</label>
-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
+                <form:input path="cityName"
+                            id="cityName"
+                            name="cityName"
+                            placeholder="Type city name"
+                            autocomplete="off"
+                            required="required" />
                 <form:hidden id="destinationId" path="city.destinationId" />
 
                 <font color="red">
@@ -150,6 +176,13 @@
 
             };
         }
+    });
+    $(document).ready(function () {
+        $('#salesPartnerSelect').select2({
+            placeholder: "-- Please Select --",
+            allowClear: true,
+            width: '66%'
+        });
     });
 
 

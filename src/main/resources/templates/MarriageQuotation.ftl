@@ -1000,18 +1000,30 @@ body:has(.menu-page) .pdf-bg-img {
                 </td>
             </tr>
         </#list>
+
+                <#if discount gt 0>
+                    <tr>
+                        <td colspan="2" style="text-align:right; font-weight:bold;">
+                            Discount
+                        </td>
+                        <td style="text-align:right; font-weight:bold;">
+                            ₹${discount?string["#,##0"]}
+                        </td>
+                    </tr>
+                </#if>
+
+                <tr class="total-row">
+                    <td colspan="2" style="text-align:right; font-weight:800;">
+                        Total Amount
+                    </td>
+                    <td style="text-align:right; font-weight:800;">
+                        ₹${(grand_total_cost - discount)?string["#,##0"]}
+                    </td>
+                </tr>
         </tbody>
     </table>
 
-    <#if discount gt 0>
-        <div class="discount">
-            Discount: ₹${discount?string["#,##0"]}
-        </div>
-    </#if>
 
-    <div class="total">
-        Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
-    </div>
 
 </div>
 
@@ -1048,12 +1060,15 @@ body:has(.menu-page) .pdf-bg-img {
                 <td>${service.name!"N/A"}</td>
             </tr>
         </#list>
-     </tbody>
-    </table>
 
-    <div class="total" style="margin-top:20px;">
-        Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
-    </div>
+        <tr class="total-row">
+            <td style="text-align:right; font-weight:800;">
+                Total Amount: ₹${(grand_total_cost - discount)?string["#,##0"]}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
 
 </div>
 

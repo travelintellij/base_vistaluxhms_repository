@@ -168,27 +168,29 @@ public class SalesServiceController {
             final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
-        if (salesPartnerDto.getCityName() != null && !salesPartnerDto.getCityName().trim().isEmpty()) {
-            String trimmedCityName = salesPartnerDto.getCityName().trim();
-            if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), trimmedCityName)) {
-                // Try case-insensitive lookup to be more robust
-                City_Entity city = commonService.findDestinationById(salesPartnerDto.getCityId());
-                if (city != null && city.getCityName().equalsIgnoreCase(trimmedCityName)) {
-                    // Match found case-insensitively, we're good
-                } else {
-                    try {
-                        City_Entity newCity = new City_Entity();
-                        newCity.setCityName(trimmedCityName);
-                        newCity.setActive(true);
-                        newCity = cityRepository.save(newCity);
-                        salesPartnerDto.setCityId(newCity.getDestinationId());
-                    } catch (Exception e) {
-                        result.rejectValue("cityName", "city.error", "The entered city name does not match our records. Please select from the dropdown.");
-                    }
-                }
-            }
+        if (salesPartnerDto.getCityName() == null ||
+                salesPartnerDto.getCityName().trim().isEmpty()) {
+
+            result.rejectValue(
+                    "cityName",
+                    "city.error",
+                    "Please select a city.");
+
         } else {
-            result.rejectValue("cityName", "city.error", "Please select a city.");
+
+            String trimmedCityName = salesPartnerDto.getCityName().trim();
+
+            City_Entity city = commonService.findDestinationById(
+                    salesPartnerDto.getCityId());
+
+            if (city == null ||
+                    !city.getCityName().equalsIgnoreCase(trimmedCityName)) {
+
+                result.rejectValue(
+                        "cityName",
+                        "city.error",
+                        "Invalid city selected. Please choose a valid city from the records.");
+            }
         }
 
         // Check duplicate mobile in Sales Partner
@@ -348,27 +350,29 @@ public class SalesServiceController {
             final RedirectAttributes redirectAttrib) {
         UserDetailsObj userObj = getLoggedInUser(); // Retrieve logged-in user details
         ModelAndView modelView = new ModelAndView();
-        if (salesPartnerDto.getCityName() != null && !salesPartnerDto.getCityName().trim().isEmpty()) {
-            String trimmedCityName = salesPartnerDto.getCityName().trim();
-            if (!commonService.existsByDestinationIdAndCityName(salesPartnerDto.getCityId(), trimmedCityName)) {
-                // Try case-insensitive lookup to be more robust
-                City_Entity city = commonService.findDestinationById(salesPartnerDto.getCityId());
-                if (city != null && city.getCityName().equalsIgnoreCase(trimmedCityName)) {
-                    // Match found case-insensitively, we're good
-                } else {
-                    try {
-                        City_Entity newCity = new City_Entity();
-                        newCity.setCityName(trimmedCityName);
-                        newCity.setActive(true);
-                        newCity = cityRepository.save(newCity);
-                        salesPartnerDto.setCityId(newCity.getDestinationId());
-                    } catch (Exception e) {
-                        result.rejectValue("cityName", "city.error", "The entered city name does not match our records. Please select from the dropdown.");
-                    }
-                }
-            }
+        if (salesPartnerDto.getCityName() == null ||
+                salesPartnerDto.getCityName().trim().isEmpty()) {
+
+            result.rejectValue(
+                    "cityName",
+                    "city.error",
+                    "Please select a city.");
+
         } else {
-            result.rejectValue("cityName", "city.error", "Please select a city.");
+
+            String trimmedCityName = salesPartnerDto.getCityName().trim();
+
+            City_Entity city = commonService.findDestinationById(
+                    salesPartnerDto.getCityId());
+
+            if (city == null ||
+                    !city.getCityName().equalsIgnoreCase(trimmedCityName)) {
+
+                result.rejectValue(
+                        "cityName",
+                        "city.error",
+                        "Invalid city selected. Please choose a valid city from the records.");
+            }
         }
 
         // Check duplicate mobile in Sales Partner (Edit)
@@ -710,7 +714,7 @@ public class SalesServiceController {
         }
         emailData.put("mealPlanNames", freemarkerFriendlyMealMap);
         Mail mail = new Mail();
-        String emailSubject = "Special B2B Seasonal Rates : Ashoka Tiger Trail | "
+        String emailSubject = "Special B2B Seasonal Rates :Winsome Resorts & Spa | "
                 + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
         mail.setSubject(emailSubject);
 

@@ -6,9 +6,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
 <script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
     body {
         background-image: url('<%= request.getContextPath() %>/resources/images/clientadd.jpg');
@@ -49,6 +51,46 @@
         margin-top: 4px;
         font-size: 13px;
     }
+    #salesPartnerSelect {
+        width: 100% !important;
+    }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 38px !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        padding-top: 4px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 28px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px !important;
+    }
+    .form-row .select2-container {
+        width: 66% !important;
+    }
+
+    .form-row .select2-selection--single {
+        height: 38px !important;
+        padding-top: 4px;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+    }
+
+    .form-row .select2-selection__rendered {
+        line-height: 28px !important;
+    }
+
+    .form-row .select2-selection__arrow {
+        height: 38px !important;
+    }
 
 
 </style>
@@ -62,7 +104,7 @@
                 <label for="client-id">Client Id:</label>
                 <label for="auto-generated"><font color="blue">Auto Generated</font></label>
             </div>
-            <div class="form-row" style="flex: 1; min-width: 200px;">
+            <div class="form-row">
                 <label for="clientSource">Client Source (Sales Partner):</label>
                 <form:select id="salesPartnerSelect" path="salesPartner.salesPartnerId" required="required">
                        <!-- Default placeholder option -->
@@ -169,6 +211,14 @@
 
             };
         }
+    });
+
+    $(document).ready(function () {
+        $('#salesPartnerSelect').select2({
+            placeholder: "-- Please Select --",
+            allowClear: true,
+            width: '66%'
+        });
     });
 
 

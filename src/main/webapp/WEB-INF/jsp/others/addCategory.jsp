@@ -4,81 +4,104 @@
     <title>Add Category</title>
   <style>
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #43cea2, #185a9d);
+    background-image: url('<%= request.getContextPath() %>/resources/images/newlead.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
 }
 
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.3);
+    z-index: -1;
+}
+
+/* SAME CRM CONTAINER SYSTEM */
 .container {
-    max-width: 600px;
-    margin: 60px auto;
-    background: #fff;
-    padding: 50px 40px;
-    border-radius: 15px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    width: 40%;
+    margin: 40px auto;
 }
 
+/* CARD STYLE */
+.form-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* TITLE SAME AS LEADS */
 h2 {
     text-align: center;
-    color: #34495e;
-    margin-bottom: 35px;
-    font-weight: 800;
-    font-size: 28px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #2c3e50;
-    font-size: 16px;
-}
-
-form input {
-    width: 100%;
-    padding: 12px 15px;
+    font-size: 36px;
+    color: #000;
     margin-bottom: 25px;
-    border-radius: 10px;
-    border: 1px solid #bdc3c7;
-    font-size: 16px;
 }
 
-form input:focus {
-    border-color: #3498db;
+/* LABELS */
+label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+input:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 5px rgba(255,75,43,0.3);
     outline: none;
 }
 
-form button {
+/* BUTTON */
+button {
     width: 100%;
-    padding: 14px;
-    background: #3498db;
+    background: #ff4b2b;
     color: white;
     border: none;
-    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
 }
 
-form button:hover {
-    background: #2980b9;
+button:hover {
+    background: #e63e22;
 }
 
+/* BACK LINK */
 .back-link {
     display: block;
     text-align: center;
-    margin-top: 25px;
-    color: #e67e22;
+    margin-top: 20px;
+    color: #555;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
+}
+
+.back-link:hover {
+    color: #ff4b2b;
 }
 
   </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
-<div class="container">
+<div class="container form-box">
     <h2>Add Category</h2>
     <form action="${pageContext.request.contextPath}/categories_save" method="post">
         <input type="hidden" name="categoryId" value="${category.categoryId}" />

@@ -96,8 +96,12 @@
                                     </div>
                                     <div class="form-row">
                                         <label for="city-id">City:</label>
-                                        <form:input path="cityName" name="cityName" placeholder="Type city name"
-                                            autocomplete="off" required="required" />
+                                        <form:input path="cityName"
+                                            id="cityName"
+                                            name="cityName"
+                                            placeholder="Type city name"
+                                            autocomplete="off"
+                                            required="required" />
                                         <form:hidden path="cityId" />
                                         <font color="red">
                                             <form:errors path="cityName" cssClass="error" />

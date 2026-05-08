@@ -108,7 +108,11 @@
         overflow:visible;
     }
     th, td { padding:12px 15px; text-align:left; }
-    thead { background-color:#185a9d; color:#fff; font-weight:bold; }
+    thead {
+        background-color: #0b2d5c;  /* dark blue */
+        color: #fff;
+        font-weight: bold;
+    }
     tbody tr:nth-child(even) { background-color:#f3f3f3; }
     tbody tr:hover { background-color:#d0eaff; }
     .btn {
@@ -372,6 +376,25 @@
        display: flex;
        align-items: center;
        justify-content: center;
+   }
+
+   /* ===== GRAND SUITE TABLE HEADER OVERRIDE ===== */
+   table thead {
+       background: var(--gs-charcoal) !important;
+   }
+
+   table thead th {
+       color: var(--gs-beige) !important;
+       font-weight: 500;
+       font-size: var(--gs-text-xs);
+       text-transform: uppercase;
+       letter-spacing: 0.05em;
+       border-bottom: 2px solid var(--gs-gold) !important;
+   }
+
+   /* optional: make header row feel more premium */
+   table thead tr {
+       background: var(--gs-charcoal) !important;
    }
 
 

@@ -7,145 +7,115 @@
     <title>Add Document</title>
     <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            min-height: 100vh;
-        }
+      body {
+          background-image: url('<%= request.getContextPath() %>/resources/images/newlead.jpg');
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+          margin: 0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          position: relative;
+      }
 
-        .page-header-fullwidth {
-            width: 100%;
-            background-color: #fff;
-            padding: 20px 0;
-            margin-bottom: 0px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        }
+      body::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background: rgba(255,255,255,0.3);
+          z-index: -1;
+      }
 
-        .page-header-fullwidth h2 {
-            font-size: 36px;
-            color: #ff4b2b;
-            margin: 0;
-            padding-left: 20px;
-            text-align: center;
-        }
+      /* SMALL CRM CONTAINER */
+      .container {
+          width: 45%;
+          margin: 40px auto;
+      }
 
-        .container {
-            width: 95%;
-            max-width: 900px;
-            background: #fff;
-            border-radius: 20px;
-            padding: 50px 60px;
-            margin: 40px auto;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
+      /* CARD STYLE */
+      .form-container {
+          background: #fff;
+          padding: 25px;
+          border-radius: 8px;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
 
-        h2 {
-            text-align: center;
-            font-size: 40px;
-            margin-bottom: 40px;
-            color: #ff4b2b;
-        }
+      /* TITLE LIKE LEADS (but neutral) */
+      h2 {
+          text-align: center;
+          font-size: 36px;
+          color: #000;
+          margin-bottom: 25px;
+      }
 
-        .form-cell {
-            margin-bottom: 30px;
-        }
+      /* LABELS */
+      label {
+          font-weight: 600;
+          font-size: 14px;
+          color: #333;
+          display: block;
+          margin-bottom: 6px;
+      }
 
-        label {
-            display: block;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #333;
-        }
+      /* INPUTS */
+      input[type="text"],
+      input[type="file"],
+      select,
+      textarea {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+          box-sizing: border-box;
+      }
 
-        input[type="text"],
-        input[type="file"],
-        input[type="number"],
-        input[type="date"],
-        select,
-        textarea,
-        .form-control {
-            width: 100% !important;
-            padding: 18px 15px !important;
-            font-size: 18px !important;
-            border-radius: 12px !important;
-            border: 2px solid #ccc !important;
-            transition: all 0.3s ease !important;
-            box-sizing: border-box !important;
-        }
+      input:focus,
+      select:focus,
+      textarea:focus {
+          border-color: #ff4b2b;
+          box-shadow: 0 0 5px rgba(255,75,43,0.3);
+          outline: none;
+      }
 
-        input[type="text"]:focus,
-        input[type="file"]:focus,
-        input[type="number"]:focus,
-        input[type="date"]:focus,
-        select:focus,
-        textarea:focus,
-        .form-control:focus {
-            border-color: #ff4b2b !important;
-            box-shadow: 0 0 15px rgba(255,75,43,0.3) !important;
-            outline: none !important;
-        }
+      /* FORM ROW SPACING */
+      .form-cell {
+          margin-bottom: 15px;
+      }
 
-        textarea {
-            resize: vertical !important;
-            min-height: 120px !important;
-        }
+      /* BUTTON AREA */
+      .form-actions {
+          text-align: center;
+          margin-top: 20px;
+      }
 
-        .form-actions {
-            text-align: center;
-            margin-top: 40px;
-        }
+      .save-btn {
+          background: #ff4b2b;
+          color: #fff;
+          border: none;
+          padding: 10px 18px;
+          font-size: 14px;
+          border-radius: 4px;
+          cursor: pointer;
+      }
 
-        .save-btn {
-            background: linear-gradient(90deg, #ff416c, #ff4b2b);
-            color: #fff;
-            padding: 18px 40px;
-            font-size: 22px;
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
-            text-decoration: none;
-        }
+      .save-btn:hover {
+          background: #e63e22;
+      }
 
-        .save-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255,75,43,0.5);
-        }
+      .btn-cancel {
+          background: #ccc;
+          color: #333;
+          padding: 10px 18px;
+          font-size: 14px;
+          border-radius: 4px;
+          text-decoration: none;
+          margin-left: 10px;
+          display: inline-block;
+      }
 
-        .btn-cancel,
-        .cancel-btn {
-            background: #ccc;
-            color: #333;
-            padding: 18px 40px;
-            font-size: 22px;
-            font-weight: bold;
-            border-radius: 15px;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            margin-left: 20px;
-        }
-
-        .btn-cancel:hover,
-        .cancel-btn:hover {
-            background: #999;
-            color: #fff;
-            transform: scale(1.05);
-        }
-
-        .save-btn, .btn-cancel {
-            padding: 18px 40px !important;
-            font-size: 22px !important;
-            font-weight: bold !important;
-            border-radius: 15px !important;
-        }
+      .btn-cancel:hover {
+          background: #aaa;
+      }
     </style>
 </head>
 <body>
@@ -153,7 +123,7 @@
 
 </div>
 
-<div class="container">
+<div class="container form-container">
    <h2>Add New Document</h2>
 <c:if test="${not empty errorMessage}">
         <div style="color: red; font-weight: bold; margin-bottom: 20px; text-align:center;">

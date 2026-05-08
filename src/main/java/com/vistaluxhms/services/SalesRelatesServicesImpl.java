@@ -54,39 +54,53 @@ public class SalesRelatesServicesImpl {
 		return rateTypeEntity;
 	}
 
-
     @PostConstruct
-    public void initDigitalMarketing() {
+    public void initSystemMapping() {
 
-        RateTypeEntity b2c = getB2CRateType();
-
-        salesPartnerRepository.findBySalesPartnerName("Digital Marketing")
-                .orElseGet(() -> {
-
-                    SalesPartnerEntity sp = new SalesPartnerEntity();
-                    sp.setSalesPartnerName("Digital Marketing");
-                    sp.setSalesPartnerShortName("DIGITAL MARKETING");
-                    sp.setActive(true);
-                    sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
-                    sp.setDescription("Default system partner");
-                    sp.setReference("SYSTEM");
-
-                    // 🔥 AUTO LINK
-                    sp.setRateTypeEntity(b2c);
-
-                    return salesPartnerRepository.save(sp);
-                });
-    }
-    private RateTypeEntity getB2CRateType() {
-
-        return rateTypeRepository.findByRateTypeName("B2C_Rate_Type")
+        // RATE TYPE
+        RateTypeEntity b2c = rateTypeRepository.findById(1)
                 .orElseGet(() -> {
                     RateTypeEntity rt = new RateTypeEntity();
                     rt.setRateTypeName("B2C_Rate_Type");
                     rt.setActive(true);
-                    rt.setDescription("System created B2C Rate Type");
+                    rt.setDescription("System default B2C RateType");
                     return rateTypeRepository.save(rt);
                 });
+
+        // SALES PARTNER
+        SalesPartnerEntity sp = salesPartnerRepository.findById(1L)
+                .orElseGet(() -> {
+                    SalesPartnerEntity s = new SalesPartnerEntity();
+                    s.setSalesPartnerName("Digital Marketing");
+                    s.setSalesPartnerShortName("DIGITAL MARKETING");
+                    s.setActive(true);
+                    s.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
+                    s.setDescription("System default Sales Partner");
+                    s.setReference("SYSTEM");
+                    return salesPartnerRepository.save(s);
+                });
+
+        // FORCE LINK
+        if (sp.getRateTypeEntity() == null ||
+                !sp.getRateTypeEntity().getRateTypeId().equals(b2c.getRateTypeId())) {
+
+            sp.setRateTypeEntity(b2c);
+            salesPartnerRepository.save(sp);
+        }
+    }
+
+
+    private SalesPartnerEntity getSystemDigitalMarketing() {
+
+        return salesPartnerRepository.findById(1L)
+                .orElseThrow(() ->
+                        new IllegalStateException("System SalesPartner (ID=1) missing"));
+    }
+    private RateTypeEntity getSystemB2CRateType() {
+
+        return rateTypeRepository.findById(1)
+                .orElseThrow(() ->
+                        new IllegalStateException("System B2C RateType (ID=1) missing"));
     }
 
     public List<RateTypeEntity> findAllRateTypeList() {
@@ -94,7 +108,8 @@ public class SalesRelatesServicesImpl {
 	}
 
 	public RateTypeEntity findById(Integer rateTypeId) {
-		return rateTypeRepository.findById(rateTypeId).get();
+        return rateTypeRepository.findById(rateTypeId)
+                .orElseThrow(() -> new IllegalStateException("RateType not found: " + rateTypeId));
 	}
 
 	public void saveSalesPartner(SalesPartnerEntity salesPartnerEntity) {
@@ -159,7 +174,8 @@ public class SalesRelatesServicesImpl {
 	}
 
 	public SalesPartnerEntity findSalesPartnerById(Long salesPartnerId) {
-		return salesPartnerRepository.findById(salesPartnerId).get();
+        return salesPartnerRepository.findById(salesPartnerId)
+                .orElseThrow(() -> new IllegalStateException("SalesPartner not found: " + salesPartnerId));
 	}
 
 	public List<SalesPartnerEntity> findSalesPartnerByActive(boolean activeFlag) {
@@ -174,37 +190,16 @@ public class SalesRelatesServicesImpl {
 	 * If it doesn't exist, it's created automatically to support both
 	 * manual and automated lead creation workflows.
 	 */
-	public Map<Long, String> getActiveSalesPartnerMap(boolean activeFlag) {
-		// Ensure Default Sales Partner "Digital Marketing" exists
-		salesPartnerRepository.findBySalesPartnerName("Digital Marketing")
-				.orElseGet(() -> {
-					SalesPartnerEntity sp = new SalesPartnerEntity();
-					sp.setSalesPartnerName("Digital Marketing");
-					sp.setSalesPartnerShortName("DIGITAL MARKETING");
-					sp.setActive(true);
-					sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
-					sp.setDescription("Default partner for Social Media Leads");
-					sp.setReference("System Generated");
-                    RateTypeEntity defaultRateType = rateTypeRepository.findByRateTypeName("B2C_Rate_Type")
-                            .orElseGet(() -> {
-                                RateTypeEntity rt = new RateTypeEntity();
-                                rt.setRateTypeName("B2C_Rate_Type");
-                                rt.setActive(true);
-                                return rateTypeRepository.save(rt);
-                            });
+    public Map<Long, String> getActiveSalesPartnerMap(boolean activeFlag) {
 
-                    sp.setRateTypeEntity(defaultRateType);
-					return salesPartnerRepository.save(sp);
-				});
-
-		return salesPartnerRepository.findByActiveOrderBySalesPartnerShortNameAsc(activeFlag)
-				.stream()
-				.collect(Collectors.toMap(
-						SalesPartnerEntity::getSalesPartnerId,
-						SalesPartnerEntity::getSalesPartnerShortName,
-						(e1, e2) -> e1, // in case of duplicate keys
-						LinkedHashMap::new));
-	}
+        return salesPartnerRepository.findByActiveOrderBySalesPartnerShortNameAsc(activeFlag)
+                .stream()
+                .collect(Collectors.toMap(
+                        SalesPartnerEntity::getSalesPartnerId,
+                        SalesPartnerEntity::getSalesPartnerShortName,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new));
+    }
 
 	public List<MasterRoomDetailsEntity> findRoomsList() {
 		Sort sort = Sort.by(Sort.Order.desc("active"));
