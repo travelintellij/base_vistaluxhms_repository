@@ -174,19 +174,19 @@
     <ul>
         <li><strong>📸 Photo Gallery:</strong> Explore high-quality images of the property and its surroundings.
             <br/>
-           <a href="https://drive.google.com/drive/folders/13Vzkz74w7jS3-rszyZhfJxvJqLpJ775P?usp=sharing" target="_blank">
+           <a href="https://drive.google.com/drive/folders/1RRoDhvzncpdIbnnIEenHFjF2q1ktJaYc?usp=sharing" target="_blank">
                View Property Photographs
            </a>
         </li>
         <li><strong>📄 Property Factsheet:</strong> For detailed specifications, amenities, room configurations, and facilities, please refer to our downloadable factsheet.
             <br/>
-            <a href="https://www.dropbox.com/scl/fi/8kdae1ugv7q41z4g92qt7/VAN-CHHAVI-RESORT.pdf?rlkey=vi8oiyivh2arrwjz56n3uqack&amp;st=twzjlmdu&amp;dl=0&amp;raw=1" target="_blank">
+            <a href="https://drive.google.com/file/d/1AQGWDCrEyB7RF8-z4y8ZjO9lrMvm1w21/view?usp=drive_link" target="_blank">
                 Download Factsheet
             </a>
         </li>
         <li><strong>🎥 Introductory Video:</strong> Get a quick walkthrough of the property through our engaging introductory video.
             <br/>
-            <a href="https://drive.google.com/file/d/1Xcy0yozfEAULkzfG2brjTBCE3_NvqQPY/view?usp=drive_link" target="_blank">
+            <a href="https://drive.google.com/file/d/1nYCF_e8WNOeA8UzZA4u3cNcE_1cbffQc/view?usp=drive_link" target="_blank">
                 Watch Introductory Video
             </a>
         </li>

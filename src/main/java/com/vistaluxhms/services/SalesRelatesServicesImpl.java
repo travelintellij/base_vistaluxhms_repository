@@ -25,10 +25,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors;import javax.annotation.PostConstruct;
+
+
 
 @Service
 public class SalesRelatesServicesImpl {
+
 
     private static final Logger logger = LoggerFactory.getLogger(SalesRelatesServicesImpl.class);
 	@Autowired
@@ -51,7 +54,42 @@ public class SalesRelatesServicesImpl {
 		return rateTypeEntity;
 	}
 
-	public List<RateTypeEntity> findAllRateTypeList() {
+
+    @PostConstruct
+    public void initDigitalMarketing() {
+
+        RateTypeEntity b2c = getB2CRateType();
+
+        salesPartnerRepository.findBySalesPartnerName("Digital Marketing")
+                .orElseGet(() -> {
+
+                    SalesPartnerEntity sp = new SalesPartnerEntity();
+                    sp.setSalesPartnerName("Digital Marketing");
+                    sp.setSalesPartnerShortName("DIGITAL MARKETING");
+                    sp.setActive(true);
+                    sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
+                    sp.setDescription("Default system partner");
+                    sp.setReference("SYSTEM");
+
+                    // 🔥 AUTO LINK
+                    sp.setRateTypeEntity(b2c);
+
+                    return salesPartnerRepository.save(sp);
+                });
+    }
+    private RateTypeEntity getB2CRateType() {
+
+        return rateTypeRepository.findByRateTypeName("B2C_Rate_Type")
+                .orElseGet(() -> {
+                    RateTypeEntity rt = new RateTypeEntity();
+                    rt.setRateTypeName("B2C_Rate_Type");
+                    rt.setActive(true);
+                    rt.setDescription("System created B2C Rate Type");
+                    return rateTypeRepository.save(rt);
+                });
+    }
+
+    public List<RateTypeEntity> findAllRateTypeList() {
 		return rateTypeRepository.findAll();
 	}
 
