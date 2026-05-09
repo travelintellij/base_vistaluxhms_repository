@@ -714,7 +714,7 @@ public class SalesServiceController {
         }
         emailData.put("mealPlanNames", freemarkerFriendlyMealMap);
         Mail mail = new Mail();
-        String emailSubject = "Special B2B Seasonal Rates :Winsome Resorts & Spa | "
+        String emailSubject = "Special B2B Seasonal Rates :Ashoka's Tiger Trail Resort | "
                 + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
         mail.setSubject(emailSubject);
 

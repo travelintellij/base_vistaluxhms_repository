@@ -393,7 +393,7 @@
                                 </#if>
                             </#list>
                         </ul>
-                        <p>For queries, please contact us at <strong>+91-9971499494</strong> or email <strong>Digitalintellij@gmail.com</strong></p>
+                        <p>For queries, please contact us at <strong>+91-9090762424</strong> or email <strong>gm@vistaluxhotel.com</strong></p>
                 </ul>
             </div>
         </div>

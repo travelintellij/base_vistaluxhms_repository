@@ -571,7 +571,7 @@ public class LeadQuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             // String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Winsome Resorts & Spa | " + quotationEntityDTO.getGuestName()
+            String emailSubject = "Quotation: Ashoka's Tiger Trail Resort | " + quotationEntityDTO.getGuestName()
                     + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
@@ -1518,7 +1518,7 @@ public class LeadQuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             // String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Winsome Resorts & Spa | "
+            String emailSubject = "Quotation: Ashoka's Tiger Trail Resort | "
                     + quotationEntityDTO.getClientEntity().getClientName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
