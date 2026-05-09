@@ -221,8 +221,8 @@ public class SalesRelatesServicesImpl {
 		return rateTypeRepository.findByActive(activeFlag);
 	}
 
-	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId) {
-		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeId);
+	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdAndActiveTrueAndSessionEntity_ActiveTrueOrderByStartDateDesc(Integer rateTypeId) {
+		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdAndActiveTrueAndSessionEntity_ActiveTrueOrderByStartDateDesc(rateTypeId);
 	}
 
 	public boolean isSalesPartnerMobileExists(Long mobile) {

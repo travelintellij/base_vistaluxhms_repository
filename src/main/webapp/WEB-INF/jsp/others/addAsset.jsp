@@ -4,6 +4,7 @@
 
               <html>
               <head>
+              <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
                   <title>Add Asset</title>
                   <style>
 
@@ -53,151 +54,106 @@
                          padding: 0;
                      }
 
-                     /body {
-                          background-image: url('<%= request.getContextPath() %>/resources/images/newlead.jpg');
-                          background-size: cover;
-                          background-position: center;
-                          background-attachment: fixed;
-                          margin: 0;
-                          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                          position: relative;
-                      }
+                    body {
+                        background-image: url('<%= request.getContextPath() %>/resources/images/clientadd.jpg');
+                        background-size: cover;
+                        background-position: center;
+                        background-attachment: fixed;
+                        height: 100vh;
+                        position: relative;
+                        opacity: .98;
+                    }
 
-                      body::after {
-                          content: "";
-                          position: fixed;
-                          inset: 0;
-                          background: rgba(255,255,255,0.3);
-                          z-index: -1;
-                      }
+                    body::after {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(255,255,255,0.3);
+                        z-index: -1;
+                    }
 
-                      /* MAIN CONTAINER SAME AS LEADS */
-                      .container {
-                          width: 60%;
-                          min-width: 60%;
-                          max-width: 60%;
-                          margin: 40px auto;
-                      }
+                    .form-container-wrapper {
+                        background: transparent !important;
+                    }
 
-                      /* FORM WRAPPER like leads */
-                      .form-container {
-                          background: #fff;
-                          padding: 25px;
-                          border-radius: 8px;
-                          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                      }
+                    .form-container {
+                        width: 60%;
+                        margin: 40px auto;
+                        padding: 25px;
+                        background: #fff;
+                        border-radius: 10px;
+                        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+                    }
 
-                     h2 {
-                         text-align: center;
-                         font-size: 36px;
-                         color: #000 !important;
-                         margin-bottom: 25px;
-                     }
+                    .form-container h2 {
+                        text-align: center;
+                        margin-bottom: 30px;
+                        font-size: 32px;
+                        font-weight: bold;
+                    }
 
-                      /* LEADS-STYLE GRID */
-                      .form-table {
-                          display: flex;
-                          flex-wrap: wrap;
-                          gap: 15px;
-                      }
+                    .form-row {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 20px;
+                    }
 
-                      /* SAME CELL SYSTEM AS LEADS */
-                      .form-cell {
-                          flex: 1 1 45%;
-                          display: flex;
-                          flex-direction: column;
-                      }
+                    .form-row label {
+                        width: 34%;
+                        font-weight: 600;
+                        font-size: 15px;
+                    }
 
-                      /* LABELS EXACT LEADS STYLE */
-                      label {
-                          font-weight: 600;
-                          margin-bottom: 6px;
-                          font-size: 14px;
-                          color: #333;
-                      }
+                    .form-row input,
+                    .form-row select,
+                    .form-row textarea {
+                        width: 66%;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        font-size: 14px;
+                    }
 
-                      /* INPUTS MATCH LEADS LOOK */
-                      input[type="text"],
-                      input[type="number"],
-                      input[type="date"],
-                      select,
-                      textarea {
-                          padding: 10px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                          font-size: 14px;
-                          width: 100%;
-                          box-sizing: border-box;
-                      }
+                    .form-row textarea {
+                        resize: vertical;
+                    }
 
-                      input:focus,
-                      select:focus,
-                      textarea:focus {
-                          border-color: #ff4b2b;
-                          box-shadow: 0 0 5px rgba(255,75,43,0.3);
-                          outline: none;
-                      }
+                    .form-row input:focus,
+                    .form-row select:focus,
+                    .form-row textarea:focus {
+                        border-color: #ff4b2b;
+                        box-shadow: 0 0 5px rgba(255,75,43,0.3);
+                        outline: none;
+                    }
 
-                      /* ERROR STYLE SAME AS LEADS */
-                      .error-message,
-                      .error {
-                          color: red;
-                          font-size: 13px;
-                          margin-top: 4px;
-                      }
+                    .button-container {
+                        text-align: center;
+                        margin-top: 30px;
+                    }
 
-                      /* BUTTON AREA SAME AS LEADS */
-                      .button-container {
-                          margin-top: 20px;
-                          text-align: center;
-                      }
+                    .button-container input[type="submit"],
+                    .button-container input[type="button"] {
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        cursor: pointer;
+                    }
 
-                      .button-container input[type="submit"] {
-                          background: #ff4b2b;
-                          color: #fff;
-                          border: none;
-                          padding: 10px 20px;
-                          font-size: 14px;
-                          border-radius: 4px;
-                          cursor: pointer;
-                      }
 
-                      .button-container input[type="submit"]:hover {
-                          background: #e63e22;
-                      }
 
-                      .clear-filter-btn {
-                          background: #ccc;
-                          border: none;
-                          padding: 10px 20px;
-                          margin-left: 10px;
-                          cursor: pointer;
-                          border-radius: 4px;
-                      }
 
-                      .clear-filter-btn:hover {
-                          background: #aaa;
-                      }
-                      .form-cell { margin-bottom: 30px; }
-                      label { display: block; font-size: 20px; font-weight: bold; margin-bottom: 12px; color: #333; }
-                      input[type="text"], input[type="number"], input[type="date"], select {
-                          width: 100%; padding: 18px 15px; font-size: 18px;
-                          border-radius: 12px; border: 2px solid #ccc; transition: all 0.3s ease;
-                      }
-                      input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, select:focus {
-                          border-color: #ff4b2b; box-shadow: 0 0 15px rgba(255,75,43,0.3); outline: none;
-                      }
-                      select { cursor: pointer; }
-                      .form-actions { text-align: center; margin-top: 40px; }
-                      .save-btn {
-                          background: linear-gradient(90deg, #ff416c, #ff4b2b);
-                          color: #fff; padding: 18px 40px; font-size: 22px; font-weight: bold;
-                          border: none; border-radius: 15px; cursor: pointer; transition: all 0.3s ease;
-                      }
-                      .save-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,75,43,0.5); }
-                      .cancel-btn { margin-left: 20px; font-size: 18px; color: #555; text-decoration: none; }
-                      .cancel-btn:hover { color: #ff4b2b; text-decoration: underline; }
 
+
+
+                    .error-message {
+                        color: red;
+                        font-size: 13px;
+                        margin-left: 10px;
+                    }
 
                       #description:focus {
                           border-color: #ff4b2b;
@@ -218,21 +174,20 @@
               <jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
 
 
-                  <div class="form-container asset-container">
+                  <div class="form-container-wrapper">
+                      <div class="form-container">
 
-                  <div style="text-align:center; margin-bottom: 30px;">
-                      <h2 style="font-size: 36px; color: #ff4b2b; margin: 0;">Add New Asset</h2>
-                  </div>
+                  <h2>Add Asset</h2>
 
                   <form:form modelAttribute="assetDTO" action="${pageContext.request.contextPath}/save_asset" method="post">
 
-                      <div class="form-cell">
+                      <div class="form-row">
                           <label for="assetName">Asset Name *</label>
                           <form:input path="assetName" id="assetName" required="true" />
                       </div>
 
 
-                     <div class="form-cell">
+                     <div class="form-row">
                          <label for="assetCost">Asset Cost</label>
                          <form:input path="assetCost" id="assetCost" type="number" step="0.01"
                                      value="${assetDTO.assetCost != null ? assetDTO.assetCost : ''}" />
@@ -244,7 +199,7 @@
 
 
 
-                   <div class="form-cell">
+                   <div class="form-row">
                        <label for="categoryId">Category *</label>
                        <form:select path="categoryId" id="categoryId" required="true">
                            <form:option value="">-- Select Category --</form:option>
@@ -255,7 +210,7 @@
                        <form:errors path="categoryId" cssClass="error-message" />
                    </div>
 
-                      <div class="form-cell">
+                      <div class="form-row">
                           <label for="assetOwnerId">Assign Owner</label>
                           <form:select path="assetOwnerId" id="assetOwnerId">
                               <form:option value="">-- Select Employee --</form:option>
@@ -281,14 +236,16 @@
                             </div>
 
 
-                      <div class="form-actions">
+                      <div class="button-container">
                       <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ASSET_MANAGER')">
-                          <button type="submit" class="save-btn">Save Asset</button>
+                          <input type="submit" value="Save Asset"/>
                           </sec:authorize>
-                          <a href="${pageContext.request.contextPath}/view_assets_list" class="cancel-btn btn-cancel">Cancel</a>
+                          <a href="${pageContext.request.contextPath}/view_assets_list">  <input type="button"
+                                                                                                 class="clear-filter-btn"
+                                                                                                 value="View Asset List"/>
                       </div>
                   </form:form>
-              </div>
+              </div></div>
               </body>
               </html>
 

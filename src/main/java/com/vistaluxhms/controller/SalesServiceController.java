@@ -494,7 +494,7 @@ public class SalesServiceController {
         // Adding user details to the model
         // Filtering sales partners based on the search criteria
         List<SessionRateMappingEntity> rateSessionMappingList = salesService
-                .findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeObj.getRateTypeId());
+                .findByRateTypeEntityRateTypeIdAndActiveTrueAndSessionEntity_ActiveTrueOrderByStartDateDesc(rateTypeObj.getRateTypeId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy");
 
         // Format startDate and endDate and store them as new attributes
@@ -518,7 +518,7 @@ public class SalesServiceController {
                 .findSalesPartnerById(salesPartnerEntityDto.getSalesPartnerId());
         salesPartnerEntityDto.updateSalesPartnerVoFromEntity(salesPartnerEntity);
         List<SessionRateMappingEntity> rateSessionMappingList = salesService
-                .findByRateTypeEntityRateTypeIdOrderByStartDateDesc(
+                .findByRateTypeEntityRateTypeIdAndActiveTrueAndSessionEntity_ActiveTrueOrderByStartDateDesc(
                         salesPartnerEntityDto.getRateTypeEntity().getRateTypeId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yy");
 
@@ -714,7 +714,7 @@ public class SalesServiceController {
         }
         emailData.put("mealPlanNames", freemarkerFriendlyMealMap);
         Mail mail = new Mail();
-        String emailSubject = "Special B2B Seasonal Rates :Ashoka's Tiger Trail Resort | "
+        String emailSubject = "Special B2B Seasonal Rates :Winsome Resorts & Spa | "
                 + salesPartnerEntityDto.getSalesPartnerName() + " | Jim Corbett ";
         mail.setSubject(emailSubject);
 

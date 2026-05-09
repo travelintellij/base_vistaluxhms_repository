@@ -92,7 +92,7 @@
     <!--
     <img
             src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png"
-            alt="Ashoka's Tiger Trail Resort"
+            alt="Winsome Resorts & Spa"
             width="200" height="200"
             style="display: block; margin: 0 auto; width: 200px; height: 200px;"
     />
@@ -174,19 +174,19 @@
     <ul>
         <li><strong>📸 Photo Gallery:</strong> Explore high-quality images of the property and its surroundings.
             <br/>
-           <a href="https://drive.google.com/drive/folders/15Gs4A8ce2wFKjvoLxo-GSuCD4TD-ClGI?usp=sharing" target="_blank">
+           <a href="https://drive.google.com/drive/folders/1RRoDhvzncpdIbnnIEenHFjF2q1ktJaYc?usp=drive_link" target="_blank">
                View Property Photographs
            </a>
         </li>
         <li><strong>📄 Property Factsheet:</strong> For detailed specifications, amenities, room configurations, and facilities, please refer to our downloadable factsheet.
             <br/>
-            <a href="https://drive.google.com/file/d/1K1JcF89v9YqW4QnP2XNwdfEH7Mv5cqZl/view?usp=sharing" target="_blank">
+            <a href="https://drive.google.com/file/d/1AQGWDCrEyB7RF8-z4y8ZjO9lrMvm1w21/view?usp=drive_link" target="_blank">
                 Download Factsheet
             </a>
         </li>
         <li><strong>🎥 Introductory Video:</strong> Get a quick walkthrough of the property through our engaging introductory video.
             <br/>
-            <a href="https://drive.google.com/file/d/1BxqTpg-X8aBSEqyEvF8UhZuag44IqPks/view?usp=sharing" target="_blank">
+            <a href="https://drive.google.com/file/d/1nYCF_e8WNOeA8UzZA4u3cNcE_1cbffQc/view?usp=drive_link" target="_blank">
                 Watch Introductory Video
             </a>
         </li>

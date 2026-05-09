@@ -53,6 +53,35 @@
     .action-btns a {
         margin: 3px;
     }
+
+    .action-btns{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:10px;
+        flex-wrap:nowrap;
+    }
+
+    .action-btns form{
+        margin:0;
+    }
+
+    .edit-btn{
+        background:#c9a227;
+        border:none;
+        padding:8px 16px;
+        border-radius:4px;
+        color:#000;
+        font-size:14px;
+        cursor:pointer;
+        white-space:nowrap;
+        min-width:140px;
+        text-align:center;
+    }
+
+    .edit-btn:hover{
+        opacity:0.9;
+    }
 </style>
 <div align="center" style="margin:10px 0"><b>
     <font color="green">${Success} </font>
@@ -69,7 +98,7 @@
                       <th style="width:25%;">Rate Type Name</th>
                       <th style="width:35%">Description</th>
                       <th>Status</th>
-                      <th>Action</th>
+                      <th style="width:28%;">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -88,18 +117,27 @@
                         </c:if>
                        </td>
                       <td>
-                          <form action="view_edit_rate_type_form" method="POST" style="display:inline;">
-                              <!-- Hidden field to store destinationId -->
-                              <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                              <button type="submit" class="edit-btn">Edit</button>
-                         </form>
-                         <form action="view_rate_type_sessionwise" method="POST" style="display:inline;">
-                            <!-- Hidden field to store destinationId -->
-                            <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                            <button type="submit" class="edit-btn">&#128197; Check Applicable Dates</button>
-                        </form>
+                          <div class="action-btns">
 
+                              <form action="view_edit_rate_type_form" method="POST">
+                                  <input type="hidden" name="rateTypeId"
+                                         value="${rateTypeRec.rateTypeId}" />
 
+                                  <button type="submit" class="edit-btn">
+                                      Edit
+                                  </button>
+                              </form>
+
+                              <form action="view_rate_type_sessionwise" method="POST">
+                                  <input type="hidden" name="rateTypeId"
+                                         value="${rateTypeRec.rateTypeId}" />
+
+                                  <button type="submit" class="edit-btn">
+                                      &#128197; Check Applicable Dates
+                                  </button>
+                              </form>
+
+                          </div>
                       </td>
                   </tr>
                   </c:forEach>
