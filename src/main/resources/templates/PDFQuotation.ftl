@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quotation - Winsome Resorts & Spa </title>
+    <title>Quotation - Winsome Resorts & Spa</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,256 +14,253 @@
             background-color: #f8f8f8;
             color: #333;
         }
+
         .container {
             background-color: #ffffff;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             text-align: center;
             padding-bottom: 5px;
         }
+
         .header img {
             max-width: 150px;
-            height: 150;
+            height: 150px;
         }
-        .content h2, .content h3 {
-            font-size: 12px;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 4px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f1f1;
             color: black;
-            font-weight: bold;
+            white-space: nowrap;
         }
-     table {
-         width: 100%;
-         border-collapse: collapse;
-         margin-top: 10px;
-         font-size: 11px;
-         table-layout: auto;
-     }
-     table, th, td {
-         border: 1px solid #ddd;
-     }
-     th, td {
-         padding: 4px;
-         text-align: left;
-     }
-     th {
-         background-color: #f1f1f1;
-         color: black;
-         white-space: nowrap;
-         font-size: 11px;
-     }
+
         .footer {
             margin-top: 10px;
             text-align: center;
             font-size: 9px;
         }
+
         .whatsapp-button {
             text-align: center;
             margin-top: 10px;
         }
 
-        .page-break {
-            page-break-before: always;
+        .whatsapp-button a {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
         }
 
-    .whatsapp-button a {
-           display: inline-block;
-           background-color: #25D366;
-           color: white;
-           padding: 8px 12px;
-           text-decoration: none;
-           border-radius: 5px;
-           font-weight: bold;
-       }
         .quotation-header {
-           text-align: center;
-           font-size: 20px;
-           color: #003366;
-           font-family: 'Georgia', serif;
-           margin-bottom: 20px;
-           text-transform: uppercase;
-           letter-spacing: 1px;
-         }
-           .social-links {
-                     text-align: center;
-                     margin-top: 20px;
-                 }
-                 .social-links a {
-                     margin: 0 10px;
-                     text-decoration: none;
-                     color: white;
-                     padding: 10px 15px;
-                     border-radius: 5px;
-                     display: inline-block;
-                 }
-                 .facebook { background-color: #3b5998; }
-                 .instagram { background-color: #e4405f; }
-                 .linkedin { background-color: #0077b5; }
-                 .email { background-color: #ff6600; }
-                 .website { background-color: #000; }
-                 .twitter {
-                     background-color: #1DA1F2;
-                 }
-                 .whatsapp-button {
-                     text-align: center;
-                     margin-top: 20px;
-                 }
-                 .whatsapp-button a {
-                     background-color: #25D366;
-                     color: white;
-                     padding: 10px 20px;
-                     text-decoration: none;
-                     font-size: 16px;
-                     border-radius: 5px;
-                     display: inline-block;
-                 }
-                .rover {
-                    page-break-inside: avoid;
-                    break-inside: avoid;
-                }
+            text-align: center;
+            font-size: 20px;
+            color: #003366;
+            font-family: 'Georgia', serif;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
+        .social-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .facebook { background-color: #3b5998; }
+        .instagram { background-color: #e4405f; }
+        .linkedin { background-color: #0077b5; }
+        .email { background-color: #ff6600; }
+        .website { background-color: #000; }
+        .twitter { background-color: #1DA1F2; }
+
+        .rover {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
     </style>
 </head>
+
 <body>
 <div class="container">
+
     <div class="header">
-        <!--
-        <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka Tiger Trail Resort Logo" style="width: 200px; height: 200px;" />
-        -->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
+        <img src="${centralConfig.logoPath}" alt="Logo"
+             style="display:block;margin:0 auto;width:200px;height:200px;" />
     </div>
+
     <div class="content">
-        <h2 class="quotation-header">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>
+
+        <h2 class="quotation-header">
+            Exclusive Stay Quotation – ${centralConfig.hotelName}
+        </h2>
+
         <p>Dear ${contactName},</p>
+
         <#if centralConfig.quotationTopCover?has_content>
-            ${centralConfig.quotationTopCover?html?replace("\\r?\\n", "<br/>", "r")}
+            ${centralConfig.quotationTopCover?replace("\n","<br/>")}
         </#if>
 
-<div style="overflow-x: auto;">
-        <table>
-            <tr>
-                <th>Room Category</th>
-                <th>Meal Plan</th>
-                <th>Adults</th>
-                <th>Child (W/ bed)</th>
-                <th>Child (No bed)</th>
-                <th>Extra Bed</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Total Price</th>
-            </tr>
-            <#list roomDetails as room>
-            <tr>
-                <td>${room.roomCategoryName}</td>
-                <td>${room.mealPlanName}</td>
-                <td>${room.adults}</td>
-                <td>${room.childWithBed}</td>
-                <td>${room.childNoBed}</td>
-                <td>${room.extraBed}</td>
-                <td>${room.formattedCheckInDate}</td>
-                <td>${room.formattedCheckOutDate}</td>
-                <td>INR ${room.totalPrice?string(",##0.00")}</td>
-            </tr>
-        </#list>
-        </table>
-     </div>
+        <div style="overflow-x:auto;">
+            <table>
+                <tr>
+                    <th>Room Category</th>
+                    <th>Meal Plan</th>
+                    <th>Adults</th>
+                    <th>Child (W/ bed)</th>
+                    <th>Child (No bed)</th>
+                    <th>Extra Bed</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Total Price</th>
+                </tr>
 
-   <#if remarks?? && (remarks?trim?length > 0)>
-       <div style="margin-top: 20px; padding: 12px; border: 2px dashed #4CAF50; border-radius: 8px; background-color: #f9f9f9;">
-           <h3 style="margin: 0 0 10px 0; color: #4CAF50; font-size: 18px;">Remarks</h3>
-           <p style="margin: 0; font-size: 14px; color: #333;">
-               ${remarks?html}
-           </p>
-       </div>
-   </#if>
-   <h3>Grand Total: INR ${grandTotalSum?string(",##0.00")}</h3>
+                <#list roomDetails as room>
+                <tr>
+                    <td>${room.roomCategoryName}</td>
+                    <td>${room.mealPlanName}</td>
+                    <td>${room.adults}</td>
+                    <td>${room.childWithBed}</td>
+                    <td>${room.childNoBed}</td>
+                    <td>${room.extraBed}</td>
+                    <td>${room.formattedCheckInDate}</td>
+                    <td>${room.formattedCheckOutDate}</td>
+                    <td>INR ${room.totalPrice?string(",##0.00")}</td>
+                </tr>
+                </#list>
+
+            </table>
+        </div>
+
+        <#if remarks?? && (remarks?trim?length > 0)>
+        <div style="margin-top:20px;padding:12px;border:2px dashed #4CAF50;border-radius:8px;background:#f9f9f9;">
+            <h3 style="color:#4CAF50;">Remarks</h3>
+            <p>${remarks?replace("\n","<br/>")}</p>
+        </div>
+        </#if>
+
+        <h3>Grand Total: INR ${grandTotalSum?string(",##0.00")}</h3>
+
         <#if discount?number != 0>
-            <h3 style="color: #d32f2f; margin: 0;">Discount: INR ${discount?string(",##0.00")}</h3>
+            <h3 style="color:#d32f2f;">Discount: INR ${discount?string(",##0.00")}</h3>
             <h3>Final Price: INR ${finalPrice?string(",##0.00")}</h3>
         </#if>
+
     </div>
-    <p style="font-size: 10px; color: #555;"><strong>Meal Plans:</strong>
-      <br/>EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals (Breakfast + Lunch + Dinner)
+
+    <p style="font-size:10px;color:#555;">
+        <strong>Meal Plans:</strong><br/>
+        EP – No Meals | CPAI – Breakfast Only | MAPI – Breakfast + Lunch/Dinner | APAI – All Meals
     </p>
 
-   <#if centralConfig.inclusions?has_content>
+    <#if centralConfig.inclusions?has_content>
     <div class="rover">
-            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Inclusions</h3>
-            ${centralConfig.inclusions?html?replace("\\r?\\n", "<br/>", "r")}
+        <h3>Inclusions</h3>
+        ${centralConfig.inclusions?replace("\n","<br/>")}
     </div>
-   </#if>
-   <#if centralConfig.usp?has_content>
+    </#if>
+
+    <#if centralConfig.usp?has_content>
     <div class="rover">
-            <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Why Choose Us?</h3>
-            ${centralConfig.usp?html?replace("\\r?\\n", "<br/>", "r")}
+        <h3>Why Choose Us?</h3>
+        ${centralConfig.usp?replace("\n","<br/>")}
     </div>
-   </#if>
-   <#if centralConfig.tnc?has_content>
+    </#if>
+
+    <#if centralConfig.tnc?has_content>
     <div class="rover">
-          <h3 style="color: black; font-weight: bold; margin-bottom: 5px;">Terms &amp; Conditions</h3>
-          ${centralConfig.tnc?html?replace("\\r?\\n", "<br/>", "r")}
+        <h3>Terms & Conditions</h3>
+        ${centralConfig.tnc?replace("\n","<br/>")}
     </div>
-   </#if>
- <hr/>
-  <h3>Payment Details:</h3>
-        <p><strong>Bank Name:</strong> ${centralConfig.bankName}</p>
-        <p><strong>Account Name:</strong> ${centralConfig.accountName}</p>
-        <p><strong>Account Number:</strong> ${centralConfig.accountNumber} </p>
-        <p><strong>IFSC Code:</strong> ${centralConfig.ifscCode}</p>
-        <p><strong>Branch Name:</strong> ${centralConfig.branch}</p>
+    </#if>
 
-        <hr/>
-        <h3>Resort Contact Details:</h3>
-        <p><strong>Address:</strong> ${centralConfig.hotelAddress} </p>
-        <p><strong>Phone:</strong> ${centralConfig.centralNumber} </p>
-        <p><strong>Email:</strong> ${centralConfig.centralizedEmail} </p>
-        <p><strong>GST No:</strong> ${centralConfig.gstNumber} </p>
+    <hr/>
 
-        <!-- WhatsApp Chat Button -->
-        <div class="whatsapp-button">
-            <a href="https://wa.me/${serviceAdvisorMobile}" target="_blank">Chat on WhatsApp</a>
-        </div>
+    <h3>Payment Details:</h3>
+    <p><strong>Bank Name:</strong> ${centralConfig.bankName}</p>
+    <p><strong>Account Name:</strong> ${centralConfig.accountName}</p>
+    <p><strong>Account Number:</strong> ${centralConfig.accountNumber}</p>
+    <p><strong>IFSC Code:</strong> ${centralConfig.ifscCode}</p>
+    <p><strong>Branch Name:</strong> ${centralConfig.branch}</p>
 
-        <!-- Social Media Links -->
-        <!-- <div class="social-links">
-            <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
-            <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
-            <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
-            <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+    <hr/>
+
+    <h3>Resort Contact Details:</h3>
+    <p><strong>Address:</strong> ${centralConfig.hotelAddress}</p>
+    <p><strong>Phone:</strong> ${centralConfig.centralNumber}</p>
+    <p><strong>Email:</strong> ${centralConfig.centralizedEmail}</p>
+    <p><strong>GST No:</strong> ${centralConfig.gstNumber}</p>
+
+    <div class="whatsapp-button">
+        <a href="https://wa.me/${serviceAdvisorMobile}" target="_blank">
+            Chat on WhatsApp
+        </a>
+    </div>
+
+    <div class="social-links">
+
+        <#if centralConfig.facebookLink?has_content>
+            <a href="${centralConfig.facebookLink}" class="facebook">Facebook</a>
+        </#if>
+
+        <#if centralConfig.instagramLink?has_content>
+            <a href="${centralConfig.instagramLink}" class="instagram">Instagram</a>
+        </#if>
+
+        <#if centralConfig.linkedinLink?has_content>
+            <a href="${centralConfig.linkedinLink}" class="linkedin">LinkedIn</a>
+        </#if>
+
+        <#if centralConfig.xLink?has_content>
+            <a href="${centralConfig.xLink}" class="twitter">Twitter</a>
+        </#if>
+
+        <#if centralConfig.centralizedEmail?has_content>
             <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
-            <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
-        </div>
-        -->
-        <div class="social-links">
-            <#if centralConfig.facebookLink?has_content>
-                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
-            </#if>
+        </#if>
 
-            <#if centralConfig.instagramLink?has_content>
-                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
-            </#if>
+        <#if centralConfig.website?has_content>
+            <a href="${centralConfig.website}" class="website">Website</a>
+        </#if>
 
-            <#if centralConfig.linkedinLink?has_content>
-                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
-            </#if>
-
-            <#if centralConfig.xLink?has_content>
-                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
-            </#if>
-
-
-            <#if centralConfig.centralizedEmail?has_content>
-                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
-            </#if>
-
-            <#if centralConfig.website?has_content>
-                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
-            </#if>
-        </div>
-    <div class="footer">
-        <p>We look forward to hosting you at ${centralConfig.hotelName} !</p>
     </div>
+
+    <div class="footer">
+        <p>We look forward to hosting you at ${centralConfig.hotelName}!</p>
+    </div>
+
 </div>
 </body>
 </html>

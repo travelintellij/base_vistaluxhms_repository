@@ -74,7 +74,7 @@ public class WbboxWhatsAppClient {
             jsonBody = jsonBody.replace("{{recipient_number}}", "919999449267")
                     .replace("{{name}}", "Sushil Chugh")
                     .replace("{{query_id}}", "ATT-2025")
-                    .replace("{{query_owner}}", "Winsome Resorts & Spa")
+                    .replace("{{query_owner}}", "Winsome Resorts &amp;Spa")
                     .replace("{{mobile}}", "+9971499494   ")
                     .replace("{{email}}", "Digitalintellij@gmail.com");
 

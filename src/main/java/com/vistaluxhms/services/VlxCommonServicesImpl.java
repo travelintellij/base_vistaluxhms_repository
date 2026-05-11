@@ -148,7 +148,8 @@ public class VlxCommonServicesImpl {
 	public byte[] generatePdfFromHtml(String htmlContent) throws  IOException, com.lowagie.text.DocumentException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ITextRenderer renderer = new ITextRenderer();
-		renderer.setDocumentFromString(htmlContent);
+		String safeHtmlContent = htmlContent.replaceAll("&(?![a-zA-Z0-9]+;|#[0-9]+;|#x[0-9a-fA-F]+;)", "&amp;");
+		renderer.setDocumentFromString(safeHtmlContent);
 		renderer.layout();
 		renderer.createPDF(outputStream);
 		renderer.finishPDF();
