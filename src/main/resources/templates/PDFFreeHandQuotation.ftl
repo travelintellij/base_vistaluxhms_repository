@@ -123,10 +123,11 @@
     </style>
 </head>
 <body>
+<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 <div class="container">
     <div class="header">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka Tiger Trail Resort Logo" style="width: 200px; height: 200px;" />-->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
+        <img src="${centralConfig.logoPath}" alt="Logo" style="display: block; margin: 0 auto; max-height: 90px; width: auto;"/>
     </div>
     <div class="content">
         <h2 style="text-align: center;">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>

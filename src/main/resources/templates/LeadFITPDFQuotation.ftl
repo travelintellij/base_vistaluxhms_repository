@@ -5,19 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quotation -Winsome Resorts & Spa</title>
     <style>
+        @page {
+            size: A4;
+            margin-top: 32mm;
+            margin-bottom: 50mm;
+            margin-left: 20mm;
+            margin-right: 20mm;
+        }
+
+        .pdf-bg-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 210mm;
+            height: 297mm;
+            z-index: -1;
+        }
         body {
-            font-family: Arial, sans-serif;
-            font-size: 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 15.5px;
+            line-height: 1.6;
+            font-weight: bold;
+            letter-spacing: 0.2px;
             margin: 0;
-            padding: 15px;
-            background-color: #f8f8f8;
-            color: #333;
+            padding: 0;
+            background-color: transparent;
+            color: #111111;
         }
         .container {
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+            padding: 0;
+            box-sizing: border-box;
+            width: 100%;
         }
         .header {
             text-align: center;
@@ -125,12 +144,13 @@
     </style>
 </head>
 <body>
+<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 <div class="container">
     <div class="header">
         <!--
         <img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Ashoka Tiger Trail Resort Logo" style="width: 200px; height: 200px;" />
         -->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/>
+        <img src="${centralConfig.logoPath}" alt="Logo" style="display: block; margin: 0 auto; max-height: 90px; width: auto;"/>
     </div>
     <div class="content">
         <h2 class="quotation-header">Exclusive Stay Quotation – ${centralConfig.hotelName}</h2>

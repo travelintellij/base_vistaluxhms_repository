@@ -39,6 +39,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -639,6 +642,23 @@ public class QuotationController {
         model.put("remarks", quotationEntityDTO.getRemarks());
 
         model.put("centralConfig", centralConfigEntity);
+
+        String bgImageBase64 = "";
+        try (InputStream in = QuotationController.class.getResourceAsStream("/templates/bg_trees.png");
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+            if (in != null) {
+                byte[] data = new byte[1024];
+                int nRead;
+                while ((nRead = in.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(buffer.toByteArray());
+            }
+        } catch (Exception e) {
+            logger.error("Exception caught", e);
+        }
+        model.put("bgImageBase64", bgImageBase64);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");

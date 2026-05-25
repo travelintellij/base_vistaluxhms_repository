@@ -6,20 +6,39 @@
     <title>Quotation - Winsome Resorts & Spa</title>
 
     <style>
+        @page {
+            size: A4;
+            margin-top: 32mm;
+            margin-bottom: 50mm;
+            margin-left: 20mm;
+            margin-right: 20mm;
+        }
+
+        .pdf-bg-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 210mm;
+            height: 297mm;
+            z-index: -1;
+        }
         body {
-            font-family: Arial, sans-serif;
-            font-size: 15px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 15.5px;
+            line-height: 1.6;
+            font-weight: bold;
+            letter-spacing: 0.2px;
             margin: 0;
-            padding: 15px;
-            background-color: #f8f8f8;
-            color: #333;
+            padding: 0;
+            background-color: transparent;
+            color: #111111;
         }
 
         .container {
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+            padding: 0;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .header {
@@ -114,11 +133,12 @@
 </head>
 
 <body>
+<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 <div class="container">
 
     <div class="header">
         <img src="${centralConfig.logoPath}" alt="Logo"
-             style="display:block;margin:0 auto;width:200px;height:200px;" />
+             style="display: block; margin: 0 auto; max-height: 90px; width: auto;" />
     </div>
 
     <div class="content">

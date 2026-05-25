@@ -135,25 +135,29 @@ strong,
 }
 
 .logo {
-    text-align: left;
-    margin-bottom: 6px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .logo img {
-    height: 90px;
+    display: block;
+    margin: 0 auto;
+    max-height: 90px;
+    width: auto;
 }
 
 .address {
-    text-align: left;
+    text-align: center;
     font-size: 14px;
     font-weight: 700;
     color: #1f4d2b;
     line-height: 1.4;
+    margin: 0 auto;
 }
 
 
 .header {
-    padding: 90px 0 30px;
+    padding: 20px 0 20px;
     text-align: center;
     background: transparent;
 }
@@ -717,9 +721,8 @@ body:has(.menu-page) .pdf-bg-img {
 /* Align logo + address side by side */
 
 .top-bar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    display: block;
+    text-align: center;
 }
 
 .logo {
@@ -756,10 +759,9 @@ body:has(.menu-page) .pdf-bg-img {
 
 /* Improve spacing with logo */
 .top-bar {
-    display: flex !important;
-    align-items: center !important;
-    gap: 20px !important;
-    padding: 18px 20px !important;
+    display: block !important;
+    text-align: center !important;
+    padding: 10px 20px !important;
 }
 
 /* ===== FIX LETTERHEAD SIZE + COLOR ===== */
@@ -825,7 +827,7 @@ body:has(.menu-page) .pdf-bg-img {
 /* Fix header spacing */
 .top-bar {
     padding: 10px 18px !important;
-    align-items: center !important;
+    text-align: center !important;
 }
 
 /* ===== FIX EXTRA GAP BETWEEN ADDRESS LINES ===== */
@@ -866,7 +868,7 @@ body:has(.menu-page) .pdf-bg-img {
 <div class="top-bar">
     <div class="logo">
         <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
+        <img src="${centralConfig.logoPath}" alt="Logo" style="display: block; margin: 0 auto; max-height: 90px; width: auto;" />
     </div>
    <div class="address">
        <p>
@@ -1107,6 +1109,11 @@ body:has(.menu-page) .pdf-bg-img {
 </div>
 </#if>
 
+            </td>
+            <td style="border: none;"></td>
+        </tr>
+    </tbody>
+</table>
 </div> <!-- END page-content -->
 
 

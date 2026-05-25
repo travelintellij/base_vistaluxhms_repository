@@ -773,22 +773,18 @@ public class EventController {
 		UserDetailsObj userObj = getLoggedInUser();
 		model.put("guestName", eventPackageEntityDTO.getGuestName());
 		formatRoomDates(eventPackageEntityDTO);
-		String dropboxUrl = "https://www.dropbox.com/scl/fi/rl9nkavai2h9jcylews6s/marriage_floralbg.png?rlkey=kkg09gb3nr0td6oqryhsnkdjj&st=6v6pbxtq&raw=1";
 		String bgImageBase64 = "";
-
-		try (InputStream in = new URL(dropboxUrl).openStream();
+		try (InputStream in = EventController.class.getResourceAsStream("/templates/bg_trees.png");
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-
-			byte[] data = new byte[1024];
-			int nRead;
-			while ((nRead = in.read(data, 0, data.length)) != -1) {
-				buffer.write(data, 0, nRead);
+			if (in != null) {
+				byte[] data = new byte[1024];
+				int nRead;
+				while ((nRead = in.read(data, 0, data.length)) != -1) {
+					buffer.write(data, 0, nRead);
+				}
+				buffer.flush();
+				bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(buffer.toByteArray());
 			}
-
-			buffer.flush();
-			byte[] bytes = buffer.toByteArray();
-			bgImageBase64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
-
 		} catch (Exception e) {
 			logger.error("Exception caught", e);
 		}
