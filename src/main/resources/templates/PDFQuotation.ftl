@@ -347,9 +347,9 @@
                      <#assign cleanLine = line?trim>
                      <#if cleanLine?length > 0>
                          <#if cleanLine?starts_with("- ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
+                         <#elseif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
+                         <#elseif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
+                         <#elseif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
                          </#if>
                          <li>${cleanLine?html}</li>
                      </#if>
@@ -366,9 +366,9 @@
                      <#assign cleanLine = line?trim>
                      <#if cleanLine?length > 0>
                          <#if cleanLine?starts_with("- ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
-                         <#elif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
+                         <#elseif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
+                         <#elseif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
+                         <#elseif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
                          </#if>
                          <li>${cleanLine?html}</li>
                      </#if>
@@ -385,9 +385,9 @@
                     <#assign cleanLine = line?trim>
                     <#if cleanLine?length > 0>
                         <#if cleanLine?starts_with("- ")><#assign cleanLine = cleanLine?substring(2)>
-                        <#elif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
-                        <#elif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
-                        <#elif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
+                        <#elseif cleanLine?starts_with("* ")><#assign cleanLine = cleanLine?substring(2)>
+                        <#elseif cleanLine?starts_with("• ")><#assign cleanLine = cleanLine?substring(2)>
+                        <#elseif cleanLine?starts_with("•")><#assign cleanLine = cleanLine?substring(1)>
                         </#if>
                         <li>${cleanLine?html}</li>
                     </#if>

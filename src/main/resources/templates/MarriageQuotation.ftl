@@ -877,7 +877,7 @@ body:has(.menu-page) .pdf-bg-img {
            ${centralConfig.centralNumber} ${centralConfig.centralizedEmail}
        </p>
    </div>
-
+   </div>
 <div class="header">
     <h1>Wedding Quotation</h1>
 </div>
@@ -932,7 +932,7 @@ body:has(.menu-page) .pdf-bg-img {
         </div>
     </#if>
 </#if>
-</div>
+
 
 <#if eventConfig.resortInfo?has_content || eventConfig.testimonial?has_content>
 <div class="section welcome-section">
@@ -1109,11 +1109,7 @@ body:has(.menu-page) .pdf-bg-img {
 </div>
 </#if>
 
-            </td>
-            <td style="border: none;"></td>
-        </tr>
-    </tbody>
-</table>
+
 </div> <!-- END page-content -->
 
 
