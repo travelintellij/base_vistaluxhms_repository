@@ -399,32 +399,26 @@
         </div>
     </#if>
 
-    <div class="social-links">
-            <#if centralConfig.facebookLink?has_content>
-                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
-            </#if>
-
-            <#if centralConfig.instagramLink?has_content>
-                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
-            </#if>
-
-            <#if centralConfig.linkedinLink?has_content>
-                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
-            </#if>
-
-            <#if centralConfig.xLink?has_content>
-                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
-            </#if>
-
-
-            <#if centralConfig.centralizedEmail?has_content>
-                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
-            </#if>
-
-            <#if centralConfig.website?has_content>
-                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
-            </#if>
-        </div>
+      <div class="social-links">
+          <#if centralConfig.facebookLink?has_content>
+              <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+          </#if>
+          <#if centralConfig.instagramLink?has_content>
+              <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+          </#if>
+          <#if centralConfig.linkedinLink?has_content>
+              <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+          </#if>
+          <#if centralConfig.xLink?has_content>
+              <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
+          </#if>
+          <#if centralConfig.centralizedEmail?has_content>
+              <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+          </#if>
+          <#if centralConfig.website?has_content>
+              <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+          </#if>
+      </div>
 
 
 

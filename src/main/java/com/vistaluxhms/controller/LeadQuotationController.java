@@ -1,5 +1,13 @@
 package com.vistaluxhms.controller;
+import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import com.lowagie.text.DocumentException;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
@@ -87,7 +95,7 @@ public class LeadQuotationController {
     private String emailNotifyBcc;
 
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
-
+    private static final Logger logger = LoggerFactory.getLogger(LeadQuotationController.class);
     @Autowired
     LeadSystemQuotationValidator quotationValidator;
 
@@ -403,6 +411,23 @@ public class LeadQuotationController {
 
         model.put("centralConfig", centralConfigEntity);
 
+        String bgImageBase64 = "";
+        try (InputStream bgIn = getClass().getResourceAsStream("/images/quotation_bg.png");
+             java.io.ByteArrayOutputStream bgBuffer = new java.io.ByteArrayOutputStream()) {
+            if (bgIn != null) {
+                byte[] data = new byte[1024];
+                int nRead;
+                while ((nRead = bgIn.read(data, 0, data.length)) != -1) {
+                    bgBuffer.write(data, 0, nRead);
+                }
+                bgBuffer.flush();
+                bgImageBase64 = "data:image/png;base64," + java.util.Base64.getEncoder().encodeToString(bgBuffer.toByteArray());
+            }
+        } catch (Exception e) {
+            logger.error("Failed to load background image", e);
+        }
+        model.put("bgImageBase64", bgImageBase64);
+
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
         //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
@@ -514,7 +539,7 @@ public class LeadQuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
+            String emailSubject = "Quotation: Winsome Resort & Spa | " + quotationEntityDTO.getGuestName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());
@@ -1209,6 +1234,23 @@ public class LeadQuotationController {
 
         model.put("centralConfig", centralConfigEntity);
 
+        String bgImageBase64 = "";
+        try (InputStream bgIn = getClass().getResourceAsStream("/images/quotation_bg.png");
+             java.io.ByteArrayOutputStream bgBuffer = new java.io.ByteArrayOutputStream()) {
+            if (bgIn != null) {
+                byte[] data = new byte[1024];
+                int nRead;
+                while ((nRead = bgIn.read(data, 0, data.length)) != -1) {
+                    bgBuffer.write(data, 0, nRead);
+                }
+                bgBuffer.flush();
+                bgImageBase64 = "data:image/png;base64," + java.util.Base64.getEncoder().encodeToString(bgBuffer.toByteArray());
+            }
+        } catch (Exception e) {
+            logger.error("Failed to load background image", e);
+        }
+        model.put("bgImageBase64", bgImageBase64);
+
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
         //freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
@@ -1292,7 +1334,7 @@ public class LeadQuotationController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Ashoka Tiger Trail | " + quotationEntityDTO.getClientEntity().getClientName() + " | Jim Corbett ";
+            String emailSubject = "Quotation: Winsome Resort & Spa | " + quotationEntityDTO.getClientEntity().getClientName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());

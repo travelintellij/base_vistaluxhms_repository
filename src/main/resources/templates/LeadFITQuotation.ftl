@@ -91,6 +91,7 @@
     </style>
 </head>
 <body>
+<img src="${bgImageBase64}" class="pdf-bg-img" alt="background"/>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
         <img src="${logoUrl}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />

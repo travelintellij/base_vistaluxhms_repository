@@ -147,12 +147,17 @@
                         }
                         .facebook { background-color: #3b5998; }
                         .instagram { background-color: #e4405f; }
-                        .linkedin { background-color: #0077b5; }
+                        .linkedin { background-color: #0A66C2; color: #ffffff; font-weight: bold; padding: 10px 15px; border-radius: 5px; }
                         .email { background-color: #ff6600; }
                         .website { background-color: #000; }
                         .twitter {
-                            background-color: #1DA1F2;
-                        }
+    background-color: #1DA1F2;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block;
+}
                         .whatsapp-button {
                             text-align: center;
                             margin-top: 20px;

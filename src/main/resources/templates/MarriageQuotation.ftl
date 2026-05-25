@@ -1123,53 +1123,25 @@ body:has(.menu-page) .pdf-bg-img {
             <img src="${img}" alt="Menu Page"/>
 
 <#if img_index == (menuImages?size - 1)>
-
-<!--
-<div class="social-media" style="text-align: center; margin-top: 20px;">
-    <h3>Connect With Us</h3>
-    <p>
-        <a href="https://www.facebook.com/ashokatigertrail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" width="24" height="24" />
-        </a>
-        <a href="https://www.instagram.com/ashoka_tiger_trail" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram" width="24" height="24" />
-        </a>
-        <a href="https://www.linkedin.com/company/ashokastigertrailresort/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" width="24" height="24" />
-        </a>
-        <a href="https://ashokastigertrail.com/" target="_blank" style="margin: 0 10px;">
-            <img src="https://img.icons8.com/fluency/48/domain.png" alt="Website" width="24" height="24" />
-        </a>
-    </p>
+<div class="social-links">
+    <#if centralConfig.facebookLink?has_content>
+        <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
+    </#if>
+    <#if centralConfig.instagramLink?has_content>
+        <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
+    </#if>
+    <#if centralConfig.linkedinLink?has_content>
+        <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
+    </#if>
+    <a href="${centralConfig.xLink!''}" class="twitter" target="_blank">Twitter</a>
+    <#if centralConfig.centralizedEmail?has_content>
+        <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
+    </#if>
+    <#if centralConfig.website?has_content>
+        <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
+    </#if>
 </div>
-
--->
-  <div class="social-links">
-            <#if centralConfig.facebookLink?has_content>
-                <a href="${centralConfig.facebookLink}" class="facebook" target="_blank">Facebook</a>
-            </#if>
-
-            <#if centralConfig.instagramLink?has_content>
-                <a href="${centralConfig.instagramLink}" class="instagram" target="_blank">Instagram</a>
-            </#if>
-
-            <#if centralConfig.linkedinLink?has_content>
-                <a href="${centralConfig.linkedinLink}" class="linkedin" target="_blank">LinkedIn</a>
-            </#if>
-
-            <#if centralConfig.xLink?has_content>
-                <a href="${centralConfig.xLink}" class="twitter" target="_blank">Twitter</a>
-            </#if>
-
-             <#if centralConfig.centralizedEmail?has_content>
-                <a href="mailto:${centralConfig.centralizedEmail}" class="email">Email</a>
-            </#if>
-
-            <#if centralConfig.website?has_content>
-                <a href="${centralConfig.website}" class="website" target="_blank">Website</a>
-            </#if>
-     </div>
-  </#if>
+</#if>
  </div>
 </#list>
 </div>

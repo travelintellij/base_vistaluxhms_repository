@@ -644,7 +644,7 @@ public class QuotationController {
         model.put("centralConfig", centralConfigEntity);
 
         String bgImageBase64 = "";
-        try (InputStream in = QuotationController.class.getResourceAsStream("/templates/bg_trees.png");
+        try (InputStream in = QuotationController.class.getResourceAsStream("/images/quotation_bg.png");
              ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
             if (in != null) {
                 byte[] data = new byte[1024];

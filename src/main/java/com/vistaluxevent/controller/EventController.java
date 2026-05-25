@@ -908,7 +908,7 @@ public class EventController {
         if (emailNotifyActive) {
             Mail mail = new Mail();
             //String leadReferenceNumber = "ATT-" + leadRecorderObj.getLeadId();
-            String emailSubject = "Quotation: Ashoka Tiger Trail | " + eventPackageEntityDTO.getGuestName() + " | Jim Corbett ";
+            String emailSubject = "Quotation: Winsome Resort & Spa | " + eventPackageEntityDTO.getGuestName() + " | Jim Corbett ";
             mail.setSubject(emailSubject);
             AshokaTeam userObj = userDetailsService.findUserByID(getLoggedInUser().getUserId());
             //mail.setTo(quotationEntityDTO.getEmail());
