@@ -877,7 +877,6 @@ body:has(.menu-page) .pdf-bg-img {
            ${centralConfig.centralNumber} ${centralConfig.centralizedEmail}
        </p>
    </div>
-</div>
 
 <div class="header">
     <h1>Wedding Quotation</h1>
