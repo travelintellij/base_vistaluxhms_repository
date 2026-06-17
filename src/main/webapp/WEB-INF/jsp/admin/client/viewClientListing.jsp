@@ -31,15 +31,24 @@
         z-index: -1; /* Place the overlay behind the content */
     }
 
-    /* Optional: If you want to adjust the opacity of the image to make it more subtle */
-    body {
-        opacity: .98; /* Adjust the opacity for the background image */
+
+    .form-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        align-items: center !important;
     }
+
+    .form-group {
+        flex: 1 1 200px !important;
+        min-width: 200px !important;
+    }
+
 
 </style>
 
 <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
-<div class="form-container filter-container" style="width: 85%; min-width: 85%; max-width: 90%;">
+<div class="form-container filter-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <h2>View Clients </h2>
     <form:form modelAttribute="CLIENT_OBJ" action="view_clients_list">
         <div class="form-row" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
@@ -94,13 +103,26 @@
                       <option value="false" ${CLIENT_OBJ.active == 'false' ? 'selected' : ''}>Inactive</option>
                   </form:select>
             </div>
+        </div>
 
+        <div class="form-actions">
 
-        <div class="form-actions" style="flex: 1; min-width: 200px;">
             <button type="submit" class="apply-filter-btn">Apply Filter</button>
-            <a href="view_clients_list"><input type="button" class="clear-filter-btn" value="Clear Filter"></input></a>
-        </div>
-        </div>
+
+            <a href="view_clients_list">
+                <input type="button" class="clear-filter-btn" value="Clear Filter">
+            </a>
+
+<a class="export-btn"
+   href="${pageContext.request.contextPath}/exportClientsExcel?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityId=${CLIENT_OBJ.city.destinationId}&salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">
+   Export Excel
+</a>
+
+<a class="export-btn pdf"
+   href="${pageContext.request.contextPath}/exportClientsPdf?clientId=${CLIENT_OBJ.clientId}&clientName=${CLIENT_OBJ.clientName}&cityId=${CLIENT_OBJ.city.destinationId}&salesPartnerId=${CLIENT_OBJ.salesPartner.salesPartnerId}&b2b=${CLIENT_OBJ.b2b}&active=${CLIENT_OBJ.active}">
+   Export PDF
+</a>
+ </div>
     </form:form>
 </div>
 </sec:authorize>
@@ -116,7 +138,7 @@
 
 <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
 <!-- Client List Table Section -->
-<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+<div class="form-container client-list-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <c:set value="${CLIENT_FILTERED_LIST}" var="clientList" />
     <table>
         <thead>
@@ -143,20 +165,20 @@
 
                     <td>
                         <c:if test="${clientRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
+                            <input type="button" class="status-badge-active" value="Active" />
                         </c:if>
                         <c:if test="${clientRec.active eq false}">
-                            <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
+                            <input type="button" class="status-badge-inactive" value="Inactive" />
                         </c:if>
                     </td>
                     <td>
                         <form action="view_client_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                <button type="submit" class="view-btn">View</button>
                         </form>
                         <form action="view_edit_client_form" method="POST" style="display:inline;">
                             <input type="hidden" name="clientId" value="${clientRec.clientId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                            <button type="submit" class="edit-btn">Edit</button>
                         </form>
 
                     </td>

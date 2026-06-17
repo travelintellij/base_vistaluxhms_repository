@@ -94,28 +94,28 @@
                     <td style="width: 30%; border: 1px solid #ddd;text-align:center;">${sessionRec.sessionName}</td>
                     <td style="width: 10%; border: 1px solid #ddd;text-align:center;">
                         <c:if test="${sessionRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
+                            <input type="button" class="status-badge-active" value="Active" />
                         </c:if>
                         <c:if test="${sessionRec.active eq false}">
-                            <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
+                            <input type="button" class="status-badge-inactive" value="Inactive" />
                         </c:if>
                     </td>
                     <td style="width: 50%; border: 1px solid #ddd;text-align:center;">
                         <form action="view_session_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
-                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                <button type="submit" class="view-btn">View</button>
                         </form>
                         <form action="view_edit_session_form" method="POST" style="display:inline;">
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">Edit</button>
+                            <button type="submit" class="edit-btn">Edit</button>
                         </form>
                         <form action="view_edit_session_detail_form" method="POST" style="display:inline;">
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit Session Details</button>
+                            <button type="submit" class="edit-btn">Edit Session Details</button>
                         </form>
                         <form action="view_session_rate_mapping_form" method="POST" style="display:inline;">
                             <input type="hidden" name="sessionId" value="${sessionRec.sessionId}" />
-                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Map Rates</button>
+                            <button type="submit" class="edit-btn">Map Rates</button>
                         </form>
 
                     </td>

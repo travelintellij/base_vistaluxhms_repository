@@ -1,4 +1,8 @@
 package com.vistaluxhms.services;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.City_Obj;
 import com.vistaluxhms.model.RateType_Obj;
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class SalesRelatesServicesImpl {
+
+    private static final Logger logger = LoggerFactory.getLogger(SalesRelatesServicesImpl.class);
 	@Autowired
 	Vlx_City_Master_Repository cityRepository;
 
@@ -49,100 +55,144 @@ public class SalesRelatesServicesImpl {
 		return rateTypeRepository.findAll();
 	}
 
-	public RateTypeEntity findById(Integer rateTypeId){
+	public RateTypeEntity findById(Integer rateTypeId) {
 		return rateTypeRepository.findById(rateTypeId).get();
 	}
 
-    public void saveSalesPartner(SalesPartnerEntity salesPartnerEntity) {
+	public void saveSalesPartner(SalesPartnerEntity salesPartnerEntity) {
 		salesPartnerRepository.save(salesPartnerEntity);
 	}
 
 	public void saveRoomDetails(MasterRoomDetailsEntity roomDetailsEntity) {
 		masterRoomDetailsEntityRepository.save(roomDetailsEntity);
 	}
+
 	public List<SalesPartnerEntity> filterSalesPartners(SalesPartnerEntityDto searchSalesPartnerObj) {
 		// Fetch all filtered results without pagination
-		List<SalesPartnerEntity> filteredSalesPartnerList = salesPartnerRepository.findAll(new Specification<SalesPartnerEntity>() {
-			private static final long serialVersionUID = 1L;
+		List<SalesPartnerEntity> filteredSalesPartnerList = salesPartnerRepository
+				.findAll(new Specification<SalesPartnerEntity>() {
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public Predicate toPredicate(Root<SalesPartnerEntity> salesPartnerRootEntity, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				List<Predicate> predicates = new ArrayList<>();
+					@Override
+					public Predicate toPredicate(Root<SalesPartnerEntity> salesPartnerRootEntity,
+							CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+						List<Predicate> predicates = new ArrayList<>();
 
-				// Filter by Sales Partner ID
-				if (searchSalesPartnerObj.getSalesPartnerId() != null && searchSalesPartnerObj.getSalesPartnerId() != 0) {
-					predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("salesPartnerId"), searchSalesPartnerObj.getSalesPartnerId()));
-				}
+						// Filter by Sales Partner ID
+						if (searchSalesPartnerObj.getSalesPartnerId() != null
+								&& searchSalesPartnerObj.getSalesPartnerId() != 0) {
+							predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("salesPartnerId"),
+									searchSalesPartnerObj.getSalesPartnerId()));
+						}
 
-				// Filter by Sales Partner Short Name
-				if (searchSalesPartnerObj.getSalesPartnerShortName() != null && !searchSalesPartnerObj.getSalesPartnerShortName().trim().isEmpty()) {
-					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(salesPartnerRootEntity.get("salesPartnerShortName")),
-							"%" + searchSalesPartnerObj.getSalesPartnerShortName().toLowerCase() + "%"));
-				}
+						// Filter by Sales Partner Short Name
+						if (searchSalesPartnerObj.getSalesPartnerShortName() != null
+								&& !searchSalesPartnerObj.getSalesPartnerShortName().trim().isEmpty()) {
+							predicates.add(criteriaBuilder.like(
+									criteriaBuilder.lower(salesPartnerRootEntity.get("salesPartnerShortName")),
+									"%" + searchSalesPartnerObj.getSalesPartnerShortName().toLowerCase() + "%"));
+						}
 
-				// Filter by Sales Partner Name
-				if (searchSalesPartnerObj.getSalesPartnerName() != null && !searchSalesPartnerObj.getSalesPartnerName().trim().isEmpty()) {
-					predicates.add(criteriaBuilder.like(criteriaBuilder.lower(salesPartnerRootEntity.get("salesPartnerName")),
-							"%" + searchSalesPartnerObj.getSalesPartnerName().toLowerCase() + "%"));
-				}
+						// Filter by Sales Partner Name
+						if (searchSalesPartnerObj.getSalesPartnerName() != null
+								&& !searchSalesPartnerObj.getSalesPartnerName().trim().isEmpty()) {
+							predicates.add(criteriaBuilder.like(
+									criteriaBuilder.lower(salesPartnerRootEntity.get("salesPartnerName")),
+									"%" + searchSalesPartnerObj.getSalesPartnerName().toLowerCase() + "%"));
+						}
 
-				// Filter by City
-				if (searchSalesPartnerObj.getCityId() != 0) {
-					predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("cityId"), searchSalesPartnerObj.getCityId()));
-				}
+						// Filter by City
+						if (searchSalesPartnerObj.getCityId() != 0) {
+							predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("cityId"),
+									searchSalesPartnerObj.getCityId()));
+						}
 
+						// Filter by Active Status
+						if (searchSalesPartnerObj.getActive() != null) {
+							predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("active"),
+									searchSalesPartnerObj.getActive()));
+						}
 
-				// Filter by Active Status
-				if (searchSalesPartnerObj.getActive() != null) {
-					predicates.add(criteriaBuilder.equal(salesPartnerRootEntity.get("active"), searchSalesPartnerObj.getActive()));
-				}
-
-				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-			}
-		});
+						return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+					}
+				});
 
 		return filteredSalesPartnerList;
 	}
-	public SalesPartnerEntity findSalesPartnerById(Long salesPartnerId){
+
+	public SalesPartnerEntity findSalesPartnerById(Long salesPartnerId) {
 		return salesPartnerRepository.findById(salesPartnerId).get();
 	}
 
-	public List<SalesPartnerEntity> findSalesPartnerByActive(boolean activeFlag){
+	public List<SalesPartnerEntity> findSalesPartnerByActive(boolean activeFlag) {
 		return salesPartnerRepository.findByActive(activeFlag);
 	}
 
+	/**
+	 * Retrieves all active sales partners.
+	 * 
+	 * Modification:
+	 * Added self-healing logic for the "Digital Marketing" default partner.
+	 * If it doesn't exist, it's created automatically to support both
+	 * manual and automated lead creation workflows.
+	 */
 	public Map<Long, String> getActiveSalesPartnerMap(boolean activeFlag) {
+		// Ensure Default Sales Partner "Digital Marketing" exists
+		salesPartnerRepository.findBySalesPartnerName("Digital Marketing")
+				.orElseGet(() -> {
+					SalesPartnerEntity sp = new SalesPartnerEntity();
+					sp.setSalesPartnerName("Digital Marketing");
+					sp.setSalesPartnerShortName("DIGITAL MARKETING");
+					sp.setActive(true);
+					sp.setCityId(VistaluxConstants.DEFAULT_CITY_ID);
+					sp.setDescription("Default partner for Social Media Leads");
+					sp.setReference("System Generated");
+                    RateTypeEntity defaultRateType = rateTypeRepository.findByRateTypeName("B2C_Rate_Type")
+                            .orElseGet(() -> {
+                                RateTypeEntity rt = new RateTypeEntity();
+                                rt.setRateTypeName("B2C_Rate_Type");
+                                rt.setActive(true);
+                                return rateTypeRepository.save(rt);
+                            });
+
+                    sp.setRateTypeEntity(defaultRateType);
+					return salesPartnerRepository.save(sp);
+				});
+
 		return salesPartnerRepository.findByActiveOrderBySalesPartnerShortNameAsc(activeFlag)
 				.stream()
 				.collect(Collectors.toMap(
 						SalesPartnerEntity::getSalesPartnerId,
 						SalesPartnerEntity::getSalesPartnerShortName,
 						(e1, e2) -> e1, // in case of duplicate keys
-						LinkedHashMap::new
-				));
+						LinkedHashMap::new));
 	}
 
-	public List<MasterRoomDetailsEntity> findRoomsList(){
+	public List<MasterRoomDetailsEntity> findRoomsList() {
 		Sort sort = Sort.by(Sort.Order.desc("active"));
 		List<MasterRoomDetailsEntity> roomList = masterRoomDetailsEntityRepository.findAll(sort);
 		return roomList;
 	}
 
-	public MasterRoomDetailsEntity findRoomCategoryById(int roomCategoryId){
+	public MasterRoomDetailsEntity findRoomCategoryById(int roomCategoryId) {
 		return masterRoomDetailsEntityRepository.findById(roomCategoryId).get();
 	}
 
-	public List<MasterRoomDetailsEntity> findActiveRoomsList(){
+	public List<MasterRoomDetailsEntity> findActiveRoomsList() {
 		Sort sort = Sort.by(Sort.Order.desc("active"));
 		List<MasterRoomDetailsEntity> roomList = masterRoomDetailsEntityRepository.findByActiveTrue();
 		return roomList;
 	}
 
-	public List<RateTypeEntity> findAllActiveRateTypes(boolean activeFlag){
+	public List<RateTypeEntity> findAllActiveRateTypes(boolean activeFlag) {
 		return rateTypeRepository.findByActive(activeFlag);
 	}
 
-	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId){
+	public List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId) {
 		return sessionRateMappingEntityRepository.findByRateTypeEntityRateTypeIdOrderByStartDateDesc(rateTypeId);
+	}
+
+	public boolean isSalesPartnerMobileExists(Long mobile) {
+		return salesPartnerRepository.existsByMobile(mobile);
 	}
 }

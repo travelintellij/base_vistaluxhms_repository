@@ -102,6 +102,7 @@ th:not(:first-child), td:not(:first-child) {
 <div class="container">
     <h2 class="text-center mb-4">Session Master</h2>
 
+
     <!-- Form to Submit Rates -->
 
 
@@ -157,5 +158,34 @@ th:not(:first-child), td:not(:first-child) {
 
 <!-- Bootstrap JS for responsiveness -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<c:if test="${not empty Error}">
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Validation Error</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ${Error}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        });
+    </script>
+</c:if>
+
+<jsp:include page="../footer.jsp" />
 
 <jsp:include page="../footer.jsp" />

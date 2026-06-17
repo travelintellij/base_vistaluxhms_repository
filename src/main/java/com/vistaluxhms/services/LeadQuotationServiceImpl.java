@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxevent.entity.EventMasterServiceEntity;
 import com.vistaluxhms.entity.LeadFreeHandQuotationEntity;
 import com.vistaluxhms.entity.LeadFreeHandQuotationRoomDetailsEntity;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class LeadQuotationServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(LeadQuotationServiceImpl.class);
     @Autowired
     LeadSystemQuotationRepository leadSystemQuotationRepository;
 

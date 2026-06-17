@@ -1,18 +1,16 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.exception.RecordNotFoundException;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.CentralConfigEntityRepository;
-import com.vistaluxhms.repository.Vlx_City_Master_Repository;
 import com.vistaluxhms.services.*;
 import com.vistaluxhms.util.VistaluxConstants;
-import com.vistaluxhms.validator.LeadValidator;
 import com.vistaluxhms.validator.PasswordValidator;
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,23 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class SettingsController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -54,12 +46,11 @@ public class SettingsController {
     @Autowired
     SettingsAndOtherServicesImpl configService;
 
-
     private UserDetailsObj getLoggedInUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
@@ -72,13 +63,13 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/view_myprofile");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView;
     }
 
@@ -87,13 +78,13 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/my_profile");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView; // resolves to /WEB-INF/views/my_profile.jsp
     }
 
@@ -102,77 +93,77 @@ public class SettingsController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
         UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
         ModelAndView modelView = new ModelAndView("admin/settings/view_changepassword");
-        modelView.addObject("USER_OBJ",userObj);
+        modelView.addObject("USER_OBJ", userObj);
         return modelView;
     }
 
     @RequestMapping("update_update_password")
-    public ModelAndView update_update_password(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result, ModelMap model) {
+    public ModelAndView update_update_password(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result, ModelMap model) {
         ModelAndView modelView = new ModelAndView("admin/settings/view_changepassword");
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
         validator.validate(userDetailsObj, result);
         try {
-            if(result.hasErrors()) {
-                modelView.addObject("Error","Error: While updating password. ");
-            }else {
+            if (result.hasErrors()) {
+                // ===== AI MODIFICATION START =====
+                // Change: Show specific validation error messages instead of a generic error
+                // Reason: Users need to know exactly which field failed validation (e.g., wrong current password, mismatch)
+                // Scope: SettingsController — update_update_password() method
+                // modelView.addObject("Error", "Error: While updating password. ");
+                StringBuilder errorMessages = new StringBuilder();
+                result.getAllErrors().forEach(error -> {
+                    if (errorMessages.length() > 0) {
+                        errorMessages.append("<br>");
+                    }
+                    errorMessages.append(error.getDefaultMessage());
+                });
+                modelView.addObject("Error", errorMessages.toString());
+                // ===== AI MODIFICATION END =====
+            } else {
                 AshokaTeam userEntity = userDetailsService.findUserByID(getLoggedInUser().getUserId());
-                //userEntity.setPassword(userDetailsObj.getPasswordConfirm());
+                // userEntity.setPassword(userDetailsObj.getPasswordConfirm());
                 userEntity.setPassword(passwordEncoder.encode(userDetailsObj.getChangedPassword().trim()));
                 userDetailsService.createOrUpdateUser(userEntity);
-                modelView.addObject("Success","Your password is updated Successfully!!");
+                modelView.addObject("Success", "Your password is updated Successfully!!");
             }
+        } catch (RecordNotFoundException rnfe) {
+            logger.error("Exception caught", rnfe);
         }
-        catch(RecordNotFoundException rnfe) {
-            rnfe.printStackTrace();
-        }
-        //UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
+        // UserDetailsObj userObj = (UserDetailsObj)
+        // userDetailsService.loadUserByUsername(username);
         return modelView;
     }
 
     @RequestMapping("view_form_manage_permissions")
-    public ModelAndView view_form_manage_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        UserDetailsObj userObj = (UserDetailsObj) userDetailsService.loadUserByUsername(username);
+    public ModelAndView view_form_manage_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result) {
         ModelAndView modelView = new ModelAndView("admin/settings/view_user_permissions");
 
-        Map<String, List<RoleEntity>> roleEntityMap= userDetailsService.find_All_Roles();
+        Map<String, List<RoleEntity>> roleEntityMap = userDetailsService.find_All_Roles();
         List<UserDetailsObj> userList = userDetailsService.findAllActiveUsers();
 
-        modelView.addObject("ROLE_OBJ",roleEntityMap);
-        System.out.println("Active Users List is " + userList);
-        modelView.addObject("ACTIVE_USERS_LIST",userList);
+        modelView.addObject("ROLE_OBJ", roleEntityMap);
+        logger.debug("Active Users List is " + userList);
+        modelView.addObject("ACTIVE_USERS_LIST", userList);
 
         return modelView;
     }
 
-
     @RequestMapping("update_update_user_permissions")
-    public ModelAndView update_update_user_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj, BindingResult result) {
-        ModelAndView modelView = view_form_manage_permissions(userDetailsObj,result);
+    public ModelAndView update_update_user_permissions(@ModelAttribute("USER_OBJ") UserDetailsObj userDetailsObj,
+            BindingResult result) {
+        ModelAndView modelView = view_form_manage_permissions(userDetailsObj, result);
         try {
             userDetailsService.updateUserPermissions(userDetailsObj);
             modelView.addObject("Success", "Permission Records are updated successfully.");
         } catch (RecordNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             modelView.addObject("Error", "Error: while updating permissions. Please contact support.");
         }
         return modelView;
@@ -186,7 +177,8 @@ public class SettingsController {
     }
 
     @RequestMapping("view_form_manage_central_config")
-    public ModelAndView view_form_manage_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
+    public ModelAndView view_form_manage_central_config(
+            @ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO, BindingResult result) {
         ModelAndView modelAndView = new ModelAndView("admin/settings/view_centralConfig");
 
         centralConfigDTO = configService.getCentralConfig();
@@ -194,38 +186,162 @@ public class SettingsController {
             centralConfigDTO = new CentralConfigEntityDTO(); // Empty DTO for first time
         }
         modelAndView.addObject("CENTRAL_CONFIG_OBJ", centralConfigDTO);
+
         return modelAndView;
 
     }
 
-
-
-
-
     @PostMapping("create_edit_central_config")
-    public String create_edit_central_config(@ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
-                             @RequestParam("logoFile") MultipartFile logoFile,
-                             HttpServletRequest request,final RedirectAttributes redirectAttrib) {
+    public String create_edit_central_config(
+            @ModelAttribute("CENTRAL_CONFIG_OBJ") CentralConfigEntityDTO centralConfigDTO,
+            @RequestParam("logoFile") MultipartFile logoFile,
+            HttpServletRequest request, final RedirectAttributes redirectAttrib) {
 
         try {
             if (!logoFile.isEmpty()) {
                 String uploadDir = request.getServletContext().getRealPath(VistaluxConstants.LOGO_PATH);
                 File dir = new File(uploadDir);
-                if (!dir.exists()) dir.mkdirs();
+                if (!dir.exists())
+                    dir.mkdirs();
                 Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
                 logoFile.transferTo(filePath.toFile());
             }
-            //centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
+            // centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator +
+            // VistaluxConstants.LOGO_FILE_NAME);
             configService.saveOrUpdateCentralConfig(centralConfigDTO);
-            redirectAttrib.addFlashAttribute("Success","Configuration is updated Successfully!!. ");
+            redirectAttrib.addFlashAttribute("Success", "Configuration is updated Successfully!!. ");
         } catch (Exception e) {
-            redirectAttrib.addFlashAttribute("Error","Configuration updation Failed. !!. ");
-            e.printStackTrace();
+            redirectAttrib.addFlashAttribute("Error", "Configuration updation Failed. !!. ");
+            logger.error("Exception caught", e);
         }
-        return "redirect:view_form_manage_central_config";
+        return "redirect:view_form_manage_central_config?t=" + System.currentTimeMillis();
     }
 
+    @Autowired
+    private CentralConfigEntityRepository centralConfigRepo;
 
+    /**
+     * Display the Meta Token Management page.
+     * Fetches current Page ID and Permanent Access Token from Central
+     * Configuration.
+     */
+    @RequestMapping("view_form_meta_token")
+    public ModelAndView viewFormMetaToken() {
+        ModelAndView modelView = new ModelAndView("admin/settings/view_meta_token");
+        CentralConfigEntity config = centralConfigRepo.findTopByOrderByIdAsc();
+        if (config != null) {
+            modelView.addObject("metaPageId", config.getMetaPageId());
+            modelView.addObject("metaPageAccessToken", config.getMetaPageAccessToken());
+            modelView.addObject("defaultLeadOwnerId", config.getDefaultLeadOwnerId());
+        }
 
+        List<UserDetailsObj> activeUsersList = userDetailsService.findAllActiveUsers();
+        Map<Integer, String> activeUsersMap = activeUsersList.stream().collect(
+                java.util.stream.Collectors.toMap(UserDetailsObj::getUserId, UserDetailsObj::getUsername));
+        modelView.addObject("ACTIVE_USERS_MAP", activeUsersMap);
 
+        return modelView;
+    }
+
+    @PostMapping("save_meta_token")
+    public String saveMetaToken(@RequestParam("metaPageId") String metaPageId,
+            @RequestParam("metaPageAccessToken") String metaPageAccessToken,
+            @RequestParam(value = "defaultLeadOwnerId", required = false) Integer defaultLeadOwnerId,
+            final RedirectAttributes redirectAttrib) {
+        try {
+            CentralConfigEntity config = centralConfigRepo.findTopByOrderByIdAsc();
+            if (config == null) {
+                config = new CentralConfigEntity();
+                config.setHotelName("Default");
+                config.setHotelAddress("Default");
+            }
+            config.setMetaPageId(metaPageId);
+            config.setMetaPageAccessToken(metaPageAccessToken);
+            if (defaultLeadOwnerId != null) {
+                config.setDefaultLeadOwnerId(defaultLeadOwnerId);
+            }
+            centralConfigRepo.save(config);
+            redirectAttrib.addFlashAttribute("Success", "Meta Token saved successfully!");
+        } catch (Exception e) {
+            redirectAttrib.addFlashAttribute("Error", "Failed to save Meta Token.");
+            logger.error("Exception caught", e);
+        }
+        return "redirect:view_form_meta_token";
+    }
+
+    // ===== NEW CONFIGURATION APIS =====
+    @RequestMapping("view_form_whatsapp_config")
+    public ModelAndView view_form_whatsapp_config() {
+        ModelAndView modelAndView = new ModelAndView("admin/settings/view_whatsappConfig");
+        WhatsAppConfigEntityDTO whatsAppConfigDTO = configService.getWhatsAppConfig();
+        if (whatsAppConfigDTO == null) {
+            whatsAppConfigDTO = new WhatsAppConfigEntityDTO();
+        }
+        modelAndView.addObject("WHATSAPP_CONFIG_OBJ", whatsAppConfigDTO);
+        return modelAndView;
+    }
+
+    @PostMapping("save_whatsapp_config")
+    public String save_whatsapp_config(@ModelAttribute("WHATSAPP_CONFIG_OBJ") WhatsAppConfigEntityDTO formDTO,
+            final RedirectAttributes redirectAttrib) {
+        try {
+            WhatsAppConfigEntityDTO existingConfig = configService.getWhatsAppConfig();
+            if (existingConfig == null) {
+                existingConfig = new WhatsAppConfigEntityDTO();
+            }
+
+            existingConfig.setWhatsAppApiUrl(formDTO.getWhatsAppApiUrl());
+            existingConfig.setWhatsAppApiKey(formDTO.getWhatsAppApiKey());
+            existingConfig.setWhatsAppRegistrationTemplateId(formDTO.getWhatsAppRegistrationTemplateId());
+            existingConfig.setWhatsAppGuestQuotationTemplateId(formDTO.getWhatsAppGuestQuotationTemplateId());
+            existingConfig.setWhatsAppStayQuotationTemplateId(formDTO.getWhatsAppGuestQuotationTemplateId());
+
+            configService.saveOrUpdateWhatsAppConfig(existingConfig);
+            redirectAttrib.addFlashAttribute("Success", "WhatsApp Configuration updated successfully!");
+        } catch (Exception e) {
+            redirectAttrib.addFlashAttribute("Error", "WhatsApp Configuration update failed!");
+            logger.error("Exception caught", e);
+        }
+        return "redirect:view_form_whatsapp_config";
+    }
+
+    @RequestMapping("view_form_email_config")
+    public ModelAndView view_form_email_config() {
+        ModelAndView modelAndView = new ModelAndView("admin/settings/view_emailConfig");
+        EmailConfigEntityDTO emailConfigDTO = configService.getEmailConfig();
+        if (emailConfigDTO == null) {
+            emailConfigDTO = new EmailConfigEntityDTO();
+        }
+        modelAndView.addObject("EMAIL_CONFIG_OBJ", emailConfigDTO);
+        return modelAndView;
+    }
+
+    @PostMapping("save_email_config")
+    public String save_email_config(@ModelAttribute("EMAIL_CONFIG_OBJ") EmailConfigEntityDTO formDTO,
+            final RedirectAttributes redirectAttrib) {
+        try {
+            EmailConfigEntityDTO existingConfig = configService.getEmailConfig();
+            if (existingConfig == null) {
+                existingConfig = new EmailConfigEntityDTO();
+            }
+
+            existingConfig.setEmailSmtpHost(formDTO.getEmailSmtpHost());
+            existingConfig.setEmailSmtpPort(formDTO.getEmailSmtpPort());
+            existingConfig.setEmailSmtpUsername(formDTO.getEmailSmtpUsername());
+            existingConfig.setEmailSmtpPassword(formDTO.getEmailSmtpPassword());
+            existingConfig.setEmailFromAddress(formDTO.getEmailFromAddress());
+            existingConfig.setEmailReplyTo(formDTO.getEmailReplyTo());
+            existingConfig.setEmailDefaultCc(formDTO.getEmailDefaultCc());
+            existingConfig.setEmailNotifyTo(formDTO.getEmailNotifyTo());
+            existingConfig.setEmailClientActive(formDTO.getEmailClientActive());
+            existingConfig.setEmailInternalActive(formDTO.getEmailInternalActive());
+
+            configService.saveOrUpdateEmailConfig(existingConfig);
+            redirectAttrib.addFlashAttribute("Success", "Email Configuration updated successfully!");
+        } catch (Exception e) {
+            redirectAttrib.addFlashAttribute("Error", "Email Configuration update failed!");
+            logger.error("Exception caught", e);
+        }
+        return "redirect:view_form_email_config";
+    }
 }

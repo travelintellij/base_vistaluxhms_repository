@@ -83,23 +83,23 @@
             </thead>
             <tbody>
                 <c:forEach var="masterServiceRec" items="${ACTIVE_MASTER_SERVICE_LIST}">
-                    <tr >
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.id}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.name}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.eventServiceCostTypeEntity.eventServiceCostTypeName}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.description}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.baseCost}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.eventTypeName}</td>
-                        <td style="${masterServiceRec.active ? '' : 'background-color: #ffcccc;'}">${masterServiceRec.active}</td>
+                    <tr class="${masterServiceRec.active ? '' : 'row-inactive'}">
+                        <td>${masterServiceRec.id}</td>
+                        <td>${masterServiceRec.name}</td>
+                        <td>${masterServiceRec.eventServiceCostTypeEntity.eventServiceCostTypeName}</td>
+                        <td>${masterServiceRec.description}</td>
+                        <td>${masterServiceRec.baseCost}</td>
+                        <td>${masterServiceRec.eventTypeName}</td>
+                        <td>${masterServiceRec.active}</td>
                         <td class="action-btns">
                             <form action="view_master_service_details" method="POST" style="display:inline;">
                                 <input type="hidden" name="id" value="${masterServiceRec.id}" />
-                                <button type="submit" class="btn btn-info btn-sm">View</button>
+                                <button type="submit" class="view-btn">View</button>
                              </form>
 
                             <form action="view_edit_master_service_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="id" value="${masterServiceRec.id}" />
-                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                <button type="submit" class="edit-btn">Edit</button>
                              </form>
 
 
@@ -109,7 +109,7 @@
             </tbody>
         </table>
         <div class="text-center mt-3">
-            <a href="view_add_master_service_form" class="btn btn-success">Add New Master Service</a>
+            <a href="view_add_master_service_form" class="edit-btn" style="padding: 8px 20px !important; font-size: 0.875rem !important;">Add New Master Service</a>
         </div>
     </div>
 </body>

@@ -1,4 +1,5 @@
 package com.vistaluxhms.entity;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,10 +23,7 @@ public abstract class AuditModel implements Serializable {
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(
-		value = {"createdAt", "updatedAt"},
-		allowGetters = true
-		)
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public abstract class AuditModel implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -40,16 +38,26 @@ public abstract class AuditModel implements Serializable {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
-	
-	
 
-	
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
 	public Date getUpdatedAt() {
 		return updatedAt;
+	}
+
+	@javax.persistence.PrePersist
+	protected void onCreate() {
+		if (createdAt == null) {
+			createdAt = new Date();
+		}
+		updatedAt = new Date();
+	}
+
+	@javax.persistence.PreUpdate
+	protected void onUpdate() {
+		updatedAt = new Date();
 	}
 
 	public void setUpdatedAt(Date updatedAt) {

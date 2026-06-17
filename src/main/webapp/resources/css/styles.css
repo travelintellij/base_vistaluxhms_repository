@@ -7,12 +7,19 @@ body {
 }
 
 
+/* ===== AI MODIFICATION START =====
+   Change: Commented out old blue header/nav styles that conflict with Grand Suite theme
+   Reason: These generic selectors (header, nav ul) override the new .gs-header and .gs-nav styles
+   Scope: Global — affects header/nav appearance across all pages
+   ===== */
+
+/* OLD HEADER STYLES - replaced by Grand Suite .gs-header in grand-suite.css
 header {
-    background-color: #4a90e2; /* Soothing blue color */
+    background-color: #4a90e2;
     color: white;
     padding: 10px 20px;
     display: flex;
-    justify-content: center; /* Centered logo and title */
+    justify-content: center;
     align-items: center;
 }
 
@@ -22,7 +29,7 @@ header .logo {
 }
 
 header .logo img {
-    height: 60px; /* Increased logo size */
+    height: 60px;
     margin-right: 15px;
 }
 
@@ -42,7 +49,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    background-color: #357abd; /* Menu background color */
+    background-color: #357abd;
 }
 
 nav ul li {
@@ -68,7 +75,7 @@ nav ul li .submenu {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #28527a; /* Submenu background color */
+    background-color: #28527a;
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -100,20 +107,27 @@ nav ul li .submenu li:hover .second-level {
 }
 
 .logout {
-    background-color: #ff6b6b; /* Highlighted logout color */
+    background-color: #ff6b6b;
 }
 
 .logout:hover {
     background-color: #e63946;
 }
+*/
+
+/* ===== AI MODIFICATION END ===== */
 /* Form container wrapper to center it on the screen */
 
 .form-container-wrapper {
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
-    min-height: 100vh; /* Full viewport height */
-    background-color: #f4f4f4; /* Background color for the page */
+    justify-content: center;
+    /* Horizontally center */
+    align-items: center;
+    /* Vertically center */
+    min-height: 100vh;
+    /* Full viewport height */
+    background-color: #f4f4f4;
+    /* Background color for the page */
 }
 
 /* Form container styling */
@@ -121,71 +135,107 @@ nav ul li .submenu li:hover .second-level {
     margin: auto;
     display: flex;
     flex-direction: column;
-    padding: 30px; /* Internal spacing */
-    background-color: #ffffff; /* White background */
-    border: 1px solid #ddd; /* Subtle border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-    max-width: 800px; /* Max width of the form */
-    width: 90%; /* Responsive width */
-    text-align: left; /* Align text to left */
+    padding: 30px;
+    /* Internal spacing */
+    background-color: #ffffff;
+    /* White background */
+    border: 1px solid #ddd;
+    /* Subtle border */
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Shadow for depth */
+    max-width: 800px;
+    /* Max width of the form */
+    width: 90%;
+    /* Responsive width */
+    text-align: left;
+    /* Align text to left */
     font-family: 'Arial', sans-serif;
-    margin-top: 20px; /* Top margin to avoid touching the top of the screen */
+    margin-top: 20px;
+    /* Top margin to avoid touching the top of the screen */
 }
 
 /* Bold header styling */
 h2 {
-    font-size: 1.8rem; /* Larger font size */
-    font-weight: bold; /* Bold text */
-    color: #333; /* Dark color for header */
-    text-align: center; /* Centered header */
-    margin-bottom: 20px; /* Space below the header */
+    font-size: 1.8rem;
+    /* Larger font size */
+    font-weight: bold;
+    /* Bold text */
+    color: #333;
+    /* Dark color for header */
+    text-align: center;
+    /* Centered header */
+    margin-bottom: 20px;
+    /* Space below the header */
 }
 
 /* Form rows */
 .form-row {
-    display: flex; /* Inline alignment of elements */
-    flex-wrap: wrap; /* Adjust layout for smaller screens */
+    display: flex;
+    /* Inline alignment of elements */
+    flex-wrap: wrap;
+    /* Adjust layout for smaller screens */
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px; /* Space between rows */]
-
+    margin-bottom: 15px;
+    /* Space between rows */
+    ]
 }
 
 /* Labels */
 .form-row label {
     flex: 1;
-    margin-right: 10px; /* Space after label */
-    font-size: 1rem; /* Font size */
+    margin-right: 10px;
+    /* Space after label */
+    font-size: 1rem;
+    /* Font size */
     font-weight: bold;
     color: #333;
 }
 
 /* Inputs and select boxes */
-.form-row input[type="text"],.form-row input[type="email"],.form-row input[type="tel"],
-.form-row select,.form-row input[type="number"]  {
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="tel"],
+.form-row select,
+.form-row input[type="number"] {
     flex: 2;
     padding: 10px;
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 1rem; /* Font size */
-    outline: none; /* Remove outline on focus */
-    width: 250px; /* Full width inside the container */
-    max-width: 100%; /* Avoid overflow */
+    border: 1px solid #ccc;
+    /* Light border */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 1rem;
+    /* Font size */
+    outline: none;
+    /* Remove outline on focus */
+    width: 250px;
+    /* Full width inside the container */
+    max-width: 100%;
+    /* Avoid overflow */
     box-sizing: border-box;
 }
 
 .form-row textarea {
     flex: 2;
     padding: 10px;
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 1rem; /* Font size */
-    outline: none; /* Remove outline on focus */
-    width: 100%; /* Full width inside the container */
-    max-width: 100%; /* Avoid overflow */
-    box-sizing: border-box; /* Include padding and border in width/height calculations */
-    resize: vertical; /* Allow vertical resizing only */
+    border: 1px solid #ccc;
+    /* Light border */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 1rem;
+    /* Font size */
+    outline: none;
+    /* Remove outline on focus */
+    width: 100%;
+    /* Full width inside the container */
+    max-width: 100%;
+    /* Avoid overflow */
+    box-sizing: border-box;
+    /* Include padding and border in width/height calculations */
+    resize: vertical;
+    /* Allow vertical resizing only */
 }
 
 
@@ -199,51 +249,64 @@ h2 {
 .button-container button {
     padding: 10px 20px;
     font-size: 1rem;
-    color: #fff; /* White text */
-    background-color: #4a90e2; /* Primary button color */
+    color: #fff;
+    /* White text */
+    background-color: #4a90e2;
+    /* Primary button color */
     border: none;
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 5px;
+    /* Rounded corners */
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .button-container button:hover {
-    background-color: #357abd; /* Darker shade on hover */
+    background-color: #357abd;
+    /* Darker shade on hover */
 }
 
 .button-container .secondary {
-    background-color: #6c757d; /* Secondary button color */
+    background-color: #6c757d;
+    /* Secondary button color */
 }
 
 .button-container .secondary:hover {
-    background-color: #5a6268; /* Darker secondary shade */
+    background-color: #5a6268;
+    /* Darker secondary shade */
 }
 
 /* Responsive Design - Adjustments for smaller screens */
 @media screen and (max-width: 768px) {
     .form-row {
-        flex-direction: column; /* Stack items vertically on small screens */
+        flex-direction: column;
+        /* Stack items vertically on small screens */
     }
 
     .form-container {
-        width: 95%; /* Make the form container take more width on small screens */
-        padding: 20px; /* Reduce padding for smaller screens */
+        width: 95%;
+        /* Make the form container take more width on small screens */
+        padding: 20px;
+        /* Reduce padding for smaller screens */
     }
 
     .button-container {
-        flex-direction: column; /* Stack buttons vertically on smaller screens */
-        align-items: center; /* Center buttons */
+        flex-direction: column;
+        /* Stack buttons vertically on smaller screens */
+        align-items: center;
+        /* Center buttons */
     }
 
     .button-container button {
-        width: 100%; /* Full width for buttons on small screens */
-        margin-bottom: 10px; /* Space between buttons */
+        width: 100%;
+        /* Full width for buttons on small screens */
+        margin-bottom: 10px;
+        /* Space between buttons */
     }
 }
 
-/* Button Styles */
+/* OLD BUTTON STYLES - replaced by Grand Suite theme in grand-suite.css and stylesfilter.css
 button, input[type="submit"] {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -257,26 +320,55 @@ button, input[type="submit"] {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover Effect */
 button:hover, input[type="submit"]:hover {
     background-color: #45a049;
     transform: scale(1.05);
 }
 
-/* Disabled State */
 button:disabled, input[type="submit"]:disabled {
     background-color: #ccc;
     cursor: not-allowed;
     transform: none;
 }
+*/
 
-.autocomplete-suggestions { border: 1px solid #999; background: red;overflow-y:auto}
-		.autocomplete-suggestion {padding: 2px 5px;color:white; background: black;overflow-y: auto;overflow-y:auto}
-		.autocomplete-selected { background: green;overflow-y:auto}
-		.autocomplete-suggestions strong { font-weight: normal; color:#FABA08;overflow-y:auto}
-		.autocomplete-group { padding: 2px 5px;overflow-y:auto}
-		.autocomplete-group strong { display: block; border-bottom: 1px solid #000;  background: black ; color:black overflow-y:auto}
-		.autocomplete-selected:hover{
-		color:black
-		}
+.autocomplete-suggestions {
+    border: 1px solid #999;
+    background: red;
+    overflow-y: auto
+}
 
+.autocomplete-suggestion {
+    padding: 2px 5px;
+    color: white;
+    background: black;
+    overflow-y: auto;
+    overflow-y: auto
+}
+
+.autocomplete-selected {
+    background: green;
+    overflow-y: auto
+}
+
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #FABA08;
+    overflow-y: auto
+}
+
+.autocomplete-group {
+    padding: 2px 5px;
+    overflow-y: auto
+}
+
+.autocomplete-group strong {
+    display: block;
+    border-bottom: 1px solid #000;
+    background: black;
+    color: black overflow-y:auto
+}
+
+.autocomplete-selected:hover {
+    color: black
+}

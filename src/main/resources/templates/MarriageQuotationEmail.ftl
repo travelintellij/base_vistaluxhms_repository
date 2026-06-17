@@ -236,70 +236,110 @@
 
 
 
-<#if showBreakup>
+<#-- ================= COST DISPLAY LOGIC ================= -->
+
+<#-- CASE 1 : Show Breakup -->
+<#if showBreakup?? && showBreakup>
+
     <div class="section">
         <h2>Cost Breakup</h2>
-        <table class="service-table">
-            <thead>
-                <tr><th>Service Name</th><th>Cost Type</th><th>Amount (INR)</th></tr>
-            </thead>
+
+<table class="service-table"
+       width="100%"
+       border="1"
+       cellpadding="6"
+       cellspacing="0"
+       style="border-collapse:collapse;font-family:Georgia,serif;font-size:14px;">
+
+
+                 <tr style="background:#f2f2f2;">
+                    <th>Service Name</th>
+                    <th>Cost Type</th>
+                    <th>Amount (INR)</th>
+                </tr>
+
+
             <tbody>
             <#list services as service>
                 <tr>
-                    <td>${service.name}</td>
-                    <td>${service.costType}</td>
-                    <td>${service.amount?string["#,##0"]}</td>
+                    <td>${service.name!"N/A"}</td>
+                    <td>${service.costType!"N/A"}</td>
+                    <td>₹ ${(service.amount!0)?string["#,##0"]}</td>
                 </tr>
             </#list>
-            <#if discount &gt; 0>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td colspan="2"><div class="discount">Discount: ₹${discount?string["#,##0"]}</div></td>
-                </tr>
-            </#if>
-            <tr>
-                <td>&nbsp;</td>
-                <td colspan="2"><div class="total">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div></td>
-            </tr>
             </tbody>
         </table>
+
+        <#if discount?? && discount gt 0>
+            <div class="discount">
+                Discount: ₹${discount?string["#,##0"]}
+            </div>
+        </#if>
+
+        <div class="total">
+            Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
+        </div>
+
     </div>
-<#else>
+
+
+<#-- CASE 2 : Hide Cost -->
+<#elseif hideCost?? && hideCost>
+
     <div class="section">
         <h2>Services Included</h2>
 
-        <#if services?size <= 5>
-            <table class="service-table">
-                <tbody>
-                    <#list services as service>
-                        <tr>
-                            <td>${service.name}</td>
-                        </tr>
-                    </#list>
-                </tbody>
-            </table>
-        <#else>
-            <table class="service-table">
-                <tbody>
-                    <#list services?chunk(2) as row>
-                        <tr>
-                            <#list row as service>
-                                <td>${service.name}</td>
-                            </#list>
-                            <#if row?size < 2>
-                                <#list 1..(2 - row?size) as i>
-                                    <td></td> <!-- Empty cell for alignment -->
-                                </#list>
-                            </#if>
-                        </tr>
-                    </#list>
-                </tbody>
-            </table>
-        </#if>
+<table class="service-table"
+       width="100%"
+       border="1"
+       cellpadding="6"
+       cellspacing="0"
+       style="border-collapse:collapse;font-family:Georgia,serif;font-size:14px;">
 
-        <div class="total">Total: ₹${(grand_total_cost - discount)?string["#,##0"]}</div>
+            <tbody>
+            <#list services as service>
+                <tr>
+                    <td>${service.name!"N/A"}</td>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+
     </div>
+
+
+<#-- CASE 3 : Default (Only Total) -->
+<#else>
+
+    <div class="section">
+        <h2>Services Included</h2>
+
+<table class="service-table"
+       width="100%"
+       border="1"
+       cellpadding="6"
+       cellspacing="0"
+       style="border-collapse:collapse;font-family:Georgia,serif;font-size:14px;">
+
+            <tbody>
+            <#list services as service>
+                <tr>
+                    <td>${service.name!"N/A"}</td>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+
+        <div class="total" style="margin-top:15px;">
+            Total: ₹${(grand_total_cost - discount)?string["#,##0"]}
+        </div>
+
+    </div>
+
 </#if>
+
+<#-- ================= END COST LOGIC ================= -->
+
 
 <#if remarks?? && remarks?has_content>
     <div class="section" style="margin-top: 30px;">

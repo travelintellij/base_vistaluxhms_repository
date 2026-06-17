@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -38,6 +41,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class OthersController {
 
 
+
+    private static final Logger logger = LoggerFactory.getLogger(OthersController.class);
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -86,7 +91,7 @@ public class OthersController {
 		List<City_Entity> activeDistinctDestinationList= commonService.findDistinctActiveDestinationList();
 		modelView.addObject("ACTIVE_CTRYCODE_CTRYNAME_LIST", activeDistinctDestinationList);
 
-		//System.out.println("Search Obj is " + searchCityObj);
+		//logger.debug("Search Obj is " + searchCityObj);
 
 		Page<City_Entity> pageCitiesList = commonService.filterCities(page, pageSize, sortBy, searchCityObj);
 		List<City_Obj> cityObjList = generateCityObj(pageCitiesList);
@@ -119,7 +124,7 @@ public class OthersController {
 				cityVoList.add(cityObj);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Exception caught", e);
 			}
 		}
 		return cityVoList;
@@ -291,7 +296,7 @@ public class OthersController {
     @PostMapping("send_send_email_check")
     public ModelAndView send_send_email_check(@ModelAttribute("EMAIL_MSG_VO") EmailMessageVO emailMsgVO, BindingResult result,final RedirectAttributes redirectAttrib) {
     	ModelAndView modelView = new ModelAndView("redirect:view_check_email_working");
-    	System.out.println("Email Data retrieved as : " + emailMsgVO);
+    	logger.debug("Email Data retrieved as : " + emailMsgVO);
     	emailService.sendMail(emailMsgVO.getEmailToList(),emailMsgVO.getEmailMessageFrom(), emailMsgVO.getEmailSubject(),emailMsgVO.getEmailMessage());
     	redirectAttrib.addFlashAttribute("Success", "Email is sent successfully!!");
     	return modelView;

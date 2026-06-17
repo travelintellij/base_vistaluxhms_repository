@@ -347,7 +347,7 @@ h2, h3 {
                      <tr>
                         <td colspan="6">&nbsp;</td>
                         <th style="background-color: maroon;color: white;padding: 10px;text-align: center;border: 1px solid #ddd;" colspan="2">Grand Total :</th>
-                       <td><font color="blue"><b> &#8377; ${LEAD_SYSTEM_QUOTATION_OBJ.grandTotal} </b></font></td>
+                       <td><font color="blue"><b> &#8377; <span id="grandTotalDisplay">${LEAD_SYSTEM_QUOTATION_OBJ.grandTotal}</span> </b></font></td>
                      </tr>
                      <tr>
                          <td colspan="3">&nbsp;<span id="errorMessage" style="font-size: 14px; font-weight: bold;"></span></td>
@@ -378,8 +378,9 @@ h2, h3 {
 <script>
     $(document).ready(function () {
         $("#discount").on("input", function () {
-            var grandTotal = parseFloat(${LEAD_SYSTEM_QUOTATION_OBJ.grandTotal}); // Get the grand total
-            var discount = parseFloat($(this).val()) || 0; // Get discount or set to 0 if empty
+            var grandTotalText = $("#grandTotalDisplay").text().trim().replace(/,/g, '');
+            var grandTotal = parseFloat(grandTotalText) || 0; 
+            var discount = parseFloat($(this).val()) || 0; 
 
             // Check if discount exceeds grand total
             if (discount > grandTotal) {

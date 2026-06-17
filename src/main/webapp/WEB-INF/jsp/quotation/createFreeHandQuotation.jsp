@@ -233,11 +233,18 @@ h2, h3 {
                        <form:option value="email">Email</form:option>
                        <form:option value="both">Both</form:option>
                     </form:select>
+                    <div id="contactMethodError" style="color:red; font-size:12px; display:none; margin-left:10px;"></div>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </div>
-              <div class="row">
-                  <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
-                  <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
+              <div class="row" style="margin-bottom: 25px;">
+                   <div style="display:flex; flex-direction:column; margin-right: 15px;">
+                       <form:input path="mobile" id="mobile" name="mobile"  placeholder="Mobile" class= "input-field"/>
+                       <span id="mobileError" style="color:red; font-size:14px; font-weight:bold; display:none; margin-top:4px;"></span>
+                   </div>
+                   <div style="display:flex; flex-direction:column;">
+                       <form:input path="email" id="email" name="email"  placeholder="Email" class= "input-field" style="width:250px;"/>
+                       <span id="emailError" style="color:red; font-size:14px; font-weight:bold; display:none; margin-top:4px;"></span>
+                   </div>
               </div>
           </div>
 
@@ -357,28 +364,39 @@ document.addEventListener("DOMContentLoaded", function () {
         var email = document.getElementById("email").value.trim();
         var isValid = true;
 
-        if (userType === "3") { // If "Unregistered" is selected
+        document.getElementById("contactMethodError").style.display = "none";
+        document.getElementById("mobileError").style.display = "none";
+        document.getElementById("emailError").style.display = "none";
+
+        if (userType === "2") { // If "Unregistered" is selected
             if (!contactMethod) {
-                alert("Please select a contact method (Mobile, Email, or Both).");
+                document.getElementById("contactMethodError").innerText = "Please select a contact method (Mobile, Email, or Both).";
+                document.getElementById("contactMethodError").style.display = "block";
                 isValid = false;
+                event.preventDefault(); // Stop here so multiple errors don't stack up
+                return;
             }
 
             if (contactMethod === "mobile" || contactMethod === "both") {
                 if (!mobile) {
-                    alert("Mobile number is required.");
+                    document.getElementById("mobileError").innerText = "Mobile is required";
+                    document.getElementById("mobileError").style.display = "block";
                     isValid = false;
                 } else if (!/^\d{10}$/.test(mobile)) {
-                    alert("Please enter a valid 10-digit mobile number.");
+                    document.getElementById("mobileError").innerText = "Please enter a valid 10-digit mobile number.";
+                    document.getElementById("mobileError").style.display = "block";
                     isValid = false;
                 }
             }
 
             if (contactMethod === "email" || contactMethod === "both") {
                 if (!email) {
-                    alert("Email is required.");
+                    document.getElementById("emailError").innerText = "Email is required";
+                    document.getElementById("emailError").style.display = "block";
                     isValid = false;
                 } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-                    alert("Please enter a valid email address.");
+                    document.getElementById("emailError").innerText = "Please enter a valid email address.";
+                    document.getElementById("emailError").style.display = "block";
                     isValid = false;
                 }
             }

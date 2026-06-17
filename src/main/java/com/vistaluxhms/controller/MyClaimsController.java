@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
 import com.vistaluxhms.repository.Vlx_City_Master_Repository;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
 @Controller
 public class MyClaimsController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(MyClaimsController.class);
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -240,7 +245,7 @@ public class MyClaimsController {
             redirectAttrib.addFlashAttribute("Success", "Email sent successfully!");
             return modelView;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             redirectAttrib.addFlashAttribute("Error", "Failed to send email!");
             return modelView;
         }

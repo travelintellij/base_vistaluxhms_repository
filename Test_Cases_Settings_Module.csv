@@ -1,0 +1,471 @@
+Test ID,Module,Sub-Module,Test Case Title,Test Case Description,Pre-Conditions,Test Steps,Expected Result,Priority,Severity,Status,Tested By,Test Date,Remarks / Bug ID
+MP-01,My Profile,Page Load,View My Profile page loads,Verify that My Profile page loads successfully inside the iframe without errors,User is logged in,"1. Login to the application
+2. Click on 'Settings' in the main navigation
+3. Click on 'My Profile' in the sidebar",My Profile page loads inside the iframe. Page title shows 'My Profile'. No console errors or broken layout.,High,Critical,,,, 
+MP-02,My Profile,User Name,User Name is displayed correctly,Verify that the username field on the profile page matches the currently logged-in user's username,User is logged in,"1. Navigate to Settings > My Profile
+2. Locate the 'User Name' row in the profile table
+3. Compare with the login username",Username displayed on the profile page matches exactly with the username used for login,High,Major,,,,
+MP-03,My Profile,Name,Full Name is displayed correctly,Verify that the Name field shows the user's full name as stored in the database,User is logged in with known name data,"1. Navigate to Settings > My Profile
+2. Locate the 'Name' row",Name field shows the correct full name matching the database record,High,Major,,,,
+MP-04,My Profile,Designation,Designation is displayed correctly,Verify that the designation field shows the correct job title/designation,User is logged in with designation set,"1. Navigate to Settings > My Profile
+2. Locate the 'Designation' row",Designation field shows the correct designation from the database,Medium,Minor,,,,
+MP-05,My Profile,Company Email,Company Email is displayed (BUG CHECK),Verify that Company Email row shows a valid email. NOTE: In the JSP code this field currently maps to USER_OBJ.designation instead of an email field — this is likely a BUG,User is logged in,"1. Navigate to Settings > My Profile
+2. Locate the 'Company Email' row
+3. Check if it displays an email or designation",EXPECTED BUG: The Company Email row may show the user's designation instead of email. If so — report as bug. If email shows correctly then the JSP has been fixed.,High,Major,,,,
+MP-06,My Profile,Company Mobile,Company Mobile is displayed,Verify that the company mobile number is shown correctly,User is logged in with mobile set,"1. Navigate to Settings > My Profile
+2. Locate the 'Company Mobile' row",Company mobile number is displayed correctly,Medium,Minor,,,,
+MP-07,My Profile,Personal Email,Personal Email is displayed,Verify that the personal email is shown correctly on the profile page,User is logged in with personal email set,"1. Navigate to Settings > My Profile
+2. Locate the 'Personal Email' row",Personal email is displayed correctly,Medium,Minor,,,,
+MP-08,My Profile,Personal Mobile,Personal Mobile is displayed,Verify that the personal mobile number is shown,User is logged in with personal mobile set,"1. Navigate to Settings > My Profile
+2. Locate the 'Mobile' row (personal mobile)",Personal mobile number is displayed correctly,Medium,Minor,,,,
+MP-09,My Profile,Date of Birth,DOB is formatted correctly,Verify that Date of Birth displays in dd-MMM-yyyy format (e.g. 15-Jan-1990),User is logged in with DOB set,"1. Navigate to Settings > My Profile
+2. Locate the 'Date of Birth' row
+3. Verify the date format is dd-MMM-yyyy",DOB shows in the format like '15-Jan-1990' — not raw date format,Medium,Minor,,,,
+MP-10,My Profile,Date of Joining,DOJ is formatted correctly,Verify that Date of Joining displays in dd-MMM-yyyy format,User is logged in with DOJ set,"1. Navigate to Settings > My Profile
+2. Locate the 'Date of Joining' row
+3. Verify the date format is dd-MMM-yyyy",DOJ shows in the format like '01-Mar-2020' — not raw date format,Medium,Minor,,,,
+MP-11,My Profile,Fixed Incentive,Fixed Incentive is displayed,Verify that the fixed incentive value is shown,User is logged in with incentive set,"1. Navigate to Settings > My Profile
+2. Locate the 'Fixed Incentive' row",Fixed Incentive value is displayed. If null it should show blank without errors,Low,Minor,,,,
+MP-12,My Profile,System User Role,System User role shows Admin,Verify that the System User field shows 'Admin' when the user has ADMIN role,User is logged in as Admin,"1. Login as Admin user
+2. Navigate to Settings > My Profile
+3. Locate the 'System User' row","Shows 'Admin' text. Should NOT show both 'User' and 'Admin' simultaneously unless the user has both roles",High,Major,,,,
+MP-13,My Profile,System User Role,System User role shows User,Verify that the System User field shows 'User' when the user has USER role only,User is logged in as regular User,"1. Login as regular User
+2. Navigate to Settings > My Profile
+3. Locate the 'System User' row",Shows 'User' text,High,Major,,,,
+MP-14,My Profile,Address,Address is displayed,Verify that the address field is populated correctly,User is logged in with address set,"1. Navigate to Settings > My Profile
+2. Locate the 'Address' row",Address is displayed correctly. If null it should show blank without errors,Low,Minor,,,,
+MP-15,My Profile,UI/Visual,Profile page background image loads,Verify that the background image renders without any broken image icon,User is logged in,"1. Navigate to Settings > My Profile
+2. Check the page background",Background image (myprofile.jpg) loads and renders correctly behind the content,Low,Minor,,,,
+MP-16,My Profile,Default View,Profile page is the default settings view,Verify that when opening Settings the My Profile page loads by default in the iframe,User is logged in,"1. Click on 'Settings' in the main navigation
+2. Observe which page loads in the right content area","My Profile is loaded by default in the iframe (iframe src='settings_my_profile')",High,Major,,,,
+MP-17,My Profile,Edge Case,Profile page with empty/null fields,Verify that the page loads without errors even when some user fields are null,User is logged in with some optional fields as NULL in DB,"1. Ensure some optional fields (personalEmail personalMobile address etc.) are NULL in DB
+2. Navigate to Settings > My Profile","Page loads successfully. Null fields show blank (empty) — no 500 error no NullPointerException no 'null' text displayed",High,Critical,,,,
+CP-01,Change Password,Page Load,Change Password page loads,Verify that the Change Password form loads correctly with all 3 input fields,User is logged in,"1. Navigate to Settings
+2. Click 'Change Password' in the sidebar","Reset Password form loads with 3 fields: Current Password New Password Confirm Password. Page heading shows 'Reset Password'. Submit button shows 'Change Password'",High,Critical,,,,
+CP-02,Change Password,Positive Flow,Successful password change,Verify that password changes successfully with valid inputs,User is logged in and knows current password,"1. Navigate to Settings > Change Password
+2. Enter correct current password
+3. Enter new password (8+ chars e.g. 'NewPass@123')
+4. Enter same new password in Confirm Password
+5. Click 'Change Password'","Green success message is displayed. Password is updated in the database. User can now login with the new password",High,Critical,,,,
+CP-03,Change Password,Validation,Wrong current password,Verify that entering an incorrect current password shows proper error,User is logged in,"1. Navigate to Settings > Change Password
+2. Enter WRONG current password
+3. Enter valid new password and matching confirm password
+4. Click 'Change Password'","Red error message: 'Invalid Current Password'. Password is NOT changed",High,Critical,,,,
+CP-04,Change Password,Validation,New password and confirm password mismatch,Verify that mismatched new password and confirm password shows error,User is logged in,"1. Navigate to Settings > Change Password
+2. Enter CORRECT current password
+3. Enter new password = 'Test@1234'
+4. Enter confirm password = 'Test@5678' (different)
+5. Click 'Change Password'","Red error message: 'Invalid Changed Password'. Password is NOT changed",High,Critical,,,,
+CP-05,Change Password,Validation,New password less than 8 characters,Verify that browser enforces minimum length of 8 characters for new password,User is logged in,"1. Navigate to Settings > Change Password
+2. Enter correct current password
+3. Enter new password = 'abc' (less than 8 chars)
+4. Try to submit","Browser validation prevents form submission due to minlength=8 constraint on the New Password field",Medium,Major,,,,
+CP-06,Change Password,Validation,New password exceeds 20 characters,Verify that browser enforces maximum length of 20 characters,User is logged in,"1. Navigate to Settings > Change Password
+2. Enter correct current password
+3. Try typing more than 20 characters in the new password field","Browser stops accepting input after 20 characters due to maxlength=20",Medium,Minor,,,,
+CP-07,Change Password,Validation,Current password field left empty,Verify that submitting with empty current password is prevented,User is logged in,"1. Navigate to Settings > Change Password
+2. Leave Current Password blank
+3. Fill New Password and Confirm Password
+4. Click 'Change Password'","Browser shows 'required' validation message. Form is NOT submitted",High,Major,,,,
+CP-08,Change Password,Validation,New password field left empty,Verify that submitting with empty new password is prevented,User is logged in,"1. Navigate to Settings > Change Password
+2. Fill Current Password
+3. Leave New Password blank
+4. Click 'Change Password'","Browser shows 'required' validation message. Form is NOT submitted",High,Major,,,,
+CP-09,Change Password,Validation,Confirm password field left empty,Verify that submitting with empty confirm password is prevented,User is logged in,"1. Navigate to Settings > Change Password
+2. Fill Current Password and New Password
+3. Leave Confirm Password blank
+4. Click 'Change Password'","Browser shows 'required' validation message. Form is NOT submitted",High,Major,,,,
+CP-10,Change Password,Validation,All fields left empty,Verify that submitting with all fields empty is prevented,User is logged in,"1. Navigate to Settings > Change Password
+2. Leave all 3 fields blank
+3. Click 'Change Password'","Browser shows validation message on first empty required field. Form is NOT submitted",Medium,Major,,,,
+CP-11,Change Password,Post-Change,Login with new password after change,Verify that the user can login with the newly set password,Password just changed successfully,"1. Log out of the application
+2. Enter username
+3. Enter the NEW password
+4. Click Login",Login is successful. User reaches the dashboard,High,Critical,,,,
+CP-12,Change Password,Post-Change,Login with old password after change,Verify that the old password no longer works after a successful change,Password just changed successfully,"1. Log out of the application
+2. Enter username
+3. Enter the OLD password
+4. Click Login","Login FAILS with authentication error. Old password is no longer valid",High,Critical,,,,
+CP-13,Change Password,UI/Visual,Background image loads,Verify that the background image on the Change Password page loads,User is logged in,"1. Navigate to Settings > Change Password
+2. Check the page background","Background image (changepassword.jpg) renders correctly. No broken image icon",Low,Minor,,,,
+CP-14,Change Password,UI/Visual,Password fields are masked,Verify that all password input fields mask the characters,User is logged in,"1. Navigate to Settings > Change Password
+2. Type text in each of the 3 password fields
+3. Observe the display","All 3 fields show dots/asterisks instead of plain text (input type='password')",Medium,Minor,,,,
+CP-15,Change Password,Edge Case,Special characters in password,Verify that passwords with special characters are accepted and saved correctly,User is logged in,"1. Navigate to Settings > Change Password
+2. Enter correct current password
+3. Enter new password with special chars like 'P@ss#w0rd!'
+4. Confirm and submit","Password with special characters is accepted saved and works for subsequent login",Medium,Major,,,,
+PM-01,Permissions,Page Load,Permissions page loads for ADMIN,Verify that the Permissions page loads correctly when accessed by an ADMIN user,Logged in as ADMIN,"1. Login as ADMIN user
+2. Navigate to Settings
+3. Click 'Permissions' in the sidebar","Permissions page loads with role tables showing role names as column headers users as rows and checkboxes for each role-user combination. 'Update Permission' button visible for each user row",High,Critical,,,,
+PM-02,Permissions,Access Control,Permissions menu NOT visible for regular User,Verify that a regular User cannot see the Permissions link,Logged in as regular USER (non-admin),"1. Login as regular User
+2. Navigate to Settings
+3. Look at the sidebar menu","'Permissions' link is NOT visible in the sidebar. Only My Profile and Change Password are shown",High,Critical,,,,
+PM-03,Permissions,SUPERADMIN View,SUPERADMIN sees SAR roles section,Verify that SUPERADMIN can see role tables that end in '-SAR' (Super Admin Roles),Logged in as SUPERADMIN,"1. Login as SUPERADMIN
+2. Navigate to Settings > Permissions
+3. Look for tables with '-SAR' suffix headings","Tables ending in '-SAR' are displayed. These tables show ALL users including users with ADMIN role",High,Critical,,,,
+PM-04,Permissions,Access Control,ADMIN does NOT see SAR roles section,Verify that a regular ADMIN user cannot see SAR role tables,Logged in as ADMIN (non-superadmin),"1. Login as ADMIN (without SUPERADMIN role)
+2. Navigate to Settings > Permissions
+3. Look for tables with '-SAR' suffix","SAR role tables are NOT displayed. Only non-SAR role tables are shown",High,Critical,,,,
+PM-05,Permissions,Access Control,Non-SAR roles table hides ADMIN users,Verify that in non-SAR role tables ADMIN users are not listed,Logged in as ADMIN,"1. Navigate to Settings > Permissions
+2. Look at the non-SAR role tables
+3. Check user rows","Users with ADMIN role do NOT appear in non-SAR role tables. Only non-admin users are listed",High,Major,,,,
+PM-06,Permissions,Display,Role checkboxes — assigned roles are checked,Verify that checkboxes for roles already assigned to a user appear checked,User has known roles assigned,"1. Navigate to Settings > Permissions
+2. Find a user with known assigned roles
+3. Check the checkbox state for those roles","Checkboxes for assigned roles appear as CHECKED (pre-selected with green accent)",Medium,Major,,,,
+PM-07,Permissions,Display,Role checkboxes — unassigned roles are unchecked,Verify that checkboxes for roles NOT assigned to a user appear unchecked,User has known unassigned roles,"1. Navigate to Settings > Permissions
+2. Find a user with known unassigned roles
+3. Check the checkbox state","Checkboxes for unassigned roles appear as UNCHECKED",Medium,Major,,,,
+PM-08,Permissions,Functional,Grant a new role,Verify that checking a role checkbox and clicking Update Permission grants the role to the user,User does NOT have a specific role,"1. Navigate to Settings > Permissions
+2. Find a user without a specific role
+3. CHECK the checkbox for that role
+4. Click 'Update Permission' button for that user row","Green success message shown. The role is now assigned to the user. On page refresh the checkbox remains checked",High,Critical,,,,
+PM-09,Permissions,Functional,Revoke an existing role,Verify that unchecking a role checkbox and clicking Update Permission removes the role from the user,User HAS a specific role assigned,"1. Navigate to Settings > Permissions
+2. Find a user with a specific role
+3. UNCHECK the checkbox for that role
+4. Click 'Update Permission' button for that user row","Green success message shown. The role is removed from the user. On page refresh the checkbox is unchecked",High,Critical,,,,
+PM-10,Permissions,Persistence,Role persists after page refresh,Verify that updated permissions persist when the page is refreshed,Permission just updated,"1. Update a permission (grant or revoke) — confirm success message
+2. Refresh the Permissions page (F5)
+3. Check the checkbox state for the user","The updated checkbox state persists — reflects the latest data from the database",High,Major,,,,
+PM-11,Permissions,Functional,Verify role effect in application,Verify that granting/revoking a role actually affects the user's access in the application,Permission just updated,"1. Grant or revoke a specific role for a user (e.g. LEAD_VIEW)
+2. Login as that user
+3. Try to access the page/feature controlled by that role","If role was GRANTED: User can access the feature. If role was REVOKED: User cannot access the feature (shown error or menu item hidden)",High,Critical,,,,
+PM-12,Permissions,Display,Multiple role tables displayed,Verify that each role category has its own separate table with heading,Multiple role categories exist in the system,"1. Navigate to Settings > Permissions
+2. Scroll through the page
+3. Count the number of role category tables","Each role category (e.g. LEAD QUOTATION EVENT) has its own table with category name as heading (h2). Each table has proper column headers and user rows",Medium,Minor,,,,
+PM-13,Permissions,Edge Case,Empty users list,Verify that the page handles the edge case where no active users exist,No active users in the system (edge case),"1. Navigate to Settings > Permissions when no active users exist","Page loads without errors. Tables display with headers but no user rows. No 500 error or exception",Low,Minor,,,,
+PM-14,Permissions,Display,Success/Error messages display correctly,Verify that success and error messages are displayed correctly after permission updates,Permission update performed,"1. Update a permission
+2. Observe the message at the top of the page","Success: Green colored success message displayed at the top. Error: Red colored error message displayed at the top",Medium,Minor,,,,
+CC-01,Central Config,Page Load,Central Config page loads,Verify that the Central Config form loads with all sections populated from the database,Logged in as SUPERADMIN,"1. Login as SUPERADMIN
+2. Navigate to Settings
+3. Click 'Central Config' in the sidebar","Full configuration form loads with sections: Logo/Base URL Escalation Hotel Details Bank Details Lead Import Global Watcher Social Media Quotation Config. All existing data from DB is pre-populated",High,Critical,,,,
+CC-02,Central Config,Access Control,Central Config NOT visible for ADMIN,Verify that ADMIN users cannot see Central Config link,Logged in as ADMIN (non-superadmin),"1. Login as ADMIN
+2. Navigate to Settings
+3. Check sidebar menu","'Central Config' link is NOT visible in the sidebar menu",High,Critical,,,,
+CC-03,Central Config,Access Control,Central Config NOT visible for regular User,Verify that regular Users cannot see Central Config link,Logged in as regular User,"1. Login as regular User
+2. Navigate to Settings
+3. Check sidebar menu","'Central Config' link is NOT visible in the sidebar menu",High,Critical,,,,
+CC-04,Central Config,Logo Upload,Upload logo — valid image,Verify that a valid image file can be uploaded as logo,SUPERADMIN on Central Config page,"1. Click 'Choose File' next to Logo Upload
+2. Select a valid JPG or PNG image file
+3. Click 'Save Configuration'","Logo is uploaded successfully. Success message displayed. Logo path is updated in the database. Logo appears in header (if updateLogo is triggered)",High,Major,,,,
+CC-05,Central Config,Logo Upload,Upload logo — preview displays,Verify that selecting a logo file shows an image preview before saving,SUPERADMIN on Central Config page,"1. Click 'Choose File' next to Logo Upload
+2. Select an image file
+3. Observe the preview area below the file input",Image preview appears below the file input before clicking Save. Preview shows the selected image,Medium,Minor,,,,
+CC-06,Central Config,Logo Upload,Upload logo — invalid file type,Verify that non-image files are rejected or restricted by file input,SUPERADMIN on Central Config page,"1. Click 'Choose File' next to Logo Upload
+2. Try to select a non-image file like .txt or .pdf","File dialog filters to image files only (accept='image/*'). If browser allows selection then server should reject and show error",Medium,Minor,,,,
+CC-07,Central Config,Logo/Base,Logo Path saves correctly,Verify that the Logo Path text field saves and persists,SUPERADMIN on Central Config page,"1. Enter or edit the Logo Path field (e.g. '/resources/images/logo.png')
+2. Click 'Save Configuration'
+3. Reload the page",Logo Path value persists after page reload,Medium,Minor,,,,
+CC-08,Central Config,Logo/Base,Base URL saves correctly,Verify that the Base URL saves and persists,SUPERADMIN on Central Config page,"1. Enter a Base URL (e.g. 'https://hotel.example.com')
+2. Click 'Save Configuration'
+3. Reload the page",Base URL value persists after page reload,High,Major,,,,
+CC-09,Central Config,Escalation,Escalation Email saves,Verify that the Escalation Email saves to the database,SUPERADMIN on Central Config page,"1. Enter an escalation email (e.g. 'escalation@hotel.com')
+2. Click 'Save Configuration'
+3. Reload the page",Escalation Email value persists after page reload,Medium,Major,,,,
+CC-10,Central Config,Escalation,Escalation Phone saves,Verify that the Escalation Phone saves to the database,SUPERADMIN on Central Config page,"1. Enter an escalation phone (e.g. '+91-9876543210')
+2. Click 'Save Configuration'
+3. Reload the page",Escalation Phone value persists after page reload,Medium,Major,,,,
+CC-11,Central Config,Escalation,Escalation Email — invalid format,Verify behavior when invalid email format is entered for escalation email,SUPERADMIN on Central Config page,"1. Enter 'not-an-email' in Escalation Email
+2. Click 'Save Configuration'","Check if validation error is shown. If no validation exists then this is an improvement area to report",Low,Minor,,,,
+CC-12,Central Config,Hotel Details,Hotel Name saves,Verify that Hotel Name saves. This is a required field (nullable=false),SUPERADMIN on Central Config page,"1. Enter/update Hotel Name (e.g. 'The Grand Vistalux Resort')
+2. Click 'Save Configuration'
+3. Reload the page",Hotel Name value persists after page reload. Field should not accept empty value,High,Critical,,,,
+CC-13,Central Config,Hotel Details,Hotel Address saves,Verify that Hotel Address saves. This is a required field (nullable=false),SUPERADMIN on Central Config page,"1. Enter/update Hotel Address
+2. Click 'Save Configuration'
+3. Reload the page",Hotel Address value persists after page reload. Field should not accept empty value,High,Critical,,,,
+CC-14,Central Config,Hotel Details,Central Number saves,Verify that Central Number saves,SUPERADMIN on Central Config page,"1. Enter central number (e.g. '0124-4567890')
+2. Click 'Save Configuration'
+3. Reload the page",Central Number value persists after page reload,Medium,Minor,,,,
+CC-15,Central Config,Hotel Details,Centralized Email saves,Verify that Centralized Email saves,SUPERADMIN on Central Config page,"1. Enter centralized email (e.g. 'info@hotel.com')
+2. Click 'Save Configuration'
+3. Reload the page",Centralized Email value persists after page reload,Medium,Major,,,,
+CC-16,Central Config,Hotel Details,Company Name saves,Verify that Company Name saves,SUPERADMIN on Central Config page,"1. Enter company name
+2. Click 'Save Configuration'
+3. Reload the page",Company Name value persists after page reload,Medium,Minor,,,,
+CC-17,Central Config,Hotel Details,Website saves,Verify that Website URL saves,SUPERADMIN on Central Config page,"1. Enter website URL (e.g. 'https://www.hotelvistalux.com')
+2. Click 'Save Configuration'
+3. Reload the page",Website value persists after page reload,Medium,Minor,,,,
+CC-18,Central Config,Hotel Details,GST Number saves,Verify that GST Number saves,SUPERADMIN on Central Config page,"1. Enter GST number (e.g. '07AAACR1234F1Z5')
+2. Click 'Save Configuration'
+3. Reload the page",GST Number value persists after page reload,Medium,Minor,,,,
+CC-19,Central Config,Bank Details,Account Name saves,Verify that Account Name in Bank Details saves,SUPERADMIN on Central Config page,"1. Enter Account Name (e.g. 'Vistalux Hotels Pvt Ltd')
+2. Click 'Save Configuration'
+3. Reload the page",Account Name value persists after page reload,Medium,Minor,,,,
+CC-20,Central Config,Bank Details,Bank Name saves,Verify that Bank Name saves,SUPERADMIN on Central Config page,"1. Enter Bank Name (e.g. 'HDFC Bank')
+2. Click 'Save Configuration'
+3. Reload the page",Bank Name value persists after page reload,Medium,Minor,,,,
+CC-21,Central Config,Bank Details,Account Number saves,Verify that Account Number saves,SUPERADMIN on Central Config page,"1. Enter Account Number
+2. Click 'Save Configuration'
+3. Reload the page",Account Number value persists after page reload,Medium,Minor,,,,
+CC-22,Central Config,Bank Details,IFSC Code saves,Verify that IFSC Code saves,SUPERADMIN on Central Config page,"1. Enter IFSC Code (e.g. 'HDFC0001234')
+2. Click 'Save Configuration'
+3. Reload the page",IFSC Code value persists after page reload,Medium,Minor,,,,
+CC-23,Central Config,Bank Details,Branch saves,Verify that Branch saves,SUPERADMIN on Central Config page,"1. Enter Branch (e.g. 'Connaught Place New Delhi')
+2. Click 'Save Configuration'
+3. Reload the page",Branch value persists after page reload,Medium,Minor,,,,
+CC-24,Central Config,Lead Import,Default Lead Owner dropdown populated,Verify that the Default Lead Owner dropdown shows all active users,SUPERADMIN on Central Config page,"1. Navigate to Central Config page
+2. Scroll to 'Lead Import Settings'
+3. Click the Default Lead Owner dropdown","Dropdown shows '-- Select Lead Owner --' as first option followed by all active users from the system",High,Major,,,,
+CC-25,Central Config,Lead Import,Default Lead Owner selection saves,Verify that selecting a lead owner from dropdown saves correctly,SUPERADMIN on Central Config page,"1. Select a user from Default Lead Owner dropdown
+2. Click 'Save Configuration'
+3. Reload the page","Selected user persists in the dropdown. The 'selected' attribute is on the correct option",High,Major,,,,
+CC-26,Central Config,Lead Import,Default Lead Owner — no selection,Verify that not selecting any lead owner saves without error,SUPERADMIN on Central Config page,"1. Leave dropdown at '-- Select Lead Owner --'
+2. Click 'Save Configuration'","Saves successfully with null/empty lead owner. No crash or 500 error",Medium,Minor,,,,
+CC-27,Central Config,Global Watcher,Global Watcher Emails saves,Verify that Global Watcher Emails textarea saves comma-separated emails,SUPERADMIN on Central Config page,"1. Enter comma-separated emails in Global Watcher Emails (e.g. 'admin@hotel.com manager@hotel.com')
+2. Click 'Save Configuration'
+3. Reload the page",Emails persist in the textarea after page reload,Medium,Major,,,,
+CC-28,Central Config,Global Watcher,Global Watcher Enabled — Yes,Verify that setting Global Watcher to Yes saves correctly,SUPERADMIN on Central Config page,"1. Select 'Yes' radio button for Global Watcher Enabled
+2. Click 'Save Configuration'
+3. Reload the page","'Yes' radio button is selected after page reload",Medium,Major,,,,
+CC-29,Central Config,Global Watcher,Global Watcher Enabled — No,Verify that setting Global Watcher to No saves correctly,SUPERADMIN on Central Config page,"1. Select 'No' radio button for Global Watcher Enabled
+2. Click 'Save Configuration'
+3. Reload the page","'No' radio button is selected after page reload",Medium,Major,,,,
+CC-30,Central Config,Social Media,Facebook link saves,Verify that Facebook link saves,SUPERADMIN on Central Config page,"1. Enter Facebook URL (e.g. 'https://facebook.com/hotelvistalux')
+2. Click 'Save Configuration'
+3. Reload the page",Facebook link persists after page reload,Low,Minor,,,,
+CC-31,Central Config,Social Media,Instagram link saves,Verify that Instagram link saves,SUPERADMIN on Central Config page,"1. Enter Instagram URL
+2. Click 'Save Configuration'
+3. Reload the page",Instagram link persists after page reload,Low,Minor,,,,
+CC-32,Central Config,Social Media,LinkedIn link saves,Verify that LinkedIn link saves,SUPERADMIN on Central Config page,"1. Enter LinkedIn URL
+2. Click 'Save Configuration'
+3. Reload the page",LinkedIn link persists after page reload,Low,Minor,,,,
+CC-33,Central Config,Social Media,YouTube link saves,Verify that YouTube link saves,SUPERADMIN on Central Config page,"1. Enter YouTube URL
+2. Click 'Save Configuration'
+3. Reload the page",YouTube link persists after page reload,Low,Minor,,,,
+CC-34,Central Config,Social Media,X (Twitter) link saves,Verify that X/Twitter link saves,SUPERADMIN on Central Config page,"1. Enter X/Twitter URL
+2. Click 'Save Configuration'
+3. Reload the page",X/Twitter link persists after page reload,Low,Minor,,,,
+CC-35,Central Config,Social Media,All social media links left empty,Verify that leaving all social media links empty doesn't cause an error,SUPERADMIN on Central Config page,"1. Clear ALL social media link fields
+2. Click 'Save Configuration'","Saves successfully without any error. Fields remain empty after reload",Low,Minor,,,,
+CC-36,Central Config,Quotation Config,Quotation Top Cover textarea saves,Verify that Quotation Top Cover multi-line content saves,SUPERADMIN on Central Config page,"1. Enter multi-line text in 'Quotation Top Cover' textarea
+2. Click 'Save Configuration'
+3. Reload the page","Content persists after reload including line breaks and special characters",Medium,Major,,,,
+CC-37,Central Config,Quotation Config,Inclusions textarea saves,Verify that Inclusions textarea content saves,SUPERADMIN on Central Config page,"1. Enter bullet-pointed inclusions text
+2. Click 'Save Configuration'
+3. Reload the page",Content persists after reload,Medium,Major,,,,
+CC-38,Central Config,Quotation Config,Terms and Conditions textarea saves,Verify that T&C textarea content saves,SUPERADMIN on Central Config page,"1. Enter terms and conditions text
+2. Click 'Save Configuration'
+3. Reload the page",Content persists after reload,Medium,Major,,,,
+CC-39,Central Config,Quotation Config,USP textarea saves,Verify that USP textarea content saves,SUPERADMIN on Central Config page,"1. Enter USP text
+2. Click 'Save Configuration'
+3. Reload the page",Content persists after reload,Medium,Minor,,,,
+CC-40,Central Config,Quotation Config,Hotel Information textarea saves,Verify that Hotel Information textarea content saves,SUPERADMIN on Central Config page,"1. Enter hotel information text
+2. Click 'Save Configuration'
+3. Reload the page",Content persists after reload,Medium,Minor,,,,
+CC-41,Central Config,General,Save Configuration — success message,Verify that green success message appears after saving,SUPERADMIN on Central Config page,"1. Fill or update any fields
+2. Click 'Save Configuration'","Green success message 'Record is updated successfully!!' displayed at the top of the page",High,Major,,,,
+CC-42,Central Config,General,Save with optional fields empty,Verify saving works when only required fields are filled,SUPERADMIN on Central Config page,"1. Clear all optional fields
+2. Keep Hotel Name and Hotel Address filled (required)
+3. Click 'Save Configuration'","Saves successfully. Optional fields become null/empty. No crash or 500 error",Medium,Minor,,,,
+CC-43,Central Config,UI/Visual,Page is responsive,Verify that the page layout adjusts for smaller screens,SUPERADMIN on Central Config page,"1. Open Central Config page
+2. Resize browser window to less than 768px width
+3. Observe the layout","Form fields switch to single-column layout. All content is readable. No horizontal scrollbar or overlapping elements",Low,Minor,,,,
+EC-01,Event Config,Page Load,Event Config page loads,Verify that the Event Config page loads with two tabs,Logged in as ADMIN,"1. Login as ADMIN
+2. Navigate to Settings
+3. Click 'Event Config' in the sidebar","Page loads with two tabs: 'Wedding Configuration' and 'Other Group Configuration'. Wedding tab is active by default showing the Wedding Event form",High,Critical,,,,
+EC-02,Event Config,Access Control,Event Config NOT visible for regular User,Verify that regular Users cannot see Event Config,Logged in as regular User,"1. Login as regular User
+2. Navigate to Settings
+3. Check sidebar menu","'Event Config' link is NOT visible in the sidebar",High,Critical,,,,
+EC-03,Event Config,Tab Navigation,Default tab is Wedding,Verify that the Wedding Configuration tab is active by default,ADMIN on Event Config page,"1. Open Event Config page
+2. Check which tab has 'active' class","'Wedding Configuration' tab is highlighted/active. Wedding form is visible",Medium,Minor,,,,
+EC-04,Event Config,Tab Navigation,Switch to Other Group Configuration tab,Verify that clicking the Other Group tab switches content,ADMIN on Event Config page,"1. Click 'Other Group Configuration' tab","Tab becomes active (highlighted). Group Event form shows. Wedding form is hidden",Medium,Major,,,,
+EC-05,Event Config,Tab Navigation,Switch back to Wedding Configuration tab,Verify that switching back to Wedding tab works,ADMIN on Other Group tab,"1. Click 'Wedding Configuration' tab","Wedding tab becomes active. Wedding form shows. Group form is hidden",Medium,Minor,,,,
+EC-06,Event Config,Wedding - Images,Upload Wedding banner image,Verify that a banner image can be uploaded for wedding config,ADMIN on Wedding tab,"1. Click 'Choose File' next to 'Banner Image'
+2. Select a valid image file
+3. Click 'Submit Wedding Event'","Banner image is uploaded and saved. Preview shows the uploaded image. Success message displayed",High,Major,,,,
+EC-07,Event Config,Wedding - Images,Banner image preview displays in real-time,Verify that selecting a banner file shows preview before submitting,ADMIN on Wedding tab,"1. Click 'Choose File' next to 'Banner Image'
+2. Select an image file
+3. Observe the preview area",Preview image updates immediately to show the selected file BEFORE form submission,Medium,Minor,,,,
+EC-08,Event Config,Wedding - Images,Upload gallery images (1-6),Verify that up to 6 gallery images can be uploaded,ADMIN on Wedding tab,"1. Upload images in gallery slots 1 through 6
+2. Click 'Submit Wedding Event'
+3. Reload the page","All uploaded images are saved and displayed in their respective gallery slots after reload",High,Major,,,,
+EC-09,Event Config,Wedding - Images,Gallery image preview displays,Verify that selecting a gallery image shows preview,ADMIN on Wedding tab,"1. Click file input for any gallery slot (e.g. slot 3)
+2. Select an image file","Corresponding preview image (e.g. preview3) updates to show the selected file",Medium,Minor,,,,
+EC-10,Event Config,Wedding - Images,Delete gallery image,Verify that gallery images can be deleted,ADMIN on Wedding tab with existing gallery images,"1. Click the X (delete) button on an existing gallery image
+2. Click 'OK' in the confirmation dialog","Image is deleted from the database. Preview is cleared. File input is reset",High,Major,,,,
+EC-11,Event Config,Wedding - Images,Delete gallery image — cancel confirmation,Verify that canceling delete confirmation preserves the image,ADMIN on Wedding tab with existing gallery images,"1. Click the X button on a gallery image
+2. Click 'Cancel' in the confirmation dialog","Image is NOT deleted. Preview remains intact. No API call is made",Medium,Minor,,,,
+EC-12,Event Config,Wedding - Images,Image URL fields (1-6) save,Verify that image URL text fields save for email embedding,ADMIN on Wedding tab,"1. Enter URLs in Image 1 through Image 6 URL fields
+2. Click 'Submit Wedding Event'
+3. Reload the page","All 6 image URLs persist after page reload",Medium,Major,,,,
+EC-13,Event Config,Wedding - Text,Resort Information saves,Verify that the resort information textarea saves,ADMIN on Wedding tab,"1. Enter text in 'Event Resort Information' textarea
+2. Click 'Submit Wedding Event'
+3. Reload the page",Text content persists after reload,Medium,Major,,,,
+EC-14,Event Config,Wedding - Text,Celebration Highlights saves,Verify that celebration highlights textarea saves,ADMIN on Wedding tab,"1. Enter text in 'Celebration Highlights' textarea
+2. Click 'Submit Wedding Event'
+3. Reload the page",Text content persists after reload,Medium,Major,,,,
+EC-15,Event Config,Wedding - Text,Testimonial Section saves,Verify that testimonial textarea saves,ADMIN on Wedding tab,"1. Enter text in 'Testimonial Section' textarea
+2. Click 'Submit Wedding Event'
+3. Reload the page",Text content persists after reload,Medium,Minor,,,,
+EC-16,Event Config,Wedding - Text,Terms and Conditions saves,Verify that terms textbox saves,ADMIN on Wedding tab,"1. Enter text in 'Terms and Conditions' textarea
+2. Click 'Submit Wedding Event'
+3. Reload the page",Text content persists after reload,Medium,Major,,,,
+EC-17,Event Config,Wedding - Submit,Submit Wedding Event — success message,Verify that submitting the wedding form shows success,ADMIN on Wedding tab,"1. Fill required fields
+2. Click 'Submit Wedding Event'","Green success message displayed. Page redirects back to the same form with eventType=wedding",High,Major,,,,
+EC-18,Event Config,Group - Images,Upload Group Event banner image,Verify that Group Event banner image uploads,ADMIN on Group Event tab,"1. Switch to 'Other Group Configuration' tab
+2. Upload a banner image
+3. Click 'Submit Wedding Event'",Banner image is saved for GROUP_EVENT type. Preview shows the image,High,Major,,,,
+EC-19,Event Config,Group - Images,Upload Group Event gallery images (1-6),Verify that Group Event gallery images upload,ADMIN on Group Event tab,"1. Upload gallery images on Group Event tab
+2. Submit the form
+3. Reload the page",Gallery images are saved for GROUP_EVENT type,High,Major,,,,
+EC-20,Event Config,Group - Images,Delete Group Event gallery image,Verify that Group Event gallery images can be deleted,ADMIN on Group Event tab with existing images,"1. Click X on a gallery image in Group Event tab
+2. Confirm deletion","Image is deleted. Preview cleared",Medium,Major,,,,
+EC-21,Event Config,Group - Images,Group Event Image URLs save,Verify that image URLs save on Group Event tab,ADMIN on Group Event tab,"1. Enter image URLs in Group Event form
+2. Submit
+3. Reload",Image URLs persist,Medium,Minor,,,,
+EC-22,Event Config,Group - Text,Venue and Experience Overview saves,Verify that venue info textarea saves,ADMIN on Group Event tab,"1. Enter text in 'Venue and Experience Overview' textarea
+2. Submit
+3. Reload",Text content persists after reload,Medium,Major,,,,
+EC-23,Event Config,Group - Text,Event Highlights and Offering saves,Verify that event highlights textarea saves,ADMIN on Group Event tab,"1. Enter text in 'Event Highlights & Offering' textarea
+2. Submit
+3. Reload",Text content persists after reload,Medium,Major,,,,
+EC-24,Event Config,Group - Text,Group Event Testimonial saves,Verify that testimonial textarea saves,ADMIN on Group Event tab,"1. Enter text in 'Testimonial Section' textarea
+2. Submit
+3. Reload",Text content persists after reload,Medium,Minor,,,,
+EC-25,Event Config,Group - Text,Group Event Terms and Conditions saves,Verify that T&C textarea saves,ADMIN on Group Event tab,"1. Enter text in 'Terms and Conditions' textarea
+2. Submit
+3. Reload",Text content persists after reload,Medium,Major,,,,
+EC-26,Event Config,Group - Submit,Submit Group Event — success message,Verify that submitting group event form shows success,ADMIN on Group Event tab,"1. Fill fields on Group Event tab
+2. Click 'Submit Wedding Event'","Success message displayed. Redirects to same form with eventType=GROUP_EVENT",High,Major,,,,
+EC-27,Event Config,Edge Case,Upload oversized image file,Verify that very large image files are handled gracefully,ADMIN on Event Config,"1. Try uploading an image file larger than 20MB
+2. Submit the form","Either: error message shown OR upload succeeds if server handles it. Should NOT crash the server with OutOfMemory or timeout",Medium,Major,,,,
+EC-28,Event Config,Edge Case,Submit form with no changes,Verify that submitting without making changes doesn't corrupt data,ADMIN on Event Config with existing data,"1. Open Event Config form
+2. Do NOT change anything
+3. Click 'Submit Wedding Event'","Saves without error. All existing data remains unchanged. No fields become null",Medium,Minor,,,,
+EC-29,Event Config,Edge Case,Upload non-image file to gallery,Verify that gallery slots only accept image files,ADMIN on Event Config,"1. Try uploading a .pdf or .docx to a gallery slot","File dialog filters to images only (accept='image/*'). If bypassed server should reject",Low,Minor,,,,
+EM-01,Email Config,Page Load,Email Config page loads,Verify that the Email Config form loads with all fields,Logged in as ADMIN or SUPERADMIN,"1. Navigate to Settings
+2. Click 'Communication Channels' dropdown
+3. Click 'Email Config'","Email Configuration page loads with 3 fieldsets: SMTP Settings / Email Addresses / Email Status. Page heading shows 'Email Configuration'. All existing data pre-populated from DB",High,Critical,,,,
+EM-02,Email Config,Access Control,Email Config NOT visible for regular User,Verify that regular Users cannot see Communication Channels,Logged in as regular User,"1. Login as regular User
+2. Navigate to Settings
+3. Check sidebar","'Communication Channels' dropdown is NOT visible",High,Critical,,,,
+EM-03,Email Config,Navigation,Communication Channels dropdown opens/closes,Verify that the dropdown toggle works,ADMIN or SUPERADMIN on Settings page,"1. Click 'Communication Channels' in sidebar
+2. Observe sub-items
+3. Click again","First click: Dropdown opens showing 'Email Config' and 'WhatsApp Config'. Second click: Dropdown collapses hiding sub-items",Medium,Minor,,,,
+EM-04,Email Config,SMTP Settings,SMTP Host saves,Verify that SMTP Host saves and persists,ADMIN on Email Config page,"1. Enter SMTP Host (e.g. 'smtp-relay.brevo.com')
+2. Click 'Save Email Configuration'
+3. Reload the page",SMTP Host value persists after page reload,High,Critical,,,,
+EM-05,Email Config,SMTP Settings,SMTP Port saves,Verify that SMTP Port saves and persists,ADMIN on Email Config page,"1. Enter SMTP Port (e.g. '587')
+2. Click 'Save Email Configuration'
+3. Reload the page",SMTP Port value persists after page reload,High,Critical,,,,
+EM-06,Email Config,SMTP Settings,SMTP Username saves,Verify that SMTP Username saves and persists,ADMIN on Email Config page,"1. Enter SMTP Username
+2. Click 'Save Email Configuration'
+3. Reload the page",SMTP Username value persists after page reload,High,Critical,,,,
+EM-07,Email Config,SMTP Settings,SMTP Password saves,Verify that SMTP Password saves and persists,ADMIN on Email Config page,"1. Enter SMTP Password
+2. Click 'Save Email Configuration'
+3. Reload the page","SMTP Password is saved in DB. On reload the password field shows the saved value (masked). Verify by checking DB directly if needed",High,Critical,,,,
+EM-08,Email Config,UI/Visual,SMTP Password field is masked,Verify that the SMTP password field masks input,ADMIN on Email Config page,"1. Type characters in the SMTP Password field
+2. Observe the display","Characters are masked (shown as dots/asterisks) since it is a password type input",Medium,Minor,,,,
+EM-09,Email Config,Email Addresses,From Address saves,Verify that From Address saves,ADMIN on Email Config page,"1. Enter From Address (e.g. 'Hotel Name <query@hotel.com>')
+2. Click 'Save Email Configuration'
+3. Reload the page",From Address value persists after page reload,High,Major,,,,
+EM-10,Email Config,Email Addresses,Reply-To saves,Verify that Reply-To email saves,ADMIN on Email Config page,"1. Enter Reply-To email
+2. Click 'Save Email Configuration'
+3. Reload the page",Reply-To value persists after page reload,Medium,Major,,,,
+EM-11,Email Config,Email Addresses,Default CC saves,Verify that Default CC saves,ADMIN on Email Config page,"1. Enter Default CC email
+2. Click 'Save Email Configuration'
+3. Reload the page",Default CC value persists after page reload,Medium,Major,,,,
+EM-12,Email Config,Email Addresses,Notification Email (BCC) saves,Verify that Notification Email (BCC) saves,ADMIN on Email Config page,"1. Enter Notification Email
+2. Click 'Save Email Configuration'
+3. Reload the page",Notification Email value persists after page reload,Medium,Major,,,,
+EM-13,Email Config,Validation,Invalid email format in From Address,Verify behavior when invalid email format is entered,ADMIN on Email Config page,"1. Enter 'not-an-email' in From Address field
+2. Click 'Save Email Configuration'","Check if any validation error is shown. If not report as improvement area. Actual email sending will fail later",Low,Minor,,,,
+EM-14,Email Config,Status Flags,Client Email Active — set to Yes,Verify that Client Email Active Yes radio saves,ADMIN on Email Config page,"1. Select 'Yes' radio for Client Email Active
+2. Click 'Save Email Configuration'
+3. Reload the page","'Yes' radio button is selected after page reload. DB value = 'true'",High,Major,,,,
+EM-15,Email Config,Status Flags,Client Email Active — set to No,Verify that Client Email Active No radio saves,ADMIN on Email Config page,"1. Select 'No' radio for Client Email Active
+2. Click 'Save Email Configuration'
+3. Reload the page","'No' radio button is selected after page reload. DB value = 'false'",High,Major,,,,
+EM-16,Email Config,Status Flags,Internal Email Active — set to Yes,Verify that Internal Email Active Yes radio saves,ADMIN on Email Config page,"1. Select 'Yes' radio for Internal Email Active
+2. Click 'Save Email Configuration'
+3. Reload the page","'Yes' radio button is selected after page reload",High,Major,,,,
+EM-17,Email Config,Status Flags,Internal Email Active — set to No,Verify that Internal Email Active No radio saves,ADMIN on Email Config page,"1. Select 'No' radio for Internal Email Active
+2. Click 'Save Email Configuration'
+3. Reload the page","'No' radio button is selected after page reload",High,Major,,,,
+EM-18,Email Config,Functional,Email sending works with valid config,Verify end-to-end email sending works when valid SMTP config is saved,Valid SMTP config saved in Email Config,"1. Save valid SMTP details (host port username password)
+2. Set Client Email Active = Yes and Internal Email Active = Yes
+3. Go to Lead/Quotation module and trigger a 'Send Email' action
+4. Check if email is received","Email is sent successfully. No error on UI. Email received by the recipient with correct From address and CC",High,Critical,,,,
+EM-19,Email Config,Functional,Email fails with wrong SMTP host,Verify that appropriate error is shown when SMTP host is wrong,Invalid SMTP host saved (e.g. 'wrong.smtp.host'),"1. Save wrong SMTP host in Email Config
+2. Trigger an email action from the application","Error message displayed to user indicating email could not be sent. Application does NOT crash. Error is logged",High,Critical,,,,
+EM-20,Email Config,Functional,Email fails with wrong credentials,Verify error when wrong SMTP username/password is used,Invalid SMTP credentials saved,"1. Save wrong SMTP username or password
+2. Trigger an email action","Error message displayed to user. SMTP authentication failure is handled gracefully",High,Critical,,,,
+EM-21,Email Config,Functional,Client email disabled — client gets no email,Verify that client emails are not sent when disabled,emailClientActive = false in DB,"1. Set Client Email Active = 'No' and save
+2. Trigger sending a quotation email to a client","Client does NOT receive any email. UI shows appropriate feedback (e.g. 'Email notifications are disabled')",High,Major,,,,
+EM-22,Email Config,Functional,Internal email disabled — internal gets no email,Verify that internal emails are not sent when disabled,emailInternalActive = false in DB,"1. Set Internal Email Active = 'No' and save
+2. Trigger an action that sends internal notification email","Internal notification email is NOT sent. Application continues normally",High,Major,,,,
+EM-23,Email Config,General,Save Email Configuration — success message,Verify success message on save,ADMIN on Email Config page,"1. Fill all email config fields
+2. Click 'Save Email Configuration'","Green success message displayed at the top of the page",Medium,Minor,,,,
+EM-24,Email Config,General,Save Email Configuration — error message,Verify error message display on failure,ADMIN on Email Config page — server-side error scenario,"1. Trigger a save that causes server error","Red error message displayed at the top of the page. Application does not crash",Medium,Minor,,,,
+EM-25,Email Config,Edge Case,All SMTP fields empty — save,Verify that saving with all SMTP fields empty doesn't crash,ADMIN on Email Config page,"1. Clear ALL SMTP fields
+2. Click 'Save Email Configuration'","Saves successfully (fields are nullable). No crash or 500 error. Fields remain empty after reload",Medium,Minor,,,,
+EM-26,Email Config,UI/Visual,Page responsive on smaller screen,Verify responsive layout,ADMIN on Email Config page,"1. Resize browser to less than 768px
+2. Observe layout","Form fields switch to single-column layout. All fields readable. No overflow or overlap",Low,Minor,,,,
+WA-01,WhatsApp Config,Page Load,WhatsApp Config page loads,Verify that WhatsApp Config form loads with all fields,Logged in as ADMIN or SUPERADMIN,"1. Navigate to Settings
+2. Click 'Communication Channels' dropdown
+3. Click 'WhatsApp Config'","WhatsApp Configuration page loads with 2 fieldsets: API Connection Details / Template IDs. Page heading shows 'WhatsApp Configuration'. All existing data pre-populated",High,Critical,,,,
+WA-02,WhatsApp Config,Access Control,WhatsApp Config NOT visible for regular User,Verify that regular Users cannot see Communication Channels,Logged in as regular User,"1. Login as regular User
+2. Navigate to Settings
+3. Check sidebar","'Communication Channels' dropdown is NOT visible",High,Critical,,,,
+WA-03,WhatsApp Config,API Details,WhatsApp API URL saves,Verify that WhatsApp API URL saves and persists,ADMIN on WhatsApp Config page,"1. Enter API URL (e.g. 'https://console.authkey.io/restapi/requestjson.php')
+2. Click 'Save WhatsApp Configuration'
+3. Reload the page",API URL persists after page reload,High,Critical,,,,
+WA-04,WhatsApp Config,Functional,WhatsApp API URL empty — send fails gracefully,Verify error when API URL is not configured and user tries to send WhatsApp,WhatsApp API URL is blank in config,"1. Clear WhatsApp API URL and save
+2. Navigate to Lead module
+3. Try sending a WhatsApp message","Clear error message shown to user like 'WhatsApp API URL not configured'. Application does NOT crash with NullPointerException",High,Critical,,,,
+WA-05,WhatsApp Config,API Details,Auth Key saves,Verify that Auth Key saves and persists,ADMIN on WhatsApp Config page,"1. Enter Auth Key
+2. Click 'Save WhatsApp Configuration'
+3. Reload the page",Auth Key persists after page reload,High,Critical,,,,
+WA-06,WhatsApp Config,Functional,Auth Key empty — send fails gracefully,Verify error when Auth Key is not configured,Auth Key is blank in config,"1. Clear Auth Key and save
+2. Try sending a WhatsApp message","Clear error message like 'Auth Key not configured'. No crash",High,Critical,,,,
+WA-07,WhatsApp Config,Functional,Invalid Auth Key — API returns error,Verify that wrong auth key produces proper error from API,Invalid Auth Key saved in config,"1. Enter an incorrect Auth Key and save
+2. Try sending a WhatsApp message","WhatsApp API returns authentication error. User sees clear error message on UI. Not a generic 500 error",High,Major,,,,
+WA-08,WhatsApp Config,Template IDs,Registration Template ID saves,Verify that Registration Template ID saves,ADMIN on WhatsApp Config page,"1. Enter Registration Template ID (e.g. '25455')
+2. Click 'Save WhatsApp Configuration'
+3. Reload the page",Template ID persists after page reload,High,Major,,,,
+WA-09,WhatsApp Config,Functional,Registration Template ID empty — send fails,Verify error when registration template is not configured,Registration Template ID is blank,"1. Clear Registration Template ID and save
+2. Trigger a new query registration WhatsApp","Error message like 'Registration Template ID not configured'. No crash",High,Major,,,,
+WA-10,WhatsApp Config,Template IDs,Quotation Template ID saves,Verify that Quotation Template ID saves (used for both Stay and Guest),ADMIN on WhatsApp Config page,"1. Enter Quotation Template ID (e.g. '27614')
+2. Click 'Save WhatsApp Configuration'
+3. Reload the page",Template ID persists after page reload. This ID is used for both Stay Quotation and Guest Quotation,High,Major,,,,
+WA-11,WhatsApp Config,Functional,Quotation Template ID empty — send fails,Verify error when quotation template is not configured,Quotation Template ID is blank,"1. Clear Quotation Template ID and save
+2. Try sending a Stay or Guest quotation via WhatsApp","Error message like 'Quotation Template ID not configured'. No crash",High,Major,,,,
+WA-12,WhatsApp Config,Functional,Invalid Template ID — API returns error,Verify that wrong template ID produces proper error,Invalid Template ID saved in config,"1. Enter incorrect Template ID
+2. Try sending a WhatsApp message","WhatsApp API returns error about invalid template. User sees a clear error message",High,Major,,,,
+WA-13,WhatsApp Config,Functional,Registration WhatsApp sent successfully,Verify end-to-end registration WhatsApp message,Valid WhatsApp config saved (URL + Auth Key + Registration Template ID),"1. Save valid WhatsApp config
+2. Create/register a new lead or query
+3. Trigger the registration WhatsApp send","WhatsApp message is sent to the client's phone number. Success feedback shown on UI. Message content matches the template",High,Critical,,,,
+WA-14,WhatsApp Config,Functional,Stay Quotation WhatsApp sent successfully,Verify stay quotation WhatsApp message is sent,Valid WhatsApp config saved,"1. Save valid config including Quotation Template ID
+2. Navigate to a lead with a Stay Quotation
+3. Send quotation via WhatsApp","WhatsApp message sent with correct quotation details. Success feedback shown on UI",High,Critical,,,,
+WA-15,WhatsApp Config,Functional,Guest Quotation WhatsApp sent successfully,Verify guest quotation WhatsApp message is sent,Valid WhatsApp config saved,"1. Save valid config including Quotation Template ID
+2. Navigate to a lead with a Guest Quotation
+3. Send quotation via WhatsApp","WhatsApp message sent. Uses the same Quotation Template ID as Stay. Success feedback shown",High,Critical,,,,
+WA-16,WhatsApp Config,Edge Case,All config fields missing — send attempted,Verify graceful handling when all WhatsApp config is empty,All WhatsApp fields are empty in config,"1. Clear ALL WhatsApp config fields and save
+2. Try sending any WhatsApp message","Clear error messages indicating what is missing (URL Auth Key Template ID). No server crash. No NullPointerException. User gets actionable feedback",High,Critical,,,,
+WA-17,WhatsApp Config,General,Save WhatsApp Configuration — success message,Verify success message on save,ADMIN on WhatsApp Config page,"1. Fill all WhatsApp config fields
+2. Click 'Save WhatsApp Configuration'","Green success message displayed at the top of the page",Medium,Minor,,,,
+WA-18,WhatsApp Config,General,Save WhatsApp Configuration — error message,Verify error message display on failure,ADMIN on WhatsApp Config page — server error,"1. Trigger a save that causes server-side error","Red error message displayed at the top. Application does not crash",Medium,Minor,,,,
+WA-19,WhatsApp Config,UI/Visual,Page responsive on smaller screen,Verify responsive layout,ADMIN on WhatsApp Config page,"1. Resize browser to less than 768px
+2. Observe layout","Form fields switch to single column. All content readable. No overflow",Low,Minor,,,,
+SN-01,Sidebar Navigation,Page Load,Sidebar loads correctly,Verify that Settings sidebar loads with correct menu items based on user role,User logged in,"1. Navigate to Settings page
+2. Observe the sidebar menu","Sidebar renders with menu items appropriate to the user's role. Layout is clean with no broken links",High,Critical,,,,
+SN-02,Sidebar Navigation,Links,My Profile link works,Verify that clicking My Profile loads the profile page in iframe,User logged in,"1. Click 'My Profile' in sidebar",My Profile page loads in the right content iframe. Content updates correctly,High,Major,,,,
+SN-03,Sidebar Navigation,Links,Change Password link works,Verify that clicking Change Password loads the form in iframe,User logged in,"1. Click 'Change Password' in sidebar",Change Password form loads in the right content iframe,High,Major,,,,
+SN-04,Sidebar Navigation,Role Visibility,Permissions link visible only for ADMIN,Verify Permissions link visibility based on role,ADMIN logged in,"1. Login as ADMIN
+2. Check sidebar","'Permissions' link IS visible",High,Critical,,,,
+SN-05,Sidebar Navigation,Role Visibility,Central Config visible only for SUPERADMIN,Verify Central Config link visibility,SUPERADMIN logged in,"1. Login as SUPERADMIN
+2. Check sidebar","'Central Config' link IS visible",High,Critical,,,,
+SN-06,Sidebar Navigation,Role Visibility,Event Config visible only for ADMIN,Verify Event Config link visibility,ADMIN logged in,"1. Login as ADMIN
+2. Check sidebar","'Event Config' link IS visible",High,Critical,,,,
+SN-07,Sidebar Navigation,Role Visibility,Meta Token visible only for ADMIN,Verify Meta Token link visibility,ADMIN logged in,"1. Login as ADMIN
+2. Check sidebar","'Meta Token' link IS visible",Medium,Minor,,,,
+SN-08,Sidebar Navigation,Role Visibility,Communication Channels visible for ADMIN/SUPERADMIN,Verify Communication Channels dropdown visibility,ADMIN or SUPERADMIN logged in,"1. Login as ADMIN or SUPERADMIN
+2. Check sidebar","'Communication Channels' dropdown IS visible with toggle button",High,Critical,,,,
+SN-09,Sidebar Navigation,Dropdown,Communication Channels dropdown toggles open,Verify that dropdown opens on click,ADMIN on Settings page,"1. Click 'Communication Channels' toggle",Sub-items appear: 'Email Config' and 'WhatsApp Config',Medium,Minor,,,,
+SN-10,Sidebar Navigation,Dropdown,Communication Channels dropdown toggles closed,Verify that dropdown closes on second click,ADMIN with dropdown open,"1. Click 'Communication Channels' toggle again",Sub-items collapse and are hidden,Medium,Minor,,,,
+SN-11,Sidebar Navigation,Role Visibility,Regular User sees minimal menu,Verify that regular User only sees My Profile and Change Password,Regular User logged in,"1. Login as regular User (non-admin non-superadmin)
+2. Check sidebar","ONLY 'My Profile' and 'Change Password' are visible. No Permissions Central Config Event Config Meta Token or Communication Channels visible",High,Critical,,,,
+SN-12,Sidebar Navigation,Iframe,Iframe content updates on sidebar click,Verify that iframe updates when different sidebar links are clicked,Any user logged in,"1. Click 'My Profile' — verify content loads
+2. Click 'Change Password' — verify content updates
+3. Click other available links","Iframe content area updates to show the correct page for each sidebar link clicked. No page reload of the main page only iframe content changes",Medium,Major,,,,

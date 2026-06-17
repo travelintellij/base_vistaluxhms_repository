@@ -141,4 +141,25 @@ public class QuotationEntityDTO {
     public void setLeadId(long leadId) {
         this.leadId = leadId;
     }
+
+    @Override
+    public String toString() {
+        return "QuotationEntityDTO{" +
+                "rateTypeId=" + rateTypeId +
+                ", roomCategoryId=" + roomCategoryId +
+                ", mealPlanId=" + mealPlanId +
+                ", quotationAudienceType=" + quotationAudienceType +
+                ", contactMethod='" + contactMethod + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", roomDetails=" + roomDetails +
+                ", guestName='" + guestName + '\'' +
+                ", grandTotal=" + grandTotal +
+                ", discount=" + discount +
+                ", showCostBreakup=" + showCostBreakup +
+                ", remarks='" + remarks + '\'' +
+                ", guestId=" + guestId +
+                ", leadId=" + leadId +
+                '}';
+    }
 }

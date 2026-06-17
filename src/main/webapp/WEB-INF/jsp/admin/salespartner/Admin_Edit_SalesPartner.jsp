@@ -83,7 +83,7 @@
             </div>
             <div class="form-row">
                     <label for="city-id">City:</label>
-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
+                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
                 <form:hidden path="cityId" />
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
@@ -132,10 +132,8 @@
         paramName: "cityName",
         delimiter: ",",
         onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
-            jQuery("#destinationId").val(cityID);
-            $('input[name=cityId]').val(id);
+            var cityID = suggestion.data;
+            jQuery("#cityId").val(cityID);
             return false;
         },
         transformResult: function (response) {
@@ -148,6 +146,17 @@
         }
     });
 
+    $('#cityName').on('input', function() {
+        jQuery("#cityId").val('');
+    });
 
+    $('#cityName').on('blur', function() {
+        var $input = $(this);
+        setTimeout(function() {
+            if (!jQuery("#cityId").val()) {
+                $input.val('');
+            }
+        }, 250);
+    });
     </script>
 <jsp:include page="../../footer.jsp" />

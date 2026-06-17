@@ -7,13 +7,11 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import com.vistaluxhms.model.WorkLoadStatusVO;
 
-
 @Entity
 @Table(name = "workload_status")
 public class Workload_Status_Entity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 @Column(columnDefinition = "DEFAULT 0")
 	private int id;
 
 	private int workloadStatusId;
@@ -25,70 +23,58 @@ public class Workload_Status_Entity {
 	private boolean active;
 
 	private int workloadCategory;
-	
+
 	public Workload_Status_Entity() {
-		
+
 	}
-	
+
 	public Workload_Status_Entity(WorkLoadStatusVO statusVO) {
-		//workloadStatusId = statusVO.getWorkloadStatusId();
-		workloadStatusObj=statusVO.getWorkloadStatusObj();
-		workloadStatusObjType=statusVO.getWorkloadStatusObjType();
-		workloadStatusName=statusVO.getWorkloadStatusName();
-		active=statusVO.isActive();
-		workloadCategory=statusVO.getWorkloadCategory();
-			
+		// workloadStatusId = statusVO.getWorkloadStatusId();
+		workloadStatusObj = statusVO.getWorkloadStatusObj();
+		workloadStatusObjType = statusVO.getWorkloadStatusObjType();
+		workloadStatusName = statusVO.getWorkloadStatusName();
+		active = statusVO.isActive();
+		workloadCategory = statusVO.getWorkloadCategory();
+
 	}
-	
+
 	@PrePersist
-    public void prePersist() {
-        this.workloadStatusId = this.id;
-    }
-	
+	public void prePersist() {
+		this.workloadStatusId = this.id;
+	}
+
 	public int getId() {
 		return id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public int getWorkloadStatusId() {
 		return workloadStatusId;
 	}
-
 
 	public void setWorkloadStatusId(int workloadStatusId) {
 		this.workloadStatusId = workloadStatusId;
 	}
 
-
 	public String getWorkloadStatusObj() {
 		return workloadStatusObj;
 	}
-
 
 	public void setWorkloadStatusObj(String workloadStatusObj) {
 		this.workloadStatusObj = workloadStatusObj;
 	}
 
-
-
-
-
 	public String getWorkloadStatusName() {
 		return workloadStatusName;
 	}
-
 
 	public void setWorkloadStatusName(String workloadStatusName) {
 		this.workloadStatusName = workloadStatusName;
 	}
 
-
-	
 	public String getWorkloadStatusObjType() {
 		return workloadStatusObjType;
 	}

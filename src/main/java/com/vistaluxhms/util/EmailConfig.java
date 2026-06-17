@@ -1,5 +1,8 @@
 package com.vistaluxhms.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -12,20 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
- 
+
 @Configuration
-public class EmailConfig 
-{
- 
-	@Value("${spring.mail.host}")
-	private String emailHost;
-    @Value("${spring.mail.port}")
-    private int emailPort;
+public class EmailConfig {
 
-	@Value("${spring.mail.properties.mail.smtp.auth}")
-	private String smtpAuth;
-	
-	@Value("${spring.mail.properties.mail.debug}")
-	private String mailDebug;
-
+    private static final Logger logger = LoggerFactory.getLogger(EmailConfig.class);
 }

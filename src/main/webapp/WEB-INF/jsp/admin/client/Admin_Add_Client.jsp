@@ -37,6 +37,20 @@
         opacity: .98; /* Adjust the opacity for the background image */
     }
 
+    /* Highlight Validation Errors */
+    .error {
+        display: inline-block;
+        background-color: #ffe6e6;   /* Light red background */
+        color: #b30000;              /* Dark red text */
+        font-weight: bold;           /* Bold text */
+        padding: 5px 10px;
+        border: 1px solid #ff4d4d;
+        border-radius: 4px;
+        margin-top: 4px;
+        font-size: 13px;
+    }
+
+
 </style>
 
 <div class="form-container-wrapper" style="background: transparent !important;">
@@ -69,15 +83,18 @@
                <div class="radio-group-container">
                    <div class="radio-group">
                        <label>
-                           <form:radiobutton path="b2b" name="b2b" value="true" required="required" />
+                           <form:radiobutton path="b2b" value="true" required="required" />
                            <span>B2B</span>
                        </label>
                        <label>
-                           <form:radiobutton path="b2b" name="b2b"  value="false" required="required" />
+                           <form:radiobutton path="b2b" value="false" required="required" />
                            <span>B2C</span>
                        </label>
                    </div>
                </div>
+               <font color="red">
+                   <form:errors path="b2b" cssClass="error" />
+               </font>
            </div>
 
 
@@ -94,8 +111,8 @@
             </div>
             <div class="form-row">
                  <label for="city-id">City:</label>
-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
-                <input type="hidden" id="destinationId" name="city.destinationId" />
+                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
+                <form:hidden id="destinationId" path="city.destinationId" />
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
                 </font>
@@ -140,10 +157,8 @@
         paramName: "cityName",
         delimiter: ",",
         onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
+            var cityID = suggestion.data;
             jQuery("#destinationId").val(cityID);
-            $('input[name=cityId]').val(id);
             return false;
         },
         transformResult: function (response) {

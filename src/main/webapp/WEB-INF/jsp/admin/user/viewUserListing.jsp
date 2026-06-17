@@ -38,9 +38,23 @@
 
 </style>
 
-    <h2>View Users </h2>
-<!-- Client List Table Section -->
-<div class="form-container client-list-container" style="width: 60%; min-width: 60%; max-width: 60%;">
+    <h2 style="text-align: center; color: #1a1a2e; margin-bottom: 20px;">View Users</h2>
+
+    <div style="width: 90%; margin: 0 auto;">
+        <c:if test="${not empty Error}">
+            <div style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ef9a9a; text-align: center; font-weight: 500;">
+                ${Error}
+            </div>
+        </c:if>
+        <c:if test="${not empty Success}">
+            <div style="background-color: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #a5d6a7; text-align: center; font-weight: 500;">
+                ${Success}
+            </div>
+        </c:if>
+    </div>
+
+<!-- User List Table Section -->
+<div class="form-container user-list-container" style="width: 90%; min-width: 90%; max-width: 95%; margin: 20px auto;">
     <c:set value="${USER_FILTERED_LIST}" var="userList" />
        <table>
            <thead>
@@ -77,40 +91,40 @@
                              <td>${userRec.mobile}</td>
                              <td>
                                  <c:if test="${userRec.active eq true}">
-                                   <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Active" />
+                                   <input type="button" class="status-badge-active" value="Active" />
                                </c:if>
                                <c:if test="${userRec.active eq false}">
-                                   <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="Inactive" />
+                                   <input type="button" class="status-badge-inactive" value="Inactive" />
                                </c:if>
                              </td>
                               <td>
                                  <c:if test="${userRec.accountLocked eq true}">
-                                    <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="True" />
+                                    <input type="button" class="status-badge-inactive" value="Locked" />
                                   </c:if>
                                   <c:if test="${userRec.accountLocked eq false}">
-                                      <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;padding: 4px 5px;pointer-events: none;" value="False" />
+                                      <input type="button" class="status-badge-active" value="Unlocked" />
                                   </c:if>
                              </td>
                              <td>
                                     <form action="view_view_user" method="POST" style="display:inline;">
                                            <input type="hidden" name="userId" value="${userRec.userId}" />
                                            <c:if test="${LOGGED_IN_ROLE eq 'SUPERADMIN'}">
-                                                <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                                <button type="submit" class="view-btn">View</button>
                                            </c:if>
                                            <c:if test="${LOGGED_IN_ROLE ne 'SUPERADMIN'}">
                                                 <c:if test="${not userRec.superAdmin}">
-                                                    <button type="submit" class="view-btn" style="height: 25px; padding: 5px 10px;background-color:gray;">View</button>
+                                                    <button type="submit" class="view-btn">View</button>
                                                 </c:if>
                                            </c:if>
                                    </form>
                                    <form action="view_edit_user_form" method="POST" style="display:inline;">
                                        <input type="hidden" name="userId" value="${userRec.userId}" />
                                        <c:if test="${LOGGED_IN_ROLE eq 'SUPERADMIN'}">
-                                            <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                                            <button type="submit" class="edit-btn">Edit</button>
                                        </c:if>
                                        <c:if test="${LOGGED_IN_ROLE ne 'SUPERADMIN'}">
                                            <c:if test="${not userRec.superAdmin}">
-                                               <button type="submit" class="edit-btn" style="height: 25px; padding: 5px 10px;">Edit</button>
+                                               <button type="submit" class="edit-btn">Edit</button>
                                            </c:if>
                                       </c:if>
                                    </form>

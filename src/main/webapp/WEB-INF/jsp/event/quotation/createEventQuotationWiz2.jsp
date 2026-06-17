@@ -94,6 +94,27 @@
     opacity: 0.9;
     transform: scale(1.03);
   }
+
+  .btn-delete-event {
+    background-color: #ff4d4d !important;
+    border: none !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-size: 14px !important;
+    margin: 4px 2px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease-in-out !important;
+  }
+  .btn-delete-event:hover {
+    background-color: #ff3333 !important;
+  }
+  #finalAmount, #grandTotal {
+    padding-right: 25px !important;
+  }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -380,13 +401,14 @@ h2, h3 {
 
 <div class="container">
     <h2>Create Event Quotation (Wiz 2) </h2>
-     <div align="center" style="margin: 10px 0;">
-                <b>
-                    <font color="green">${Success}</font>
-                    <font color="red">${Error}</font>
-                </b>
-            </div>
+      <c:if test="${not empty SuccessMessage or not empty Success}">
+          <div class="alert alert-success" style="margin-bottom: 10px; text-align: center;"><font color="green" size="4"><b>${not empty SuccessMessage ? SuccessMessage : Success}</b></font></div>
+      </c:if>
+      <c:if test="${not empty ErrorMessage or not empty Error}">
+          <div class="alert alert-danger" style="margin-bottom: 10px; text-align: center;"><font color="red" size="4"><b>${not empty ErrorMessage ? ErrorMessage : Error}</b></font></div>
+      </c:if>
     <form:form method="post" action="create_create_event_quotation" modelAttribute="EVENT_PACKAGE" id="myForm">
+
         <form:hidden path="id" />
         <form:hidden path="guestId" />
         <form:hidden path="baseGuestCount" />
@@ -397,6 +419,7 @@ h2, h3 {
         <form:hidden path="quotationAudienceType" />
         <form:hidden path="contactMethod" />
         <form:hidden path="update" value="false"/>
+        <input type="hidden" id="initialServiceCount" value="${fn:length(EVENT_PACKAGE.services)}" />
 
          <div class="row" style="margin-bottom: 20px;">
           <div style="margin-right: 100px;">
@@ -440,9 +463,12 @@ h2, h3 {
     <font color="red">
       <form:errors path="eventEndDate" cssClass="error"  />
     </font>
+    <font color="red">
+      <form:errors path="email" cssClass="error"  />
+    </font>
     <h3>List of Services</h3>
 
-    <div class="table-container">
+<div id="servicesSection" class="table-container">
       <table class="styled-table" id="service-table">
         <thead>
           <tr>
@@ -455,28 +481,27 @@ h2, h3 {
           </tr>
         </thead>
         <tbody id="services-table-body">
-        <c:forEach var="service" items="${eventPackageEntityDTO.services}" varStatus="status">
+        <c:forEach var="service" items="${EVENT_PACKAGE.services}" varStatus="status">
             <tr>
                 <td><form:input path="services[${status.index}].serviceName" class= "input-field"  style="width:450px;" /></td>
               <td>
-              <form:select path="services[${status.index}].eventServiceCostTypeEntity"
+              <form:select path="services[${status.index}].eventServiceCostTypeEntity.eventServiceCostTypeId"
                                       items="${LIST_SERVICE_COST_TYPE}"
                                       itemValue="eventServiceCostTypeId"
                                       itemLabel="eventServiceCostTypeName"
-                                      cssClass="form-control"/>
+                                      cssClass="form-control service-cost-type"/>
               </td>
 
-              <td><form:input path="services[${status.index}].costPerUnit" class= "input-field" style="width:100px;" min="0" type="number" required="required"/></td>
-              <td><form:input path="services[${status.index}].quantity" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
-              <td><form:input path="services[${status.index}].totalCost" class= "input-field" style="width:100px;" min="0" type="number" required="required" /></td>
-              <td><button type="button" onclick="deleteRow(this)" style="background-color: #ff4d4d; border: none; color: white; padding: 8px 16px;text-align: center; text-decoration: none; display: inline-block;font-size: 14px; margin: 4px 2px; border-radius: 6px; cursor: pointer;">
+              <td><input name="services[${status.index}].costPerUnit" class= "input-field service-cost-per-unit" style="width:100px;" min="0" type="number" required="required" placeholder="0" value="${service.costPerUnit == 0 ? '' : service.costPerUnit}"/></td>
+              <td><input name="services[${status.index}].quantity" class= "input-field service-quantity" style="width:100px;" min="0" type="number" required="required" placeholder="0" value="${service.quantity == 0 ? '' : service.quantity}"/></td>
+              <td><form:input path="services[${status.index}].totalCost" class= "input-field service-total-cost" style="width:100px;" min="0" type="number" required="required" readonly="true"/></td>
+              <td><button type="button" onclick="deleteRow(this)" class="btn-delete-event">
                       Delete
                   </button>
 
             </tr>
         </c:forEach>
           <!-- Add more rows -->
-        </tr>
     </tbody>
       </table>
 <!-- Template Row (completely outside of <table>) -->
@@ -486,7 +511,7 @@ h2, h3 {
 
 <button type="button" onclick="addServiceRow()">Add Service</button>
 
- <div class="summary-container">
+<div id="summarySection" class="summary-container">
    <table class="styled-table">
     <tr>
     <td rowspan="3" style="vertical-align: top; padding-right: 20px;">
@@ -505,21 +530,37 @@ h2, h3 {
        <td><strong>Grand Total</strong></td>
        <td id="grandTotal">${eventPackageEntityDTO.grand_total_cost}</td>
      </tr>
-     <tr>
-       <th>Show Cost Breakup</th>
-       <td>
-         <div class="custom-checkbox">
-           <form:checkbox path="showBreakup" id="showBreakup" cssClass="styled-checkbox" />
-         </div>
-       </td>
-       <td><strong>Discount</strong></td>
-       <td>
-         <form:input path="discount" cssClass="input-field" id="discountInput" />
-         <div id="discountError" style="color:red; font-size: 12px;"></div>
-       </td>
-     </tr>
-     <tr>
-       <td colspan="3" style="font-weight: 600;"><strong>Final Amount</strong></td>
+<tr>
+   <th>Show Cost Breakup</th>
+   <td>
+     <div class="custom-checkbox">
+       <form:checkbox path="showBreakup" id="showBreakup" />
+     </div>
+   </td>
+
+   <td><strong>Discount</strong></td>
+   <td>
+     <form:input path="discount" cssClass="input-field" id="discountInput" />
+     <div id="discountError" style="color:red; font-size: 12px;"></div>
+   </td>
+</tr>
+
+<tr>
+   <th>Hide Cost</th>
+   <td>
+     <div class="custom-checkbox">
+<form:checkbox path="hideCost" id="hideCost"/>
+
+     </div>
+   </td>
+
+   <td></td>
+   <td></td>
+</tr>
+
+  <tr id="finalTotalRow">
+    <td colspan="3"><strong>Final Amount</strong></td>
+
        <td id="finalAmount">${eventPackageEntityDTO.grand_total_cost}</td>
 
      </tr>
@@ -547,8 +588,8 @@ h2, h3 {
 
    function createServiceCostTypeSelect(serviceIndex) {
      let select = document.createElement('select');
-     select.name = `services[\${serviceIndex}].eventServiceCostTypeEntity.eventServiceCostTypeId`;
-     select.className = 'form-control';
+     select.name = 'services[' + serviceIndex + '].eventServiceCostTypeEntity.eventServiceCostTypeId';
+     select.className = 'form-control service-cost-type';
 
      LIST_SERVICE_COST_TYPE.forEach(type => {
        let option = document.createElement('option');
@@ -560,75 +601,184 @@ h2, h3 {
      return select.outerHTML; // Use this when inserting into innerHTML
    }
 
+   let serviceIndexCounter = parseInt(document.getElementById("initialServiceCount").value) || 0;
+
 function addServiceRow() {
-const serviceIndex = document.querySelector("#service-table tbody").rows.length;
+    const tableBody = document.querySelector("#services-table-body");
+    const serviceIndex = serviceIndexCounter++;
+    const selectHTML = createServiceCostTypeSelect(serviceIndex);
 
-  const tableBody = document.querySelector("#services-table-body");
-
-  const newRow = document.createElement("tr");
-
-  const selectHTML = createServiceCostTypeSelect(serviceIndex);
-
-  newRow.innerHTML = `
-    <td><input name="services[\${serviceIndex}].serviceName" class="input-field" style="width:450px;" /></td>
-    <td>\${selectHTML}</td>
-    <td><input name="services[\${serviceIndex}].costPerUnit" class="input-field" style="width:100px;" min="0" required="true" type="number" /></td>
-    <td><input name="services[\${serviceIndex}].quantity" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
-    <td><input name="services[\${serviceIndex}].totalCost" class="input-field" style="width:100px;" min="0" required="true" type="number"/></td>
-    <td><input type="button" value="Delete" onclick="deleteRow(this)" /></td>
-  `;
-  tableBody.appendChild(newRow);
-  serviceIndex++;
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td><input name="services[` + serviceIndex + `].serviceName" class="input-field" style="width:450px;" /></td>
+        <td>` + selectHTML + `</td>
+        <td><input name="services[` + serviceIndex + `].costPerUnit" class="input-field service-cost-per-unit" style="width:100px;" min="0" required="true" type="number" value="" placeholder="0" /></td>
+        <td><input name="services[` + serviceIndex + `].quantity" class="input-field service-quantity" style="width:100px;" min="0" required="true" type="number" value="" placeholder="0" /></td>
+        <td><input name="services[` + serviceIndex + `].totalCost" class="input-field service-total-cost" style="width:100px;" min="0" required="true" type="number" value="0" readonly /></td>
+        <td><input type="button" value="Delete" class="btn-delete-event" onclick="deleteRow(this); updateGrandTotal();" /></td>
+    `;
+    tableBody.appendChild(newRow);
+    updateGrandTotal();
 }
-
 
 function deleteRow(button) {
-  const row = button.closest("tr"); // Get the row containing the clicked button
+  const row = button.closest("tr");
   const tableBody = document.querySelector("#services-table-body");
-
-  // Remove the selected row
   tableBody.removeChild(row);
 
-  // Re-index the remaining rows
   Array.from(tableBody.rows).forEach((row, index) => {
     const inputs = row.querySelectorAll("input, select");
-
     inputs.forEach(input => {
       if (input.name) {
-        // Replace the index inside the name attribute
-        input.name = input.name.replace(/services\[\d+\]/, `services[\${index}]`);
+        input.name = input.name.replace(/services\[\d+\]/, 'services[' + index + ']');
       }
     });
   });
 }
 
+   function getRowTotal(row) {
+     const costTypeId = row.querySelector(".service-cost-type, select").value;
+     const costPerUnit = parseFloat(row.querySelector(".service-cost-per-unit").value) || 0;
+     const quantity = parseFloat(row.querySelector(".service-quantity").value) || 0;
 
+     const startDate = new Date(document.getElementById("eventStartDate").value);
+     const endDate = new Date(document.getElementById("eventEndDate").value);
+     let totalNights = 1;
+     if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+       totalNights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+       if (totalNights <= 0) totalNights = 1;
+     }
+     const totalDays = totalNights + 1;
 
+     let costTypeName = "";
+     LIST_SERVICE_COST_TYPE.forEach(type => {
+       if (type.id == costTypeId) costTypeName = type.name;
+     });
 
+     let totalCost = 0;
+     switch (costTypeName) {
+       case "PER_GUEST_PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "PER_GUEST_ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       case "PER_GUEST_PER_DAY":
+         totalCost = quantity * costPerUnit * totalDays;
+         break;
+       case "PER_ROOM_ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       case "PER_ROOM_PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "PER_DAY":
+         totalCost = quantity * costPerUnit * totalDays;
+         break;
+       case "PER_NIGHT":
+         totalCost = quantity * costPerUnit * totalNights;
+         break;
+       case "ONE_TIME":
+         totalCost = quantity * costPerUnit;
+         break;
+       default:
+         totalCost = quantity * costPerUnit;
+     }
+     return totalCost;
+   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+   function calculateRowTotal(row) {
+     const totalCost = getRowTotal(row);
+     const totalCostInput = row.querySelector(".service-total-cost");
+     totalCostInput.value = Math.round(totalCost);
+   }
+
+   function updateGrandTotal() {
+     let grandTotal = 0;
+     document.querySelectorAll("#services-table-body tr").forEach(row => {
+       grandTotal += getRowTotal(row);
+     });
+     document.getElementById("grandTotal").textContent = Math.round(grandTotal);
+     updateFinalAmount();
+   }
+
+function updateFinalAmount() {
+    const grandTotal = parseFloat(document.getElementById("grandTotal").textContent) || 0;
     const discountInput = document.getElementById("discountInput");
-    const grandTotalEl = document.getElementById("grandTotal");
-    const finalAmountEl = document.getElementById("finalAmount");
+    let discount = parseFloat(discountInput.value) || 0;
     const errorEl = document.getElementById("discountError");
 
-    const grandTotal = parseInt(grandTotalEl.textContent.trim()) || 0;
+    if (discount > grandTotal) {
+      errorEl.textContent = "Discount cannot exceed Grand Total.";
+      discountInput.value = grandTotal;
+      discount = grandTotal;
+    } else {
+      errorEl.textContent = "";
+    }
 
-    discountInput.addEventListener("input", function () {
-      let discount = parseInt(discountInput.value.trim()) || 0;
+    const finalAmount = grandTotal - discount;
+    document.getElementById("finalAmount").textContent = Math.round(finalAmount);
+}
 
-      if (discount > grandTotal) {
-        errorEl.textContent = "Discount cannot exceed Grand Total.";
-        discountInput.value = grandTotal;
-        discount = grandTotal;
-      } else {
-        errorEl.textContent = "";
-      }
+document.addEventListener("DOMContentLoaded", function () {
+    const discountInput = document.getElementById("discountInput");
+    if (discountInput) discountInput.addEventListener("input", updateFinalAmount);
+    
+    const recalculateBtn = document.getElementById("recalculate");
+    if (recalculateBtn) {
+        recalculateBtn.addEventListener("click", function(e) {
+            document.querySelectorAll("#services-table-body tr").forEach(row => {
+                calculateRowTotal(row);
+            });
+            updateGrandTotal();
+        });
+    }
 
-      const finalAmount = grandTotal - discount;
-      finalAmountEl.textContent = finalAmount;
+    // Real-time calculation listeners
+    const tableBody = document.getElementById("services-table-body");
+    if (tableBody) {
+        tableBody.addEventListener("input", function(e) {
+            if (e.target.matches(".service-cost-per-unit, .service-quantity")) {
+                updateGrandTotal();
+            }
+        });
+        tableBody.addEventListener("change", function(e) {
+            if (e.target.matches(".service-cost-type")) {
+                updateGrandTotal();
+            }
+        });
+    }
+
+    updateGrandTotal();
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const showBreakup = document.getElementById("showBreakup");
+    const hideCost = document.getElementById("hideCost");
+
+    function handleCheckboxChange(changed) {
+
+        if (changed === showBreakup && showBreakup.checked) {
+            hideCost.checked = false;
+        }
+
+        if (changed === hideCost && hideCost.checked) {
+            showBreakup.checked = false;
+        }
+    }
+
+    showBreakup.addEventListener("change", function () {
+        handleCheckboxChange(showBreakup);
     });
-  });
+
+    hideCost.addEventListener("change", function () {
+        handleCheckboxChange(hideCost);
+    });
+
+});
 </script>
 
 

@@ -39,7 +39,14 @@
 </style>
 
 
-    <h2>New Lead</h2> <!-- Bold Header -->
+    <c:choose>
+        <c:when test="${empty LEAD_OBJ.leadId || LEAD_OBJ.leadId eq 0}">
+            <h2>New Lead</h2>
+        </c:when>
+        <c:otherwise>
+            <h2>Edit Lead</h2>
+        </c:otherwise>
+    </c:choose>
     <div class="form-container" style="width: 60%; min-width: 60%; max-width: 60%;">
         <form:form method="post" action="create_create_lead" modelAttribute="LEAD_OBJ" autocomplete="off">
             <input type="hidden" id="clientId" name="client.clientId" value="${LEAD_OBJ.client.clientId}" />
@@ -80,9 +87,19 @@
                 <div class="form-cell" >
                     <div class="form-row">
                         <label for="active-status">Status:</label>
-                       <form:select path="leadStatus" required="required" style="width:20%">
-                           <form:options items="${LEAD_STATUS_MAP}" />
-                       </form:select>
+                        <c:choose>
+                            <c:when test="${empty LEAD_OBJ.leadId || LEAD_OBJ.leadId eq 0}">
+                                <!-- New Lead: Default to 'Open' (ID 101) and Hide Dropdown -->
+                                <b><font color="blue">Open</font></b>
+                                <form:hidden path="leadStatus" value="101" />
+                            </c:when>
+                            <c:otherwise>
+                                <!-- Edit Lead: Keep Dropdown Visible -->
+                               <form:select path="leadStatus" required="required" style="width:20%">
+                                   <form:options items="${LEAD_STATUS_MAP}" />
+                               </form:select>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                  </div>
                 </div>
@@ -96,14 +113,14 @@
                 </div>
                 <div class="form-cell">
                     <label for="field6">Child With Bed</label>
-                    <form:input path="cwb" type="number" required="required" />
+                    <form:input path="cwb" type="number" />
                     <font color="red">
                         <form:errors path="cwb" cssClass="error" />
                     </font>
                 </div>
                 <div class="form-cell">
                     <label for="field7">Child No Bed</label>
-                    <form:input path="cnb" type="number" required="required" /> <br>
+                    <form:input path="cnb" type="number" /> <br>
                     <font color="red">
                         <form:errors path="cnb" cssClass="error" />
                     </font>
@@ -131,11 +148,11 @@
                          <div class="radio-group-container">
                              <div class="radio-group">
                                  <label>
-                                     <form:radiobutton path="qualified" name="qualified" value="true" required="required" />
+                                     <form:radiobutton path="qualified" name="qualified" value="true" />
                                      <span>Yes</span>
                                  </label>
                                  <label>
-                                     <form:radiobutton path="qualified" name="qualified"  value="false" required="required" />
+                                     <form:radiobutton path="qualified" name="qualified"  value="false" />
                                      <span>No</span>
                                  </label>
                              </div>
@@ -146,11 +163,11 @@
                       <div class="radio-group-container">
                            <div class="radio-group">
                                <label>
-                                   <form:radiobutton path="flagged" name="flagged" value="true" required="required" />
+                                   <form:radiobutton path="flagged" name="flagged" value="true" />
                                    <span>Yes</span>
                                </label>
                                <label>
-                                   <form:radiobutton path="flagged" name="flagged"  value="false" required="required" />
+                                   <form:radiobutton path="flagged" name="flagged"  value="false" />
                                    <span>No</span>
                                </label>
                            </div>
@@ -200,11 +217,11 @@
                                    <div class="radio-group-container">
                                        <div class="radio-group">
                                            <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" required="required" />
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed" value="true" />
                                                <span>Yes</span>
                                            </label>
                                            <label>
-                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" required="required" />
+                                               <form:radiobutton path="leadCreationClientInformed" name="leadCreationClientInformed"  value="false" />
                                                <span>No</span>
                                            </label>
                                        </div>

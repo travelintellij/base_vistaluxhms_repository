@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.AshokaTeam;
 import com.vistaluxhms.entity.DocumentCategoryEntity;
 import com.vistaluxhms.entity.DocumentCategoryMaster;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class DocumentCategoryServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(DocumentCategoryServiceImpl.class);
     @Autowired
     private DocumentCategoryRepository documentCategoryRepository;
 
@@ -121,7 +126,7 @@ public class DocumentCategoryServiceImpl {
         } else {
             // Normal users → Only unrestricted
             docs = documentCategoryRepository.findByRestrictedFalseAndDeletedFalse();
-            System.out.println("🔹 Fetching ONLY unrestricted documents");
+            logger.debug("🔹 Fetching ONLY unrestricted documents");
         }
 
         return docs.stream()
@@ -188,7 +193,7 @@ public class DocumentCategoryServiceImpl {
 
     public List<DocumentCategoryDTO> getDocumentsForUser(AshokaTeam user) {
         boolean hasAccess = userHasRestrictedAccess(user); // admins/managers/restricted
-        System.out.println("🟢 User has access to restricted docs: " + hasAccess);
+        logger.debug("🟢 User has access to restricted docs: " + hasAccess);
 
         // Fetch documents from repository
         List<DocumentCategoryEntity> docs = documentCategoryRepository.findAllAccessible(hasAccess);
@@ -215,7 +220,7 @@ public class DocumentCategoryServiceImpl {
         AshokaTeam user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
-            System.out.println("🔴 No AshokaTeam found for username: " + username);
+            logger.debug("🔴 No AshokaTeam found for username: " + username);
         } else {
             System.out.println("🟢 Logged-in user found in service: " + user.getName() + ", ID: " + user.getUserId());
         }

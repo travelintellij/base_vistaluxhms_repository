@@ -3,6 +3,7 @@ package com.vistaluxhms.entity;
 import com.vistaluxhms.model.SalesPartnerEntityDto;
 
 import javax.persistence.*;
+import com.vistaluxhms.util.VistaluxConstants;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +20,7 @@ public class SalesPartnerEntity {
     @Column(name = "salesPartnerName", nullable = false, length = 100)
     protected String salesPartnerName; // Full Name of Sales Partner
 
-    protected int cityId; // Foreign Key to Cities Table
+    protected int cityId = VistaluxConstants.DEFAULT_CITY_ID; // Foreign Key to Cities Table
 
     @Column(name = "active", nullable = false)
     protected Boolean active = true; // Active Status
@@ -52,13 +53,14 @@ public class SalesPartnerEntity {
         this.salesPartnerId = salesPartnerDto.getSalesPartnerId();
         this.salesPartnerShortName = salesPartnerDto.getSalesPartnerShortName();
         this.salesPartnerName = salesPartnerDto.getSalesPartnerName();
-        this.cityId = salesPartnerDto.getCityId(); // Assuming city is an object and will be mapped separately
+        this.cityId = (salesPartnerDto.getCityId() == 0) ? VistaluxConstants.DEFAULT_CITY_ID
+                : salesPartnerDto.getCityId(); // Use default city if not set
         this.active = salesPartnerDto.getActive();
         this.address = salesPartnerDto.getAddress();
         this.reference = salesPartnerDto.getReference();
         this.description = salesPartnerDto.getDescription();
-        this.mobile=salesPartnerDto.getMobile();
-        this.emailId=salesPartnerDto.getEmailId();
+        this.mobile = salesPartnerDto.getMobile();
+        this.emailId = salesPartnerDto.getEmailId();
     }
 
     public SalesPartnerEntity() {
@@ -188,7 +190,6 @@ public class SalesPartnerEntity {
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
-
 
     public RateTypeEntity getRateTypeEntity() {
         return rateTypeEntity;

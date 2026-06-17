@@ -71,11 +71,11 @@
               <div class="radio-group-container">
                   <div class="radio-group">
                       <label>
-                          <form:radiobutton path="b2b" value="true" />
+                          <form:radiobutton path="b2b" value="true" required="required" />
                           <span>Yes</span>
                       </label>
                       <label>
-                          <form:radiobutton path="b2b" value="false" />
+                          <form:radiobutton path="b2b" value="false" required="required" />
                           <span>No</span>
                       </label>
                   </div>
@@ -94,8 +94,8 @@
             </div>
             <div class="form-row">
                  <label for="city-id">City:</label>
-                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" />
-                <input type="hidden" id="destinationId" name="city.destinationId" value="${CLIENT_OBJ.city.destinationId}" />
+                <form:input path="cityName" name="cityName" placeholder="Type city name" autocomplete="off" required="required" />
+                <form:hidden id="destinationId" path="city.destinationId" />
 
                 <font color="red">
                     <form:errors path="cityName" cssClass="error" />
@@ -138,10 +138,8 @@
         paramName: "cityName",
         delimiter: ",",
         onSelect: function (suggestion) {
-            cityID = suggestion.data;
-            id = cityID;
+            var cityID = suggestion.data;
             jQuery("#destinationId").val(cityID);
-            $('input[name=cityId]').val(id);
             return false;
         },
         transformResult: function (response) {

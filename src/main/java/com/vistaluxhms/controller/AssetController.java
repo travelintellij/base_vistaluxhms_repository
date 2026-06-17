@@ -1,5 +1,8 @@
 package com.vistaluxhms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.*;
@@ -29,6 +32,8 @@ import java.util.stream.Collectors;
 @Controller
 public class AssetController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
     @Autowired
     private AssetServiceImpl assetService;
 
@@ -173,16 +178,15 @@ public class AssetController {
             }
 
             if (assetDTO.getAssetOwnerId() == null || assetDTO.getAssetOwnerId() == 0) {
-                assetDTO.setAssetOwnerId(
-                        userRepository.findByUsername("INI").get().getUserId()
-                );
+                mv.addObject("ownerError", "Please select an Assign Owner.");
+                return mv;
             }
 
             assetDTO.setActive(true);
             assetService.saveAsset(assetDTO);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception caught", e);
             mv.addObject("error", "Failed to save asset. Please try again.");
             return mv;
         }

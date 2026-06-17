@@ -1,5 +1,8 @@
 package com.vistaluxhms.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vistaluxhms.entity.*;
 import com.vistaluxhms.model.SessionFilterDTO;
 import com.vistaluxhms.model.SessionRateMappingEntityDTO;
@@ -22,6 +25,8 @@ import java.util.Optional;
 @Service
 public class StatusServiceImpl {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(StatusServiceImpl.class);
 	@Autowired
 	StatusRepository statusRepository;
 

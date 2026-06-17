@@ -2,8 +2,6 @@ package com.vistaluxhms.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-
 public class CentralConfigEntityDTO {
     private String hotelName;
     private String hotelAddress;
@@ -53,6 +51,10 @@ public class CentralConfigEntityDTO {
     private String usp;
 
     private String hotelInfo;
+
+    // ===== START: ADDED FOR LEAD SYNC =====
+    private Integer defaultLeadOwnerId;
+    // ===== END: ADDED FOR LEAD SYNC =====
 
     public String getHotelName() {
         return hotelName;
@@ -285,4 +287,15 @@ public class CentralConfigEntityDTO {
     public void setHotelInfo(String hotelInfo) {
         this.hotelInfo = hotelInfo;
     }
+
+    // ===== START: GETTER/SETTER ADDED FOR LEAD SYNC =====
+    public Integer getDefaultLeadOwnerId() {
+        return defaultLeadOwnerId;
+    }
+
+    public void setDefaultLeadOwnerId(Integer defaultLeadOwnerId) {
+        this.defaultLeadOwnerId = defaultLeadOwnerId;
+    }
+    // ===== END: GETTER/SETTER ADDED FOR LEAD SYNC =====
+
 }

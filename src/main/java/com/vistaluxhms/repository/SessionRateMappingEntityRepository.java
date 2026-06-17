@@ -16,14 +16,15 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
         // Fetch mappings by sessionId
         List<SessionRateMappingEntity> findBySessionEntity_SessionIdAndActiveTrue(Integer sessionId);
 
-        // Fetch mappings by rateTypeId
-        List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeIdAndActiveTrue(Integer rateTypeId);
+        // Fetch mappings by rateTypeId (Ensures parent Session is also active to avoid picking dead rates)
+        List<SessionRateMappingEntity> findByRateTypeEntity_RateTypeIdAndActiveTrueAndSessionEntity_ActiveTrue(Integer rateTypeId);
 
         @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
                 "FROM SessionRateMappingEntity s " +
                 "WHERE s.rateTypeEntity.rateTypeId = :rateTypeId " + // ✅ Use correct PK field
-                "AND ((s.startDate <= :endDate AND s.endDate >= :startDate))" +
-                "AND s.active = TRUE"
+                "AND ((s.startDate <= :endDate AND s.endDate >= :startDate)) " +
+                "AND s.active = TRUE " +
+                "AND s.sessionEntity.active = TRUE" // Ignore inactive parent sessions
         )
         boolean existsConflictingMapping(@Param("rateTypeId") int rateTypeId,
                                          @Param("startDate") LocalDate startDate,
@@ -31,5 +32,18 @@ public interface SessionRateMappingEntityRepository extends JpaRepository<Sessio
 
         List<SessionRateMappingEntity> findByRateTypeEntityRateTypeIdOrderByStartDateDesc(Integer rateTypeId);
 
+
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM SessionRateMappingEntity s " +
+            "WHERE s.sessionEntity.sessionId <> :sessionId " +
+            "AND s.rateTypeEntity.rateTypeId = :rateTypeId " +
+            "AND s.active = TRUE " +
+            "AND s.sessionEntity.active = TRUE " +
+            "AND (s.startDate <= :endDate AND s.endDate >= :startDate)")
+    boolean existsConflictingMappingForOtherActiveSessions(@Param("sessionId") Integer sessionId,
+                                                           @Param("rateTypeId") int rateTypeId,
+                                                           @Param("startDate") LocalDate startDate,
+                                                           @Param("endDate") LocalDate endDate);
 
 }

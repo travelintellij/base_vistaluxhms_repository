@@ -81,22 +81,22 @@
                       <td>${rateTypeRec.description }</td>
                       <td>
                       <c:if test="${rateTypeRec.active eq true}">
-                            <input type="button" style="background-color: #32cd32;border:none;outline:none;border-radius:5px;;padding: 4px 5px;pointer-events: none;"  value="Active" />
+                            <input type="button" class="status-badge-active"  value="Active" />
                         </c:if>
                         <c:if test="${rateTypeRec.active eq false}">
-                                <input type="button" style="background-color: red;border:none;outline:none;border-radius:5px;;padding: 4px 5px;pointer-events: none;"  value="In-Active" />
+                                <input type="button" class="status-badge-inactive"  value="In-Active" />
                         </c:if>
                        </td>
                       <td>
                           <form action="view_edit_rate_type_form" method="POST" style="display:inline;">
                               <!-- Hidden field to store destinationId -->
                               <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                              <button type="submit" class="btn btn-warning btn-sm"  style="height: 30px;  padding: 5px 10px; ">Edit</button>
+                              <button type="submit" class="edit-btn">Edit</button>
                          </form>
                          <form action="view_rate_type_sessionwise" method="POST" style="display:inline;">
                             <!-- Hidden field to store destinationId -->
                             <input type="hidden" name="rateTypeId" value="${rateTypeRec.rateTypeId}" />
-                            <button type="submit" class="btn btn-warning btn-sm"  style="height: 30px;  padding: 5px 10px; ">&#128197; Check Applicable Dates</button>
+                            <button type="submit" class="edit-btn">&#128197; Check Applicable Dates</button>
                         </form>
 
 

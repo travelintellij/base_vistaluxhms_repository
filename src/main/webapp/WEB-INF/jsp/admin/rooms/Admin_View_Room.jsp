@@ -110,6 +110,10 @@
                 <label>Child No Bed Percentage:</label>
                 <div class="value-box">${ROOM_OBJ.cnbPercentage}</div>
             </div>
+            <div class="col-md-4 form-group">
+                <label>Child With Bed % <br><small>(% for children with extrabed calculated from here)</small> :</label>
+                <div class="value-box">${ROOM_OBJ.cwbPercentage}</div>
+            </div>
             <div class="col-md-12 form-group">
                 <label>Description:</label>
                 <div class="value-box">${ROOM_OBJ.description}</div>

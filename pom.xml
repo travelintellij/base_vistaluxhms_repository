@@ -17,7 +17,7 @@
 		<hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
 		<spring-data-jpa.version>2.2.6.RELEASE</spring-data-jpa.version>
 		<spring-security.version>5.3.0.RELEASE</spring-security.version>
-		<mysql-connector.version>8.0.17</mysql-connector.version>
+		<mysql-connector.version>8.0.33</mysql-connector.version>
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
@@ -28,15 +28,29 @@
 	</parent>
 
 	<dependencies>
-		<dependency>
+        <!-- Excel Export -->
+        <!-- Excel Export -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
+
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- ===== AI MODIFICATION START =====
+		     Change: Commented out devtools dependency
+		     Reason: Spring Boot 2.2.1 DevTools ASM cannot read JDK 21 class files (major version 63), causing crash on restart
+		     Scope: Application startup stability
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		===== AI MODIFICATION END ===== -->
 		<!-- Spring boot jdbc dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,6 +64,12 @@
 			<version>${mysql-connector.version}</version>
 
 
+		</dependency>
+		<!-- PostgreSQL dependency (for local testing) -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.6.0</version>
 		</dependency>
 		<!-- Related to Spring security -->
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>

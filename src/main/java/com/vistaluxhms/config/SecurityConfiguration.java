@@ -1,6 +1,5 @@
 package com.vistaluxhms.config;
 
-
 import com.vistaluxhms.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +11,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-
 
 @Configuration
 @EnableWebSecurity
@@ -25,32 +22,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl myUserDetailsService;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
     }
 
-
-	/*@Bean
-	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
-	}*/
-
     @Bean
-    public PasswordEncoder encoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .headers()
-                .frameOptions().sameOrigin()  // ← ✅ Add this line
+                .frameOptions().sameOrigin() // ← ✅ Add this line
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/resources/**", "/static/**").permitAll() // Allow public access to login and resources
+                .antMatchers("/login", "/forgot-password", "/reset-password", "/resources/**", "/static/**").permitAll() // Allow public access to login, forgot/reset password and resources
+                                                                                  // resources
                 .antMatchers("/admin").hasRole("ADMIN") // Only admins can access /admin
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER") // Admins and users can access /user
                 .antMatchers("/view_form_manage_central_config").hasRole("SUPERADMIN")// added this line.
@@ -63,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll() // Allow logout for everyone
-                .and()//added this and below
+                .and()// added this and below
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied");
     }
