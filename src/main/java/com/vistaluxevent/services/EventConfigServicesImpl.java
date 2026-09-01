@@ -53,41 +53,48 @@ public class EventConfigServicesImpl {
 
 	@Transactional(readOnly = true)
 	public EventDetailsConfigDTO getEventDtoByType(String eventTypeStr) {
-		EventType eventType = EventType.valueOf(eventTypeStr.toUpperCase());
-		EventDetailsConfigDTO dto = new EventDetailsConfigDTO();
-		dto.setEventType(eventType.name());
-
-		EventDetailsConfigEntity details = detailsRepo.findByEventType(eventType).orElse(null);
-		if (details == null) {
-			// empty DTO with 6 nulls for gallery
-			dto.setGalleryImageDataUrls(Arrays.asList(new String[6]));
-			return dto;
+		if (eventTypeStr == null || eventTypeStr.trim().isEmpty()) {
+			return null;
 		}
+		try {
+			EventType eventType = EventType.valueOf(eventTypeStr.toUpperCase());
+			EventDetailsConfigDTO dto = new EventDetailsConfigDTO();
+			dto.setEventType(eventType.name());
 
-		// banner
-		if (details.getBannerImage() != null && details.getBannerImage().length > 0) {
-			String mime = Optional.ofNullable(details.getBannerMimeType()).orElse("image/jpeg");
-			dto.setBannerImageDataUrl(toDataUrl(mime, details.getBannerImage()));
-		}
-
-		// gallery 1..6
-		List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(details);
-		// create array of size 6; fill positions by index-1
-		List<String> gallery = new ArrayList<>(Collections.nCopies(6, null));
-		for (EventImageConfigEntity img : images) {
-			int idx = img.getImageIndex();
-			if (idx >= 1 && idx <= 6 && img.getImageData() != null) {
-				String mime = Optional.ofNullable(img.getMimeType()).orElse("image/jpeg");
-				gallery.set(idx - 1, toDataUrl(mime, img.getImageData()));
+			EventDetailsConfigEntity details = detailsRepo.findByEventType(eventType).orElse(null);
+			if (details == null) {
+				// empty DTO with 6 nulls for gallery
+				dto.setGalleryImageDataUrls(Arrays.asList(new String[6]));
+				return dto;
 			}
-		}
-		dto.setGalleryImageDataUrls(gallery);
 
-		dto.setResortInfo(details.getResortInfo());
-		dto.setCelebrationHighlight(details.getCelebrationHighlight());
-		dto.setTestimonial(details.getTestimonial());
-		dto.setTermsConditions(details.getTermsConditions());
-		return dto;
+			// banner
+			if (details.getBannerImage() != null && details.getBannerImage().length > 0) {
+				String mime = Optional.ofNullable(details.getBannerMimeType()).orElse("image/jpeg");
+				dto.setBannerImageDataUrl(toDataUrl(mime, details.getBannerImage()));
+			}
+
+			// gallery 1..6
+			List<EventImageConfigEntity> images = imageRepo.findByEventDetailsOrderByImageIndex(details);
+			// create array of size 6; fill positions by index-1
+			List<String> gallery = new ArrayList<>(Collections.nCopies(6, null));
+			for (EventImageConfigEntity img : images) {
+				int idx = img.getImageIndex();
+				if (idx >= 1 && idx <= 6 && img.getImageData() != null) {
+					String mime = Optional.ofNullable(img.getMimeType()).orElse("image/jpeg");
+					gallery.set(idx - 1, toDataUrl(mime, img.getImageData()));
+				}
+			}
+			dto.setGalleryImageDataUrls(gallery);
+
+			dto.setResortInfo(details.getResortInfo());
+			dto.setCelebrationHighlight(details.getCelebrationHighlight());
+			dto.setTestimonial(details.getTestimonial());
+			dto.setTermsConditions(details.getTermsConditions());
+			return dto;
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 	}
 
 	@Transactional

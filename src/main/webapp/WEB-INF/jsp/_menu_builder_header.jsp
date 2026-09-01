@@ -28,151 +28,139 @@
 /*
  function updateLogo() {
      const logo = document.getElementById('topLogo');
-     logo.src = '<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg?ts=' + new Date().getTime();
+     logo.src = '<%= request.getContextPath() %>/resources/images/Axis Pro-Logo.png?ts=' + new Date().getTime();
  } */
 </script>
-<style>
- .gear-icon {
-     font-size: 20px;
-     background-color: #007bff; /* Blue background */
-     color: white;              /* Icon color */
-     padding: 6px 8px;
-     border-radius: 50%;        /* Makes it circular */
-     margin-right: 5px;
-</style>
 <body>
 <header>
     <div class="logo">
-        <a href="view_workloadhome"><img id = "topLogo" src="<%= request.getContextPath() %>/resources/images/ashoka_logo.jpg" alt="Logo"></a>
+        <a href="view_workloadhome"><img id="topLogo" src="<%= request.getContextPath() %>/resources/images/Axis Pro-Logo.png" alt="Logo"></a>
         <h1>AxisHMS Pro - Perfect Hotel CRM Solution</h1>
     </div>
-  <div class="welcome">
-      Welcome, <strong><sec:authentication property="principal.username"/></strong>
-  </div>
-
+    <div class="welcome">
+        <span>Welcome,</span> <strong><sec:authentication property="principal.username"/></strong>
+    </div>
 </header>
-<nav>
-    <ul>
-       <sec:authorize access="hasAnyRole('ADMIN','LEADS_MANAGE')">
-             <li>
-                 <a href="#">Lead Management</a>
-                 <ul class="submenu">
-                     <li><a href="view_add_lead_form">New Lead</a></li>
-                     <li>
-                         <a href="view_filter_leads">Lead Management</a>
-                     </li>
-                 </ul>
-             </li>
+<nav class="main-navbar">
+    <ul class="nav-menu">
+        <sec:authorize access="hasAnyRole('ADMIN','LEADS_MANAGE')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Leads <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li><a href="view_add_lead_form">New Lead</a></li>
+                    <li><a href="view_filter_leads">Lead Management</a></li>
+                </ul>
+            </li>
         </sec:authorize>
+
         <sec:authorize access="hasAnyRole('ADMIN','USER_MANAGE')">
-                    <li>
-                        <a href="#">User Management</a>
-                        <ul class="submenu">
-                            <li><a href="view_add_user_form">Add User</a></li>
-                            <li>
-                                <a href="view_users_list">User Management</a>
-                            </li>
-                        </ul>
-                    </li>
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Users <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li><a href="view_add_user_form">Add User</a></li>
+                    <li><a href="view_users_list">User Management</a></li>
+                </ul>
+            </li>
         </sec:authorize>
+
         <sec:authorize access="hasAnyRole('ADMIN','CLIENT_CREATE','CLIENT_MANAGE')">
-            <li>
-                <a href="#">Client Management</a>
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Clients <span class="nav-arrow">&#9662;</span></a>
                 <ul class="submenu">
                     <li><a href="view_add_client_form">Add Client</a></li>
                     <sec:authorize access="hasAnyRole('ADMIN','CLIENT_MANAGE')">
-                    <li>
-                        <a href="view_clients_list">Clients Management</a>
-                    </li>
+                        <li><a href="view_clients_list">Clients Management</a></li>
                     </sec:authorize>
                 </ul>
             </li>
         </sec:authorize>
+
         <c:if test="${role == 'admin' || role == 'guest'}">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Others <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
                     <li>
-                        <a href="#">Others</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="#">City</a>
-                                <ul class="second-level">
-                                    <li><a href="view_add_city_form">Add City</a></li>
-                                    <li><a href="view_search_city_form">Manage Cities</a></li>
-                                </ul>
-                            </li>
+                        <a href="#">City <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="view_add_city_form">Add City</a></li>
+                            <li><a href="view_search_city_form">Manage Cities</a></li>
                         </ul>
                     </li>
-         </c:if>
-            <li>
-                <a href="#">Sales Management</a>
-                <ul class="submenu">
-                    <sec:authorize access="hasAnyRole('ADMIN','RATE_TYPE_MANAGE')">
-                      <li>
-                            <a href="#">Rate Type</a>
-                            <ul class="second-level">
-                                <li><a href="view_add_rate_type_form">Add Rate Type</a></li>
-                                <li><a href="view_rate_type_list">Manage Rate Type</a></li>
-                            </ul>
-                       </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_CREATE','SALES_PARTNER_MANAGE')">
-                      <li>
-                            <a href="#">Sales Partner</a>
-                            <ul class="second-level">
-                                <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
-                                <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
-                                    <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
-                                </sec:authorize>
-                            </ul>
-                        </li>
-                      </sec:authorize>
-
-                    <sec:authorize access="hasAnyRole('ADMIN','ROOMS_MANAGE')">
-                      <li>
-                        <a href="#">Master Rooms Management</a>
-                        <ul class="second-level">
-                        <li><a href="view_add_room_category_form">Add Room</a></li>
-                        <li><a href="view_rooms_list">Manage Rooms</a></li>
-                    </ul>
-                    </li>
-                   </sec:authorize>
                 </ul>
             </li>
-             <sec:authorize access="hasAnyRole('ADMIN','COST_MANAGE')">
+        </c:if>
+
+        <li class="nav-item">
+            <a href="#" class="nav-btn">Sales <span class="nav-arrow">&#9662;</span></a>
+            <ul class="submenu">
+                <sec:authorize access="hasAnyRole('ADMIN','RATE_TYPE_MANAGE')">
                     <li>
-                        <a href="#">Cost Management</a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="#">Session</a>
-                                <ul class="second-level">
-                                    <li><a href="view_add_session_form">Add Session</a></li>
-                                    <li><a href="view_session_list">Manage Sessions</a></li>
-                                </ul>
-                            </li>
+                        <a href="#">Rate Type <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="view_add_rate_type_form">Add Rate Type</a></li>
+                            <li><a href="view_rate_type_list">Manage Rate Type</a></li>
                         </ul>
                     </li>
-         </sec:authorize>
-         <li>
-                 <a href="#">Quotation Management</a>
-                 <ul class="submenu">
-                     <li><a href="view_add_quotation_form">New System Quotation</a></li>
-                     <li><a href="view_add_free_hand_quotation_form" style="color: yellow;">New Free Hand Quotation</a></li>
-                 </ul>
-             </li>
-        <sec:authorize access="hasAnyRole('ADMIN','EVENT_MANAGE')">
-            <li>
-                <a href="#">Event Management</a>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_CREATE','SALES_PARTNER_MANAGE')">
+                    <li>
+                        <a href="#">Sales Partner <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="view_add_sales_partner_form">Add Sales Partner</a></li>
+                            <sec:authorize access="hasAnyRole('ADMIN','SALES_PARTNER_MANAGE')">
+                                <li><a href="view_sales_partner_list">Manage Sales Partner</a></li>
+                            </sec:authorize>
+                        </ul>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('ADMIN','ROOMS_MANAGE')">
+                    <li>
+                        <a href="#">Master Rooms Management <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="view_add_room_category_form">Add Room</a></li>
+                            <li><a href="view_rooms_list">Manage Rooms</a></li>
+                        </ul>
+                    </li>
+                </sec:authorize>
+            </ul>
+        </li>
+
+        <sec:authorize access="hasAnyRole('ADMIN','COST_MANAGE')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Costing <span class="nav-arrow">&#9662;</span></a>
                 <ul class="submenu">
-                      <li>
-                        <a href="#">Event Services </a>
+                    <li>
+                        <a href="#">Session <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="view_add_session_form">Add Session</a></li>
+                            <li><a href="view_session_list">Manage Sessions</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </sec:authorize>
+
+        <li class="nav-item">
+            <a href="#" class="nav-btn">Quotations <span class="nav-arrow">&#9662;</span></a>
+            <ul class="submenu">
+                <li><a href="view_add_quotation_form">New System Quotation</a></li>
+                <li><a href="view_add_free_hand_quotation_form" class="badge-highlight">&#9733; New Free Hand Quotation</a></li>
+            </ul>
+        </li>
+
+        <sec:authorize access="hasAnyRole('ADMIN','EVENT_MANAGE')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Events <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#">Event Services <span class="sub-arrow">&#8250;</span></a>
                         <ul class="second-level">
                             <li><a href="view_event_quotation_form_wiz1">Create Event Quotation</a></li>
                             <li><a href="view_filter_events">Manage Events</a></li>
                         </ul>
                     </li>
-
-
                     <li>
-                        <a href="#">Master Service </a>
+                        <a href="#">Master Service <span class="sub-arrow">&#8250;</span></a>
                         <ul class="second-level">
                             <li><a href="view_add_master_service_form">Add Master Service</a></li>
                             <li><a href="view_master_service_list">Manage Services</a></li>
@@ -181,92 +169,85 @@
                 </ul>
             </li>
         </sec:authorize>
+
         <sec:authorize access="hasAnyRole('SUPERADMIN','EXPENSE_APPROVER','CAN_CLAIM')">
-            <li>
-                <a href="#">My Claims</a>
+            <li class="nav-item">
+                <a href="#" class="nav-btn">My Claims <span class="nav-arrow">&#9662;</span></a>
                 <ul class="submenu">
                     <li>
                         <sec:authorize access="hasAnyRole('CAN_CLAIM')">
                             <a href="view_add_travel_claim_form">New Travel Claim</a>
                         </sec:authorize>
                         <a href="view_travel_claim_list?view_travelclaimlist">Manage Travel Claims</a>
-                        <!--
-                        <a href="view_add_claim_form">New Claim</a>
-                        <a href="#">Claim Reports</a>
-                        -->
                     </li>
                 </ul>
             </li>
         </sec:authorize>
-       <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER','ASSET_ALLOWED')">
-           <li>
-               <a href="#">Asset Management</a>
-               <ul class="submenu">
-                   <li>
-                       <a href="#">Asset</a>
-                       <ul class="second-level">
-                           <!-- Add Asset only for ADMIN or ASSET_MANAGER -->
-                           <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
-                               <li><a href="${pageContext.request.contextPath}/add_asset">Add Asset</a></li>
-                           </sec:authorize>
-                           <!-- Manage Assets visible for everyone -->
-                           <li><a href="${pageContext.request.contextPath}/view_assets_list">Manage Assets</a></li>
-                       </ul>
-                   </li>
 
+        <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER','ASSET_ALLOWED')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Assets <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#">Asset <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
+                                <li><a href="${pageContext.request.contextPath}/add_asset">Add Asset</a></li>
+                            </sec:authorize>
+                            <li><a href="${pageContext.request.contextPath}/view_assets_list">Manage Assets</a></li>
+                        </ul>
+                    </li>
+                    <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
+                        <li>
+                            <a href="#">Category <span class="sub-arrow">&#8250;</span></a>
+                            <ul class="second-level">
+                                <li><a href="${pageContext.request.contextPath}/categories_add">Add Category</a></li>
+                                <li><a href="${pageContext.request.contextPath}/categories_manage">Manage Categories</a></li>
+                            </ul>
+                        </li>
+                    </sec:authorize>
+                </ul>
+            </li>
+        </sec:authorize>
 
-                   <sec:authorize access="hasAnyRole('ADMIN','ASSET_MANAGER')">
-                       <li>
-                           <a href="#">Category</a>
-                           <ul class="second-level">
-                               <li><a href="${pageContext.request.contextPath}/categories_add">Add Category</a></li>
-                               <li><a href="${pageContext.request.contextPath}/categories_manage">Manage Categories</a></li>
-                           </ul>
-                       </li>
-                   </sec:authorize>
-               </ul>
-           </li>
-       </sec:authorize>
+        <sec:authorize access="hasAnyRole('ADMIN','DOCUMENT_MANAGER')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Documents <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li>
+                        <a href="#">Documents <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="${pageContext.request.contextPath}/add_document">Add Document</a></li>
+                            <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Category <span class="sub-arrow">&#8250;</span></a>
+                        <ul class="second-level">
+                            <li><a href="${pageContext.request.contextPath}/add_documentcategory">Add Category</a></li>
+                            <li><a href="${pageContext.request.contextPath}/manage_documentcategories">Manage Categories</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </sec:authorize>
 
-<sec:authorize access="hasAnyRole('ADMIN','DOCUMENT_MANAGER')">
-    <li>
-        <a href="#">Document Repository</a>
-        <ul class="submenu">
-
-            <li>
-                <a href="#">Documents</a>
-                <ul class="second-level">
-                    <li><a href="${pageContext.request.contextPath}/add_document">Add Document</a></li>
+        <sec:authorize access="hasAnyRole('DOCUMENT_ALLOWED','RESTRICTED_DOC_ACCESS')">
+            <li class="nav-item">
+                <a href="#" class="nav-btn">Knowledge <span class="nav-arrow">&#9662;</span></a>
+                <ul class="submenu">
                     <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
                 </ul>
             </li>
+        </sec:authorize>
 
-
-            <li>
-                <a href="#">Category</a>
-                <ul class="second-level">
-                    <li><a href="${pageContext.request.contextPath}/add_documentcategory">Add Category</a></li>
-                    <li><a href="${pageContext.request.contextPath}/manage_documentcategories">Manage Categories</a></li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-</sec:authorize>
-       <sec:authorize access="hasAnyRole('DOCUMENT_ALLOWED','RESTRICTED_DOC_ACCESS')">
-          <li>
-              <a href="#">Knowledge Repository</a>
-              <ul class="submenu">
-                  <li><a href="${pageContext.request.contextPath}/view_documents_list">Manage Documents</a></li>
-              </ul>
-          </li>
-       </sec:authorize>
-
-
-        <li><a href="logout" class="logout">Logout</a></li>
-        <li>
-          <a href="view_form_my_profile">
-            <span class="gear-icon" >&#9881;</span>
-          </a>
+        <li class="nav-item nav-right-actions">
+            <a href="logout" class="nav-btn nav-btn-logout">Logout</a>
+        </li>
+        <li class="nav-item">
+            <a href="view_form_my_profile" class="nav-btn nav-btn-profile" title="My Profile">
+                <span class="gear-icon">&#9881;</span>
+            </a>
         </li>
     </ul>
 </nav>

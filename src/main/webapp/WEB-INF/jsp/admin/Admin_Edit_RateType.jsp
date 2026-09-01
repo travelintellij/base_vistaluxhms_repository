@@ -68,7 +68,7 @@
 
             <!-- Second Row -->
             <div class="button-container">
-               <input type="submit" value="Edit Rate Type" class="clear-filter-btn">
+               <input type="submit" value="Update Rate Type" class="clear-filter-btn">
                <a href="view_rate_type_list"><input type="button" class="clear-filter-btn" value="View Rate Types List"></input></a>
             </div>
         </form:form>

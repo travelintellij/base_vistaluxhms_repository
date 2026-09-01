@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -34,6 +35,7 @@ import com.vistaluxhms.util.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
@@ -47,6 +49,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.ResourceUtils;
 
+
+import org.springframework.util.StreamUtils;
+import java.io.InputStream;
+import java.util.Base64;
+import com.vistaluxhms.util.VistaluxConstants;
 
 import freemarker.cache.WebappTemplateLoader;
 import freemarker.core.Configurable;
@@ -224,8 +231,15 @@ public class EmailServiceImpl {
 	                StandardCharsets.UTF_8.name());
 
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
-			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
-			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+			byte[] logoBytes = null;
+			if (mail.getModel().get("logoUrl") == null || mail.getModel().get("logoUrl").toString().trim().isEmpty() || mail.getModel().get("logoUrl").toString().startsWith("data:")) {
+				logoBytes = getUploadedLogoBytes();
+				if (logoBytes != null && logoBytes.length > 0) {
+					mail.getModel().put("logoUrl", "cid:resortLogo");
+				} else if (centralConfigEntity != null && centralConfigEntity.getLogoPath() != null && !centralConfigEntity.getLogoPath().trim().isEmpty()) {
+					mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath().trim());
+				}
+			}
 			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
 			mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
 			mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
@@ -235,41 +249,55 @@ public class EmailServiceImpl {
 			mail.getModel().put("linkedin", centralConfigEntity.getLinkedinLink());
 			mail.getModel().put("youtube", centralConfigEntity.getYoutubeLink());
 			mail.getModel().put("companyName", centralConfigEntity.getCompanyName());
-			//If you have any inline image then following code needs to be commented and add
-	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
-	        //image files location for ftl template is different. 
-	        /*
-	        File fileRes = ResourceUtils.getFile(ftlTemplateImagePath + File.separator + "tglogo.png");
-	        //System.out.println("Path isss " + fileRes.getAbsolutePath());
-	        helper.addAttachment("udanchoo.png", fileRes);
-	         */
 			mail.getModel().put("logoCid", "ashokaLogo");
 
 			Template template = freemarkerConfig.getTemplate(templateName);
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getTo());
-	        if(mail.getCc()!=null && mail.getCc().trim().length()>0) {
-	        	helper.setCc(mail.getCc());
+	        if(mail.getCc()!=null && isValidEmail(mail.getCc().trim())) {
+	        	helper.setCc(mail.getCc().trim());
 	        }
 			if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
 				List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
-				InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
-				for (int i = 0; i < emailListWaterBcc.size(); i++) {
-					try {
-						emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
-					} catch (AddressException e) {
-						throw new RuntimeException(e);
+				if (!emailListWaterBcc.isEmpty()) {
+					List<InternetAddress> emailWatcherAddresses = new ArrayList<>();
+					for (int i = 0; i < emailListWaterBcc.size(); i++) {
+						try {
+							emailWatcherAddresses.add(new InternetAddress(emailListWaterBcc.get(i).trim()));
+						} catch (AddressException e) {
+							throw new RuntimeException(e);
+						}
+					}
+					if (!emailWatcherAddresses.isEmpty()) {
+						helper.setBcc(emailWatcherAddresses.toArray(new InternetAddress[0]));
 					}
 				}
-				helper.setBcc(emailWatcherAddresses);
 			}
 	        helper.setText(html, true);
+	        if (logoBytes != null && logoBytes.length > 0 && html.contains("cid:resortLogo")) {
+				try {
+					String mimeType = "image/png";
+					if (VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpg") || VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpeg")) {
+						mimeType = "image/jpeg";
+					}
+					helper.addInline("resortLogo", new ByteArrayResource(logoBytes), mimeType);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        }
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
             helper.setReplyTo(replyToEmail);
 
-	       mailSender.send(message);
+	       try {
+	           mailSender.send(message);
+	           System.out.println("Email successfully dispatched to: " + mail.getTo());
+	       } catch (Exception e) {
+	           System.err.println("CRITICAL ERROR: Failed to send email via JavaMailSender: " + e.getMessage());
+	           e.printStackTrace();
+	           throw e;
+	       }
 	    }
 	    
 	    
@@ -278,15 +306,21 @@ public class EmailServiceImpl {
 			CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
 			String eventType;
 
-
             if(mail.getModel().get("eventType")!=null)
 				eventType = mail.getModel().get("eventType").toString();
 			else
 				eventType = "wedding";
 
 			EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails(eventType);
-			//String logoUrl = centralConfigEntity.getBaseUrl() + "/resources/images/ashoka_logo.jpg";
-			mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath());
+			byte[] logoBytes = null;
+			if (mail.getModel().get("logoUrl") == null || mail.getModel().get("logoUrl").toString().trim().isEmpty() || mail.getModel().get("logoUrl").toString().startsWith("data:")) {
+				logoBytes = getUploadedLogoBytes();
+				if (logoBytes != null && logoBytes.length > 0) {
+					mail.getModel().put("logoUrl", "cid:resortLogo");
+				} else if (centralConfigEntity != null && centralConfigEntity.getLogoPath() != null && !centralConfigEntity.getLogoPath().trim().isEmpty()) {
+					mail.getModel().put("logoUrl", centralConfigEntity.getLogoPath().trim());
+				}
+			}
 			mail.getModel().put("escalationEmail", centralConfigEntity.getEscalationEmail());
 			mail.getModel().put("escalationPhone", centralConfigEntity.getEscalationPhone());
 			mail.getModel().put("centralNumber", centralConfigEntity.getCentralNumber());
@@ -299,11 +333,9 @@ public class EmailServiceImpl {
 
 			mail.getModel().put("centralConfig", centralConfigEntity);
 			mail.getModel().put("eventConfig", eventDetailsConfigDTO);
-            mail.getModel().put("serviceAdvisorMobile",centralConfigEntity.getCentralNumber());
-
-			/*mail.getModel().put("quotationTopCover", centralConfigEntity.getQuotationTopCover());
-			mail.getModel().put("inclusions", centralConfigEntity.getInclusions());
-			mail.getModel().put("tnc", centralConfigEntity.getTnc());*/
+			if (mail.getModel().get("serviceAdvisorMobile") == null || mail.getModel().get("serviceAdvisorMobile").toString().trim().isEmpty()) {
+				mail.getModel().put("serviceAdvisorMobile", centralConfigEntity.getCentralNumber());
+			}
 
 			freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
 	    	//freemarkerConfig.setDirectoryForTemplateLoading(new File(this.fileStorageLocation.get"));
@@ -316,39 +348,111 @@ public class EmailServiceImpl {
 	        MimeMessageHelper helper = new MimeMessageHelper(message,
 	                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 	                StandardCharsets.UTF_8.name());
-	        
-	        //If you have any inline image then following code needs to be commented and add
-	        // cid:udanchoo.png as placeholer in the ftl template. Dont forget that 
-	        //image files location for ftl template is different. 
-	        /*
-	        File fileRes = ResourceUtils.getFile(ftlTemplateImagePath + File.separator + "tglogo.png");
-	        //System.out.println("Path isss " + fileRes.getAbsolutePath());
-	        helper.addAttachment("udanchoo.png", fileRes);
-	         */
         
 	        Template template = freemarkerConfig.getTemplate(templateName);
 	        String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, mail.getModel());
 
 	        helper.setTo(mail.getToList());
-	        /*helper.setCc(mail.getCcList());*/
+	        if (mail.getCc() != null && isValidEmail(mail.getCc().trim())) {
+				try {
+					helper.setCc(mail.getCc().trim());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        } else if (mail.getCcList() != null && mail.getCcList().length > 0) {
+				try {
+					helper.setCc(mail.getCcList());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
 	        if(emailNotifyBcc!=null && emailNotifyBcc.trim().length()>0) {
 				List<String> emailListWaterBcc = validateAndExtractEmails(emailNotifyBcc);
-				InternetAddress[] emailWatcherAddresses = new InternetAddress[emailListWaterBcc.size()];
-				for (int i = 0; i < emailListWaterBcc.size(); i++) {
-					try {
-						emailWatcherAddresses[i] = new InternetAddress(emailListWaterBcc.get(i).trim());
-					} catch (AddressException e) {
-						throw new RuntimeException(e);
+				if (!emailListWaterBcc.isEmpty()) {
+					List<InternetAddress> emailWatcherAddresses = new ArrayList<>();
+					for (int i = 0; i < emailListWaterBcc.size(); i++) {
+						try {
+							emailWatcherAddresses.add(new InternetAddress(emailListWaterBcc.get(i).trim()));
+						} catch (AddressException e) {
+							throw new RuntimeException(e);
+						}
+					}
+					if (!emailWatcherAddresses.isEmpty()) {
+						helper.setBcc(emailWatcherAddresses.toArray(new InternetAddress[0]));
 					}
 				}
-				helper.setBcc(emailWatcherAddresses);
 	        }
 	        helper.setText(html, true);
+	        if (logoBytes != null && logoBytes.length > 0 && html.contains("cid:resortLogo")) {
+				try {
+					String mimeType = "image/png";
+					if (VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpg") || VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpeg")) {
+						mimeType = "image/jpeg";
+					}
+					helper.addInline("resortLogo", new ByteArrayResource(logoBytes), mimeType);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        }
 	        helper.setSubject(mail.getSubject());
 	        helper.setFrom(mail.getFrom());
             helper.setReplyTo(replyToEmail);
-	       mailSender.send(message);
+
+	       try {
+	           mailSender.send(message);
+	           System.out.println("Multiple-recipients email successfully dispatched to: " + (mail.getToList() != null ? Arrays.toString(mail.getToList()) : ""));
+	       } catch (Exception e) {
+	           System.err.println("CRITICAL ERROR: Failed to send multiple-recipients email via JavaMailSender: " + e.getMessage());
+	           e.printStackTrace();
+	           throw e;
+	       }
 	    }
+
+	public byte[] getUploadedLogoBytes() {
+		try {
+			if (servletContext != null) {
+				String path = VistaluxConstants.LOGO_PATH + "/" + VistaluxConstants.LOGO_FILE_NAME;
+				InputStream is = servletContext.getResourceAsStream(path);
+				if (is != null) {
+					try {
+						byte[] bytes = StreamUtils.copyToByteArray(is);
+						if (bytes != null && bytes.length > 0) {
+							return bytes;
+						}
+					} finally {
+						is.close();
+					}
+				}
+
+				String realPath = servletContext.getRealPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
+				if (realPath != null) {
+					File file = new File(realPath);
+					if (file.exists() && file.isFile() && file.length() > 0) {
+						return Files.readAllBytes(file.toPath());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getUploadedLogo(CentralConfigEntityDTO centralConfig) {
+		byte[] bytes = getUploadedLogoBytes();
+		if (bytes != null && bytes.length > 0) {
+			String mimeType = "image/png";
+			if (VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpg") || VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpeg")) {
+				mimeType = "image/jpeg";
+			}
+			return "data:" + mimeType + ";base64," + Base64.getEncoder().encodeToString(bytes);
+		}
+		if (centralConfig != null && centralConfig.getLogoPath() != null && !centralConfig.getLogoPath().trim().isEmpty()) {
+			return centralConfig.getLogoPath().trim();
+		}
+		return "";
+	}
 
 	private List<String> validateAndExtractEmails(String emailInput) {
 		List<String> emailList = new ArrayList<>();

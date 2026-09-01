@@ -6,14 +6,14 @@ body {
     background-color: #f4f4f4;
 }
 
-
 header {
-    background-color: #4a90e2; /* Soothing blue color */
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 24px;
     display: flex;
-    justify-content: center; /* Centered logo and title */
+    justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 header .logo {
@@ -22,89 +22,271 @@ header .logo {
 }
 
 header .logo img {
-    height: 60px; /* Increased logo size */
+    height: 52px;
     margin-right: 15px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 header h1 {
     margin: 0;
-    font-size: 1.8rem;
-    text-align: center;
+    font-size: 1.55rem;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 header .welcome {
-    font-size: 1rem;
-    margin-left: auto;
+    font-size: 0.92rem;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: #f8fafc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-nav ul {
+header .welcome strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ========================================================
+   Modern Single-Line Navigation Menu
+   ======================================================== */
+nav, .main-navbar {
+    background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+    border-bottom: 2px solid #3b82f6;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 99999;
+    overflow: visible !important;
+}
+
+nav ul, .nav-menu {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 4px 8px;
     display: flex;
-    background-color: #357abd; /* Menu background color */
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow: visible !important;
 }
 
-nav ul li {
+nav ul li, .nav-item {
     position: relative;
-    margin: 0 10px;
+    margin: 2px 1px;
+    flex-shrink: 0;
 }
 
-nav ul li a {
-    color: white;
+/* Top-level menu item button/pill style */
+nav ul li a, .nav-btn {
+    color: #e2e8f0;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    display: block;
+    padding: 6px 9px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
 
-nav ul li a:hover {
-    background-color: #28527a;
+nav ul li a:hover,
+nav ul li:hover > a,
+.nav-item:hover > .nav-btn,
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-nav ul li .submenu {
+.nav-arrow {
+    font-size: 9px;
+    margin-left: 2px;
+    opacity: 0.75;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+nav ul li:hover > a .nav-arrow,
+.nav-item:hover > .nav-btn .nav-arrow {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+/* ========================================================
+   First-Level Dropdown Submenu
+   ======================================================== */
+nav ul li .submenu,
+.submenu {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #28527a; /* Submenu background color */
+    background: #1e293b;
     list-style-type: none;
-    padding: 0;
+    padding: 6px 0;
     margin: 0;
-    border-radius: 5px;
-    z-index: 10;
-    min-width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 999999;
+    min-width: 200px;
+    animation: navDropdownFade 0.18s ease-out;
 }
 
-nav ul li:hover .submenu {
+nav ul li:hover .submenu,
+.nav-item:hover > .submenu {
     display: block;
 }
 
-nav ul li .submenu li a {
-    padding: 10px 20px;
-    display: block;
+nav ul li .submenu li,
+.submenu li {
+    position: relative;
+    margin: 0;
+    width: 100%;
+}
+
+nav ul li .submenu li a,
+.submenu li a {
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 400;
     white-space: nowrap;
+    transition: all 0.15s ease;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
 }
 
-nav ul li .submenu .second-level {
+nav ul li .submenu li a:hover,
+nav ul li .submenu li:hover > a,
+.submenu li a:hover,
+.submenu li:hover > a {
+    background: #334155;
+    color: #ffffff;
+    border-left: 3px solid #38bdf8;
+    padding-left: 19px;
+    box-shadow: none;
+}
+
+.sub-arrow {
+    font-size: 13px;
+    margin-left: auto;
+    opacity: 0.6;
+    padding-left: 10px;
+}
+
+/* ========================================================
+   Second-Level Flyout Submenu
+   ======================================================== */
+nav ul li .submenu .second-level,
+.submenu .second-level {
     display: none;
     position: absolute;
-    left: 100%;
+    left: calc(100% - 2px);
     top: 0;
-    background-color: #28527a;
+    background: #1e293b;
+    list-style-type: none;
+    padding: 6px 0;
+    margin: 0;
+    border-radius: 8px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 9999999;
+    min-width: 200px;
+    animation: navDropdownFade 0.18s ease-out;
 }
 
-nav ul li .submenu li:hover .second-level {
+nav ul li .submenu li:hover .second-level,
+.submenu li:hover > .second-level {
     display: block;
 }
 
-.logout {
-    background-color: #ff6b6b; /* Highlighted logout color */
+/* ========================================================
+   Special Menu Badges & Action Buttons
+   ======================================================== */
+.badge-highlight {
+    color: #f59e0b !important;
+    font-weight: 500 !important;
 }
 
-.logout:hover {
-    background-color: #e63946;
+.badge-highlight:hover {
+    color: #fbbf24 !important;
+}
+
+.nav-right-actions {
+    margin-left: auto;
+}
+
+.logout,
+.nav-btn-logout {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 6px 14px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35) !important;
+}
+
+.logout:hover,
+.nav-btn-logout:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.45) !important;
+}
+
+.nav-btn-profile {
+    padding: 4px 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.gear-icon {
+    font-size: 16px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    padding: 5px 7px;
+    border-radius: 50%;
+    margin-right: 0;
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+}
+
+.nav-btn-profile:hover .gear-icon,
+li:hover .gear-icon {
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+}
+
+@keyframes navDropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 /* Form container wrapper to center it on the screen */
 

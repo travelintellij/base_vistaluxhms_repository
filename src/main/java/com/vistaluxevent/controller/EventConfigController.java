@@ -63,6 +63,9 @@ public class EventConfigController {
 	@GetMapping("/{eventType}")
 	public ResponseEntity<EventDetailsConfigDTO> getEvent(@PathVariable String eventType) {
 		EventDetailsConfigDTO dto = eventService.getEventDtoByType(eventType);
+		if (dto == null) {
+			return ResponseEntity.notFound().build();
+		}
 		return ResponseEntity.ok(dto);
 	}
 

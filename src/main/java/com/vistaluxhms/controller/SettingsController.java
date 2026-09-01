@@ -214,8 +214,15 @@ public class SettingsController {
                 if (!dir.exists()) dir.mkdirs();
                 Path filePath = Paths.get(uploadDir, VistaluxConstants.LOGO_FILE_NAME);
                 logoFile.transferTo(filePath.toFile());
+                String logoRelativePath = VistaluxConstants.LOGO_PATH + "/" + VistaluxConstants.LOGO_FILE_NAME;
+                if (centralConfigDTO.getBaseUrl() != null && !centralConfigDTO.getBaseUrl().trim().isEmpty()) {
+                    String base = centralConfigDTO.getBaseUrl().trim();
+                    if (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+                    centralConfigDTO.setLogoPath(base + logoRelativePath);
+                } else {
+                    centralConfigDTO.setLogoPath(logoRelativePath);
+                }
             }
-            //centralConfigDTO.setLogoPath(VistaluxConstants.LOGO_PATH + File.separator + VistaluxConstants.LOGO_FILE_NAME);
             configService.saveOrUpdateCentralConfig(centralConfigDTO);
             redirectAttrib.addFlashAttribute("Success","Configuration is updated Successfully!!. ");
         } catch (Exception e) {

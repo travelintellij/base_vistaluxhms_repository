@@ -142,8 +142,13 @@ public class VlxCommonServicesImpl {
 
 	public byte[] generatePdfFromHtml(String htmlContent) throws  IOException, com.lowagie.text.DocumentException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		org.jsoup.nodes.Document doc = org.jsoup.Jsoup.parse(htmlContent);
+		doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+		doc.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml);
+		doc.outputSettings().charset("UTF-8");
+		org.w3c.dom.Document w3cDoc = new org.jsoup.helper.W3CDom().fromJsoup(doc);
 		ITextRenderer renderer = new ITextRenderer();
-		renderer.setDocumentFromString(htmlContent);
+		renderer.setDocument(w3cDoc, null);
 		renderer.layout();
 		renderer.createPDF(outputStream);
 		renderer.finishPDF();
