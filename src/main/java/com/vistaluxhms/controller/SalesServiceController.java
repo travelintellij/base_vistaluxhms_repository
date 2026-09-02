@@ -185,15 +185,6 @@ public class SalesServiceController {
             salesPartnerEntity.setRateTypeEntity(rateTypeEntity);
             salesService.saveSalesPartner(salesPartnerEntity);
 
-            ClientEntityDTO clientEntityDTO = new ClientEntityDTO();
-            clientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
-            ClientEntity clientEntity = new ClientEntity(clientEntityDTO);
-            // Check duplicate in Client
-            // Only check in SalesPartner
-
-
-            clientService.saveClient(clientEntity);
-
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
         }
@@ -307,7 +298,7 @@ public class SalesServiceController {
                             salesPartnerDto.getSalesPartnerId()
                     );
 
-            if(old.getMobile() != salesPartnerDto.getMobile()){
+            if(!Objects.equals(old.getMobile(), salesPartnerDto.getMobile())){
 
 
                 result.rejectValue(
@@ -328,29 +319,29 @@ public class SalesServiceController {
             salesPartnerEntity.setSalesPartnerId(salesPartnerDto.getSalesPartnerId());
             salesService.saveSalesPartner(salesPartnerEntity);
 
-            ClientEntity clientEntity = clientService.findClientEntityForSalesPartnerId(salesPartnerEntity.getSalesPartnerId());
-            if(clientEntity==null){
-                redirectAttrib.addFlashAttribute("E", "Sales Partner record updated successfully.");
-                modelView = view_edit_sales_partner_form(salesPartnerDto, result);
-            }else{
-                ClientEntityDTO clientEntityDTO = new ClientEntityDTO(clientEntity);
-                ClientEntityDTO updatedClientEntityDTO = getSalesPartnerMappedClientDTO(salesPartnerEntity,clientEntityDTO);
-                clientEntity = new ClientEntity(updatedClientEntityDTO);
-                ClientEntity oldClient =
-                        clientService.findClientEntityForSalesPartnerId(
-                                salesPartnerEntity.getSalesPartnerId()
-                        );
-
-
-
-                clientService.saveClient(clientEntity);
-
-            }
             redirectAttrib.addFlashAttribute("Success", "Sales Partner record updated successfully.");
             modelView.setViewName("redirect:view_sales_partner_list");
         }
 
         return modelView;
+    }
+
+    @RequestMapping(value = "/getSalesPartnerList", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody
+    List<SalesPartnerEntityDto> getSalesPartnerList(@RequestParam String salesPartnerName) {
+        List<SalesPartnerEntityDto> result = new ArrayList<SalesPartnerEntityDto>();
+        List<SalesPartnerEntity> entityList = salesService.findSalesPartnerByActive(true);
+        for (SalesPartnerEntity entity : entityList) {
+            String q = salesPartnerName.toLowerCase();
+            boolean matchName = entity.getSalesPartnerName() != null && entity.getSalesPartnerName().toLowerCase().contains(q);
+            boolean matchShort = entity.getSalesPartnerShortName() != null && entity.getSalesPartnerShortName().toLowerCase().contains(q);
+            if (matchName || matchShort) {
+                SalesPartnerEntityDto dto = new SalesPartnerEntityDto();
+                dto.updateSalesPartnerVoFromEntity(entity);
+                result.add(dto);
+            }
+        }
+        return result;
     }
 
     @RequestMapping("view_add_room_category_form")

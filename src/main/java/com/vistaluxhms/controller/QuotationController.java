@@ -182,9 +182,14 @@ public class QuotationController {
             System.out.println(quotationEntityDTO.getGuestId() + "---" + quotationEntityDTO.getGuestName());
             if (quotationEntityDTO.getQuotationAudienceType() == 1) {
                 ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
-                quotationEntityDTO.setMobile(clientEntity.getMobile().toString());
+                quotationEntityDTO.setMobile(clientEntity.getMobile() != null ? String.valueOf(clientEntity.getMobile()) : "");
                 quotationEntityDTO.setEmail(clientEntity.getEmailId());
                 quotationEntityDTO.setRateTypeId(clientEntity.getSalesPartner().getRateTypeEntity().getRateTypeId());
+            } else if (quotationEntityDTO.getQuotationAudienceType() == 2) {
+                SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(quotationEntityDTO.getGuestId());
+                quotationEntityDTO.setMobile(String.valueOf(salesPartnerEntity.getMobile()));
+                quotationEntityDTO.setEmail(salesPartnerEntity.getEmailId());
+                quotationEntityDTO.setRateTypeId(salesPartnerEntity.getRateTypeEntity().getRateTypeId());
             }
 
             int grandTotalSum = 0;
@@ -508,6 +513,8 @@ public class QuotationController {
             mail.setCc(userObj.getEmail());
 
             try {
+                CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+                String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
                 Map<String, Object> model = new HashMap<String, Object>();
                 //model.put("leadId", leadReferenceNumber);
                 model.put("contactName", quotationEntityDTO.getGuestName());
@@ -520,6 +527,8 @@ public class QuotationController {
                 model.put("discount", quotationEntityDTO.getDiscount());
                 model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
                 model.put("serviceAdvisorMobile", userObj.getMobile());
+                model.put("centralConfig", centralConfigEntity);
+                model.put("logoUrl", logoUrl);
 
                 mail.setModel(model);
                 //emailService.sendEmailMessageUsingTemplate(mail,templateName);
@@ -568,6 +577,7 @@ public class QuotationController {
     private void generateQuotationPDF(QuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
         // Prepare data for the template
         CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+        String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
         Map<String, Object> model = new HashMap<>();
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
@@ -594,6 +604,7 @@ public class QuotationController {
         model.put("remarks",quotationEntityDTO.getRemarks());
 
         model.put("centralConfig", centralConfigEntity);
+        model.put("logoUrl", logoUrl);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
@@ -731,9 +742,14 @@ public class QuotationController {
             System.out.println(quotationEntityDTO.getGuestId() + "---" + quotationEntityDTO.getGuestName());
             if (quotationEntityDTO.getQuotationAudienceType() == 1) {
                 ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
-                quotationEntityDTO.setMobile(clientEntity.getMobile().toString());
+                quotationEntityDTO.setMobile(clientEntity.getMobile() != null ? String.valueOf(clientEntity.getMobile()) : "");
                 quotationEntityDTO.setEmail(clientEntity.getEmailId());
                 quotationEntityDTO.setRateTypeId(clientEntity.getSalesPartner().getRateTypeEntity().getRateTypeId());
+            } else if (quotationEntityDTO.getQuotationAudienceType() == 2) {
+                SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(quotationEntityDTO.getGuestId());
+                quotationEntityDTO.setMobile(String.valueOf(salesPartnerEntity.getMobile()));
+                quotationEntityDTO.setEmail(salesPartnerEntity.getEmailId());
+                quotationEntityDTO.setRateTypeId(salesPartnerEntity.getRateTypeEntity().getRateTypeId());
             }
 
             int grandTotalSum = 0;
@@ -763,8 +779,21 @@ public class QuotationController {
                 return false;
             } else {
                 ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
-                if (!clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
-                    System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is " + quotationEntityDTO.getGuestName());
+                if (clientEntity == null || quotationEntityDTO.getGuestName() == null || !clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
+                    System.out.println("Client Name is " + (clientEntity != null ? clientEntity.getClientName() : "null") + "--" + "Guest Name is " + quotationEntityDTO.getGuestName());
+                    errors.rejectValue("guestName", "contact.error");
+                    return false;
+                }
+            }
+        } else if (quotationEntityDTO.getQuotationAudienceType() == 2) {
+            if (quotationEntityDTO.getGuestId() == 0) {
+                errors.rejectValue("guestName", "contact.error");
+                return false;
+            } else {
+                SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(quotationEntityDTO.getGuestId());
+                if (salesPartnerEntity == null || quotationEntityDTO.getGuestName() == null ||
+                        (!salesPartnerEntity.getSalesPartnerName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim()) &&
+                         !salesPartnerEntity.getSalesPartnerShortName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim()))) {
                     errors.rejectValue("guestName", "contact.error");
                     return false;
                 }

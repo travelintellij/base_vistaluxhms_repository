@@ -50,7 +50,7 @@
         "An unexpected error occurred. Please contact the administrator."}
     </p>
 
-    <a href="${pageContext.request.contextPath}/view_workloadhome" class="home-btn">
+    <a href="${pageContext.request.contextPath}/login" class="home-btn">
         Go Back to Home
     </a>
 </div>

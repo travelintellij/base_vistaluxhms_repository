@@ -860,8 +860,11 @@ body:has(.menu-page) .pdf-bg-img {
 
 <div class="top-bar">
     <div class="logo">
-        <!--<img src="https://mcusercontent.com/3ca8771030e566eaeda03585a/images/45f87f1a-20c3-c7bb-4868-b011138e1a46.png" alt="Resort Logo" />-->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
+        <#if logoUrl?? && logoUrl?has_content>
+            <img src="${logoUrl}" alt="Logo" width="100" height="100" />
+        <#elseif centralConfig?? && centralConfig.logoPath?? && centralConfig.logoPath?has_content>
+            <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
+        </#if>
     </div>
    <div class="address">
        <p>

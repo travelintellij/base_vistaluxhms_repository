@@ -140,6 +140,56 @@ public class VlxCommonServicesImpl {
 		return workloadStatusEntityRepository.findByWorkloadStatusId(statusId).get();
 	}
 
+	@Autowired(required = false)
+	private javax.servlet.ServletContext servletContext;
+
+	public String getUploadedLogoDataUri(com.vistaluxhms.model.CentralConfigEntityDTO centralConfig) {
+		return getUploadedLogoDataUri(this.servletContext, centralConfig);
+	}
+
+	public String getUploadedLogoDataUri(javax.servlet.ServletContext sc, com.vistaluxhms.model.CentralConfigEntityDTO centralConfig) {
+		try {
+			javax.servlet.ServletContext ctx = (sc != null) ? sc : this.servletContext;
+			if (ctx != null) {
+				String path = VistaluxConstants.LOGO_PATH + "/" + VistaluxConstants.LOGO_FILE_NAME;
+				java.io.InputStream is = ctx.getResourceAsStream(path);
+				if (is != null) {
+					try {
+						byte[] imageBytes = org.springframework.util.StreamUtils.copyToByteArray(is);
+						if (imageBytes != null && imageBytes.length > 0) {
+							String mimeType = "image/png";
+							if (VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpg") || VistaluxConstants.LOGO_FILE_NAME.toLowerCase().endsWith(".jpeg")) {
+								mimeType = "image/jpeg";
+							}
+							return "data:" + mimeType + ";base64," + java.util.Base64.getEncoder().encodeToString(imageBytes);
+						}
+					} finally {
+						is.close();
+					}
+				}
+
+				String logoRealPath = ctx.getRealPath(VistaluxConstants.LOGO_PATH + java.io.File.separator + VistaluxConstants.LOGO_FILE_NAME);
+				if (logoRealPath != null) {
+					java.io.File logoFile = new java.io.File(logoRealPath);
+					if (logoFile.exists() && logoFile.isFile() && logoFile.length() > 0) {
+						byte[] imageBytes = java.nio.file.Files.readAllBytes(logoFile.toPath());
+						String mimeType = "image/png";
+						if (logoFile.getName().toLowerCase().endsWith(".jpg") || logoFile.getName().toLowerCase().endsWith(".jpeg")) {
+							mimeType = "image/jpeg";
+						}
+						return "data:" + mimeType + ";base64," + java.util.Base64.getEncoder().encodeToString(imageBytes);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (centralConfig != null && centralConfig.getLogoPath() != null && !centralConfig.getLogoPath().trim().isEmpty()) {
+			return centralConfig.getLogoPath().trim();
+		}
+		return "";
+	}
+
 	public byte[] generatePdfFromHtml(String htmlContent) throws  IOException, com.lowagie.text.DocumentException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		org.jsoup.nodes.Document doc = org.jsoup.Jsoup.parse(htmlContent);

@@ -1,96 +1,34 @@
+<jsp:include page="../_menu_builder_header.jsp" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Add Category</title>
-  <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #43cea2, #185a9d);
-    margin: 0;
-}
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/stylesfilter.css">
 
-.container {
-    max-width: 600px;
-    margin: 60px auto;
-    background: #fff;
-    padding: 50px 40px;
-    border-radius: 15px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-}
+<div class="form-container-wrapper" style="background: transparent !important;">
+    <div class="form-container">
+        <h2>Add Category</h2>
 
-h2 {
-    text-align: center;
-    color: #34495e;
-    margin-bottom: 35px;
-    font-weight: 800;
-    font-size: 28px;
-}
+        <form action="${pageContext.request.contextPath}/categories_save" method="post">
+            <input type="hidden" name="categoryId" value="${category.categoryId}" />
 
-form label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #2c3e50;
-    font-size: 16px;
-}
+            <div class="form-row">
+                <label for="categoryName">Category Name *</label>
+                <input type="text" id="categoryName" name="categoryName" value="${category.categoryName}" placeholder="Enter Category Name" required="required" />
+            </div>
 
-form input {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 25px;
-    border-radius: 10px;
-    border: 1px solid #bdc3c7;
-    font-size: 16px;
-}
+            <div class="form-row">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" maxlength="255" placeholder="Enter Category Description..." cols="68" rows="4">${category.description}</textarea>
+            </div>
 
-form input:focus {
-    border-color: #3498db;
-    outline: none;
-}
-
-form button {
-    width: 100%;
-    padding: 14px;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-form button:hover {
-    background: #2980b9;
-}
-
-.back-link {
-    display: block;
-    text-align: center;
-    margin-top: 25px;
-    color: #e67e22;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
-}
-
-  </style>
-</head>
-<body>
-<jsp:include page="/WEB-INF/jsp/_menu_builder_header.jsp"/>
-<div class="container">
-    <h2>Add Category</h2>
-    <form action="${pageContext.request.contextPath}/categories_save" method="post">
-        <input type="hidden" name="categoryId" value="${category.categoryId}" />
-        <label>Name:</label>
-        <input type="text" name="categoryName" value="${category.categoryName}" required />
-        <label>Description:</label>
-        <input type="text" name="description" value="${category.description}" />
-        <button type="submit">Add Category</button>
-    </form>
-    <a class="back-link" href="${pageContext.request.contextPath}/categories_manage">Manage Categories</a>
+            <div class="button-container">
+                <input type="submit" value="Add Category">
+                <a href="${pageContext.request.contextPath}/categories_manage">
+                    <input type="button" class="clear-filter-btn" value="Manage Categories">
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-</body>
-</html>
+
+<jsp:include page="../footer.jsp" />
 

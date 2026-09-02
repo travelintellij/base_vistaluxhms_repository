@@ -93,7 +93,11 @@
 <body>
 <div class="container">
     <div style="text-align: center; margin-bottom: 20px;">
-        <img src="${logoUrl}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />
+        <#if logoUrl?? && logoUrl?has_content>
+            <img src="${logoUrl}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />
+        <#elseif centralConfig?? && centralConfig.logoPath?? && centralConfig.logoPath?has_content>
+            <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;" />
+        </#if>
     </div>
     <div class="content">
         <h2 style="text-align:center">Exclusive Stay Quotation – ${hotelName}</h2>

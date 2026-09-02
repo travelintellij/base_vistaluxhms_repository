@@ -142,16 +142,27 @@ public class QuotationValidator implements Validator {
 		return isValid;
 	}
 
-	private boolean validateClient(QuotationEntityDTO quotationEntityDTO,Errors errors){
-		if(quotationEntityDTO.getQuotationAudienceType()==1){
-			if(quotationEntityDTO.getGuestId()==0){
+	private boolean validateClient(QuotationEntityDTO quotationEntityDTO, Errors errors) {
+		if (quotationEntityDTO.getQuotationAudienceType() == 1) {
+			if (quotationEntityDTO.getGuestId() == 0) {
 				errors.rejectValue("guestName", "contact.error");
 				return false;
-			}
-			else {
+			} else {
 				ClientEntity clientEntity = clientService.findClientById(quotationEntityDTO.getGuestId());
-				if (!clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
-					System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is " + quotationEntityDTO.getGuestName() );
+				if (clientEntity == null || quotationEntityDTO.getGuestName() == null || !clientEntity.getClientName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim())) {
+					errors.rejectValue("guestName", "contact.error");
+					return false;
+				}
+			}
+		} else if (quotationEntityDTO.getQuotationAudienceType() == 2) {
+			if (quotationEntityDTO.getGuestId() == 0) {
+				errors.rejectValue("guestName", "contact.error");
+				return false;
+			} else {
+				com.vistaluxhms.entity.SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(quotationEntityDTO.getGuestId());
+				if (salesPartnerEntity == null || quotationEntityDTO.getGuestName() == null ||
+						(!salesPartnerEntity.getSalesPartnerName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim()) &&
+						 !salesPartnerEntity.getSalesPartnerShortName().trim().equalsIgnoreCase(quotationEntityDTO.getGuestName().trim()))) {
 					errors.rejectValue("guestName", "contact.error");
 					return false;
 				}

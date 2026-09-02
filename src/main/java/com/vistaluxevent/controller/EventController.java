@@ -85,8 +85,9 @@ public class EventController {
 	@Autowired
 	private EventConfigServicesImpl eventConfigService;
 
-	//@Autowired
-	//EmailServiceImpl emailService;
+	@Autowired
+	private com.vistaluxhms.services.SalesRelatesServicesImpl salesService;
+
 	private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
 	private UserDetailsObj getLoggedInUser() {
@@ -197,10 +198,14 @@ public class EventController {
 		} else {
 			if (eventPackageEntityDTO.getQuotationAudienceType() == 1) {
 				ClientEntity clientEntity = clientService.findClientById(eventPackageEntityDTO.getGuestId());
-				eventPackageEntityDTO.setMobile(clientEntity.getMobile().toString());
+				eventPackageEntityDTO.setMobile(clientEntity.getMobile() != null ? String.valueOf(clientEntity.getMobile()) : "");
 				eventPackageEntityDTO.setEmail(clientEntity.getEmailId());
 				System.out.println("All Value set for mobile and email");
 				System.out.println(eventPackageEntityDTO);
+			} else if (eventPackageEntityDTO.getQuotationAudienceType() == 2) {
+				com.vistaluxhms.entity.SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(eventPackageEntityDTO.getGuestId());
+				eventPackageEntityDTO.setMobile(String.valueOf(salesPartnerEntity.getMobile()));
+				eventPackageEntityDTO.setEmail(salesPartnerEntity.getEmailId());
 			}
 			List <EventMasterServiceEntity> eventMasterServiceDTOList = eventServices.findByEventTypeIdAndActiveEventMasterServiceList(eventPackageEntityDTO.getEventType().getEventTypeId(),true);
 
@@ -326,8 +331,21 @@ public class EventController {
 				return false;
 			} else {
 				ClientEntity clientEntity = clientService.findClientById(eventPackageEntityDTO.getGuestId());
-				if (!clientEntity.getClientName().trim().equalsIgnoreCase(eventPackageEntityDTO.getGuestName().trim())) {
-					System.out.println("Client Name is " + clientEntity.getClientName() + "--" + "Guest Name is " + eventPackageEntityDTO.getGuestName());
+				if (clientEntity == null || eventPackageEntityDTO.getGuestName() == null || !clientEntity.getClientName().trim().equalsIgnoreCase(eventPackageEntityDTO.getGuestName().trim())) {
+					System.out.println("Client Name is " + (clientEntity != null ? clientEntity.getClientName() : "null") + "--" + "Guest Name is " + eventPackageEntityDTO.getGuestName());
+					errors.rejectValue("guestName", "contact.error");
+					return false;
+				}
+			}
+		} else if (eventPackageEntityDTO.getQuotationAudienceType() == 2) {
+			if (eventPackageEntityDTO.getGuestId() == 0) {
+				errors.rejectValue("guestName", "contact.error");
+				return false;
+			} else {
+				com.vistaluxhms.entity.SalesPartnerEntity salesPartnerEntity = salesService.findSalesPartnerById(eventPackageEntityDTO.getGuestId());
+				if (salesPartnerEntity == null || eventPackageEntityDTO.getGuestName() == null ||
+						(!salesPartnerEntity.getSalesPartnerName().trim().equalsIgnoreCase(eventPackageEntityDTO.getGuestName().trim()) &&
+						 !salesPartnerEntity.getSalesPartnerShortName().trim().equalsIgnoreCase(eventPackageEntityDTO.getGuestName().trim()))) {
 					errors.rejectValue("guestName", "contact.error");
 					return false;
 				}
@@ -726,6 +744,7 @@ public class EventController {
 	private void generateEventQuotationPDF(EventPackageEntityDTO eventPackageEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
 		// Prepare data for the template
 		CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+		String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
 		System.out.println("CHG Event Type Name is " + eventPackageEntityDTO.getEventType().getEventTypeName());
 
 		EventDetailsConfigDTO eventDetailsConfigDTO = eventConfigService.getEventDetails(eventPackageEntityDTO.getEventType().getEventTypeName());
@@ -768,6 +787,7 @@ public class EventController {
 		model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 		model.put("remarks", eventPackageEntityDTO.getDescription());
 		model.put("centralConfig", centralConfigEntity);
+		model.put("logoUrl", logoUrl);
 		model.put("eventConfig", eventDetailsConfigDTO);
         // ===== MENU IMAGES AS BASE64 (PDF SAFE) =====
         List<String> menuImages = new ArrayList<>();
@@ -924,6 +944,8 @@ public class EventController {
 			mail.setCc(userObj.getEmail());
 
 			try {
+				CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+				String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("guestName", eventPackageEntityDTO.getGuestName());
 				formatRoomDates(eventPackageEntityDTO);
@@ -940,6 +962,8 @@ public class EventController {
 				model.put("grand_total_cost", eventPackageEntityDTO.getGrand_total_cost());
 				model.put("remarks", eventPackageEntityDTO.getDescription());
 				model.put("eventType", eventPackageEntityDTO.getEventType().getEventTypeName());
+				model.put("centralConfig", centralConfigEntity);
+				model.put("logoUrl", logoUrl);
 				List<Map<String, Object>> serviceList = new ArrayList<>();
 
                 boolean showBreakup = eventPackageEntityDTO.isShowBreakup();

@@ -169,7 +169,11 @@
 <div class="container">
     <div class="top-bar">
         <div class="logo">
-            <img src="${centralConfig.logoPath}" alt="Ashoka"/>
+            <#if logoUrl?? && logoUrl?has_content>
+                <img src="${logoUrl}" alt="Logo"/>
+            <#elseif centralConfig?? && centralConfig.logoPath?? && centralConfig.logoPath?has_content>
+                <img src="${centralConfig.logoPath}" alt="Logo"/>
+            </#if>
         </div>
          <div class="address">
             <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>

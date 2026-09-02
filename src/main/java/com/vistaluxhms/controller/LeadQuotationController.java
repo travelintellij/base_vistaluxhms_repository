@@ -376,6 +376,7 @@ public class LeadQuotationController {
         Map<String, Object> model = new HashMap<>();
 
         CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+        String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
 
         UserDetailsObj userObj = getLoggedInUser();
         String sessionKey = "QUOTATION_OBJ_" + userObj.getUserId();
@@ -402,6 +403,7 @@ public class LeadQuotationController {
         model.put("remarks",quotationEntityDTO.getRemarks());
 
         model.put("centralConfig", centralConfigEntity);
+        model.put("logoUrl", logoUrl);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
@@ -530,6 +532,8 @@ public class LeadQuotationController {
             mail.setCc(userObj.getEmail());
 
             try {
+                CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+                String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
                 Map<String, Object> model = new HashMap<String, Object>();
                 //model.put("leadId", leadReferenceNumber);
                 model.put("contactName", quotationEntityDTO.getClientEntity().getClientName());
@@ -542,6 +546,8 @@ public class LeadQuotationController {
                 model.put("discount", quotationEntityDTO.getDiscount());
                 model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
                 model.put("serviceAdvisorMobile", userObj.getMobile());
+                model.put("centralConfig", centralConfigEntity);
+                model.put("logoUrl", logoUrl);
 
                 mail.setModel(model);
                 //emailService.sendEmailMessageUsingTemplate(mail,templateName);
@@ -1181,6 +1187,7 @@ public class LeadQuotationController {
 
     private void generateQuotationPDF(LeadFreeHandQuotationEntityDTO quotationEntityDTO, HttpSession session, HttpServletResponse response,String templateName) throws IOException, TemplateException, DocumentException{
         CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+        String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
         // Prepare data for the template
         Map<String, Object> model = new HashMap<>();
         UserDetailsObj userObj = getLoggedInUser();
@@ -1208,6 +1215,7 @@ public class LeadQuotationController {
         model.put("remarks",quotationEntityDTO.getRemarks());
 
         model.put("centralConfig", centralConfigEntity);
+        model.put("logoUrl", logoUrl);
 
         // Load the Freemarker template
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
@@ -1307,6 +1315,8 @@ public class LeadQuotationController {
             mail.setToList(emailAddresses);
             mail.setCc(userObj.getEmail());
             try {
+                CentralConfigEntityDTO centralConfigEntity = settingService.getCentralConfig();
+                String logoUrl = commonService.getUploadedLogoDataUri(centralConfigEntity);
                 Map<String, Object> model = new HashMap<String, Object>();
                 //model.put("leadId", leadReferenceNumber);
                 model.put("contactName", quotationEntityDTO.getClientEntity().getClientName());
@@ -1319,6 +1329,8 @@ public class LeadQuotationController {
                 model.put("discount", quotationEntityDTO.getDiscount());
                 model.put("finalPrice", quotationEntityDTO.getGrandTotal() - quotationEntityDTO.getDiscount());
                 model.put("serviceAdvisorMobile", userObj.getMobile());
+                model.put("centralConfig", centralConfigEntity);
+                model.put("logoUrl", logoUrl);
 
                 mail.setModel(model);
                 //emailService.sendEmailMessageUsingTemplate(mail,templateName);

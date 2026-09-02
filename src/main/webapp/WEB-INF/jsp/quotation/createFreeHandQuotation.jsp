@@ -66,9 +66,12 @@
 
             if (userType === "1") {
                 document.getElementById("clientBox").classList.remove("hidden");
-            } /*else if (userType === "2") {
+            } else if (userType === "2") {
                 document.getElementById("salesBox").classList.remove("hidden");
-            } */else if (userType === "2") {
+                if (document.getElementById("guestName").value && !document.getElementById("salesPartnerName").value) {
+                    document.getElementById("salesPartnerName").value = document.getElementById("guestName").value;
+                }
+            } else if (userType === "3") {
                 document.getElementById("unregisteredBox").classList.remove("hidden");
             }
         }
@@ -207,21 +210,22 @@ h2, h3 {
               <form:select path="quotationAudienceType" onchange="handleUserTypeChange()" style="width: 600px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
                     <form:option value="0">Select</form:option>
                  <form:option value="1">Client</form:option>
-                 <form:option value="2">Unregistered</form:option>
+                 <form:option value="2">Sales Partner</form:option>
+                 <form:option value="3">Unregistered</form:option>
               </form:select>
           </div>
 
           <div id="clientBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-              <label for="clientName">Client Name:</label>
-              <form:input path="guestName" required="required" />
+              <label for="guestName">Client Name:</label>
+              <form:input path="guestName" id="guestName" />
               <font color="red">
                   <form:errors path="guestName" cssClass="error"  />
               </font>
           </div>
 
           <div id="salesBox" class="row hidden" style="width: 400px;height: 60px;padding: 8px 12px;font-size: 16px;border: 2px solid #4CAF50;border-radius: 8px;background: linear-gradient(white, #f1f1f1);color: #333;outline: none;cursor: pointer;transition: all 0.3s ease-in-out;">
-              <label for="salespartner">Sales Partner:</label>
-              <input type="text" id="salespartner" name="salespartner" class="input-field">
+              <label for="salesPartnerName">Sales Partner:</label>
+              <input type="text" id="salesPartnerName" name="salesPartnerName" class="input-field" placeholder="Search Sales Partner">
           </div>
 
           <div id="unregisteredBox" class="hidden">
@@ -344,6 +348,32 @@ $('#guestName').autocomplete({
      }
  });
 
+$('#salesPartnerName').autocomplete({
+     serviceUrl: '${pageContext.request.contextPath}/getSalesPartnerList',
+     paramName: "salesPartnerName",
+     delimiter: ",",
+     onSelect: function (suggestion) {
+         $('#salesPartnerName').val(suggestion.value);
+         $('#guestName').val(suggestion.dataName || suggestion.value);
+         guestID = suggestion.data;
+         jQuery("#guestId").val(guestID);
+         $('input[name=guestId]').val(guestID);
+         return false;
+     },
+     transformResult: function (response) {
+         return {
+             suggestions: $.map($.parseJSON(response), function (item) {
+                 var displayName = item.salesPartnerShortName ? item.salesPartnerName + " (" + item.salesPartnerShortName + ")" : item.salesPartnerName;
+                 return {
+                     value: displayName,
+                     data: item.salesPartnerId,
+                     dataName: item.salesPartnerName
+                 };
+             })
+         };
+     }
+ });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("quotationAudienceType").addEventListener("change", handleUserTypeChange);
@@ -355,9 +385,25 @@ document.addEventListener("DOMContentLoaded", function () {
         var contactMethod = document.getElementById("contactMethod").value;
         var mobile = document.getElementById("mobile").value.trim();
         var email = document.getElementById("email").value.trim();
+        var guestId = document.getElementById("guestId").value;
+        var guestName = document.getElementById("guestName").value.trim();
+        var salesPartnerName = document.getElementById("salesPartnerName").value.trim();
         var isValid = true;
 
-        if (userType === "3") { // If "Unregistered" is selected
+        if (userType === "0" || !userType) {
+            alert("Please select a User Type.");
+            isValid = false;
+        } else if (userType === "1") {
+            if (!guestName || !guestId || guestId === "0") {
+                alert("Please search and select a valid Client.");
+                isValid = false;
+            }
+        } else if (userType === "2") {
+            if (!salesPartnerName || !guestId || guestId === "0") {
+                alert("Please search and select a valid Sales Partner.");
+                isValid = false;
+            }
+        } else if (userType === "3") { // If "Unregistered" is selected
             if (!contactMethod) {
                 alert("Please select a contact method (Mobile, Email, or Both).");
                 isValid = false;

@@ -191,8 +191,11 @@
 
 <div class="top-bar">
     <div class="logo">
-        <!-- <img src="${centralConfig.logoPath}" alt="Logo" width="200" height="200" style="display: block; margin: 0 auto; width: 200px; height: 200px;"/> -->
-        <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
+        <#if logoUrl?? && logoUrl?has_content>
+            <img src="${logoUrl}" alt="Logo" width="100" height="100" />
+        <#elseif centralConfig?? && centralConfig.logoPath?? && centralConfig.logoPath?has_content>
+            <img src="${centralConfig.logoPath}" alt="Logo" width="100" height="100" />
+        </#if>
     </div>
     <div class="address">
         <p>${centralConfig.hotelName}| ${centralConfig.hotelAddress}<br/>${centralConfig.centralNumber} | ${centralConfig.centralizedEmail} </p>
